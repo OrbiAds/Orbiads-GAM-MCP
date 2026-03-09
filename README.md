@@ -15,6 +15,12 @@
 
 ## Install the skill
 
+**Claude Code (CLI)** — run in any Claude Code session:
+
+```text
+/install-github OrbiAds/Orbiads-GAM-MCP
+```
+
 **Claude Desktop** — add to `claude_desktop_config.json`:
 
 ```json
@@ -28,9 +34,11 @@
 }
 ```
 
+**claude.ai** — Settings → Integrations → Add MCP server → `https://orbiads.com/mcp`
+
 **ChatGPT** — Settings → Connectors → Create connector → MCP URL: `https://orbiads.com/mcp`
 
-**Gemini / AI Studio** — add `https://orbiads.com/mcp` in Tools → MCP configuration
+**Gemini / AI Studio** — Tools → MCP configuration → `https://orbiads.com/mcp`
 
 **OpenAI Codex** — copy [`openai-codex/AGENTS.md`](./openai-codex/AGENTS.md) and [`openai-codex/mcp/config.remote.json`](./openai-codex/mcp/config.remote.json) to your workspace root
 
