@@ -7,7 +7,7 @@
     "schemas": "1.0.0"
   },
   "compatibleWith": {
-    "gamApi": "v202502",
+    "gamApi": "v202602",
     "mcpProtocol": "2025-03-26"
   }
 }

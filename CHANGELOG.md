@@ -10,7 +10,7 @@
 - Platform wrappers for Claude, OpenAI/Codex, and Gemini
 - JSON Schema 2020-12 contracts for skill handoffs, session packets, trigger hints, and workflow manifests
 
-### Known API boundaries (GAM v202502+)
+### Known API boundaries (current support: GAM v202602)
 
 - `CreativeAssetService` removed — use inline bytes via `createCreatives`
 - `RateCardService` and `PremiumRateService` unavailable — pricing tools return `SERVICE_UNAVAILABLE`

@@ -74,7 +74,7 @@ body:
     id: gam-api
     attributes:
       label: GAM API version
-      placeholder: "v202502"
+      placeholder: "v202602"
 
   - type: checkboxes
     id: checklist
