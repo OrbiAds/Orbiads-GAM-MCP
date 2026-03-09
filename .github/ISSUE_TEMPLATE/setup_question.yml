@@ -1,0 +1,54 @@
+name: Setup / integration question
+description: Can't get OrbiAds connected to your AI assistant? Ask here.
+title: "[Setup] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Not sure how to set up OrbiAds? Check the [installation guides](./docs/install/) first.
+        If you're still stuck, fill in the details below.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Which platform are you setting up?
+      options:
+        - Claude (Desktop)
+        - Claude (claude.ai)
+        - ChatGPT (connector)
+        - Gemini
+        - OpenAI Codex
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: step
+    attributes:
+      label: Where are you stuck?
+      options:
+        - Creating an OrbiAds account
+        - Connecting Google Ad Manager (OAuth)
+        - Configuring the MCP endpoint in the AI client
+        - Running the bootstrap skill for the first time
+        - Skill not loading / not recognized
+        - Authentication error during a skill
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+      description: What exactly is happening? Include any error messages.
+      placeholder: "When I try to connect GAM I get a redirect error..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps you've already tried
+      placeholder: "I followed the Claude guide, added the MCP server, but..."

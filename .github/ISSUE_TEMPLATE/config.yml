@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: OrbiAds documentation
+    url: https://orbiads.com
+    about: Full documentation, pricing, and account management
+  - name: Installation guides
+    url: https://github.com/OrbiAds/Orbiads-GAM-MCP/tree/main/docs/install
+    about: Step-by-step setup guides for Claude, ChatGPT, Gemini, and OpenAI Codex

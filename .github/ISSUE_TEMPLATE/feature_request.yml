@@ -1,0 +1,55 @@
+name: Feature request
+description: Suggest a new skill, workflow, platform integration, or improvement
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea? We'd love to hear it. The more context you give, the better we can prioritize.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of request
+      options:
+        - New skill
+        - New composed workflow
+        - New platform integration (Claude / ChatGPT / Gemini / other)
+        - Improvement to an existing skill
+        - New query / reporting capability
+        - Safety or guardrail improvement
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the AdOps task or pain point this would address.
+      placeholder: "Today I have to manually check each line item before deploying. It would save time if..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How do you imagine this working? A natural language example is fine.
+      placeholder: "A skill that automatically pauses underperforming line items based on delivery thresholds."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds you've tried, or other approaches you considered.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this hasn't been requested yet
+          required: true

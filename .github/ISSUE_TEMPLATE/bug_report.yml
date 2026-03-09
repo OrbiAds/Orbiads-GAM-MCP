@@ -1,0 +1,87 @@
+name: Bug report
+description: Something isn't working — skill error, bad API response, broken flow
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please fill in as much detail as possible — it helps us fix the issue faster.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: AI platform
+      description: Which platform were you using when the bug occurred?
+      options:
+        - Claude (Desktop)
+        - Claude (claude.ai)
+        - ChatGPT (connector)
+        - Gemini
+        - OpenAI Codex
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill or workflow
+      description: Which skill or workflow triggered the issue?
+      options:
+        - bootstrap
+        - inventory-ad-units
+        - availability-forecast
+        - advertiser-order-line-items
+        - placements-targeting
+        - native-image
+        - qa-preview
+        - deploy-reporting
+        - workflow / inventory-to-placement
+        - workflow / image-to-native
+        - workflow / image-to-html5
+        - workflow / audio-video-trafficking
+        - workflow / deploy-to-reporting
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug. What did you ask, and what went wrong?
+      placeholder: "I asked the assistant to check availability and got an error: ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: "I expected the forecast to return available impressions."
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error message or tool output (if any)
+      description: Paste any error code, stack trace, or tool response here.
+      render: text
+
+  - type: input
+    id: gam-api
+    attributes:
+      label: GAM API version
+      placeholder: "v202502"
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have a valid OrbiAds account and my GAM connection is active
+          required: true
+        - label: I ran the `bootstrap` skill first and it completed successfully
+          required: false
