@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1",
+  "extensionId": "orbiads-gemini-wrapper",
+  "displayName": "OrbiAds AdOps Gemini Extension",
+  "description": "Thin Gemini extension scaffold that routes to shared OrbiAds agents and skills.",
+  "systemInstruction": "extension/system-instruction.md",
+  "functionDeclarations": "extension/function-declarations.yaml",
+  "router": "router.md",
+  "installGuide": "../docs/install/gemini.md",
+  "fallbackMode": "direct-mcp"
+}

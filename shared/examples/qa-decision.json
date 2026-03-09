@@ -1,0 +1,9 @@
+{
+  "complianceFindings": [],
+  "sslStatus": "passed",
+  "previewUrls": [
+    "https://preview.example/item/123"
+  ],
+  "coverageStatus": "complete",
+  "goNoGoRecommendation": "go"
+}

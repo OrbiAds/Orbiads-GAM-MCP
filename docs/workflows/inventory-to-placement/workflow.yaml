@@ -1,0 +1,39 @@
+id: inventory-to-placement
+name: Inventory to Placement
+version: 1
+status: ready
+objective: Qualify inventory, align placements and targeting, and produce a trafficking-ready handoff.
+inputs:
+  - tenantId
+  - networkCode
+  - optionalAdUnitIds
+  - placementNamingRules
+  - targetingRules
+skills:
+  - bootstrap
+  - inventory-ad-units
+  - placements-targeting
+  - availability-forecast
+outputs:
+  - selectedAdUnitIds
+  - placementSummary
+  - targetingSummary
+  - optionalForecastSummary
+  - nextRecommendedSkill
+steps:
+  - id: bootstrap-context
+    skill: bootstrap
+    mode: read
+  - id: qualify-inventory
+    skill: inventory-ad-units
+    mode: read_or_preview
+  - id: align-placements-targeting
+    skill: placements-targeting
+    mode: read_then_approved_write
+  - id: validate-supply
+    skill: availability-forecast
+    mode: optional_read
+validationGates:
+  - approve placement naming and grouping rules
+  - approve custom targeting creation or deletion
+  - confirm Native or Fluid compatibility when applicable

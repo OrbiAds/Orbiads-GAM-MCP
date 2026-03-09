@@ -1,0 +1,10 @@
+{
+  "scenarioType": "standalone",
+  "targetingAssumptions": {
+    "countryIds": [2250],
+    "deviceCategoryIds": [30000]
+  },
+  "availableUnits": 2400000,
+  "pressureLevel": "medium",
+  "recommendation": "continue_with_current_scope"
+}

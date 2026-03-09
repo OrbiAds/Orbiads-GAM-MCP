@@ -1,0 +1,159 @@
+functions:
+  - name: routeSession
+    description: Decide which shared OrbiAds skill should handle the current request.
+    inputSchema:
+      type: object
+      required:
+        - request
+      properties:
+        request:
+          type: string
+
+  - name: runBootstrapSkill
+    description: Enter the shared bootstrap skill for auth and network setup.
+    inputSchema:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+
+  - name: runInventoryAdUnitsSkill
+    description: Enter the shared inventory and ad-unit skill.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        adUnitIds:
+          type: array
+          items:
+            type: string
+
+  - name: runAvailabilityForecastSkill
+    description: Enter the shared forecast skill to check supply viability.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        adUnitIds:
+          type: array
+          items:
+            type: string
+        lineItemId:
+          type: string
+
+  - name: runAdvertiserOrderLineItemsSkill
+    description: Enter the shared trafficking skill for advertiser, order, and line-item setup.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        advertiserId:
+          type: string
+        orderId:
+          type: string
+        lineItemIds:
+          type: array
+          items:
+            type: string
+
+  - name: runPlacementsTargetingSkill
+    description: Enter the shared placements and targeting skill.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        adUnitIds:
+          type: array
+          items:
+            type: string
+
+  - name: runNativeImageSkill
+    description: Enter the shared Native image creative skill.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+        - advertiserId
+        - lineItemIds
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        advertiserId:
+          type: string
+        lineItemIds:
+          type: array
+          items:
+            type: string
+
+  - name: runQaPreviewSkill
+    description: Enter the shared QA and preview skill.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        creativeIds:
+          type: array
+          items:
+            type: string
+        lineItemIds:
+          type: array
+          items:
+            type: string
+        orderId:
+          type: string
+
+  - name: runDeployReportingSkill
+    description: Enter the shared deploy and reporting skill.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        jobId:
+          type: string
+        orderId:
+          type: string
+        lineItemIds:
+          type: array
+          items:
+            type: string

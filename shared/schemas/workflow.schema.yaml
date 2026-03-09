@@ -1,0 +1,150 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://orbiads.dev/schemas/workflow.schema.yaml
+title: OrbiAds Workflow Manifest
+description: Schema for OrbiAds workflow manifests stored as docs/workflows/*/workflow.yaml.
+type: object
+additionalProperties: false
+required:
+  - id
+  - name
+  - version
+  - status
+  - objective
+  - inputs
+  - skills
+  - outputs
+  - steps
+  - validationGates
+properties:
+  $schema:
+    type: string
+    minLength: 1
+    description: Optional editor hint pointing to this schema file.
+  id:
+    $ref: '#/$defs/kebabName'
+  name:
+    type: string
+    minLength: 1
+  version:
+    type: integer
+    minimum: 1
+  status:
+    type: string
+    enum:
+      - draft
+      - ready
+      - deprecated
+  objective:
+    type: string
+    minLength: 1
+  inputs:
+    $ref: '#/$defs/packetFieldList'
+  skills:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items:
+      $ref: '#/$defs/skillName'
+  lowLevelTools:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items:
+      $ref: '#/$defs/toolName'
+  outputs:
+    $ref: '#/$defs/packetFieldList'
+  steps:
+    type: array
+    minItems: 1
+    items:
+      $ref: '#/$defs/workflowStep'
+  validationGates:
+    type: array
+    minItems: 1
+    items:
+      type: string
+      minLength: 1
+allOf:
+  - if:
+      properties:
+        steps:
+          contains:
+            type: object
+            required:
+              - toolBundle
+    then:
+      required:
+        - lowLevelTools
+  - if:
+      required:
+        - lowLevelTools
+    then:
+      properties:
+        steps:
+          contains:
+            type: object
+            required:
+              - toolBundle
+$defs:
+  kebabName:
+    type: string
+    pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+  packetFieldName:
+    type: string
+    pattern: ^[A-Za-z][A-Za-z0-9]*$
+  packetFieldList:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items:
+      $ref: '#/$defs/packetFieldName'
+  skillName:
+    $ref: '#/$defs/kebabName'
+  toolBundleName:
+    $ref: '#/$defs/kebabName'
+  toolName:
+    type: string
+    pattern: ^[a-z][a-z0-9_]*$
+  stepMode:
+    type: string
+    enum:
+      - read
+      - read_or_preview
+      - read_then_approved_write
+      - optional_read
+      - preview_then_write
+      - optional_write
+      - read_or_approved_write
+      - approved_write
+  skillStep:
+    type: object
+    additionalProperties: false
+    required:
+      - id
+      - skill
+      - mode
+    properties:
+      id:
+        $ref: '#/$defs/kebabName'
+      skill:
+        $ref: '#/$defs/skillName'
+      mode:
+        $ref: '#/$defs/stepMode'
+  toolBundleStep:
+    type: object
+    additionalProperties: false
+    required:
+      - id
+      - toolBundle
+      - mode
+    properties:
+      id:
+        $ref: '#/$defs/kebabName'
+      toolBundle:
+        $ref: '#/$defs/toolBundleName'
+      mode:
+        $ref: '#/$defs/stepMode'
+  workflowStep:
+    oneOf:
+      - $ref: '#/$defs/skillStep'
+      - $ref: '#/$defs/toolBundleStep'

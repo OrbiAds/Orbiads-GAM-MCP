@@ -1,0 +1,44 @@
+id: image-to-html5
+name: Image to HTML5
+version: 1
+status: ready
+objective: Package approved assets as HTML5 creatives and move them through QA, preview, and deployment.
+inputs:
+  - tenantId
+  - html5Bundle
+  - targetSizes
+  - advertiserOrderLineItemContext
+skills:
+  - bootstrap
+  - inventory-ad-units
+  - availability-forecast
+  - advertiser-order-line-items
+  - qa-preview
+  - deploy-reporting
+lowLevelTools:
+  - create_html5_creative_from_files
+  - associate_creative
+outputs:
+  - html5CreativeIds
+  - previewPacket
+  - deploymentPacket
+steps:
+  - id: qualify-delivery-scope
+    skill: inventory-ad-units
+    mode: read
+  - id: optional-forecast
+    skill: availability-forecast
+    mode: optional_read
+  - id: resolve-delivery-context
+    skill: advertiser-order-line-items
+    mode: read_or_approved_write
+  - id: build-upload-associate
+    toolBundle: html5-creative-upload
+    mode: approved_write
+  - id: qa-preview-gate
+    skill: qa-preview
+    mode: read
+validationGates:
+  - approve the exact uploaded asset bundle
+  - approve preview URLs before activation
+  - review coverage gaps before deploy

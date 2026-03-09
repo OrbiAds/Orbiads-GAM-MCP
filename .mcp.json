@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
+}

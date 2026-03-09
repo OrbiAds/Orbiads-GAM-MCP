@@ -1,0 +1,8 @@
+{
+  "tenantId": "tenant_123",
+  "networkCode": "1234567",
+  "networkInitialized": true,
+  "selectedAdUnitIds": ["adunit_home_top"],
+  "pendingConfirmation": null,
+  "nextRecommendedSkill": "availability-forecast"
+}

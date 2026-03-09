@@ -1,0 +1,23 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: OrbiAds Trigger Hints
+type: object
+required:
+  - skill
+  - signals
+properties:
+  skill:
+    type: string
+  signals:
+    type: array
+    minItems: 1
+    items:
+      type: string
+  prerequisites:
+    type: array
+    items:
+      type: string
+  abortSignals:
+    type: array
+    items:
+      type: string
+additionalProperties: false

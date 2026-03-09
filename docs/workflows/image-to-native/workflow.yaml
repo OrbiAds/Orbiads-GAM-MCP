@@ -1,0 +1,46 @@
+id: image-to-native
+name: Image to Native
+version: 1
+status: ready
+objective: Build a Native creative package from approved image assets and move it to QA and preview.
+inputs:
+  - tenantId
+  - imageAssets
+  - nativeCopy
+  - destinationUrls
+  - adUnitIdsOrPlacementScope
+  - advertiserOrderLineItemContext
+skills:
+  - bootstrap
+  - inventory-ad-units
+  - placements-targeting
+  - availability-forecast
+  - advertiser-order-line-items
+  - native-image
+  - qa-preview
+  - deploy-reporting
+outputs:
+  - nativeCreativeIds
+  - associationSummary
+  - qaSummary
+  - previewPacket
+steps:
+  - id: qualify-inventory
+    skill: inventory-ad-units
+    mode: read
+  - id: validate-targeting
+    skill: placements-targeting
+    mode: read_or_approved_write
+  - id: resolve-delivery-context
+    skill: advertiser-order-line-items
+    mode: read_or_approved_write
+  - id: build-native-creative
+    skill: native-image
+    mode: approved_write
+  - id: qa-preview-gate
+    skill: qa-preview
+    mode: read
+validationGates:
+  - confirm Native or Fluid compatibility
+  - approve creative copy and destination URLs
+  - approve preview results before activation

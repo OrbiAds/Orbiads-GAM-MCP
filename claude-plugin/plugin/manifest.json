@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1",
+  "pluginId": "orbiads-claude-wrapper",
+  "displayName": "OrbiAds AdOps Copilot",
+  "description": "Thin Claude wrapper over shared OrbiAds agents, skills, and workflows.",
+  "entrypoints": {
+    "systemPrompt": "plugin/system-prompt.md",
+    "activation": "plugin/activation.md",
+    "router": "router.md"
+  },
+  "sharedRoots": [
+    "../shared/agents",
+    "../shared/skills",
+    "../shared/prompts",
+    "../shared/examples",
+    "../shared/schemas"
+  ],
+  "mcp": {
+    "primaryTransport": "streamable-http",
+    "fallbackTransport": "stdio",
+    "installGuide": "../docs/install/claude.md"
+  },
+  "skills": [
+    "bootstrap",
+    "inventory-ad-units",
+    "availability-forecast",
+    "advertiser-order-line-items",
+    "placements-targeting",
+    "native-image",
+    "qa-preview",
+    "deploy-reporting"
+  ]
+}

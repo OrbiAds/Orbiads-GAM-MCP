@@ -1,0 +1,33 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: OrbiAds Skill Handoff
+type: object
+required:
+  - facts
+  - risks
+  - nextRecommendedSkill
+properties:
+  facts:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      oneOf:
+        - type: string
+        - type: number
+        - type: boolean
+        - type: "null"
+        - type: array
+          items:
+            type: [string, number]
+  risks:
+    type: array
+    items:
+      type: string
+  approvalsNeeded:
+    type: array
+    items:
+      type: string
+  nextRecommendedSkill:
+    type:
+      - string
+      - "null"
+additionalProperties: false

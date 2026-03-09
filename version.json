@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "layers": {
+    "skills": "1.0.0",
+    "agents": "1.0.0",
+    "workflows": "1.0.0",
+    "schemas": "1.0.0"
+  },
+  "compatibleWith": {
+    "gamApi": "v202502",
+    "mcpProtocol": "2025-03-26"
+  }
+}

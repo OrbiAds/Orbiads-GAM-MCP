@@ -1,0 +1,39 @@
+id: deploy-to-reporting
+name: Deploy to Reporting
+version: 1
+status: ready
+objective: Validate, execute, monitor, and report campaign actions with approval gates.
+inputs:
+  - tenantId
+  - jobIdOrOrderId
+  - optionalLineItemIds
+  - optionalCreativeIds
+  - requestedAction
+skills:
+  - bootstrap
+  - qa-preview
+  - deploy-reporting
+  - advertiser-order-line-items
+outputs:
+  - previewPacket
+  - actionResult
+  - deliverySummary
+  - reportingSummary
+  - auditSummary
+steps:
+  - id: bootstrap-context
+    skill: bootstrap
+    mode: read
+  - id: qa-preview-gate
+    skill: qa-preview
+    mode: read
+  - id: campaign-action
+    skill: deploy-reporting
+    mode: preview_then_write
+  - id: remediation
+    skill: advertiser-order-line-items
+    mode: optional_write
+validationGates:
+  - approve preview URLs and coverage
+  - approve every real campaign write
+  - review delivery anomalies before redeploying

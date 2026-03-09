@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp",
+      "notes": [
+        "Production endpoint — requires a valid OrbiAds OAuth token.",
+        "Configure OAuth in your OpenAI client or set the Authorization header.",
+        "See docs/install/openai-codex.md for authentication setup."
+      ]
+    }
+  }
+}

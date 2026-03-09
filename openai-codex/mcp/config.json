@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp",
+      "notes": [
+        "Start the backend MCP server with `cd backend && python -m src.mcp.server`.",
+        "Default transport is streamable-http.",
+        "Remote mode requires Google OAuth environment variables."
+      ]
+    }
+  }
+}

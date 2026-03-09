@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "orbiads": {
+      "command": "python",
+      "args": [
+        "-m",
+        "src.mcp.server"
+      ],
+      "cwd": "backend",
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      },
+      "notes": [
+        "Use stdio only for local dev or testing.",
+        "Google auth is disabled in this mode."
+      ]
+    }
+  }
+}

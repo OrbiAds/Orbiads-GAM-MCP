@@ -1,0 +1,46 @@
+id: audio-video-trafficking
+name: Audio and Video Trafficking
+version: 1
+status: ready
+objective: Prepare audio or video creatives for a controlled trafficking and deployment flow.
+inputs:
+  - tenantId
+  - mediaAssets
+  - advertiserOrderLineItemContext
+  - targetingAndPlacementScope
+skills:
+  - bootstrap
+  - inventory-ad-units
+  - placements-targeting
+  - availability-forecast
+  - advertiser-order-line-items
+  - qa-preview
+  - deploy-reporting
+lowLevelTools:
+  - create_audio_creative
+  - create_video_creative
+  - associate_creative
+outputs:
+  - richMediaCreativeIds
+  - traffickingPacket
+  - previewPacket
+steps:
+  - id: qualify-scope
+    skill: placements-targeting
+    mode: read_or_approved_write
+  - id: validate-supply
+    skill: availability-forecast
+    mode: optional_read
+  - id: resolve-delivery-context
+    skill: advertiser-order-line-items
+    mode: read_or_approved_write
+  - id: build-rich-media
+    toolBundle: audio-video-creative-build
+    mode: approved_write
+  - id: qa-preview-gate
+    skill: qa-preview
+    mode: read
+validationGates:
+  - approve creative destinations and naming
+  - surface manual companion handling when needed
+  - approve preview results before activation

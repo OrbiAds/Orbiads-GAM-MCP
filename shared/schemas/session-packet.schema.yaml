@@ -1,0 +1,42 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: OrbiAds Session Packet
+type: object
+required:
+  - tenantId
+  - networkCode
+properties:
+  tenantId:
+    type: string
+  networkCode:
+    type: string
+  networkInitialized:
+    type: boolean
+  selectedAdUnitIds:
+    type: array
+    items:
+      type: string
+  selectedPlacementIds:
+    type: array
+    items:
+      type: string
+  advertiserId:
+    type: string
+  orderId:
+    type: string
+  lineItemIds:
+    type: array
+    items:
+      type: string
+  creativeIds:
+    type: array
+    items:
+      type: string
+  pendingConfirmation:
+    type:
+      - string
+      - 'null'
+  nextRecommendedSkill:
+    type:
+      - string
+      - 'null'
+additionalProperties: false
