@@ -1,15 +1,40 @@
 # OrbiAds — Google Ad Manager MCP
 
 [![MCP Protocol](https://img.shields.io/badge/MCP-2025--03--26-blue)](https://modelcontextprotocol.io)
-[![GAM API](https://img.shields.io/badge/GAM_API-v202502-orange)](https://developers.google.com/ad-manager/api/rel_notes)
+[![GAM API](https://img.shields.io/badge/GAM_API-v202602-orange)](https://developers.google.com/ad-manager/api/rel_notes)
 [![Version](https://img.shields.io/badge/version-1.0.0-green)](./version.json)
 [![Works with Claude](https://img.shields.io/badge/Claude-✓-purple)](./docs/install/claude.md)
 [![Works with ChatGPT](https://img.shields.io/badge/ChatGPT-✓-teal)](./docs/install/chatgpt.md)
 [![Works with Gemini](https://img.shields.io/badge/Gemini-✓-blue)](./docs/install/gemini.md)
 
-**Control your Google Ad Manager account with natural language — in Claude, ChatGPT, Gemini, or any MCP-compatible AI assistant.**
+**A skill for Claude, ChatGPT, Gemini, and OpenAI Codex that gives your AI assistant direct access to Google Ad Manager.**
 
 [**→ Get started free at orbiads.com**](https://orbiads.com)
+
+---
+
+## Install the skill
+
+**Claude Desktop** — add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
+}
+```
+
+**ChatGPT** — Settings → Connectors → Create connector → MCP URL: `https://orbiads.com/mcp`
+
+**Gemini / AI Studio** — add `https://orbiads.com/mcp` in Tools → MCP configuration
+
+**OpenAI Codex** — copy [`openai-codex/AGENTS.md`](./openai-codex/AGENTS.md) and [`openai-codex/mcp/config.remote.json`](./openai-codex/mcp/config.remote.json) to your workspace root
+
+→ Full guides: [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
 
 ---
 
@@ -125,7 +150,7 @@ Then start with:
 | Endpoint | `https://orbiads.com/mcp` |
 | Transport | `streamable-http` (default) · `sse` · `stdio` (local dev only) |
 | Auth | OAuth 2.0 — Google account via OrbiAds |
-| GAM API version | `v202502` |
+| GAM API version | `v202602` |
 | MCP Protocol | `2025-03-26` |
 
 ---

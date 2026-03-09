@@ -1,55 +1,75 @@
-# Claude Installation
+# Install on Claude
 
-## Scope
+OrbiAds is a **skill for Claude** — it gives Claude Desktop and claude.ai direct access to your Google Ad Manager account via MCP.
 
-- package the Claude-facing plugin assets;
-- wire Claude to the OrbiAds MCP server;
-- expose the shared skills without duplicating business content.
+## Prerequisites
 
-## Asset Map
+- An OrbiAds account — [sign up free at orbiads.com](https://orbiads.com) (5 credits, no card required)
+- Your GAM account connected in the OrbiAds dashboard
+- Claude Desktop (macOS or Windows) **or** claude.ai Pro / Team
 
-- `../../claude-plugin/plugin/manifest.json` — wrapper descriptor;
-- `../../claude-plugin/plugin/system-prompt.md` — thin Claude platform layer;
-- `../../claude-plugin/plugin/activation.md` — entry routing hints;
-- `../../claude-plugin/router.md` — skill dispatch;
-- `../../claude-plugin/agents/orchestrator.md` and `../../claude-plugin/skills/*.md` — bridges to the shared layer.
+---
 
-## Recommended Wrapper Model
+## Claude Desktop
 
-- keep the Claude wrapper thin;
-- keep the canonical business instructions in `../../shared/skills/`;
-- use filesystem-based skills for discovery and on-demand loading;
-- keep examples and optional resources small and platform-specific;
-- avoid copying workflow logic into the plugin package.
+### Step 1 — Find your config file
 
-## Installation Topics to Cover
+| OS | Path |
+| --- | --- |
+| macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
 
-- Claude-side plugin packaging format;
-- expected MCP server configuration (`streamable-http` first, `stdio` only for local fallback);
-- skill discovery and activation rules;
-- update and rollback procedure for packaged assets.
+Open it with any text editor.
 
-## Recommended Steps
+### Step 2 — Add OrbiAds
 
-1. start the MCP server with `scripts/run-mcp.sh http` or `cd backend && python -m src.mcp.server`;
-2. load the wrapper files from `../../claude-plugin/` and keep `../../shared/` mounted as the source of truth;
-3. route the first user turn through `../../claude-plugin/router.md` and `../../shared/agents/orchestrator/`;
-4. confirm bootstrap state before any workflow that can write or spend credits.
+Add the `orbiads` entry inside `mcpServers`:
 
-## Smoke Check
+```json
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
+}
+```
 
-- ask Claude to confirm the active tenant and GAM network only;
-- expect the route to land in `bootstrap` without touching write paths;
-- verify that follow-up turns can move to another thin skill wrapper while keeping the same session packet.
+If you already have other MCP servers, just add the `orbiads` block inside the existing `mcpServers` object.
 
-## Rollback
+### Step 3 — Restart Claude Desktop
 
-- revert only the wrapper assets in `../../claude-plugin/`;
-- keep `../../shared/` unchanged unless the business contract itself is wrong;
-- if routing regresses, fall back to the previous manifest plus router pair and retest bootstrap.
+Quit and reopen. The OrbiAds tools load automatically.
 
-## Guardrails
+### Step 4 — Authenticate
 
-- route users to shared skills first, then to low-level tools only when needed;
-- require preview, QA, and confirmation before real writes;
-- keep safety rules aligned with `../safety/README.md`.
+On first use, Claude opens a browser to complete the OAuth flow with your OrbiAds account.
+
+### Step 5 — Test
+
+Start a new conversation:
+
+> *"Connect to my GAM account"*
+
+Claude should confirm your OrbiAds tenant and list your GAM networks.
+
+---
+
+## claude.ai (web)
+
+1. Go to **Settings → Integrations**
+2. Click **Add MCP server**
+3. Enter: `https://orbiads.com/mcp`
+4. Complete the OAuth flow
+5. Test: *"Connect to my GAM account"*
+
+---
+
+## Smoke checks
+
+| Prompt | Expected result |
+| --- | --- |
+| *"What is my tenant ID?"* | Your OrbiAds tenant |
+| *"List my GAM networks"* | Networks linked to your account |
+| *"Check my GAM credentials"* | Auth confirmed |

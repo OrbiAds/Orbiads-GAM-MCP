@@ -1,67 +1,66 @@
-# OpenAI / Codex Installation
+# Install on OpenAI Codex
 
-## Scope
+OrbiAds is a **skill for OpenAI Codex** — it gives Codex access to your Google Ad Manager account via `AGENTS.md` and a remote MCP config.
 
-- use `AGENTS.md` as the persistent instruction layer;
-- orient the model locally with a simple skill-like file layout similar to Claude-style skill loading;
-- reference the shared business skills separately from platform glue;
-- support local or remote MCP connections.
+## Prerequisites
 
-## Boundary
+- An OrbiAds account — [sign up free at orbiads.com](https://orbiads.com) (5 credits, no card required)
+- Your GAM account connected in the OrbiAds dashboard
+- OpenAI Codex with MCP support
 
-- use this guide for Codex/OpenAI workspaces that can load `AGENTS.md`, router files, and local wrapper assets;
-- use this path when you want local file-based guidance instead of a remote ChatGPT connector flow;
-- use `chatgpt.md` when the host is ChatGPT or GPT-5.4 running through a connector;
-- do not treat `mcp/config.stdio.json` as a ChatGPT deployment path.
+---
 
-## Asset Map
+## Step 1 — Copy files to your workspace root
 
-- `../../openai-codex/AGENTS.md` — persistent operating rules;
-- `../../openai-codex/router.md` — intent to skill routing;
-- `../../openai-codex/mcp/config.json` — remote `streamable-http` example;
-- `../../openai-codex/mcp/config.stdio.json` — local dev-only stdio example;
-- `../../openai-codex/skills/*.md` and `../../openai-codex/examples/*.md` — thin skill aliases and prompt examples.
+From this repository, copy two files into the **root of your Codex workspace**:
 
-## Recommended Local Skill Model
+```
+openai-codex/AGENTS.md                →  AGENTS.md    (workspace root)
+openai-codex/mcp/config.remote.json   →  .mcp.json    (workspace root)
+```
 
-- keep `AGENTS.md` as the persistent local steering layer;
-- use `router.md` to map user intent to the smallest useful skill wrapper;
-- keep one thin file in `skills/` per shared business skill;
-- keep the real business behavior in `../../shared/agents/` and `../../shared/skills/`.
+`AGENTS.md` tells Codex what OrbiAds can do and how to use the skills.
+`.mcp.json` points Codex to the hosted OrbiAds MCP server.
 
-## Installation Topics to Cover
+---
 
-- MCP configuration examples per environment;
-- mapping between common user prompts, shared skills, and expected outputs;
-- explicit confirmation rules before any sensitive write;
-- fallback behavior when direct skill guidance is insufficient.
+## Step 2 — Verify .mcp.json
 
-## Recommended Steps
+```json
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
+}
+```
 
-1. choose `mcp/config.json` for remote OAuth-backed usage or `mcp/config.stdio.json` for local dev only;
-2. keep `AGENTS.md` and `router.md` in the active Codex/OpenAI workspace so the model sees the routing layer first;
-3. load the matching file from `skills/` instead of embedding business logic directly in `AGENTS.md`;
-4. keep `../shared/agents/` and `../shared/skills/` available as the canonical execution source;
-5. validate bootstrap before any forecast, preview, deploy, or reporting request.
+No changes needed. Codex handles OAuth on first use.
 
-## Smoke Check
+---
 
-- run a bootstrap-only prompt that asks for tenant, credentials, and network confirmation;
-- verify that the workspace can route from `router.md` to `skills/bootstrap.md` before any downstream skill;
-- verify that the client hits `/mcp` in remote mode or starts `python -m src.mcp.server` in stdio mode;
-- verify that the next prompt can reuse the same session fields without repeating bootstrap.
+## Step 3 — Test
 
-## Rollback
+Open a Codex session in your workspace:
 
-- revert the selected MCP config file first if connection behavior changes unexpectedly;
-- keep `AGENTS.md` thin and restore the previous router if a skill misroutes;
-- never patch around a routing bug by duplicating shared skill logic inside `AGENTS.md`.
+> *"Connect to my GAM account"*
 
-## Guardrails
+Codex reads `AGENTS.md`, connects to `https://orbiads.com/mcp`, and runs the bootstrap skill.
 
-- prefer shared skills before low-level tool calls;
-- keep `AGENTS.md` thin and use it to steer, not to duplicate business workflows;
-- explain the plan before important actions;
-- require availability checks, QA, and preview before activation;
-- keep confirmation rules consistent with `../safety/README.md`;
-- keep ChatGPT connector metadata and public-host guidance in `chatgpt.md`, not in this workspace-only guide.
+---
+
+## Optional — Per-skill files
+
+Copy `openai-codex/skills/` to your workspace root for richer per-skill instructions.
+
+---
+
+## Smoke checks
+
+| Prompt | Expected result |
+| --- | --- |
+| *"What is my tenant ID?"* | Your OrbiAds tenant |
+| *"List my GAM networks"* | Your GAM networks |
+| *"Check inventory on the homepage 300x250 next week"* | An availability forecast |

@@ -1,53 +1,56 @@
-# Gemini Installation
+# Install on Gemini
 
-## Scope
+OrbiAds is a **skill for Gemini** — it connects Gemini to your Google Ad Manager account via MCP.
 
-- package the installable Gemini extension;
-- document the direct MCP fallback mode;
-- explain the operational limits of each mode.
+## Prerequisites
 
-## Asset Map
+- An OrbiAds account — [sign up free at orbiads.com](https://orbiads.com) (5 credits, no card required)
+- Your GAM account connected in the OrbiAds dashboard
+- Gemini Advanced **or** Google AI Studio with MCP tool support
 
-- `../../gemini-extension/extension/manifest.json` — extension descriptor;
-- `../../gemini-extension/extension/function-declarations.yaml` — callable routing surface;
-- `../../gemini-extension/extension/system-instruction.md` — thin Gemini platform layer;
-- `../../gemini-extension/router.md` — skill dispatch;
-- `../../gemini-extension/skills/*.md` and `../../gemini-extension/examples/*.md` — thin skill aliases and examples.
+---
 
-## Installation Topics to Cover
+## Option A — Google AI Studio
 
-- exact extension packaging format;
-- local installation steps;
-- extension vs direct MCP comparison matrix;
-- how shared skills are exposed without duplicating business content.
+1. In your AI Studio project, open **Tools → MCP configuration**
+2. Add:
 
-## Recommended Modes
+```json
+{
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
+}
+```
 
-- use the extension wrapper when Gemini can load the manifest, system instruction, and function declarations together;
-- use direct MCP fallback when the runtime cannot preserve the wrapper packaging cleanly or needs faster local iteration;
-- in both modes, keep `../../shared/agents/` and `../../shared/skills/` as the only business source of truth.
+3. Save and reload the project
+4. Complete the OAuth flow
+5. Test: *"Connect to my GAM account"*
 
-## Recommended Steps
+---
 
-1. start the MCP server in `streamable-http` mode for the normal path;
-2. load the extension assets from `../../gemini-extension/extension/`;
-3. validate that Gemini routes through `../../gemini-extension/router.md` before calling a skill wrapper;
-4. fall back to direct MCP mode only when packaging constraints block the normal extension flow.
+## Option B — Gemini extension
 
-## Smoke Check
+Load the ready-to-use extension files from this repository:
 
-- ask Gemini to classify a request into the correct skill without executing writes;
-- verify that the answer references the expected thin wrapper and shared skill;
-- confirm that preview, QA, and confirmation remain required after routing.
+| File | Purpose |
+| --- | --- |
+| `gemini-extension/extension/manifest.json` | Extension descriptor |
+| `gemini-extension/extension/function-declarations.yaml` | Callable tool surface |
+| `gemini-extension/extension/system-instruction.md` | AdOps operating rules |
 
-## Rollback
+Follow the standard Gemini extension install process for your environment.
 
-- revert the extension manifest and function declarations together if Gemini stops routing cleanly;
-- switch temporarily to direct MCP fallback rather than duplicating skill logic in the extension layer;
-- keep the fallback documented and aligned with the same guardrails as the extension path.
+---
 
-## Guardrails
+## Smoke checks
 
-- keep the extension wrapper thin and shared-skill driven;
-- document when users should fall back to direct MCP mode;
-- preserve the same preview, QA, and confirmation rules as the other wrappers.
+| Prompt | Expected result |
+| --- | --- |
+| *"What is my tenant ID?"* | Your OrbiAds tenant |
+| *"List my GAM networks"* | Your GAM networks |
+
+> **Note:** Gemini MCP support is evolving. If your version doesn't yet support remote MCP, use Claude or ChatGPT in the meantime.

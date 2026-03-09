@@ -22,6 +22,18 @@
 3. use `scripts/run-mcp.sh stdio` only for local dev or smoke testing;
 4. confirm that the wrapper routes through `shared/agents/orchestrator/` before entering a skill.
 
+## Install Command Matrix
+
+| Platform | Primary install action | Skill exposure model |
+| --- | --- | --- |
+| Claude | `bash ./orbiads/install.sh claude` or direct `claude mcp add orbiads --transport http --url https://orbiads.com/mcp` | Claude Code slash skills from `../../skills/*/SKILL.md` plus thin wrappers from `../../claude-plugin/skills/*.md` |
+| OpenAI / Codex | `bash ./orbiads/install.sh openai` | no Claude-style slash-skill install; the workspace loads `AGENTS.md`, `router.md`, and `openai-codex/skills/*.md` |
+| Gemini | `bash ./orbiads/install.sh gemini` | no Claude-style slash-skill install; Gemini loads `gemini-extension/extension/` or connects directly to the hosted MCP endpoint |
+| ChatGPT | no local CLI install command; create the connector in the ChatGPT UI | no local skill files; tool discovery comes from the public HTTPS `/mcp` endpoint |
+
+- there is no published `npm` package or `npx` installer for this scaffold today;
+- every platform guide below must state the exact command to run, or explicitly say that installation is manual when no command exists.
+
 ## Platform Guides
 
 - `claude.md` — Claude plugin packaging, shared skill exposure, activation flow, and MCP configuration.
@@ -39,4 +51,4 @@
 
 ## Rule
 
-- Each guide must cover authentication, MCP transport, guardrails, and operational troubleshooting.
+- Each guide must cover authentication, MCP transport, guardrails, operational troubleshooting, and the exact install command or manual step.
