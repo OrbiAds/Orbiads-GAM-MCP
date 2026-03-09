@@ -9,16 +9,18 @@
 
 **A skill for Claude, ChatGPT, Gemini, and OpenAI Codex that gives your AI assistant direct access to Google Ad Manager.**
 
-[**→ Get started free at orbiads.com**](https://orbiads.com)
+[**→ Get started free at orbiads.com**](https://orbiads.com) · [**★ Star this repo**](https://github.com/OrbiAds/Orbiads-GAM-MCP)
 
 ---
 
 ## Install the skill
 
-**Claude Code (CLI)** — run in any Claude Code session:
+**Claude Code (CLI)** — one command:
 
-```text
-/install-github OrbiAds/Orbiads-GAM-MCP
+```bash
+./install.sh claude          # current project
+./install.sh claude --global # all projects
+./install.sh skills          # load all 8 skills for this session
 ```
 
 **Claude Desktop** — add to `claude_desktop_config.json`:

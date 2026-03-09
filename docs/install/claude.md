@@ -8,7 +8,7 @@ Three installation modes depending on which Claude product you use:
 | --- | --- |
 | **Claude Desktop** (macOS / Windows) | MCP server in config file |
 | **claude.ai** (web, Pro / Team) | MCP server in Integrations settings |
-| **Claude Code** (CLI) | Plugin installed from GitHub |
+| **Claude Code** (CLI) | `install.sh` script or one-line command |
 
 ## Prerequisites
 
@@ -73,25 +73,28 @@ Claude should confirm your tenant and list your GAM networks.
 
 ## Claude Code (CLI)
 
-Claude Code can load the OrbiAds skill directly from this GitHub repository.
+### Option A — install.sh (recommended)
 
-### Option A — Install from GitHub (recommended)
+Clone this repo, then run:
 
-In any Claude Code session, run:
-
+```bash
+./install.sh claude          # register OrbiAds for the current project
+./install.sh claude --global # register globally across all projects
+./install.sh skills          # load all 8 skills for this session
+./install.sh skills --copy   # install skills permanently in ~/.claude/skills/
 ```
+
+The script runs `claude mcp add orbiads --transport http --url https://orbiads.com/mcp` and prints a smoke-check hint.
+
+### Option B — no clone required
+
+Without cloning, run this in any Claude Code session:
+
+```text
 /install-github OrbiAds/Orbiads-GAM-MCP
 ```
 
-Claude Code reads `.claude-plugin/plugin.json` and `.mcp.json` from the repo root and wires everything automatically.
-
-### Option B — Manual setup
-
-1. Clone or download this repo
-2. Copy `.mcp.json` from the root into your project folder (or your `~/.claude/` directory for global access)
-3. In Claude Code, the OrbiAds tools will be available in any session started in that folder
-
-### Step — Test
+### Test
 
 > *"Connect to my GAM account"*
 
