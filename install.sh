@@ -5,8 +5,9 @@
 #   ./install.sh claude          — register MCP in Claude Code (current project)
 #   ./install.sh claude --global — register MCP globally in Claude Code
 #   ./install.sh openai          — print OpenAI MCP config to copy
-#   ./install.sh gemini          — print Gemini extension install instructions
-#   ./install.sh all             — run all three
+#   ./install.sh gemini          — print Gemini extension install steps
+#   ./install.sh cli             — install orbiads-cli from local cli/ directory
+#   ./install.sh all             — run all commands
 
 set -e
 
@@ -153,6 +154,36 @@ install_skills() {
   echo "  Smoke check:  /orbiads:bootstrap"
 }
 
+# ── cli ──────────────────────────────────────────────────────────────────────
+install_cli() {
+  local cli_dir="$SCRIPT_DIR/cli"
+
+  echo ""
+  echo "Installing OrbiAds CLI..."
+
+  if ! command -v pip &>/dev/null && ! command -v pip3 &>/dev/null; then
+    fail "pip not found. Install Python 3.10+ first: https://python.org"
+  fi
+
+  if [[ ! -d "$cli_dir" ]]; then
+    fail "CLI directory not found at $cli_dir. Ensure the repo is complete."
+  fi
+
+  local pip_cmd="pip"
+  command -v pip3 &>/dev/null && pip_cmd="pip3"
+
+  $pip_cmd install -e "$cli_dir"
+
+  ok "OrbiAds CLI installed from $cli_dir"
+  echo ""
+  echo "  Next step — authenticate:"
+  echo "    orbiads auth login"
+  echo ""
+  echo "  Then try:"
+  echo "    orbiads network info"
+  echo ""
+}
+
 # ── all ───────────────────────────────────────────────────────────────────────
 install_all() {
   install_skills "$@"
@@ -167,6 +198,7 @@ case "${1:-}" in
   claude) install_claude "$@" ;;
   openai) install_openai ;;
   gemini) install_gemini ;;
+  cli)    install_cli ;;
   all)    install_all "$@" ;;
   *)
     echo ""
@@ -179,6 +211,7 @@ case "${1:-}" in
     echo "    claude --global     register MCP globally in Claude Code"
     echo "    openai              print OpenAI MCP config"
     echo "    gemini              print Gemini extension install steps"
+    echo "    cli                 install orbiads-cli from local cli/ directory"
     echo "    all                 run all commands"
     echo ""
     echo "  Quick start (plugin for this session):"

@@ -2,7 +2,8 @@
 
 [![MCP Protocol](https://img.shields.io/badge/MCP-2025--03--26-blue)](https://modelcontextprotocol.io)
 [![GAM API](https://img.shields.io/badge/GAM_API-v202602-orange)](https://developers.google.com/ad-manager/api/rel_notes)
-[![Version](https://img.shields.io/badge/version-1.0.0-green)](./version.json)
+[![Version](https://img.shields.io/badge/version-1.1.0-green)](./version.json)
+[![CLI](https://img.shields.io/badge/CLI-pip_install_orbiads--cli-brightgreen)](./docs/install/cli.md)
 [![Works with Claude](https://img.shields.io/badge/Claude-✓-purple)](./docs/install/claude.md)
 [![Works with ChatGPT](https://img.shields.io/badge/ChatGPT-✓-teal)](./docs/install/chatgpt.md)
 [![Works with Gemini](https://img.shields.io/badge/Gemini-✓-blue)](./docs/install/gemini.md)
@@ -10,6 +11,62 @@
 **A skill for Claude, ChatGPT, Gemini, and OpenAI Codex that gives your AI assistant direct access to Google Ad Manager.**
 
 [**→ Get started free at orbiads.com**](https://orbiads.com) · [**★ Star this repo**](https://github.com/OrbiAds/Orbiads-GAM-MCP)
+
+---
+
+## Two Ways to Connect
+
+OrbiAds offers two integration methods — choose the one that fits your workflow.
+
+### Option A: MCP Server (AI agents)
+
+Connect your AI assistant (Claude, ChatGPT, Gemini) to GAM via the hosted MCP endpoint. Conversational, guided, zero-install.
+
+```
+MCP endpoint: https://orbiads.com/mcp
+```
+
+### Option B: CLI (terminal & scripts)
+
+A lightweight Python CLI for developers, CI/CD pipelines, and headless automation. Same API, same credits, same guardrails.
+
+```bash
+pip install orbiads-cli
+orbiads auth login
+orbiads network info
+```
+
+### Comparison
+
+| Criteria | MCP Server | CLI |
+| --- | --- | --- |
+| Interface | AI agent (Claude, ChatGPT, Gemini) | Terminal / command line |
+| Installation | URL to paste into agent settings | `pip install orbiads-cli` |
+| Authentication | OAuth via browser (automatic) | OAuth Device Flow (code displayed) |
+| Best for | Exploration, conversations, guided workflows | Scripts, CI/CD, headless automation |
+| Output format | Natural language via the agent | JSON or structured table |
+| Credits | Same consumption grid | Same consumption grid |
+| Offline | No — requires internet | No — requires internet |
+| Python required | No | Yes (3.10+) |
+
+> Both methods share the same backend, credits, and safety guardrails.
+
+### CLI Quick Reference
+
+| Command | Description |
+| --- | --- |
+| `orbiads auth login` | Authenticate via Google OAuth Device Flow |
+| `orbiads auth status` | Check authentication status |
+| `orbiads network info` | Show current GAM network details |
+| `orbiads network list` | List accessible GAM networks |
+| `orbiads orders list` | List orders in the network |
+| `orbiads line-items list --order ID` | List line items for an order |
+| `orbiads creatives list` | List creatives |
+| `orbiads inventory ad-units` | List ad units |
+| `orbiads forecast check --ad-unit ID` | Check inventory availability |
+| `orbiads report run --template ID` | Run a delivery report |
+
+> Full command reference: [orbiads.com/docs/cli/commands](https://orbiads.com/docs/cli/commands)
 
 ---
 
@@ -170,6 +227,7 @@ Then start with:
 ```text
 shared/           ← Canonical skills, agents, prompts, workflows, JSON schemas
 docs/             ← Installation guides, safety rules, tool matrix, query library
+cli/              ← OrbiAds CLI package (pip install orbiads-cli)
 claude-plugin/    ← Claude plugin packaging (manifest, system prompt, router)
 openai-codex/     ← AGENTS.md + router for OpenAI/Codex workspaces
 gemini-extension/ ← Gemini extension descriptor + function declarations
