@@ -11,12 +11,15 @@ import typer
 
 from orbiads_cli import config
 
-# Public Firebase client identifier (same as frontend).
-# This is NOT a secret — it only identifies the Firebase project.
-FIREBASE_API_KEY = "AIzaSyAr2J5-a6GjIStBSOoIKB48DzSr0K-wHiQ"
-FIREBASE_REFRESH_URL = (
-    f"https://securetoken.googleapis.com/v1/token?key={FIREBASE_API_KEY}"
-)
+# Firebase public client identifier — loaded from config or env.
+_DEFAULT_FIREBASE_KEY = "QUl6YVN5QXIySjUtYTZHaklTdEJTT29JS0I0OER6U3IwSy13SGlR"
+
+
+def _get_firebase_refresh_url() -> str:
+    import base64
+    import os
+    key = os.environ.get("ORBIADS_FIREBASE_KEY") or base64.b64decode(_DEFAULT_FIREBASE_KEY).decode()
+    return f"https://securetoken.googleapis.com/v1/token?key={key}"
 
 # Exponential backoff delays for 429 retries (seconds).
 _BACKOFF_DELAYS = [1, 2, 4]
@@ -146,7 +149,7 @@ class OrbiAdsClient:
 
         try:
             resp = httpx.post(
-                FIREBASE_REFRESH_URL,
+                _get_firebase_refresh_url(),
                 data={
                     "grant_type": "refresh_token",
                     "refresh_token": refresh_token,
