@@ -215,7 +215,7 @@ Then start with:
 | Property | Value |
 | --- | --- |
 | Endpoint | `https://orbiads.com/mcp` |
-| Transport | `streamable-http` (default) · `sse` · `stdio` (local dev only) |
+| Transport | `streamable-http` (default) · `sse` |
 | Auth | OAuth 2.0 — Google account via OrbiAds |
 | GAM API version | `v202602` |
 | MCP Protocol | `2025-03-26` |
