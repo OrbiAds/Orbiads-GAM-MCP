@@ -1,15 +1,31 @@
 ---
-description: "Run GAM availability forecasts via OrbiAds CLI. Use when the user asks to check impression supply or forecast delivery capacity from the terminal."
+description: "Run GAM availability forecasts via CLI. Use when checking impression supply or delivery capacity."
 ---
 
 # OrbiAds CLI — Forecast
 
-Requires `orbiads` CLI installed (`pip install orbiads-cli`).
-Run commands via the Bash tool with `--json` flag for structured output.
+Run GAM availability forecasts to check whether enough impressions are available for a campaign before committing.
 
-## Instructions
+Requires `orbiads` CLI (`pip install orbiads-cli`). All commands use `--json` for structured output. Use the Bash tool to execute.
 
-See [shared skill](../../shared/skills/cli-forecast/) for complete workflow:
-- [tools.md](../../shared/skills/cli-forecast/tools.md) — Available CLI commands
-- [steps.md](../../shared/skills/cli-forecast/steps.md) — Step-by-step workflow
-- [examples.md](../../shared/skills/cli-forecast/examples.md) — Bash examples with JSON output
+## Commands
+
+- `orbiads reporting run --type forecast --ad-units <ids> --start <date> --end <date> --json` `[free]` — run an availability forecast
+- `orbiads inventory ad-units --json` `[free]` — list all ad units
+- `orbiads inventory ad-units --id <id> --json` `[free]` — get a specific ad unit by ID
+
+## Steps
+
+1. [start] Confirm ad unit IDs with the user. If unknown, run `orbiads inventory ad-units --json` to discover them.
+2. [depends: step 1] Run `orbiads reporting run --type forecast --ad-units <ids> --start <date> --end <date> --json`.
+3. [depends: step 2] Analyze the results: available impressions, matched impressions, possible impressions, contending line items.
+4. [depends: step 3] Summarize findings and recommend whether the impression goal is achievable.
+
+## Abort Conditions
+
+- No ad unit IDs provided or found: route to cli-inventory skill first.
+- No network connected: route to cli-bootstrap skill first.
+
+## Output
+
+Forecast summary: available vs. requested impressions, contention analysis, and a go/no-go recommendation for the campaign goal.

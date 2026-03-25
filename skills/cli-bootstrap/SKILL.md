@@ -1,15 +1,35 @@
 ---
-description: "Verify OrbiAds CLI is installed, authenticated, and connected to a GAM network. Use when the user wants to check setup or connect to GAM from the terminal."
+description: "Verify OrbiAds CLI is installed, authenticated, and connected to a GAM network. Use when setup or connection check is needed."
 ---
 
 # OrbiAds CLI — Bootstrap
 
-Requires `orbiads` CLI installed (`pip install orbiads-cli`).
-Run commands via the Bash tool with `--json` flag for structured output.
+Verify the OrbiAds CLI is installed, authenticated, and connected to the correct GAM network before running any other CLI skill.
 
-## Instructions
+Requires `orbiads` CLI (`pip install orbiads-cli`). All commands use `--json` for structured output. Use the Bash tool to execute.
 
-See [shared skill](../../shared/skills/cli-bootstrap/) for complete workflow:
-- [tools.md](../../shared/skills/cli-bootstrap/tools.md) — Available CLI commands
-- [steps.md](../../shared/skills/cli-bootstrap/steps.md) — Step-by-step workflow
-- [examples.md](../../shared/skills/cli-bootstrap/examples.md) — Bash examples with JSON output
+## Commands
+
+- `orbiads --version` `[free]` — print the installed CLI version
+- `orbiads auth status --json` `[free]` — check authentication state and active tenant
+- `orbiads network info --json` `[free]` — show the currently active GAM network context and tenant configuration
+- `orbiads network list --json` `[free]` — list all accessible GAM networks for this tenant
+- `orbiads network switch --network-code <code> --json` `[free]` — switch to a different GAM network
+
+## Steps
+
+1. [start] Run `orbiads --version` to confirm the CLI is installed.
+2. [depends: step 1] Run `orbiads auth status --json`. If not authenticated, tell user to run `orbiads auth login`.
+3. [depends: step 2] Run `orbiads network info --json` to check active network.
+4. [depends: step 3] If no network or user wants a different one, run `orbiads network list --json` then `orbiads network switch --network-code <code> --json` after user choice.
+5. [depends: step 3] Optionally read `orbiads network info --json` output to confirm tenant configuration is active (naming conventions, delivery defaults, campaign presets). This confirms the backend will apply the user's settings when creating entities in subsequent skills.
+
+## Abort Conditions
+
+- CLI not installed: tell user to run `pip install orbiads-cli`.
+- Auth missing or expired: tell user to run `orbiads auth login`.
+- Multiple networks available and user hasn't chosen: stop and ask user which network to use.
+
+## Output
+
+Active network code, tenant ID, authentication status, and tenant configuration summary. Ready for any subsequent CLI skill.

@@ -154,40 +154,174 @@ install_skills() {
   echo "  Smoke check:  /orbiads:bootstrap"
 }
 
-# ── cli ──────────────────────────────────────────────────────────────────────
-install_cli() {
+# ── cli (pip/pipx install only) ──────────────────────────────────────────────
+_install_cli_binary() {
   local cli_dir="$SCRIPT_DIR/cli"
 
   echo ""
   echo "Installing OrbiAds CLI..."
 
-  if ! command -v pip &>/dev/null && ! command -v pip3 &>/dev/null; then
-    fail "pip not found. Install Python 3.10+ first: https://python.org"
+  # ── Prefer pipx (auto-handles PATH isolation) ──
+  if command -v pipx &>/dev/null; then
+    echo "  Using pipx (recommended)..."
+    pipx install "$cli_dir" --force
+    ok "OrbiAds CLI installed via pipx"
+  else
+    if ! command -v pip &>/dev/null && ! command -v pip3 &>/dev/null; then
+      fail "pip not found. Install Python 3.10+ first: https://python.org"
+    fi
+
+    if [[ ! -d "$cli_dir" ]]; then
+      fail "CLI directory not found at $cli_dir. Ensure the repo is complete."
+    fi
+
+    local pip_cmd="pip"
+    command -v pip3 &>/dev/null && pip_cmd="pip3"
+
+    $pip_cmd install -e "$cli_dir"
+    ok "OrbiAds CLI installed via pip"
   fi
 
-  if [[ ! -d "$cli_dir" ]]; then
-    fail "CLI directory not found at $cli_dir. Ensure the repo is complete."
+  # ── Verify orbiads is on PATH ──
+  echo ""
+  if command -v orbiads &>/dev/null; then
+    ok "orbiads is on PATH — $(orbiads --version 2>/dev/null || echo 'ready')"
+  else
+    warn "orbiads is not on PATH. Fix it with one of these:"
+    echo ""
+    case "$(uname -s)" in
+      MINGW*|MSYS*|CYGWIN*|Windows*)
+        local win_path
+        win_path="$(python -c 'import sysconfig; print(sysconfig.get_path("scripts"))' 2>/dev/null || echo '%APPDATA%\Python\Python3xx\Scripts')"
+        echo "  Windows — add to PATH (run in PowerShell as admin):"
+        echo "    [Environment]::SetEnvironmentVariable('PATH', \$env:PATH + ';$win_path', 'User')"
+        echo ""
+        echo "  Or install with pipx (handles PATH automatically):"
+        echo "    pip install pipx && pipx ensurepath && pipx install $cli_dir"
+        ;;
+      Darwin*)
+        echo "  macOS — add to your shell profile:"
+        echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.zshrc && source ~/.zshrc"
+        echo ""
+        echo "  Or use pipx:  brew install pipx && pipx ensurepath && pipx install $cli_dir"
+        ;;
+      *)
+        echo "  Linux — add to your shell profile:"
+        echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc && source ~/.bashrc"
+        echo ""
+        echo "  Or use pipx:  pip install pipx && pipx ensurepath && pipx install $cli_dir"
+        ;;
+    esac
+    echo ""
+    echo "  Workaround (no PATH change):"
+    echo "    python -m orbiads_cli --version"
+    echo ""
   fi
+}
 
-  local pip_cmd="pip"
-  command -v pip3 &>/dev/null && pip_cmd="pip3"
+# ── cli (full: binary + skills) ──────────────────────────────────────────────
+install_cli() {
+  _install_cli_binary
 
-  $pip_cmd install -e "$cli_dir"
-
-  ok "OrbiAds CLI installed from $cli_dir"
+  # Auto-install CLI skills permanently
   echo ""
-  echo "  Next step — authenticate:"
-  echo "    orbiads auth login"
+  echo "Installing CLI skills..."
+  local skills_dir
+  skills_dir="$(eval echo "~/.claude/skills")"
+  mkdir -p "$skills_dir"
+
+  local count=0
+  for skill_dir in "$SCRIPT_DIR/skills"/cli-*/; do
+    [[ ! -d "$skill_dir" ]] && continue
+    local skill_base
+    skill_base="$(basename "$skill_dir")"
+    local skill_name="orbiads-${skill_base}"
+    local target="$skills_dir/$skill_name"
+    mkdir -p "$target"
+    cp "$skill_dir/SKILL.md" "$target/SKILL.md"
+    count=$((count + 1))
+  done
+  ok "$count CLI skills installed in $skills_dir"
   echo ""
-  echo "  Then try:"
-  echo "    orbiads network info"
+
+  echo "  Ready to go:"
+  echo "    1. orbiads auth login       — authenticate with Google"
+  echo "    2. orbiads network info     — verify your GAM connection"
+  echo "    3. orbiads --help           — see all commands"
+  echo ""
+  echo "  CLI skills available in Claude Code:"
+  for skill_dir in "$SCRIPT_DIR/skills"/cli-*/; do
+    [[ ! -d "$skill_dir" ]] && continue
+    echo "    /orbiads:$(basename "$skill_dir")"
+  done
+  echo ""
+}
+
+# ── claude (MCP + MCP skills + CLI + CLI skills) ─────────────────────────────
+install_claude_full() {
+  local scope=""
+  [[ "${2:-}" == "--global" ]] && scope="--global"
+
+  # 1. Register MCP server
+  install_claude "$@"
+
+  # 2. Install MCP skills permanently
+  echo ""
+  echo "Installing MCP skills..."
+  local skills_dir
+  skills_dir="$(eval echo "~/.claude/skills")"
+  mkdir -p "$skills_dir"
+
+  local count=0
+  for skill_dir in "$SCRIPT_DIR/skills"/*/; do
+    [[ ! -d "$skill_dir" ]] && continue
+    [[ "$(basename "$skill_dir")" == cli-* ]] && continue  # skip CLI skills
+    local skill_name="orbiads-$(basename "$skill_dir")"
+    local target="$skills_dir/$skill_name"
+    mkdir -p "$target"
+    cp "$skill_dir/SKILL.md" "$target/SKILL.md"
+    count=$((count + 1))
+  done
+  ok "$count MCP skills installed in $skills_dir"
+
+  # 3. Install CLI binary + CLI skills
+  _install_cli_binary
+
+  echo ""
+  echo "Installing CLI skills..."
+  local cli_count=0
+  for skill_dir in "$SCRIPT_DIR/skills"/cli-*/; do
+    [[ ! -d "$skill_dir" ]] && continue
+    local skill_name="orbiads-$(basename "$skill_dir")"
+    local target="$skills_dir/$skill_name"
+    mkdir -p "$target"
+    cp "$skill_dir/SKILL.md" "$target/SKILL.md"
+    cli_count=$((cli_count + 1))
+  done
+  ok "$cli_count CLI skills installed in $skills_dir"
+
+  echo ""
+  echo "  ━━━ Installation complete ━━━"
+  echo "  MCP server : registered at $MCP_URL"
+  echo "  MCP skills : $count skills (guided AI workflows)"
+  echo "  CLI binary : orbiads $(orbiads --version 2>/dev/null || echo '1.0.x')"
+  echo "  CLI skills : $cli_count skills (lightweight bash commands)"
+  echo ""
+  echo "  All skills available in Claude Code:"
+  for skill_dir in "$SCRIPT_DIR/skills"/*/; do
+    [[ ! -d "$skill_dir" ]] && continue
+    echo "    /orbiads:$(basename "$skill_dir")"
+  done
+  echo ""
+  echo "  Smoke check:"
+  echo "    > Confirm my active GAM tenant and network — read-only, no writes."
   echo ""
 }
 
 # ── all ───────────────────────────────────────────────────────────────────────
 install_all() {
-  install_skills "$@"
-  install_claude "$@"
+  install_claude_full "$@"
+  echo ""
   install_openai
   install_gemini
 }
@@ -195,7 +329,7 @@ install_all() {
 # ── dispatch ──────────────────────────────────────────────────────────────────
 case "${1:-}" in
   skills) install_skills "$@" ;;
-  claude) install_claude "$@" ;;
+  claude) install_claude_full "$@" ;;
   openai) install_openai ;;
   gemini) install_gemini ;;
   cli)    install_cli ;;
@@ -205,14 +339,14 @@ case "${1:-}" in
     echo "Usage: ./install.sh <command> [options]"
     echo ""
     echo "  Commands:"
-    echo "    skills              print the claude --plugin-dir command (session)"
-    echo "    skills --copy       copy skills permanently into ~/.claude/skills/"
-    echo "    claude              register MCP in Claude Code (current project)"
-    echo "    claude --global     register MCP globally in Claude Code"
+    echo "    claude              full setup: MCP + skills + CLI (recommended)"
+    echo "    claude --global     same, registered globally across all projects"
+    echo "    cli                 install CLI binary + CLI skills"
     echo "    openai              print OpenAI MCP config"
     echo "    gemini              print Gemini extension install steps"
-    echo "    cli                 install orbiads-cli from local cli/ directory"
-    echo "    all                 run all commands"
+    echo "    skills              print the claude --plugin-dir command (session)"
+    echo "    skills --copy       copy skills permanently into ~/.claude/skills/"
+    echo "    all                 claude + openai + gemini"
     echo ""
     echo "  Quick start (plugin for this session):"
     echo "    claude --plugin-dir \"$SCRIPT_DIR\""
