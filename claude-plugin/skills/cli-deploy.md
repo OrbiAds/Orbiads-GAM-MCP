@@ -2,6 +2,7 @@
 
 Use the Bash tool to run `orbiads` commands. Always use `--json` flag for structured output.
 
+- load `../../shared/agents/cli-deploy/` for routing and memory;
 - execute `../../shared/skills/cli-deploy/` as the business source of truth;
 - use this skill for campaign deployment, monitoring, and reporting.
 

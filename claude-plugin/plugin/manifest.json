@@ -21,13 +21,21 @@
     "installGuide": "../docs/install/claude.md"
   },
   "skills": [
-    "bootstrap",
-    "inventory-ad-units",
-    "availability-forecast",
     "advertiser-order-line-items",
-    "placements-targeting",
+    "availability-forecast",
+    "bootstrap",
+    "cli-bootstrap",
+    "cli-creatives",
+    "cli-deploy",
+    "cli-forecast",
+    "cli-inventory",
+    "cli-orders",
+    "cli-qa",
+    "cli-targeting",
+    "deploy-reporting",
+    "inventory-ad-units",
     "native-image",
-    "qa-preview",
-    "deploy-reporting"
+    "placements-targeting",
+    "qa-preview"
   ]
 }

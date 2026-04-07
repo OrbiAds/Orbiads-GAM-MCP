@@ -2,6 +2,7 @@
 
 Use the Bash tool to run `orbiads` commands. Always use `--json` flag for structured output.
 
+- load `../../shared/agents/cli-bootstrap/` for routing and memory;
 - execute `../../shared/skills/cli-bootstrap/` as the business source of truth;
 - use this skill when `tenantId` or `networkCode` is still unconfirmed.
 

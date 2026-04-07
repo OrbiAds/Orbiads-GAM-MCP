@@ -2,6 +2,7 @@
 
 Use the Bash tool to run `orbiads` commands. Always use `--json` flag for structured output.
 
+- load `../../shared/agents/cli-inventory/` for routing and memory;
 - execute `../../shared/skills/cli-inventory/` as the business source of truth;
 - use this skill for inventory discovery, ad-unit audit, or targeting key lookup.
 

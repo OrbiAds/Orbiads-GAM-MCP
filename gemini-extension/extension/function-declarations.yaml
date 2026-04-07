@@ -137,6 +137,123 @@ functions:
         orderId:
           type: string
 
+  - name: runCliBootstrapSkill
+    description: Enter the CLI bootstrap skill for auth and network verification.
+    inputSchema:
+      type: object
+      properties:
+        networkCode:
+          type: string
+
+  - name: runCliCreativesSkill
+    description: Enter the CLI creatives skill for listing, upload, and management.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+
+  - name: runCliDeploySkill
+    description: Enter the CLI deploy skill for campaign deployment and reporting.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        campaignId:
+          type: string
+
+  - name: runCliForecastSkill
+    description: Enter the CLI forecast skill to check supply availability.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        adUnitIds:
+          type: array
+          items:
+            type: string
+
+  - name: runCliInventorySkill
+    description: Enter the CLI inventory skill for ad-unit discovery and audit.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        search:
+          type: string
+
+  - name: runCliOrdersSkill
+    description: Enter the CLI orders skill for advertiser, order, and line-item management.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        advertiserId:
+          type: string
+        orderId:
+          type: string
+
+  - name: runCliQaSkill
+    description: Enter the CLI QA skill for compliance checks and dry-run validation.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        campaignId:
+          type: string
+
+  - name: runCliTargetingSkill
+    description: Enter the CLI targeting skill for placement and targeting configuration.
+    inputSchema:
+      type: object
+      required:
+        - tenantId
+        - networkCode
+      properties:
+        tenantId:
+          type: string
+        networkCode:
+          type: string
+        adUnitIds:
+          type: array
+          items:
+            type: string
+
   - name: runDeployReportingSkill
     description: Enter the shared deploy and reporting skill.
     inputSchema:

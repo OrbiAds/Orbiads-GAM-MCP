@@ -2,6 +2,7 @@
 
 Use the Bash tool to run `orbiads` commands. Always use `--json` flag for structured output.
 
+- load `../../shared/agents/cli-orders/` for routing and memory;
 - execute `../../shared/skills/cli-orders/` as the business source of truth;
 - use this skill for advertiser, order, and line-item management.
 
