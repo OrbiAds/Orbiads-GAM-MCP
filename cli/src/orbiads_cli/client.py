@@ -11,14 +11,18 @@ import typer
 
 from orbiads_cli import config
 
-# Firebase public client identifier — loaded from config or env.
-_DEFAULT_FIREBASE_KEY = "QUl6YVN5QXIySjUtYTZHaklTdEJTT29JS0I0OER6U3IwSy13SGlR"
-
-
+# Firebase public client identifier — must be supplied via ORBIADS_FIREBASE_KEY
+# env var. Documented in orbiads/cli/README.md ("Configuration"). No default
+# baked into the source: a default key in a public mirror is an unintentional
+# credential leak, even when base64-encoded.
 def _get_firebase_refresh_url() -> str:
-    import base64
     import os
-    key = os.environ.get("ORBIADS_FIREBASE_KEY") or base64.b64decode(_DEFAULT_FIREBASE_KEY).decode()
+    key = os.environ.get("ORBIADS_FIREBASE_KEY")
+    if not key:
+        raise typer.Exit(
+            "ORBIADS_FIREBASE_KEY env var not set. See orbiads/cli/README.md "
+            "for setup instructions."
+        )
     return f"https://securetoken.googleapis.com/v1/token?key={key}"
 
 # Exponential backoff delays for 429 retries (seconds).

@@ -9,7 +9,10 @@
 #   ./install.sh cli             — install orbiads-cli from local cli/ directory
 #   ./install.sh all             — run all commands
 
-set -e
+set -euo pipefail
+# Audit 2026-04-27 phase 4 — aligned with other critical scripts (release.sh,
+# us-done.sh, setup-budget-alert.sh) : -u catches unset vars, -o pipefail
+# catches failures in piped commands.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MCP_URL="https://orbiads.com/mcp"
