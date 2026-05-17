@@ -140,27 +140,38 @@ class TestOrdersListCommand:
 
 
 class TestCreativesListCommand:
+    # Audit F0-3: `creatives list` now requires --advertiser-id and hits the
+    # real advertiser-scoped endpoint. The old `/api/gam/creatives` collection
+    # route never existed (always 404'd).
 
-    def test_creatives_list_with_type_filter(self, authenticated_config):
+    def test_creatives_list_for_advertiser(self, authenticated_config):
         client = _mock_client(get_return=[
             {"id": "cr1", "name": "Banner", "type": "image", "size": "300x250", "status": "active"},
         ])
         with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
-            result = runner.invoke(app, ["creatives", "list", "--type", "image"])
+            result = runner.invoke(app, ["creatives", "list", "--advertiser-id", "555"])
         assert result.exit_code == 0
         client.get.assert_called_once_with(
-            "/api/gam/creatives", params={"limit": 50, "type": "image"}
+            "/api/gam/advertisers/555/creatives", params={"limit": 50}
         )
         assert "Banner" in result.output
 
-    def test_creatives_list_default(self, authenticated_config):
+    def test_creatives_list_requires_advertiser_id(self, authenticated_config):
         client = _mock_client(get_return=[])
         with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
             result = runner.invoke(app, ["creatives", "list"])
-        assert result.exit_code == 0
-        client.get.assert_called_once_with(
-            "/api/gam/creatives", params={"limit": 50}
-        )
+        # Typer auto-generates a usage error (exit code 2) for the missing
+        # required option — no broken API call is issued.
+        assert result.exit_code == 2
+        client.get.assert_not_called()
+
+    def test_creatives_upload_not_supported(self, authenticated_config):
+        client = _mock_client(get_return=None)
+        with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
+            result = runner.invoke(app, ["creatives", "upload"])
+        assert result.exit_code == 1
+        assert "not supported" in result.output
+        client.post.assert_not_called()
 
 
 # ===========================================================================
