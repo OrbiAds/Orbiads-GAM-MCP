@@ -1,0 +1,2212 @@
+{
+  "total_tools": 196,
+  "counts": {
+    "FULL": 188,
+    "EXEMPT": 8
+  },
+  "per_area": {
+    "advertisers": {
+      "FULL": 10
+    },
+    "audiences": {
+      "FULL": 5
+    },
+    "audit": {
+      "FULL": 1
+    },
+    "auth": {
+      "FULL": 6
+    },
+    "billing": {
+      "FULL": 2
+    },
+    "campaign_ops": {
+      "FULL": 7,
+      "EXEMPT": 3
+    },
+    "creative_qa": {
+      "FULL": 7
+    },
+    "creatives": {
+      "FULL": 39
+    },
+    "inventory": {
+      "FULL": 10
+    },
+    "jobs": {
+      "FULL": 3
+    },
+    "line_items": {
+      "FULL": 15
+    },
+    "network": {
+      "FULL": 4
+    },
+    "orders": {
+      "FULL": 13
+    },
+    "placements": {
+      "FULL": 4
+    },
+    "pql": {
+      "FULL": 1
+    },
+    "preview": {
+      "FULL": 3
+    },
+    "pricing": {
+      "EXEMPT": 5
+    },
+    "reporting": {
+      "FULL": 31
+    },
+    "settings": {
+      "FULL": 9
+    },
+    "targeting": {
+      "FULL": 18
+    }
+  },
+  "cli_commands_detected": [
+    "advertisers agencies create",
+    "advertisers agencies list",
+    "advertisers agencies update",
+    "advertisers create",
+    "advertisers find",
+    "advertisers find-or-create",
+    "advertisers get",
+    "advertisers list",
+    "advertisers update",
+    "audiences action",
+    "audiences create",
+    "audiences get",
+    "audiences list",
+    "audiences update",
+    "audit log",
+    "auth login",
+    "auth logout",
+    "auth status",
+    "billing balance",
+    "billing transactions",
+    "campaigns add-line-items",
+    "campaigns archive",
+    "campaigns attach-creatives",
+    "campaigns deploy",
+    "campaigns get",
+    "campaigns list",
+    "campaigns pause",
+    "campaigns recover",
+    "campaigns update",
+    "config set",
+    "config show",
+    "contacts create",
+    "contacts list",
+    "contacts update",
+    "creative-qa audit-order-tracking",
+    "creative-qa audit-tracking",
+    "creative-qa pre-archive-check",
+    "creative-qa scan-compliance",
+    "creative-qa validate-ssl",
+    "creative-qa validate-ssl-batch",
+    "creative-qa validate-tag",
+    "creative-templates ensure-classic-native",
+    "creative-templates get",
+    "creative-templates list",
+    "creatives archive",
+    "creatives compress-image",
+    "creatives duplicate",
+    "creatives get",
+    "creatives list",
+    "creatives list-by-line-item",
+    "creatives list-by-network",
+    "creatives native-style-previews",
+    "creatives preview-url",
+    "creatives update",
+    "creatives upload",
+    "creatives upload-audio",
+    "creatives upload-companion",
+    "creatives upload-html5",
+    "creatives upload-images",
+    "creatives upload-native-classic",
+    "creatives upload-third-party",
+    "creatives upload-vast-redirect",
+    "creatives upload-video",
+    "custom-targeting-values action",
+    "custom-targeting-values create",
+    "custom-targeting-values list",
+    "custom-targeting-values update",
+    "inventory ad-units",
+    "inventory ad-units-by-ids",
+    "inventory ads-json",
+    "inventory archive-ad-unit",
+    "inventory archive-inactive",
+    "inventory audit",
+    "inventory blueprint-generate",
+    "inventory blueprint-push",
+    "inventory countries",
+    "inventory create-ad-units",
+    "inventory create-key",
+    "inventory delete-key",
+    "inventory device-categories",
+    "inventory forecast",
+    "inventory keys",
+    "inventory languages",
+    "inventory list-inactive",
+    "inventory placement-archive",
+    "inventory placement-create",
+    "inventory placement-update",
+    "inventory placements",
+    "inventory search-ad-units",
+    "inventory search-custom-targeting",
+    "inventory sizes",
+    "inventory update-ad-unit",
+    "inventory update-key",
+    "inventory validate-fluid",
+    "jobs duplicate",
+    "jobs get",
+    "jobs list",
+    "licas batch",
+    "licas deactivate",
+    "licas delete",
+    "licas list-by-line-item",
+    "licas update",
+    "line-items activate",
+    "line-items approve",
+    "line-items archive",
+    "line-items create-adexchange",
+    "line-items create-open-bidding",
+    "line-items create-preferred-deal",
+    "line-items duplicate",
+    "line-items get",
+    "line-items list-by-order",
+    "line-items pause",
+    "line-items private-deals",
+    "line-items update",
+    "line-items update-targeting",
+    "line-items verify",
+    "native-styles archive",
+    "native-styles duplicate",
+    "native-styles get",
+    "native-styles list",
+    "native-styles update",
+    "network info",
+    "network list",
+    "network switch",
+    "network update",
+    "orders approve",
+    "orders archive",
+    "orders create",
+    "orders get",
+    "orders list",
+    "orders list-delivering",
+    "orders update",
+    "pql query",
+    "preview campaign",
+    "preview coverage",
+    "preview share",
+    "reporting alerts-budget",
+    "reporting alerts-underdelivery",
+    "reporting billing-report",
+    "reporting date-ranges",
+    "reporting delivery-report",
+    "reporting delivery-status",
+    "reporting dimensions",
+    "reporting executions",
+    "reporting export",
+    "reporting export-csv",
+    "reporting forecast prospective",
+    "reporting forecast standalone",
+    "reporting forecast traffic",
+    "reporting forecast-line-item",
+    "reporting ga4 dimensions",
+    "reporting ga4 metrics",
+    "reporting ga4 run",
+    "reporting gam-reports create-from-template",
+    "reporting gam-reports delete",
+    "reporting gam-reports get",
+    "reporting gam-reports list",
+    "reporting gam-reports update-from-template",
+    "reporting inventory",
+    "reporting metrics",
+    "reporting run",
+    "reporting templates delete",
+    "reporting templates duplicate",
+    "reporting templates list",
+    "reporting templates run",
+    "reporting templates save",
+    "reporting templates update",
+    "roles list",
+    "settings delivery-defaults get",
+    "settings delivery-defaults set",
+    "settings general get",
+    "settings general set",
+    "settings naming get",
+    "settings naming set",
+    "settings presets create",
+    "settings presets delete",
+    "settings presets list",
+    "users list"
+  ],
+  "rows": [
+    {
+      "tool": "create_advertiser",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "POST /api/gam/advertisers",
+      "cli": "advertisers create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_agency",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "POST /api/gam/agencies",
+      "cli": "advertisers agencies create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "find_advertiser",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "GET /api/gam/advertisers/search",
+      "cli": "advertisers find",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "find_or_create_advertiser",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "POST /api/gam/advertisers/find-or-create",
+      "cli": "advertisers find-or-create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "find_or_create_order",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "POST /api/gam/orders",
+      "cli": "orders create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_advertiser",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "GET /api/gam/advertisers/{advertiser_id}",
+      "cli": "advertisers get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_agencies",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "GET /api/gam/agencies",
+      "cli": "advertisers agencies list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_advertisers",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "GET /api/gam/advertisers",
+      "cli": "advertisers list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_advertiser",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "PATCH /api/gam/advertisers/{advertiser_id}",
+      "cli": "advertisers update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_agency",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "PATCH /api/gam/agencies/{agency_id}",
+      "cli": "advertisers agencies update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_audience_segment",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "POST /api/gam/audience-segments",
+      "cli": "audiences create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_audience_segment",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "GET /api/gam/audience-segments/{segment_id}",
+      "cli": "audiences get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_audience_segments",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "GET /api/gam/audience-segments",
+      "cli": "audiences list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "perform_audience_segment_action",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "POST /api/gam/audience-segments/action",
+      "cli": "audiences action",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_audience_segment",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "PATCH /api/gam/audience-segments/{segment_id}",
+      "cli": "audiences update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "query_audit_log",
+      "module": "audit",
+      "area": "audit",
+      "rest": "GET /api/settings/audit/",
+      "cli": "audit log",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "check_credentials",
+      "module": "auth",
+      "area": "auth",
+      "rest": "GET /api/auth/gam/connection-state",
+      "cli": "auth status",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "disconnect_gam",
+      "module": "auth",
+      "area": "auth",
+      "rest": "DELETE /api/auth/gam/revoke",
+      "cli": "auth logout",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_my_tenant_id",
+      "module": "auth",
+      "area": "auth",
+      "rest": "GET /api/me",
+      "cli": "auth status",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "initiate_gam_auth",
+      "module": "auth",
+      "area": "auth",
+      "rest": "POST /api/auth/gam/device-code",
+      "cli": "auth login",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "poll_auth_status",
+      "module": "auth",
+      "area": "auth",
+      "rest": "GET /api/auth/gam/device-token-status",
+      "cli": "auth login",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "select_gam_network",
+      "module": "auth",
+      "area": "auth",
+      "rest": "POST /api/auth/gam/select-network",
+      "cli": "network switch",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_credit_balance",
+      "module": "billing",
+      "area": "billing",
+      "rest": "GET /api/billing",
+      "cli": "billing balance",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_transactions",
+      "module": "billing",
+      "area": "billing",
+      "rest": "GET /api/billing/transactions",
+      "cli": "billing transactions",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/archive",
+      "cli": "campaigns archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_display_campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_licas",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "cli": "campaigns attach-creatives",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_line_items_batch",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/line-items",
+      "cli": "campaigns add-line-items",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_native_style",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "deploy_campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/deploy",
+      "cli": "campaigns deploy",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "ensure_template",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "pause_campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/pause",
+      "cli": "campaigns pause",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "rollback_resources",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/{id}/recover",
+      "cli": "campaigns recover",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "PATCH /api/campaigns/{campaign_id}",
+      "cli": "campaigns update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "audit_creative_tracking",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "GET /api/gam/creative-qa/creatives/{creative_id}/tracking",
+      "cli": "creative-qa audit-tracking",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "audit_order_tracking",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "GET /api/gam/creative-qa/orders/{order_id}/tracking",
+      "cli": "creative-qa audit-order-tracking",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "pre_archive_check",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "POST /api/gam/creative-qa/pre-archive-check",
+      "cli": "creative-qa pre-archive-check",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "scan_creative_compliance",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "POST /api/gam/creative-qa/scan-compliance",
+      "cli": "creative-qa scan-compliance",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "validate_creative_ssl",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "GET /api/gam/creative-qa/creatives/{creative_id}/ssl",
+      "cli": "creative-qa validate-ssl",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "validate_creative_ssl_batch",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "POST /api/gam/creative-qa/validate-ssl-batch",
+      "cli": "creative-qa validate-ssl-batch",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "validate_tag_snippet",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "POST /api/gam/creative-qa/validate-tag",
+      "cli": "creative-qa validate-tag",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/creatives/{creative_id}/archive",
+      "cli": "creatives archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_native_style",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/native-styles/{style_id}/archive",
+      "cli": "native-styles archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "associate_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "cli": "campaigns attach-creatives",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "bulk_associate_creatives",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "cli": "campaigns attach-creatives",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "bulk_upload_creatives",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-multi",
+      "cli": "creatives upload-images",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "compress_image_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/compress-image",
+      "cli": "creatives compress-image",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_audio_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-audio",
+      "cli": "creatives upload-audio",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_classic_native_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-native-classic",
+      "cli": "creatives upload-native-classic",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_companion_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-companion",
+      "cli": "creatives upload-companion",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_html5_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-html5",
+      "cli": "creatives upload-html5",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_html5_creative_from_files",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-html5",
+      "cli": "creatives upload-html5",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_image_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-images",
+      "cli": "creatives upload-images",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_third_party_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-third-party",
+      "cli": "creatives upload-third-party",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_vast_redirect_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-vast-redirect",
+      "cli": "creatives upload-vast-redirect",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_video_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-video",
+      "cli": "creatives upload-video",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "deactivate_lica",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/licas/{line_item_id}/{creative_id}/deactivate",
+      "cli": "licas deactivate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "delete_licas",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/licas/delete",
+      "cli": "licas delete",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "duplicate_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/creatives/{creative_id}/duplicate",
+      "cli": "creatives duplicate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "duplicate_native_style",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/native-styles/{style_id}/duplicate",
+      "cli": "native-styles duplicate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "ensure_classic_native_template",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/creative-templates/classic-native/ensure",
+      "cli": "creative-templates ensure-classic-native",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_campaign_preview_links",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/{job_id}/gam-preview-link",
+      "cli": "preview campaign",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creatives/{creative_id}",
+      "cli": "creatives get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_creative_preview_url",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creatives/{creative_id}/preview-url",
+      "cli": "creatives preview-url",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_creative_template",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creative-templates/{template_id}",
+      "cli": "creative-templates get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_licas_batch",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/gam/licas/batch",
+      "cli": "licas batch",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_licas_by_line_item",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/line-items/{line_item_id}/licas",
+      "cli": "licas list-by-line-item",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_native_style",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/native-styles/{style_id}",
+      "cli": "native-styles get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_native_style_preview_urls",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creatives/{creative_id}/native-style-previews",
+      "cli": "creatives native-style-previews",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_creative_templates",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creative-templates",
+      "cli": "creative-templates list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_creatives_by_advertiser",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/advertisers/{advertiser_id}/creatives",
+      "cli": "creatives list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_creatives_by_line_item",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/line-items/{line_item_id}/creatives",
+      "cli": "creatives list-by-line-item",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_creatives_by_network",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creatives",
+      "cli": "creatives list-by-network",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_native_styles",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/native-styles",
+      "cli": "native-styles list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "PATCH /api/gam/creatives/{creative_id}",
+      "cli": "creatives update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_lica",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "PATCH /api/gam/licas/{line_item_id}/{creative_id}",
+      "cli": "licas update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_native_style",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "PATCH /api/gam/native-styles/{style_id}",
+      "cli": "native-styles update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "upload_and_associate_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-single",
+      "cli": "creatives upload",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "upload_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-single",
+      "cli": "creatives upload",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "upload_html5_zip_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-html5",
+      "cli": "creatives upload-html5",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_inactive_ad_units",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/ad-units/archive-inactive",
+      "cli": "inventory archive-inactive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "audit_inventory",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/inventory/audit",
+      "cli": "inventory audit",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_ad_units_batch",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/ad-units/save-adunits",
+      "cli": "inventory create-ad-units",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "find_inactive_ad_units",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "GET /api/gam/ad-units/inactive",
+      "cli": "inventory list-inactive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "generate_ads_json",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "GET /api/gam/inventory/manifest/ads.json",
+      "cli": "inventory ads-json",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "generate_inventory_blueprint",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/blueprint/generate",
+      "cli": "inventory blueprint-generate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_ad_unit_tree",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "GET /api/gam/ad-units",
+      "cli": "inventory ad-units",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_ad_units_by_ids",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/ad-units/by-ids",
+      "cli": "inventory ad-units-by-ids",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_ad_unit_sizes",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "GET /api/gam/ad-units/sizes",
+      "cli": "inventory sizes",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "push_inventory_blueprint",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "POST /api/gam/blueprint/push",
+      "cli": "inventory blueprint-push",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "duplicate_job",
+      "module": "jobs",
+      "area": "jobs",
+      "rest": "POST /api/jobs/{job_id}/duplicate",
+      "cli": "jobs duplicate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_job",
+      "module": "jobs",
+      "area": "jobs",
+      "rest": "GET /api/jobs/{job_id}",
+      "cli": "jobs get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_jobs",
+      "module": "jobs",
+      "area": "jobs",
+      "rest": "GET /api/jobs/",
+      "cli": "jobs list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "activate_line_items",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/jobs/{job_id}/line-items/activate",
+      "cli": "line-items activate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "approve_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/line-items/{line_item_id}/approve",
+      "cli": "line-items approve",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/jobs/{job_id}/line-items/archive",
+      "cli": "line-items archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_adexchange_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/line-items/adexchange",
+      "cli": "line-items create-adexchange",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_line_items",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/campaigns/{id}/line-items",
+      "cli": "campaigns add-line-items",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_open_bidding_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/line-items/open-bidding",
+      "cli": "line-items create-open-bidding",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_preferred_deal_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/line-items/preferred-deal",
+      "cli": "line-items create-preferred-deal",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "duplicate_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/line-items/{line_item_id}/duplicate",
+      "cli": "line-items duplicate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "GET /api/gam/line-items/{line_item_id}",
+      "cli": "line-items get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_line_items_by_order",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "GET /api/gam/orders/{order_id}/line-items",
+      "cli": "line-items list-by-order",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_private_deals",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "GET /api/gam/private-deals",
+      "cli": "line-items private-deals",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "pause_line_items",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/jobs/{job_id}/line-items/pause",
+      "cli": "line-items pause",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "POST /api/gam/jobs/{job_id}/line-items/{line_item_id}/update",
+      "cli": "line-items update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_line_item_targeting",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "PATCH /api/campaigns/{id}/line-items/{li}/targeting",
+      "cli": "line-items update-targeting",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "verify_line_item_setup",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "GET /api/gam/jobs/{job_id}/verify",
+      "cli": "line-items verify",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_network_info",
+      "module": "network",
+      "area": "network",
+      "rest": "GET /api/gam/network-info",
+      "cli": "network info",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_accessible_networks",
+      "module": "network",
+      "area": "network",
+      "rest": "GET /api/gam/accessible-networks",
+      "cli": "network list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "switch_network",
+      "module": "network",
+      "area": "network",
+      "rest": "POST /api/gam/switch-network",
+      "cli": "network switch",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_network",
+      "module": "network",
+      "area": "network",
+      "rest": "PATCH /api/gam/network",
+      "cli": "network update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "approve_order",
+      "module": "orders",
+      "area": "orders",
+      "rest": "POST /api/gam/orders/{order_id}/approve",
+      "cli": "orders approve",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_order",
+      "module": "orders",
+      "area": "orders",
+      "rest": "POST /api/gam/orders/{order_id}/archive",
+      "cli": "orders archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_contact",
+      "module": "orders",
+      "area": "orders",
+      "rest": "POST /api/gam/contacts",
+      "cli": "contacts create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_order",
+      "module": "orders",
+      "area": "orders",
+      "rest": "POST /api/gam/orders",
+      "cli": "orders create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_contacts",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/contacts",
+      "cli": "contacts list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_order",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/orders/{order_id}",
+      "cli": "orders get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_delivering_orders",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/orders?status=delivering",
+      "cli": "orders list-delivering",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_orders",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/orders",
+      "cli": "orders list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_roles",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/roles",
+      "cli": "roles list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_users",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/users",
+      "cli": "users list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_contact",
+      "module": "orders",
+      "area": "orders",
+      "rest": "PATCH /api/gam/contacts/{contact_id}",
+      "cli": "contacts update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_order",
+      "module": "orders",
+      "area": "orders",
+      "rest": "PATCH /api/gam/orders/{order_id}",
+      "cli": "orders update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "verify_order_setup",
+      "module": "orders",
+      "area": "orders",
+      "rest": "GET /api/gam/jobs/{job_id}/verify",
+      "cli": "line-items verify",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_placement",
+      "module": "placements",
+      "area": "placements",
+      "rest": "DELETE /api/gam/placements/{placement_id}",
+      "cli": "inventory placement-archive",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_placement",
+      "module": "placements",
+      "area": "placements",
+      "rest": "POST /api/gam/placements",
+      "cli": "inventory placement-create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_placements",
+      "module": "placements",
+      "area": "placements",
+      "rest": "GET /api/gam/placements",
+      "cli": "inventory placements",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_placement",
+      "module": "placements",
+      "area": "placements",
+      "rest": "PATCH /api/gam/placements/{placement_id}",
+      "cli": "inventory placement-update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "run_pql_query",
+      "module": "pql",
+      "area": "pql",
+      "rest": "POST /api/gam/pql",
+      "cli": "pql query",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "check_creative_coverage",
+      "module": "preview",
+      "area": "preview",
+      "rest": "POST /api/gam/coverage",
+      "cli": "preview coverage",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_campaign_preview_urls",
+      "module": "preview",
+      "area": "preview",
+      "rest": "POST /api/creatives/{job_id}/gam-preview-link",
+      "cli": "preview campaign",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_preview_urls",
+      "module": "preview",
+      "area": "preview",
+      "rest": "POST /api/preview/share",
+      "cli": "preview share",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_premium_rate",
+      "module": "pricing",
+      "area": "pricing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_premium_rate",
+      "module": "pricing",
+      "area": "pricing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_premium_rates",
+      "module": "pricing",
+      "area": "pricing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_rate_cards",
+      "module": "pricing",
+      "area": "pricing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "GAM RateCardService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_premium_rate",
+      "module": "pricing",
+      "area": "pricing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "check_budget_alerts",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/campaigns/{id}/health-alerts",
+      "cli": "reporting alerts-budget",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "check_delivery_status",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/jobs/{job_id}/delivery-status",
+      "cli": "reporting delivery-status",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "check_underdelivery_alerts",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/campaigns/alerts",
+      "cli": "reporting alerts-underdelivery",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_gam_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/templates/{template_id}/publish-to-gam",
+      "cli": "reporting gam-reports create-from-template",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "delete_gam_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "DELETE /api/gam/reports/gam-reports/{gam_report_id}",
+      "cli": "reporting gam-reports delete",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "delete_report_template",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "DELETE /api/gam/reports/templates/{template_id}",
+      "cli": "reporting templates delete",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "duplicate_report_template",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/templates/{template_id}/clone",
+      "cli": "reporting templates duplicate",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "export_report_csv",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/{execution_id}/export.csv",
+      "cli": "reporting export-csv",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "fetch_delivery_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/jobs/{job_id}/report",
+      "cli": "reporting delivery-report",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "fetch_inventory_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/inventory",
+      "cli": "reporting inventory",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "generate_billing_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/billing",
+      "cli": "reporting billing-report",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_delivery_forecast_by_line_item",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/jobs/{job_id}/forecast",
+      "cli": "reporting forecast-line-item",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_ga_dimensions",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/ga4/dimensions",
+      "cli": "reporting ga4 dimensions",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_ga_metrics",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/ga4/metrics",
+      "cli": "reporting ga4 metrics",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_gam_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/gam-reports/{gam_report_id}",
+      "cli": "reporting gam-reports get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_prospective_delivery_forecast",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/forecast/prospective",
+      "cli": "reporting forecast prospective",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_report_date_ranges",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/available-date-ranges",
+      "cli": "reporting date-ranges",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_report_dimensions",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/available-dimensions",
+      "cli": "reporting dimensions",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_report_metrics",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/available-metrics",
+      "cli": "reporting metrics",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_report_result",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/executions",
+      "cli": "reporting executions",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_standalone_forecast",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/forecast/standalone",
+      "cli": "reporting forecast standalone",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_traffic_data",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/forecast/traffic",
+      "cli": "reporting forecast traffic",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_gam_reports",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/gam-reports",
+      "cli": "reporting gam-reports list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_report_templates",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "GET /api/gam/reports/templates",
+      "cli": "reporting templates list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "run_custom_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/custom",
+      "cli": "reporting run",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "run_ga_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/ga4/run",
+      "cli": "reporting ga4 run",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "run_gam_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/gam-reports/{gam_report_id}/run",
+      "cli": "reporting export",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "run_report_from_template",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/templates/{template_id}/run",
+      "cli": "reporting templates run",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "save_report_template",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/templates",
+      "cli": "reporting templates save",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_gam_report",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reports/templates/{template_id}/update-in-gam",
+      "cli": "reporting gam-reports update-from-template",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_report_template",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "PUT /api/gam/reports/templates/{template_id}",
+      "cli": "reporting templates update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_preset",
+      "module": "settings",
+      "area": "settings",
+      "rest": "POST /api/settings/presets",
+      "cli": "settings presets create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "delete_preset",
+      "module": "settings",
+      "area": "settings",
+      "rest": "DELETE /api/settings/presets/{preset_id}",
+      "cli": "settings presets delete",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_delivery_defaults",
+      "module": "settings",
+      "area": "settings",
+      "rest": "GET /api/settings/delivery-defaults",
+      "cli": "settings delivery-defaults get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_naming_conventions",
+      "module": "settings",
+      "area": "settings",
+      "rest": "GET /api/settings/naming",
+      "cli": "settings naming get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_tenant_settings",
+      "module": "settings",
+      "area": "settings",
+      "rest": "GET /api/settings/general",
+      "cli": "settings general get",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_presets",
+      "module": "settings",
+      "area": "settings",
+      "rest": "GET /api/settings/presets",
+      "cli": "settings presets list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_delivery_defaults",
+      "module": "settings",
+      "area": "settings",
+      "rest": "PUT /api/settings/delivery-defaults",
+      "cli": "settings delivery-defaults set",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_naming_conventions",
+      "module": "settings",
+      "area": "settings",
+      "rest": "PUT /api/settings/naming",
+      "cli": "settings naming set",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_tenant_settings",
+      "module": "settings",
+      "area": "settings",
+      "rest": "PUT /api/settings/general",
+      "cli": "settings general set",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "archive_ad_unit",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "DELETE /api/gam/ad-units/{ad_unit_id}",
+      "cli": "inventory archive-ad-unit",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_custom_targeting_key",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "POST /api/gam/custom-targeting-keys",
+      "cli": "inventory create-key",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_custom_targeting_values",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "POST /api/gam/custom-targeting-keys/{key_id}/values",
+      "cli": "custom-targeting-values create",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "delete_custom_targeting_key",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "DELETE /api/gam/custom-targeting-keys/{key_id}",
+      "cli": "inventory delete-key",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_available_countries",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/geo-targets",
+      "cli": "inventory countries",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_available_languages",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/languages",
+      "cli": "inventory languages",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_custom_targeting_values",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/custom-targeting-values",
+      "cli": "custom-targeting-values list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_device_categories",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/device-categories",
+      "cli": "inventory device-categories",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_inventory_forecast",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "POST /api/gam/inventory/forecast",
+      "cli": "inventory forecast",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_ad_units",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/ad-units",
+      "cli": "inventory ad-units",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "list_custom_targeting_keys",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/custom-targeting-keys",
+      "cli": "inventory keys",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "perform_custom_targeting_value_action",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "POST /api/gam/custom-targeting-values/action",
+      "cli": "custom-targeting-values action",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "search_ad_units",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/ad-units/search",
+      "cli": "inventory search-ad-units",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "search_custom_targeting",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "GET /api/gam/custom-targeting/search",
+      "cli": "inventory search-custom-targeting",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_ad_unit",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "PATCH /api/gam/ad-units/{ad_unit_id}",
+      "cli": "inventory update-ad-unit",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_custom_targeting_key",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "PATCH /api/gam/custom-targeting-keys/{key_id}",
+      "cli": "inventory update-key",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "update_custom_targeting_value",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "PATCH /api/gam/custom-targeting-values/{value_id}",
+      "cli": "custom-targeting-values update",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "validate_fluid",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "POST /api/gam/ad-units/validate-fluid",
+      "cli": "inventory validate-fluid",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    }
+  ]
+}

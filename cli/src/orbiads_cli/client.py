@@ -114,8 +114,40 @@ class OrbiAdsClient:
     def patch(self, path: str, **kwargs: Any) -> Any:
         return self._request("PATCH", path, **kwargs)
 
+    def put(self, path: str, **kwargs: Any) -> Any:
+        # Added Story 61.5 — `reporting templates update` is a PUT.
+        return self._request("PUT", path, **kwargs)
+
     def delete(self, path: str, **kwargs: Any) -> Any:
         return self._request("DELETE", path, **kwargs)
+
+    def post_multipart(
+        self,
+        path: str,
+        file_path: str,
+        field_name: str = "file",
+        extra_fields: dict[str, str] | None = None,
+    ) -> Any:
+        """Multipart upload helper — Story 61.3.
+
+        Sends ``file_path`` as a multipart/form-data field named ``field_name``
+        (default ``"file"``, matching FastAPI ``UploadFile = File(...)``).
+        Content-type is inferred from the file extension. Optional non-file
+        fields can be passed via ``extra_fields``.
+        """
+        import mimetypes
+        import os
+
+        ctype, _ = mimetypes.guess_type(file_path)
+        ctype = ctype or "application/octet-stream"
+        filename = os.path.basename(file_path)
+        # File handle stays open for the duration of _request (httpx streams it).
+        with open(file_path, "rb") as fh:
+            files = {field_name: (filename, fh, ctype)}
+            kwargs: dict[str, Any] = {"files": files}
+            if extra_fields:
+                kwargs["data"] = extra_fields
+            return self._request("POST", path, **kwargs)
 
     # -- core request loop ---------------------------------------------------
 

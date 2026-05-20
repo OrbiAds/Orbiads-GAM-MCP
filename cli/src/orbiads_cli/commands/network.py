@@ -51,3 +51,28 @@ def switch(
         success(f"Switched to network {network_code}")
     except CliApiError as e:
         handle_error(e)
+
+
+# === Story 62.5 — update ====================================================
+
+
+@app.command()
+def update(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the patch body (e.g. {\"displayName\": \"...\"})"),
+):
+    """Update network settings (PATCH /api/gam/network)."""
+    import json as _json, os
+    if not os.path.isfile(file):
+        typer.echo(f"Error: file not found: {file}", err=True)
+        raise typer.Exit(code=2)
+    try:
+        payload = _json.loads(open(file, "r", encoding="utf-8").read())
+    except _json.JSONDecodeError as e:
+        typer.echo(f"Error: invalid JSON in {file}: {e}", err=True)
+        raise typer.Exit(code=2)
+    try:
+        data = get_client().patch("/api/gam/network", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)

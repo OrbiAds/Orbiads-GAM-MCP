@@ -109,3 +109,106 @@ def archive(
         success(f"Campaign {campaign_id} archived successfully.")
     except CliApiError as e:
         handle_error(e)
+
+
+# === Story 61.4 — REST-ONLY sweep (campaigns) ===============================
+# update_campaign / create_line_items_batch / create_licas / rollback_resources
+
+
+def _load_json_payload(path: str) -> dict:
+    """Helper — read a JSON file from disk for mutative bodies."""
+    import json as _json
+    import os
+    if not os.path.isfile(path):
+        typer.echo(f"Error: file not found: {path}", err=True)
+        raise typer.Exit(code=2)
+    try:
+        return _json.loads(open(path, "r", encoding="utf-8").read())
+    except _json.JSONDecodeError as e:
+        typer.echo(f"Error: invalid JSON in {path}: {e}", err=True)
+        raise typer.Exit(code=2)
+
+
+@app.command()
+def update(
+    ctx: typer.Context,
+    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    file: str = typer.Option(..., "--file", "-f", help="Path to a JSON file with the patch body"),
+):
+    """Update a campaign (PATCH).
+
+    Story 61.4 — maps MCP `update_campaign` → PATCH /api/campaigns/{id}.
+    """
+    out: OutputContext = ctx.obj
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().patch(f"/api/campaigns/{campaign_id}", json=payload)
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("add-line-items")
+def add_line_items(
+    ctx: typer.Context,
+    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the line-items batch payload"),
+):
+    """Append line items to a campaign.
+
+    Story 61.4 — maps MCP `create_line_items_batch` /
+    `create_line_items` → POST /api/campaigns/{id}/line-items.
+    """
+    out: OutputContext = ctx.obj
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(f"/api/campaigns/{campaign_id}/line-items", json=payload)
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("attach-creatives")
+def attach_creatives(
+    ctx: typer.Context,
+    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    line_item_id: str = typer.Argument(..., help="Line Item ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the LICA batch payload"),
+):
+    """Attach creatives to a line item via LICAs.
+
+    Story 61.4 — maps MCP `create_licas` / `associate_creative` /
+    `bulk_associate_creatives` → POST /api/campaigns/{id}/line-items/{li}/creatives.
+    """
+    out: OutputContext = ctx.obj
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            f"/api/campaigns/{campaign_id}/line-items/{line_item_id}/creatives",
+            json=payload,
+        )
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def recover(
+    ctx: typer.Context,
+    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+):
+    """Recover a failed/orphaned campaign (rollback orphan resources).
+
+    Story 61.4 — maps MCP `rollback_resources` → POST /api/campaigns/{id}/recover.
+    """
+    try:
+        out: OutputContext = ctx.obj
+        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+        if not confirm(f"Recover campaign {campaign_id}?", effective_ctx):
+            raise typer.Exit(code=0)
+        client = get_client()
+        data = client.post(f"/api/campaigns/{campaign_id}/recover")
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)

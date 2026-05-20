@@ -165,13 +165,16 @@ class TestCreativesListCommand:
         assert result.exit_code == 2
         client.get.assert_not_called()
 
-    def test_creatives_upload_not_supported(self, authenticated_config):
+    def test_creatives_upload_missing_file_argument(self, authenticated_config):
+        """Story 61.3 — the previous "not supported" stub became a working
+        multipart upload. Without the required <file> argument, Typer raises a
+        usage error (exit 2); no HTTP call. See TestCreativesUpload_61_3 for
+        the success path."""
         client = _mock_client(get_return=None)
         with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
             result = runner.invoke(app, ["creatives", "upload"])
-        assert result.exit_code == 1
-        assert "not supported" in result.output
-        client.post.assert_not_called()
+        assert result.exit_code == 2
+        client.post_multipart.assert_not_called()
 
 
 # ===========================================================================
@@ -271,3 +274,108 @@ class TestBillingBalanceCommand:
         data = json.loads(result.output)
         assert data["credits"] == 42
         assert data["plan"] == "starter"
+
+
+# ===========================================================================
+# Story 61.2 — inventory keys path fix + graceful --values handling
+# ===========================================================================
+
+
+class TestInventoryKeys_61_2:
+    """Regression tests for Story 61.2 (defect #1)."""
+
+    def test_keys_uses_correct_custom_targeting_keys_path(self, authenticated_config):
+        """Was calling /api/gam/targeting-keys (404). Must hit
+        /api/gam/custom-targeting-keys (network.py:268)."""
+        client = _mock_client(get_return={"keys": [
+            {"id": "k1", "name": "geo", "keyType": "PREDEFINED", "values": []}
+        ]})
+        with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
+            result = runner.invoke(app, ["inventory", "keys"])
+        assert result.exit_code == 0, result.output
+        client.get.assert_called_once_with(
+            "/api/gam/custom-targeting-keys", params={"limit": 50}
+        )
+        assert "geo" in result.output
+
+    def test_keys_values_branch_fails_gracefully_until_epic_62(self, authenticated_config):
+        """--values has no REST route (get_custom_targeting_values is MCP-ONLY,
+        pending Epic 62). Must exit 1 with a clear message, NOT crash or 404."""
+        client = _mock_client()
+        with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
+            result = runner.invoke(app, ["inventory", "keys", "--key-id", "42", "--values"])
+        assert result.exit_code == 1
+        client.get.assert_not_called()  # never reach the dead path
+        assert "not yet supported" in result.output
+        assert "Epic 62" in result.output
+
+
+# ===========================================================================
+# Story 61.3 — creatives upload real multipart (was a stub)
+# ===========================================================================
+
+
+class TestCreativesUpload_61_3:
+    """Regression tests for Story 61.3 (defect #2 — `creatives upload`)."""
+
+    def test_upload_posts_multipart_to_upload_single(self, authenticated_config, tmp_path):
+        """`orbiads creatives upload <file>` must POST multipart to
+        /api/creatives/upload-single, not error out pointing at MCP."""
+        f = tmp_path / "banner.png"
+        f.write_bytes(b"\x89PNG\r\n\x1a\nfake-image-bytes")
+        client = MagicMock()
+        client.post_multipart.return_value = {
+            "creativeId": "cr-123", "status": "uploaded", "name": "banner.png"
+        }
+        with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
+            result = runner.invoke(app, ["creatives", "upload", str(f)])
+        assert result.exit_code == 0, result.output
+        client.post_multipart.assert_called_once_with(
+            "/api/creatives/upload-single", str(f)
+        )
+        assert "cr-123" in result.output
+
+    def test_upload_missing_file_exits_2(self, authenticated_config, tmp_path):
+        """Missing file → exit 2 (bad args), no HTTP call."""
+        client = MagicMock()
+        with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
+            result = runner.invoke(app, ["creatives", "upload", str(tmp_path / "nope.png")])
+        assert result.exit_code == 2
+        client.post_multipart.assert_not_called()
+        assert "not found" in result.output
+
+    def test_client_post_multipart_helper_builds_files_kwarg(self, tmp_path):
+        """Unit test for the new client.post_multipart helper.
+
+        Verifies it calls _request("POST", path, files={"file": (name, fh, ctype)})
+        with the correct mimetype inferred from extension.
+        """
+        from orbiads_cli.client import OrbiAdsClient
+
+        f = tmp_path / "logo.png"
+        f.write_bytes(b"\x89PNG\r\n\x1a\nbytes")
+
+        # Build a real client but stub _request to capture the call.
+        # OrbiAdsClient.__init__ takes a plain dict (see client.py:97).
+        c = OrbiAdsClient({"token": "t", "refreshToken": "r", "apiUrl": "http://x"})
+
+        # Capture the multipart payload INSIDE the call (the file handle is
+        # closed by post_multipart's `with open(...)` once _request returns —
+        # which is correct production behavior: httpx streams it then we close).
+        captured = {}
+
+        def fake_request(method, path, **kw):
+            files = kw["files"]
+            name, fh, ctype = files["file"]
+            captured.update(method=method, path=path, name=name, ctype=ctype,
+                            head=fh.read(4))
+            return {"ok": True}
+
+        c._request = fake_request
+        c.post_multipart("/api/creatives/upload-single", str(f))
+
+        assert captured["method"] == "POST"
+        assert captured["path"] == "/api/creatives/upload-single"
+        assert captured["name"] == "logo.png"
+        assert captured["ctype"] == "image/png"
+        assert captured["head"] == b"\x89PNG"

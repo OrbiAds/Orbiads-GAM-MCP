@@ -16,6 +16,21 @@ from orbiads_cli.commands import (
     reporting,
     billing,
     network,
+    line_items,    # Story 61.4
+    jobs,          # Story 61.4
+    settings_cmd,  # Story 61.7
+    audiences,     # Story 61.7
+    audit_log,     # Story 61.7
+    preview,       # Story 61.7
+    contacts,      # Story 62.4
+    users,         # Story 62.4
+    roles,         # Story 62.4
+    licas,             # Story 62.1
+    native_styles,     # Story 62.1
+    creative_templates,# Story 62.1
+    creative_qa,              # Story 62.6
+    custom_targeting_values,  # Story 62.5
+    pql,                      # Story 62.5
 )
 
 app = typer.Typer(
@@ -66,3 +81,18 @@ app.add_typer(inventory.app, name="inventory")
 app.add_typer(reporting.app, name="reporting")
 app.add_typer(billing.app, name="billing")
 app.add_typer(network.app, name="network")
+app.add_typer(line_items.app, name="line-items")  # Story 61.4
+app.add_typer(jobs.app, name="jobs")              # Story 61.4
+app.add_typer(settings_cmd.app, name="settings")  # Story 61.7 — server-side tenant settings (distinct from `config`)
+app.add_typer(audiences.app, name="audiences")    # Story 61.7
+app.add_typer(audit_log.app, name="audit")        # Story 61.7
+app.add_typer(preview.app, name="preview")        # Story 61.7
+app.add_typer(contacts.app, name="contacts")      # Story 62.4
+app.add_typer(users.app, name="users")            # Story 62.4
+app.add_typer(roles.app, name="roles")            # Story 62.4
+app.add_typer(licas.app, name="licas")                                  # Story 62.1
+app.add_typer(native_styles.app, name="native-styles")                  # Story 62.1
+app.add_typer(creative_templates.app, name="creative-templates")        # Story 62.1
+app.add_typer(creative_qa.app, name="creative-qa")                      # Story 62.6
+app.add_typer(custom_targeting_values.app, name="custom-targeting-values")  # Story 62.5
+app.add_typer(pql.app, name="pql")                                       # Story 62.5

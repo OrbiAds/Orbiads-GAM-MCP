@@ -8,7 +8,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import OutputContext, render
+from orbiads_cli.output import OutputContext, render, render_detail, info
 
 app = typer.Typer(help="Explore GAM inventory", no_args_is_help=True)
 
@@ -88,24 +88,388 @@ def keys(
         client = get_client()
 
         if key_id and values:
-            # Fetch values for a specific key
-            data = client.get(
-                f"/api/gam/targeting-keys/{key_id}/values",
-                params={"limit": limit},
+            # Story 61.2 — `get_custom_targeting_values` is MCP-ONLY (no REST
+            # route yet); the previous `/api/gam/targeting-keys/{id}/values`
+            # path 404'd. Surfacing this honestly until Epic 62 adds the route.
+            typer.echo(
+                "orbiads inventory keys --values is not yet supported via REST "
+                "(pending Epic 62 — get_custom_targeting_values route).",
+                err=True,
             )
-            if isinstance(data, dict):
-                items = data.get("values", data.get("results", []))
-            else:
-                items = data if isinstance(data, list) else []
-            render(items, _VALUE_COLUMNS, out)
+            raise typer.Exit(code=1)
         else:
-            # List all targeting keys
+            # List all targeting keys.
+            # Story 61.2 — backend serves `/api/gam/custom-targeting-keys`
+            # (network.py:268). The legacy `/api/gam/targeting-keys` path 404'd.
             params: dict[str, str | int] = {"limit": limit}
-            data = client.get("/api/gam/targeting-keys", params=params)
+            data = client.get("/api/gam/custom-targeting-keys", params=params)
             if isinstance(data, dict):
+                # CustomTargetingKeysResult.model_dump(by_alias=True) -> {"keys": [...]}
+                # see backend/src/domain/gam_targeting.py:291-296.
                 items = data.get("keys", data.get("results", []))
             else:
                 items = data if isinstance(data, list) else []
             render(items, _KEY_COLUMNS, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# === Story 61.6 — REST-ONLY sweep (inventory + targeting + placements) ======
+
+
+def _load_json_payload(path: str) -> dict:
+    import json as _json
+    import os
+    if not os.path.isfile(path):
+        typer.echo(f"Error: file not found: {path}", err=True)
+        raise typer.Exit(code=2)
+    try:
+        return _json.loads(open(path, "r", encoding="utf-8").read())
+    except _json.JSONDecodeError as e:
+        typer.echo(f"Error: invalid JSON in {path}: {e}", err=True)
+        raise typer.Exit(code=2)
+
+
+# ── ad-unit mutations ────────────────────────────────────────────────────
+
+
+@app.command("create-ad-units")
+def create_ad_units(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file: selectedAdUnitIds array"),
+):
+    """Save selected ad units (batch create/import)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units/save-adunits", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("update-ad-unit")
+def update_ad_unit(
+    ctx: typer.Context,
+    ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with patch body"),
+):
+    """Update an ad unit (PATCH)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().patch(f"/api/gam/ad-units/{ad_unit_id}", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("archive-ad-unit")
+def archive_ad_unit(
+    ctx: typer.Context,
+    ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
+):
+    """Archive (soft-delete) an ad unit."""
+    try:
+        get_client().delete(f"/api/gam/ad-units/{ad_unit_id}")
+        info(f"Ad unit {ad_unit_id} archived.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def audit(
+    ctx: typer.Context,
+    file: str = typer.Option(None, "--file", "-f", help="Optional JSON body for the audit request"),
+):
+    """Run an inventory audit."""
+    payload = _load_json_payload(file) if file else {}
+    try:
+        data = get_client().post("/api/gam/inventory/audit", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("ads-json")
+def ads_json(ctx: typer.Context):
+    """Fetch the ads.json manifest for the network."""
+    try:
+        data = get_client().get("/api/gam/inventory/manifest/ads.json")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("blueprint-generate")
+def blueprint_generate(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the blueprint request"),
+):
+    """Generate an inventory blueprint (dry run)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/blueprint/generate", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("blueprint-push")
+def blueprint_push(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the blueprint to push"),
+):
+    """Push an inventory blueprint to GAM."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/blueprint/push", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── targeting / forecast / reference data ────────────────────────────────
+
+
+@app.command("validate-fluid")
+def validate_fluid(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with adUnitIds[] + jobId"),
+):
+    """Validate that the selected ad units support Fluid sizing."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units/validate-fluid", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def forecast(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the forecast request"),
+):
+    """Run an inventory forecast (line-item probabilistic delivery)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/inventory/forecast", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def countries(ctx: typer.Context):
+    """List available geo-targets (countries)."""
+    try:
+        data = get_client().get("/api/gam/geo-targets")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("device-categories")
+def device_categories(ctx: typer.Context):
+    """List available device categories."""
+    try:
+        data = get_client().get("/api/gam/device-categories")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── custom targeting key mutations ───────────────────────────────────────
+
+
+@app.command("create-key")
+def create_key(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the key body"),
+):
+    """Create a custom targeting key."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/custom-targeting-keys", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("update-key")
+def update_key(
+    ctx: typer.Context,
+    key_id: str = typer.Argument(..., help="Custom targeting key ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the patch body"),
+):
+    """Update a custom targeting key (PATCH)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().patch(
+            f"/api/gam/custom-targeting-keys/{key_id}", json=payload
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("delete-key")
+def delete_key(
+    ctx: typer.Context,
+    key_id: str = typer.Argument(..., help="Custom targeting key ID"),
+):
+    """Delete a custom targeting key."""
+    try:
+        get_client().delete(f"/api/gam/custom-targeting-keys/{key_id}")
+        info(f"Custom targeting key {key_id} deleted.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── placement mutations ──────────────────────────────────────────────────
+
+
+@app.command("placement-update")
+def placement_update(
+    ctx: typer.Context,
+    placement_id: str = typer.Argument(..., help="Placement ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the patch body"),
+):
+    """Update a placement (PATCH)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().patch(f"/api/gam/placements/{placement_id}", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("placement-archive")
+def placement_archive(
+    ctx: typer.Context,
+    placement_id: str = typer.Argument(..., help="Placement ID"),
+):
+    """Archive a placement."""
+    try:
+        get_client().delete(f"/api/gam/placements/{placement_id}")
+        info(f"Placement {placement_id} archived.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+# === Story 62.5 — inventory residual + new placement create + targeting search ===
+
+
+@app.command("placement-create")
+def placement_create(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the placement body"),
+):
+    """Create a placement."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/placements", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("search-ad-units")
+def search_ad_units(
+    ctx: typer.Context,
+    q: str = typer.Option(..., "--query", "-q", help="Search query"),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=500),
+    offset: int = typer.Option(0, "--offset", min=0),
+):
+    """Search ad units by name/code."""
+    try:
+        data = get_client().get(
+            "/api/gam/ad-units/search",
+            params={"q": q, "limit": limit, "offset": offset},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("ad-units-by-ids")
+def ad_units_by_ids(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file: {adUnitIds: [...]}"),
+):
+    """Bulk-fetch ad units by ID."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units/by-ids", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def sizes(ctx: typer.Context):
+    """List all distinct ad-unit sizes in the network."""
+    try:
+        data = get_client().get("/api/gam/ad-units/sizes")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("search-custom-targeting")
+def search_custom_targeting(
+    ctx: typer.Context,
+    q: str = typer.Option(..., "--query", "-q", help="Search query (keys + values)"),
+):
+    """Search custom-targeting keys + values by name."""
+    try:
+        data = get_client().get("/api/gam/custom-targeting/search", params={"q": q})
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def languages(
+    ctx: typer.Context,
+    q: str = typer.Option(None, "--query", "-q"),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=500),
+):
+    """List available targeting languages."""
+    params: dict[str, str | int] = {"limit": limit}
+    if q:
+        params["q"] = q
+    try:
+        data = get_client().get("/api/gam/languages", params=params)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# === Story 62.5a — find/archive inactive ad-units (InventoryService unblocked) ===
+
+
+@app.command("list-inactive")
+def list_inactive(
+    ctx: typer.Context,
+    days: int = typer.Option(90, "--days", "-d", min=1, max=365, help="Look-back window in days"),
+):
+    """List ad units with zero impressions in the last N days (Story 62.5a)."""
+    try:
+        data = get_client().get("/api/gam/ad-units/inactive", params={"days": days})
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("archive-inactive")
+def archive_inactive(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"),
+):
+    """Archive a batch of inactive ad units (Story 62.5a)."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units/archive-inactive", json=payload)
+        render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

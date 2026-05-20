@@ -1,0 +1,253 @@
+# Curated MCP-tool -> REST-route / CLI-command map. Story 61.1.
+# Consumed by orbiads/cli/scripts/gen_parity_matrix.py to emit parity-matrix.json + PARITY.md.
+#
+#   rest:   "<METHOD> <path>"  | "NO-REST"   (our FastAPI layer, NOT GAM SOAP/REST)
+#   cli:    "<noun> <verb>"     | null         (an EXISTING working CLI command)
+#   exempt: "<reason>"          | absent        (intentionally out of parity scope)
+#
+# Status is DERIVED by the generator (FULL / REST-ONLY / MCP-ONLY / EXEMPT).
+# Do not hardcode counts anywhere — parity-matrix.json is the single source of truth.
+meta:
+  curated: "2026-05-19"
+  source: "Phase 0 tri-state audit + live route grep (backend/src/api/routes/**)"
+  note: >
+    capability-parity allowed: one CLI command may satisfy several convenience
+    MCP tools (mapping recorded). Tier A (Epic 61) clears REST-ONLY -> cli.
+    Tier B (Epic 62) builds routes for MCP-ONLY, then Epic 63 adds their CLI.
+
+tools:
+  # ── advertisers (10) ──────────────────────────────────────────────
+  list_advertisers:          {area: advertisers, rest: "GET /api/gam/advertisers", cli: "advertisers list"}
+  create_advertiser:         {area: advertisers, rest: "POST /api/gam/advertisers", cli: "advertisers create"}
+  find_or_create_advertiser: {area: advertisers, rest: "POST /api/gam/advertisers/find-or-create", cli: "advertisers find-or-create"}  # 61.7
+  find_or_create_order:      {area: advertisers, rest: "POST /api/gam/orders", cli: "orders create"}  # 61.7
+  get_advertiser:            {area: advertisers, rest: "GET /api/gam/advertisers/{advertiser_id}", cli: "advertisers get"}  # 62.4
+  get_agencies:              {area: advertisers, rest: "GET /api/gam/agencies", cli: "advertisers agencies list"}  # 62.4
+  create_agency:             {area: advertisers, rest: "POST /api/gam/agencies", cli: "advertisers agencies create"}  # 62.4
+  update_advertiser:         {area: advertisers, rest: "PATCH /api/gam/advertisers/{advertiser_id}", cli: "advertisers update"}  # 62.4
+  update_agency:             {area: advertisers, rest: "PATCH /api/gam/agencies/{agency_id}", cli: "advertisers agencies update"}  # 62.4
+  find_advertiser:           {area: advertisers, rest: "GET /api/gam/advertisers/search", cli: "advertisers find"}  # 62.4
+
+  # ── audiences (5) ─────────────────────────────────────────────────
+  list_audience_segments:        {area: audiences, rest: "GET /api/gam/audience-segments", cli: "audiences list"}  # 61.7
+  get_audience_segment:          {area: audiences, rest: "GET /api/gam/audience-segments/{segment_id}", cli: "audiences get"}  # 62.5
+  create_audience_segment:       {area: audiences, rest: "POST /api/gam/audience-segments", cli: "audiences create"}  # 62.5
+  update_audience_segment:       {area: audiences, rest: "PATCH /api/gam/audience-segments/{segment_id}", cli: "audiences update"}  # 62.5
+  perform_audience_segment_action: {area: audiences, rest: "POST /api/gam/audience-segments/action", cli: "audiences action"}  # 62.5
+
+  # ── audit (1) ─────────────────────────────────────────────────────
+  query_audit_log: {area: audit, rest: "GET /api/settings/audit/", cli: "audit log"}  # 61.7
+
+  # ── auth (6) — capability parity via auth/network commands ─────────
+  get_my_tenant_id:  {area: auth, rest: "GET /api/me", cli: "auth status"}
+  check_credentials: {area: auth, rest: "GET /api/auth/gam/connection-state", cli: "auth status"}
+  initiate_gam_auth: {area: auth, rest: "POST /api/auth/gam/device-code", cli: "auth login"}
+  poll_auth_status:  {area: auth, rest: "GET /api/auth/gam/device-token-status", cli: "auth login"}
+  select_gam_network: {area: auth, rest: "POST /api/auth/gam/select-network", cli: "network switch"}
+  disconnect_gam:    {area: auth, rest: "DELETE /api/auth/gam/revoke", cli: "auth logout"}
+
+  # ── billing (2) ───────────────────────────────────────────────────
+  get_credit_balance: {area: billing, rest: "GET /api/billing", cli: "billing balance"}
+  list_transactions:  {area: billing, rest: "GET /api/billing/transactions", cli: "billing transactions"}
+
+  # ── campaign_ops (10) ─────────────────────────────────────────────
+  deploy_campaign:         {area: campaign_ops, rest: "POST /api/campaigns/{id}/deploy", cli: "campaigns deploy"}
+  pause_campaign:          {area: campaign_ops, rest: "POST /api/campaigns/{id}/pause", cli: "campaigns pause"}
+  archive_campaign:        {area: campaign_ops, rest: "POST /api/campaigns/{id}/archive", cli: "campaigns archive"}
+  update_campaign:         {area: campaign_ops, rest: "PATCH /api/campaigns/{campaign_id}", cli: "campaigns update"}                    # 61.4
+  create_line_items_batch: {area: campaign_ops, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}          # 61.4
+  create_licas:            {area: campaign_ops, rest: "POST /api/campaigns/{id}/line-items/{li}/creatives", cli: "campaigns attach-creatives"}  # 61.4
+  rollback_resources:      {area: campaign_ops, rest: "POST /api/campaigns/{id}/recover", cli: "campaigns recover"}                    # 61.4
+  ensure_template:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
+  create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
+  create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
+
+  # ── creative_qa (7) — no REST surface at all ──────────────────────
+  scan_creative_compliance:  {area: creative_qa, rest: "POST /api/gam/creative-qa/scan-compliance", cli: "creative-qa scan-compliance"}  # 62.6
+  validate_creative_ssl:     {area: creative_qa, rest: "GET /api/gam/creative-qa/creatives/{creative_id}/ssl", cli: "creative-qa validate-ssl"}  # 62.6
+  validate_creative_ssl_batch: {area: creative_qa, rest: "POST /api/gam/creative-qa/validate-ssl-batch", cli: "creative-qa validate-ssl-batch"}  # 62.6
+  audit_creative_tracking:   {area: creative_qa, rest: "GET /api/gam/creative-qa/creatives/{creative_id}/tracking", cli: "creative-qa audit-tracking"}  # 62.6
+  audit_order_tracking:      {area: creative_qa, rest: "GET /api/gam/creative-qa/orders/{order_id}/tracking", cli: "creative-qa audit-order-tracking"}  # 62.6
+  validate_tag_snippet:      {area: creative_qa, rest: "POST /api/gam/creative-qa/validate-tag", cli: "creative-qa validate-tag"}  # 62.6
+  pre_archive_check:         {area: creative_qa, rest: "POST /api/gam/creative-qa/pre-archive-check", cli: "creative-qa pre-archive-check"}  # 62.6
+
+  # ── creatives (39) ────────────────────────────────────────────────
+  list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
+  get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
+  upload_creative:              {area: creatives, rest: "POST /api/creatives/upload-single", cli: "creatives upload"}  # stub fixed in 61.3
+  list_creatives_by_line_item:  {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/creatives", cli: "creatives list-by-line-item"}  # 61.7
+  upload_and_associate_creative: {area: creatives, rest: "POST /api/creatives/upload-single", cli: "creatives upload"}  # 61.7
+  bulk_upload_creatives:        {area: creatives, rest: "POST /api/creatives/upload-multi", cli: "creatives upload-images"}  # 61.7
+  create_third_party_creative:  {area: creatives, rest: "POST /api/creatives/upload-third-party", cli: "creatives upload-third-party"}  # 61.7
+  create_html5_creative:        {area: creatives, rest: "POST /api/creatives/upload-html5", cli: "creatives upload-html5"}  # 61.7
+  upload_html5_zip_creative:    {area: creatives, rest: "POST /api/creatives/upload-html5", cli: "creatives upload-html5"}  # 61.7
+  create_html5_creative_from_files: {area: creatives, rest: "POST /api/creatives/upload-html5", cli: "creatives upload-html5"}  # 61.7
+  create_video_creative:        {area: creatives, rest: "POST /api/creatives/upload-video", cli: "creatives upload-video"}  # 61.7
+  create_audio_creative:        {area: creatives, rest: "POST /api/creatives/upload-audio", cli: "creatives upload-audio"}  # 61.7
+  create_image_creative:        {area: creatives, rest: "POST /api/creatives/upload-images", cli: "creatives upload-images"}  # 61.7
+  create_classic_native_creative: {area: creatives, rest: "POST /api/creatives/upload-native-classic", cli: "creatives upload-native-classic"}  # 61.7
+  associate_creative:           {area: creatives, rest: "POST /api/campaigns/{id}/line-items/{li}/creatives", cli: "campaigns attach-creatives"}     # 61.4 capability parity
+  bulk_associate_creatives:     {area: creatives, rest: "POST /api/campaigns/{id}/line-items/{li}/creatives", cli: "campaigns attach-creatives"}     # 61.4 capability parity
+  get_campaign_preview_links:   {area: creatives, rest: "POST /api/creatives/{job_id}/gam-preview-link", cli: "preview campaign"}  # 61.7
+  update_creative:              {area: creatives, rest: "PATCH /api/gam/creatives/{creative_id}", cli: "creatives update"}  # 62.1
+  get_creative_preview_url:     {area: creatives, rest: "GET /api/gam/creatives/{creative_id}/preview-url", cli: "creatives preview-url"}  # 62.1
+  get_native_style_preview_urls: {area: creatives, rest: "GET /api/gam/creatives/{creative_id}/native-style-previews", cli: "creatives native-style-previews"}  # 62.1
+  create_vast_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-vast-redirect", cli: "creatives upload-vast-redirect"}  # 62.1
+  create_companion_creative:    {area: creatives, rest: "POST /api/creatives/upload-companion", cli: "creatives upload-companion"}  # 62.1
+  compress_image_creative:      {area: creatives, rest: "POST /api/creatives/compress-image", cli: "creatives compress-image"}  # 62.1
+  get_licas_by_line_item:       {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/licas", cli: "licas list-by-line-item"}  # 62.1
+  get_licas_batch:              {area: creatives, rest: "POST /api/gam/licas/batch", cli: "licas batch"}  # 62.1
+  deactivate_lica:              {area: creatives, rest: "POST /api/gam/licas/{line_item_id}/{creative_id}/deactivate", cli: "licas deactivate"}  # 62.1
+  update_lica:                  {area: creatives, rest: "PATCH /api/gam/licas/{line_item_id}/{creative_id}", cli: "licas update"}  # 62.1
+  delete_licas:                 {area: creatives, rest: "POST /api/gam/licas/delete", cli: "licas delete"}  # 62.1
+  list_creatives_by_network:    {area: creatives, rest: "GET /api/gam/creatives", cli: "creatives list-by-network"}  # 62.1
+  archive_creative:             {area: creatives, rest: "POST /api/gam/creatives/{creative_id}/archive", cli: "creatives archive"}  # 62.1
+  duplicate_creative:           {area: creatives, rest: "POST /api/gam/creatives/{creative_id}/duplicate", cli: "creatives duplicate"}  # 62.1
+  duplicate_native_style:       {area: creatives, rest: "POST /api/gam/native-styles/{style_id}/duplicate", cli: "native-styles duplicate"}  # 62.1
+  list_native_styles:           {area: creatives, rest: "GET /api/gam/native-styles", cli: "native-styles list"}  # 62.1
+  get_native_style:             {area: creatives, rest: "GET /api/gam/native-styles/{style_id}", cli: "native-styles get"}  # 62.1
+  update_native_style:          {area: creatives, rest: "PATCH /api/gam/native-styles/{style_id}", cli: "native-styles update"}  # 62.1
+  archive_native_style:         {area: creatives, rest: "POST /api/gam/native-styles/{style_id}/archive", cli: "native-styles archive"}  # 62.1
+  ensure_classic_native_template: {area: creatives, rest: "POST /api/gam/creative-templates/classic-native/ensure", cli: "creative-templates ensure-classic-native"}  # 62.1
+  list_creative_templates:      {area: creatives, rest: "GET /api/gam/creative-templates", cli: "creative-templates list"}  # 62.1
+  get_creative_template:        {area: creatives, rest: "GET /api/gam/creative-templates/{template_id}", cli: "creative-templates get"}  # 62.1
+
+  # ── inventory (10) ────────────────────────────────────────────────
+  get_ad_unit_tree:            {area: inventory, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
+  audit_inventory:             {area: inventory, rest: "POST /api/gam/inventory/audit", cli: "inventory audit"}  # 61.6
+  create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory create-ad-units"}  # 61.6
+  generate_ads_json:           {area: inventory, rest: "GET /api/gam/inventory/manifest/ads.json", cli: "inventory ads-json"}  # 61.6
+  generate_inventory_blueprint: {area: inventory, rest: "POST /api/gam/blueprint/generate", cli: "inventory blueprint-generate"}  # 61.6
+  push_inventory_blueprint:    {area: inventory, rest: "POST /api/gam/blueprint/push", cli: "inventory blueprint-push"}  # 61.6
+  get_ad_units_by_ids:         {area: inventory, rest: "POST /api/gam/ad-units/by-ids", cli: "inventory ad-units-by-ids"}  # 62.5
+  find_inactive_ad_units:      {area: inventory, rest: "GET /api/gam/ad-units/inactive", cli: "inventory list-inactive"}  # 62.5a
+  archive_inactive_ad_units:   {area: inventory, rest: "POST /api/gam/ad-units/archive-inactive", cli: "inventory archive-inactive"}  # 62.5a
+  list_ad_unit_sizes:          {area: inventory, rest: "GET /api/gam/ad-units/sizes", cli: "inventory sizes"}  # 62.5
+
+  # ── jobs (3) — Story 61.4 ─────────────────────────────────────────
+  get_job:       {area: jobs, rest: "GET /api/jobs/{job_id}", cli: "jobs get"}            # 61.4
+  list_jobs:     {area: jobs, rest: "GET /api/jobs/", cli: "jobs list"}                   # 61.4
+  duplicate_job: {area: jobs, rest: "POST /api/jobs/{job_id}/duplicate", cli: "jobs duplicate"}  # 61.4
+
+  # ── line_items (15) — Story 61.4 covers the 8 REST-ONLY ───────────
+  create_line_items:        {area: line_items, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}                # 61.4 capability parity
+  activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
+  pause_line_items:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/pause", cli: "line-items pause"}               # 61.4
+  update_line_item:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/{line_item_id}/update", cli: "line-items update"}  # 61.4
+  duplicate_line_item:      {area: line_items, rest: "POST /api/gam/line-items/{line_item_id}/duplicate", cli: "line-items duplicate"}     # 61.4
+  archive_line_item:        {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/archive", cli: "line-items archive"}           # 61.4
+  verify_line_item_setup:   {area: line_items, rest: "GET /api/gam/jobs/{job_id}/verify", cli: "line-items verify"}                         # 61.4
+  update_line_item_targeting: {area: line_items, rest: "PATCH /api/campaigns/{id}/line-items/{li}/targeting", cli: "line-items update-targeting"}  # 61.4
+  get_line_item:            {area: line_items, rest: "GET /api/gam/line-items/{line_item_id}", cli: "line-items get"}  # 62.3
+  list_line_items_by_order: {area: line_items, rest: "GET /api/gam/orders/{order_id}/line-items", cli: "line-items list-by-order"}  # 62.3
+  approve_line_item:        {area: line_items, rest: "POST /api/gam/line-items/{line_item_id}/approve", cli: "line-items approve"}  # 62.3
+  create_adexchange_line_item:   {area: line_items, rest: "POST /api/gam/line-items/adexchange", cli: "line-items create-adexchange"}  # 62.3a
+  create_open_bidding_line_item: {area: line_items, rest: "POST /api/gam/line-items/open-bidding", cli: "line-items create-open-bidding"}  # 62.3a
+  create_preferred_deal_line_item: {area: line_items, rest: "POST /api/gam/line-items/preferred-deal", cli: "line-items create-preferred-deal"}  # 62.3a
+  list_private_deals:       {area: line_items, rest: "GET /api/gam/private-deals", cli: "line-items private-deals"}  # 62.3
+
+  # ── network (4) ───────────────────────────────────────────────────
+  get_network_info:         {area: network, rest: "GET /api/gam/network-info", cli: "network info"}
+  switch_network:           {area: network, rest: "POST /api/gam/switch-network", cli: "network switch"}
+  list_accessible_networks: {area: network, rest: "GET /api/gam/accessible-networks", cli: "network list"}
+  update_network:           {area: network, rest: "PATCH /api/gam/network", cli: "network update"}  # 62.5
+
+  # ── orders (13) ───────────────────────────────────────────────────
+  list_orders:           {area: orders, rest: "GET /api/gam/orders", cli: "orders list"}
+  get_order:             {area: orders, rest: "GET /api/gam/orders/{order_id}", cli: "orders get"}
+  create_order:          {area: orders, rest: "POST /api/gam/orders", cli: "orders create"}
+  approve_order:         {area: orders, rest: "POST /api/gam/orders/{order_id}/approve", cli: "orders approve"}  # 61.7
+  list_delivering_orders: {area: orders, rest: "GET /api/gam/orders?status=delivering", cli: "orders list-delivering"}  # 61.7
+  verify_order_setup:    {area: orders, rest: "GET /api/gam/jobs/{job_id}/verify", cli: "line-items verify"}  # 61.4 capability parity
+  archive_order:         {area: orders, rest: "POST /api/gam/orders/{order_id}/archive", cli: "orders archive"}  # 62.4
+  update_order:          {area: orders, rest: "PATCH /api/gam/orders/{order_id}", cli: "orders update"}  # 62.4
+  get_contacts:          {area: orders, rest: "GET /api/gam/contacts", cli: "contacts list"}  # 62.4
+  list_users:            {area: orders, rest: "GET /api/gam/users", cli: "users list"}  # 62.4
+  list_roles:            {area: orders, rest: "GET /api/gam/roles", cli: "roles list"}  # 62.4
+  create_contact:        {area: orders, rest: "POST /api/gam/contacts", cli: "contacts create"}  # 62.4
+  update_contact:        {area: orders, rest: "PATCH /api/gam/contacts/{contact_id}", cli: "contacts update"}  # 62.4
+
+  # ── placements (4) ────────────────────────────────────────────────
+  list_placements:   {area: placements, rest: "GET /api/gam/placements", cli: "inventory placements"}
+  update_placement:  {area: placements, rest: "PATCH /api/gam/placements/{placement_id}", cli: "inventory placement-update"}  # 61.6
+  archive_placement: {area: placements, rest: "DELETE /api/gam/placements/{placement_id}", cli: "inventory placement-archive"}  # 61.6
+  create_placement:  {area: placements, rest: "POST /api/gam/placements", cli: "inventory placement-create"}  # 62.5
+
+  # ── pql (1) ───────────────────────────────────────────────────────
+  run_pql_query: {area: pql, rest: "POST /api/gam/pql", cli: "pql query"}  # 62.5
+
+  # ── preview (3) ───────────────────────────────────────────────────
+  get_preview_urls:          {area: preview, rest: "POST /api/preview/share", cli: "preview share"}  # 61.7
+  get_campaign_preview_urls: {area: preview, rest: "POST /api/creatives/{job_id}/gam-preview-link", cli: "preview campaign"}  # 61.7
+  check_creative_coverage:   {area: preview, rest: "POST /api/gam/coverage", cli: "preview coverage"}  # 62.5
+
+  # ── pricing (5) — PERMANENTLY EXEMPT ──────────────────────────────
+  # GAM removed RateCardService + PremiumRateService in v202502+ (see MEMORY.md
+  # "GAM API v202502+ Breaking Changes"). No API replacement — GAM UI only.
+  list_rate_cards:     {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM RateCardService removed v202502+ — no API replacement (MEMORY.md)"}
+  list_premium_rates:  {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
+  get_premium_rate:    {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
+  create_premium_rate: {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
+  update_premium_rate: {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
+
+  # ── reporting (31) ────────────────────────────────────────────────
+  run_custom_report:        {area: reporting, rest: "POST /api/gam/reports/custom", cli: "reporting run"}
+  run_gam_report:           {area: reporting, rest: "POST /api/gam/reports/gam-reports/{gam_report_id}/run", cli: "reporting export"}
+  fetch_inventory_report:   {area: reporting, rest: "POST /api/gam/reports/inventory", cli: "reporting inventory"}  # 61.5
+  get_report_dimensions:    {area: reporting, rest: "GET /api/gam/reports/available-dimensions", cli: "reporting dimensions"}  # 61.5
+  get_report_metrics:       {area: reporting, rest: "GET /api/gam/reports/available-metrics", cli: "reporting metrics"}  # 61.5
+  get_report_date_ranges:   {area: reporting, rest: "GET /api/gam/reports/available-date-ranges", cli: "reporting date-ranges"}  # 61.5
+  get_report_result:        {area: reporting, rest: "GET /api/gam/reports/executions", cli: "reporting executions"}  # 61.5
+  list_report_templates:    {area: reporting, rest: "GET /api/gam/reports/templates", cli: "reporting templates list"}  # 61.5
+  save_report_template:     {area: reporting, rest: "POST /api/gam/reports/templates", cli: "reporting templates save"}  # 61.5
+  delete_report_template:   {area: reporting, rest: "DELETE /api/gam/reports/templates/{template_id}", cli: "reporting templates delete"}  # 61.5
+  duplicate_report_template: {area: reporting, rest: "POST /api/gam/reports/templates/{template_id}/clone", cli: "reporting templates duplicate"}  # 61.5
+  update_report_template:   {area: reporting, rest: "PUT /api/gam/reports/templates/{template_id}", cli: "reporting templates update"}  # 61.5
+  run_report_from_template: {area: reporting, rest: "POST /api/gam/reports/templates/{template_id}/run", cli: "reporting templates run"}  # 61.5
+  list_gam_reports:         {area: reporting, rest: "GET /api/gam/reports/gam-reports", cli: "reporting gam-reports list"}  # 61.5
+  get_gam_report:           {area: reporting, rest: "GET /api/gam/reports/gam-reports/{gam_report_id}", cli: "reporting gam-reports get"}  # 61.5
+  create_gam_report:        {area: reporting, rest: "POST /api/gam/reports/templates/{template_id}/publish-to-gam", cli: "reporting gam-reports create-from-template"}  # 61.5
+  update_gam_report:        {area: reporting, rest: "POST /api/gam/reports/templates/{template_id}/update-in-gam", cli: "reporting gam-reports update-from-template"}  # 61.5
+  check_delivery_status:    {area: reporting, rest: "GET /api/gam/jobs/{job_id}/delivery-status", cli: "reporting delivery-status"}  # 61.5
+  fetch_delivery_report:    {area: reporting, rest: "GET /api/jobs/{job_id}/report", cli: "reporting delivery-report"}  # 61.5
+  get_delivery_forecast_by_line_item: {area: reporting, rest: "GET /api/jobs/{job_id}/forecast", cli: "reporting forecast-line-item"}  # 61.5
+  check_underdelivery_alerts: {area: reporting, rest: "GET /api/campaigns/alerts", cli: "reporting alerts-underdelivery"}  # 61.5
+  check_budget_alerts:      {area: reporting, rest: "GET /api/campaigns/{id}/health-alerts", cli: "reporting alerts-budget"}  # 61.5
+  delete_gam_report:        {area: reporting, rest: "DELETE /api/gam/reports/gam-reports/{gam_report_id}", cli: "reporting gam-reports delete"}  # 62.2
+  export_report_csv:        {area: reporting, rest: "POST /api/gam/reports/{execution_id}/export.csv", cli: "reporting export-csv"}  # 62.2
+  get_standalone_forecast:  {area: reporting, rest: "POST /api/gam/reports/forecast/standalone", cli: "reporting forecast standalone"}  # 62.2
+  get_prospective_delivery_forecast: {area: reporting, rest: "POST /api/gam/reports/forecast/prospective", cli: "reporting forecast prospective"}  # 62.2
+  get_traffic_data:         {area: reporting, rest: "POST /api/gam/reports/forecast/traffic", cli: "reporting forecast traffic"}  # 62.2
+  run_ga_report:            {area: reporting, rest: "POST /api/gam/reports/ga4/run", cli: "reporting ga4 run"}  # 62.2
+  get_ga_dimensions:        {area: reporting, rest: "GET /api/gam/reports/ga4/dimensions", cli: "reporting ga4 dimensions"}  # 62.2
+  get_ga_metrics:           {area: reporting, rest: "GET /api/gam/reports/ga4/metrics", cli: "reporting ga4 metrics"}  # 62.2
+  generate_billing_report:  {area: reporting, rest: "POST /api/gam/reports/billing", cli: "reporting billing-report"}  # 62.2a
+  list_presets:              {area: settings, rest: "GET /api/settings/presets", cli: "settings presets list"}  # 61.7
+  create_preset:             {area: settings, rest: "POST /api/settings/presets", cli: "settings presets create"}  # 61.7
+  delete_preset:             {area: settings, rest: "DELETE /api/settings/presets/{preset_id}", cli: "settings presets delete"}  # 61.7
+  get_tenant_settings:       {area: settings, rest: "GET /api/settings/general", cli: "settings general get"}  # 61.7
+  update_tenant_settings:    {area: settings, rest: "PUT /api/settings/general", cli: "settings general set"}  # 61.7
+  get_naming_conventions:    {area: settings, rest: "GET /api/settings/naming", cli: "settings naming get"}  # 61.7
+  update_naming_conventions: {area: settings, rest: "PUT /api/settings/naming", cli: "settings naming set"}  # 61.7
+  get_delivery_defaults:     {area: settings, rest: "GET /api/settings/delivery-defaults", cli: "settings delivery-defaults get"}  # 61.7
+  update_delivery_defaults:  {area: settings, rest: "PUT /api/settings/delivery-defaults", cli: "settings delivery-defaults set"}  # 61.7
+
+  # ── targeting (18) ────────────────────────────────────────────────
+  list_ad_units:               {area: targeting, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
+  list_custom_targeting_keys:  {area: targeting, rest: "GET /api/gam/custom-targeting-keys", cli: "inventory keys"}  # CLI path bug fixed in 61.2
+  create_custom_targeting_key: {area: targeting, rest: "POST /api/gam/custom-targeting-keys", cli: "inventory create-key"}  # 61.6
+  update_custom_targeting_key: {area: targeting, rest: "PATCH /api/gam/custom-targeting-keys/{key_id}", cli: "inventory update-key"}  # 61.6
+  delete_custom_targeting_key: {area: targeting, rest: "DELETE /api/gam/custom-targeting-keys/{key_id}", cli: "inventory delete-key"}  # 61.6
+  validate_fluid:              {area: targeting, rest: "POST /api/gam/ad-units/validate-fluid", cli: "inventory validate-fluid"}  # 61.6
+  get_inventory_forecast:      {area: targeting, rest: "POST /api/gam/inventory/forecast", cli: "inventory forecast"}  # 61.6
+  update_ad_unit:              {area: targeting, rest: "PATCH /api/gam/ad-units/{ad_unit_id}", cli: "inventory update-ad-unit"}  # 61.6
+  archive_ad_unit:             {area: targeting, rest: "DELETE /api/gam/ad-units/{ad_unit_id}", cli: "inventory archive-ad-unit"}  # 61.6
+  get_available_countries:     {area: targeting, rest: "GET /api/gam/geo-targets", cli: "inventory countries"}  # 61.6
+  get_device_categories:       {area: targeting, rest: "GET /api/gam/device-categories", cli: "inventory device-categories"}  # 61.6
+  create_custom_targeting_values:    {area: targeting, rest: "POST /api/gam/custom-targeting-keys/{key_id}/values", cli: "custom-targeting-values create"}  # 62.5
+  update_custom_targeting_value:     {area: targeting, rest: "PATCH /api/gam/custom-targeting-values/{value_id}", cli: "custom-targeting-values update"}  # 62.5
+  perform_custom_targeting_value_action: {area: targeting, rest: "POST /api/gam/custom-targeting-values/action", cli: "custom-targeting-values action"}  # 62.5
+  search_ad_units:             {area: targeting, rest: "GET /api/gam/ad-units/search", cli: "inventory search-ad-units"}  # 62.5
+  get_custom_targeting_values: {area: targeting, rest: "GET /api/gam/custom-targeting-values", cli: "custom-targeting-values list"}  # 62.5
+  search_custom_targeting:     {area: targeting, rest: "GET /api/gam/custom-targeting/search", cli: "inventory search-custom-targeting"}  # 62.5
+  get_available_languages:     {area: targeting, rest: "GET /api/gam/languages", cli: "inventory languages"}  # 62.5
