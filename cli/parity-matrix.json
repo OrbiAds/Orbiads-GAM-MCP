@@ -1,10 +1,13 @@
 {
-  "total_tools": 196,
+  "total_tools": 234,
   "counts": {
-    "FULL": 188,
-    "EXEMPT": 8
+    "EXEMPT": 46,
+    "FULL": 188
   },
   "per_area": {
+    "adcp": {
+      "EXEMPT": 3
+    },
     "advertisers": {
       "FULL": 10
     },
@@ -29,6 +32,12 @@
     },
     "creatives": {
       "FULL": 39
+    },
+    "deals": {
+      "EXEMPT": 26
+    },
+    "gam_features": {
+      "EXEMPT": 3
     },
     "inventory": {
       "FULL": 10
@@ -56,6 +65,9 @@
     },
     "pricing": {
       "EXEMPT": 5
+    },
+    "products": {
+      "EXEMPT": 6
     },
     "reporting": {
       "FULL": 31
@@ -248,6 +260,36 @@
     "users list"
   ],
   "rows": [
+    {
+      "tool": "create_media_buy_from_adcp",
+      "module": "adcp",
+      "area": "adcp",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "preview_media_buy_from_adcp",
+      "module": "adcp",
+      "area": "adcp",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "validate_adcp_request",
+      "module": "adcp",
+      "area": "adcp",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
     {
       "tool": "create_advertiser",
       "module": "advertisers",
@@ -1049,6 +1091,296 @@
       "cli_present": true
     },
     {
+      "tool": "archive_proposal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "archive_proposal_line_items",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_deal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_makegoods",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_pmp_deal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_private_auction",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_proposal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_proposal_line_items",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "edit_proposal_for_negotiation",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "estimate_deal_cost",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_marketplace_comments",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_pmp_deal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_private_auction",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_programmatic_buyer",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_proposal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_pmp_deals",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_private_auctions",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_programmatic_buyers",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_proposal_line_items",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "request_buyer_acceptance",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "reserve_proposal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "terminate_proposal_negotiations",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_pmp_deal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_private_auction",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_proposal",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_proposal_line_items",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_gam_features",
+      "module": "gam_features",
+      "area": "gam_features",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "probe_gam_features",
+      "module": "gam_features",
+      "area": "gam_features",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "refresh_gam_features",
+      "module": "gam_features",
+      "area": "gam_features",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "archive_inactive_ad_units",
       "module": "inventory",
       "area": "inventory",
@@ -1625,6 +1957,66 @@
       "rest": "NO-REST",
       "cli": null,
       "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "archive_product",
+      "module": "products",
+      "area": "products",
+      "rest": "POST /api/products/{product_id}:archive",
+      "cli": null,
+      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "create_product",
+      "module": "products",
+      "area": "products",
+      "rest": "POST /api/products",
+      "cli": null,
+      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_product",
+      "module": "products",
+      "area": "products",
+      "rest": "GET /api/products/{product_id}",
+      "cli": null,
+      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_products_adcp",
+      "module": "products",
+      "area": "products",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 64 ADCP discovery — protocol-first integration via MCP only, no REST/CLI surface planned (buy-agent path).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "list_products",
+      "module": "products",
+      "area": "products",
+      "rest": "GET /api/products",
+      "cli": null,
+      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "update_product",
+      "module": "products",
+      "area": "products",
+      "rest": "PATCH /api/products/{product_id}",
+      "cli": null,
+      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
     },

@@ -251,3 +251,64 @@ tools:
   get_custom_targeting_values: {area: targeting, rest: "GET /api/gam/custom-targeting-values", cli: "custom-targeting-values list"}  # 62.5
   search_custom_targeting:     {area: targeting, rest: "GET /api/gam/custom-targeting/search", cli: "inventory search-custom-targeting"}  # 62.5
   get_available_languages:     {area: targeting, rest: "GET /api/gam/languages", cli: "inventory languages"}  # 62.5
+
+  # ── Epic 64 — Programmatic Deals + ADCP + Partner Tokens + GAM Features Probe ──
+  # CLI parity for Epic 64 is intentionally deferred to a dedicated CLI extension
+  # story (post `story-64-frontend-deals-adcp-reporting`). These tools live
+  # behind the MCP layer only for the moment: the buy-agent integration path
+  # (partner tokens + ADCP) is protocol-first, and the tenant-side UI ships
+  # before any CLI surface is exposed. Re-classify when the CLI story lands.
+
+  # ── deals — PMP REST (Story 64.1c) ────────────────────────────────
+  list_pmp_deals:                 {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  get_pmp_deal:                   {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  create_pmp_deal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  update_pmp_deal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  list_private_auctions:          {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  get_private_auction:            {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  create_private_auction:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  update_private_auction:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  list_programmatic_buyers:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  get_programmatic_buyer:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+
+  # ── deals — PG/PD SOAP (Stories 64.6-64.11) ───────────────────────
+  get_proposal:                   {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  create_proposal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  update_proposal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  archive_proposal:               {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  request_buyer_acceptance:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  reserve_proposal:               {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  edit_proposal_for_negotiation:  {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  terminate_proposal_negotiations: {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  get_marketplace_comments:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  list_proposal_line_items:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  create_proposal_line_items:     {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  update_proposal_line_items:     {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  archive_proposal_line_items:    {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  create_makegoods:               {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+
+  # ── deals — Orchestrator (Story 64.10) ────────────────────────────
+  create_deal:                    {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  estimate_deal_cost:             {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+
+  # ── adcp — ADCP façade (Story 64.24) ──────────────────────────────
+  validate_adcp_request:          {area: adcp, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path)."}
+  preview_media_buy_from_adcp:    {area: adcp, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path)."}
+  create_media_buy_from_adcp:     {area: adcp, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path)."}
+
+  # ── gam_features — Probe (Story 64.0) ─────────────────────────────
+  get_gam_features:               {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
+  probe_gam_features:             {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
+  refresh_gam_features:           {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
+
+  # ── products — Product Catalog (Story 64.23) ──────────────────────
+  # REST surface lives under /api/products (Story 64.23 follow-up, see
+  # backend/src/api/routes/products.py). CLI parity is still deferred to the
+  # dedicated CLI extension story (post 64-frontend), so each entry is marked
+  # exempt — the parity generator counts them as EXEMPT (not MCP-ONLY).
+  create_product:                 {area: products, rest: "POST /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  list_products:                  {area: products, rest: "GET /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  get_product:                    {area: products, rest: "GET /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  update_product:                 {area: products, rest: "PATCH /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  archive_product:                {area: products, rest: "POST /api/products/{product_id}:archive", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  get_products_adcp:              {area: products, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP discovery — protocol-first integration via MCP only, no REST/CLI surface planned (buy-agent path)."}
