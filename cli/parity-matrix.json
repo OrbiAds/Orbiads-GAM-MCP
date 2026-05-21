@@ -1,8 +1,8 @@
 {
-  "total_tools": 234,
+  "total_tools": 235,
   "counts": {
     "EXEMPT": 46,
-    "FULL": 188
+    "FULL": 189
   },
   "per_area": {
     "adcp": {
@@ -70,7 +70,7 @@
       "EXEMPT": 6
     },
     "reporting": {
-      "FULL": 31
+      "FULL": 32
     },
     "settings": {
       "FULL": 9
@@ -241,6 +241,7 @@
     "reporting inventory",
     "reporting metrics",
     "reporting run",
+    "reporting skill",
     "reporting templates delete",
     "reporting templates duplicate",
     "reporting templates list",
@@ -2256,6 +2257,16 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/templates",
       "cli": "reporting templates list",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "reporting_skill",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "POST /api/gam/reporting/skill",
+      "cli": "reporting skill",
       "exempt": null,
       "status": "FULL",
       "cli_present": true

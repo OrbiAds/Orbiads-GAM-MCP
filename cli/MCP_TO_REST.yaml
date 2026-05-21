@@ -222,6 +222,7 @@ tools:
   get_ga_dimensions:        {area: reporting, rest: "GET /api/gam/reports/ga4/dimensions", cli: "reporting ga4 dimensions"}  # 62.2
   get_ga_metrics:           {area: reporting, rest: "GET /api/gam/reports/ga4/metrics", cli: "reporting ga4 metrics"}  # 62.2
   generate_billing_report:  {area: reporting, rest: "POST /api/gam/reports/billing", cli: "reporting billing-report"}  # 62.2a
+  reporting_skill:          {area: reporting, rest: "POST /api/gam/reporting/skill", cli: "reporting skill"}  # 66.1 (Epic 66 parent>child tool, 5 actions)
   list_presets:              {area: settings, rest: "GET /api/settings/presets", cli: "settings presets list"}  # 61.7
   create_preset:             {area: settings, rest: "POST /api/settings/presets", cli: "settings presets create"}  # 61.7
   delete_preset:             {area: settings, rest: "DELETE /api/settings/presets/{preset_id}", cli: "settings presets delete"}  # 61.7

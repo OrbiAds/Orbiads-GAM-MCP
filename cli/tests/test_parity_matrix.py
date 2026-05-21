@@ -28,9 +28,10 @@ def matrix():
 
 
 def test_all_mcp_tools_extracted():
-    """AST extraction must find every @mcp.tool (196 as of 2026-05-19)."""
+    """AST extraction must find every @mcp.tool (235 as of 2026-05-21 — Epic 64
+    brought 38 tools, Epic 66 Story 66.1 added `reporting_skill` for a +1)."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    assert len(tools) == 196, f"expected 196 @mcp.tool, found {len(tools)}"
+    assert len(tools) == 235, f"expected 235 @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
     assert tools["run_pql_query"] == "pql"
@@ -39,7 +40,7 @@ def test_all_mcp_tools_extracted():
 
 def test_every_tool_classified_no_unmapped(matrix):
     """The curated map must cover 100% of tools — zero UNMAPPED."""
-    assert matrix["total_tools"] == 196
+    assert matrix["total_tools"] == 235
     statuses = {r["status"] for r in matrix["rows"]}
     assert statuses <= VALID_STATUSES
     unmapped = [r["tool"] for r in matrix["rows"] if r["status"] == "UNMAPPED"]
@@ -48,7 +49,7 @@ def test_every_tool_classified_no_unmapped(matrix):
 
 def test_counts_reconcile(matrix):
     """The split must sum to the total — fixes the audit's non-reconciling tally."""
-    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 196
+    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 235
 
 
 def test_pricing_is_exempt(matrix):
@@ -84,20 +85,24 @@ def test_outputs_written_and_valid(tmp_path, monkeypatch):
     )
     assert rc.returncode == 0, rc.stderr
     data = json.loads((CLI_ROOT / "parity-matrix.json").read_text(encoding="utf-8"))
-    assert data["total_tools"] == 196
+    assert data["total_tools"] == 235
     md = (CLI_ROOT / "PARITY.md").read_text(encoding="utf-8")
     assert "OrbiAds CLI <-> MCP Parity Matrix" in md
     assert "single source of truth" in md.lower()
 
 
 def test_check_mode_is_the_story_63_2_guard():
-    """--check exits 2 while parity is incomplete (non-FULL/EXEMPT tools exist).
-    When Epics 61-63 land and every tool is FULL/EXEMPT, this flips to exit 0."""
+    """--check exits 0 once every tool is FULL or EXEMPT.
+
+    Updated 2026-05-21 (Story 66.1) : with Epic 63 landed and Story 66.1
+    adding `reporting_skill` as FULL, every tool is now classified — guard
+    flips to exit 0. If a future @mcp.tool lands without a CLI/REST mapping
+    or an explicit `exempt:` entry, this guard fails again (its intended
+    long-term role)."""
     rc = subprocess.run(
         [sys.executable, str(GEN), "--check", "--quiet"],
         cwd=str(CLI_ROOT),
         capture_output=True,
         text=True,
     )
-    assert rc.returncode == 2, "guard must fail (exit 2) until full parity is reached"
-    assert "PARITY GUARD FAIL" in rc.stderr
+    assert rc.returncode == 0, f"parity should be complete; stderr={rc.stderr}"

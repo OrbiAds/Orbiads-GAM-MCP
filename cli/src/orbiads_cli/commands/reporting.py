@@ -536,3 +536,63 @@ def billing_report(
             render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
+
+
+# === Story 66.1 (Epic 66) — reporting_skill parent>child tool =================
+
+
+@app.command("skill")
+def skill(
+    ctx: typer.Context,
+    action: str = typer.Option(
+        ...,
+        "--action",
+        help=(
+            "One of: schedule_from_template | create_alert | cancel_run | "
+            "historical_aggregates | fetch_mcm_earnings"
+        ),
+    ),
+    params_file: str = typer.Option(
+        None,
+        "--params-file",
+        "-f",
+        help="JSON file path containing the action params (use this OR --params-json).",
+    ),
+    params_json: str = typer.Option(
+        None,
+        "--params-json",
+        help="Inline JSON string of the action params (use this OR --params-file).",
+    ),
+):
+    """Dispatch a reporting skill action via the parent>child orchestration tool.
+
+    Posts to `POST /api/gam/reporting/skill` with `{action, params}`. The
+    server validates `params` via a Pydantic discriminated union (one schema
+    per action) and routes to the right service method.
+
+    Examples :
+
+      orbiads reporting skill --action cancel_run \\
+        --params-json '{"operationName":"networks/123/operations/reports/runs/456"}'
+
+      orbiads reporting skill --action create_alert --params-file alert.json
+    """
+    if (params_file is None) == (params_json is None):
+        info("Provide exactly one of --params-file or --params-json.")
+        raise typer.Exit(code=2)
+    if params_file:
+        payload = _load_json_payload(params_file)
+    else:
+        try:
+            payload = json.loads(params_json)
+        except json.JSONDecodeError as exc:
+            info(f"Invalid JSON in --params-json: {exc}")
+            raise typer.Exit(code=2)
+    try:
+        data = get_client().post(
+            "/api/gam/reporting/skill",
+            json={"action": action, "params": payload},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
