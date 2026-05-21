@@ -1,7 +1,7 @@
 {
-  "total_tools": 238,
+  "total_tools": 240,
   "counts": {
-    "EXEMPT": 47,
+    "EXEMPT": 49,
     "FULL": 191
   },
   "per_area": {
@@ -15,7 +15,8 @@
       "FULL": 5
     },
     "audit": {
-      "FULL": 1
+      "FULL": 1,
+      "EXEMPT": 1
     },
     "auth": {
       "FULL": 6
@@ -35,6 +36,9 @@
     },
     "deals": {
       "EXEMPT": 26
+    },
+    "admin": {
+      "EXEMPT": 1
     },
     "gam_features": {
       "EXEMPT": 3
@@ -452,6 +456,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "audit_skill_estimate_cost",
+      "module": "audit_estimator",
+      "area": "audit",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 65 Story 65.11 pure-compute cost preview tool (no GAM call). REST + CLI parity deferred to the same Epic 65 CLI extension story as gam_admin (post-65.9/65.10c).",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "check_credentials",
@@ -1350,6 +1364,16 @@
       "rest": "NO-REST",
       "cli": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "gam_admin",
+      "module": "gam_admin",
+      "area": "admin",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Epic 65 Story 65.8 parent>child tool (48 area/action tuples). REST symmetric route + CLI verb deferred to a dedicated CLI extension story (post-65.9/65.10c).",
       "status": "EXEMPT",
       "cli_present": null
     },
