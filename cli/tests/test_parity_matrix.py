@@ -28,11 +28,12 @@ def matrix():
 
 
 def test_all_mcp_tools_extracted():
-    """AST extraction must find every @mcp.tool (236 as of 2026-05-21 — Epic 64
+    """AST extraction must find every @mcp.tool (238 as of 2026-05-21 — Epic 64
     brought 38 tools, Epic 66 Story 66.1 added `reporting_skill`, Epic 67
-    Story 67.1 added `get_pricing_suggestion`)."""
+    Story 67.1 added `get_pricing_suggestion`, Epic 68/69 WIP added
+    `line_item_lifecycle` + `order_lifecycle`)."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    assert len(tools) == 236, f"expected 236 @mcp.tool, found {len(tools)}"
+    assert len(tools) == 238, f"expected 238 @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
     assert tools["run_pql_query"] == "pql"
@@ -41,7 +42,7 @@ def test_all_mcp_tools_extracted():
 
 def test_every_tool_classified_no_unmapped(matrix):
     """The curated map must cover 100% of tools — zero UNMAPPED."""
-    assert matrix["total_tools"] == 236
+    assert matrix["total_tools"] == 238
     statuses = {r["status"] for r in matrix["rows"]}
     assert statuses <= VALID_STATUSES
     unmapped = [r["tool"] for r in matrix["rows"] if r["status"] == "UNMAPPED"]
@@ -50,7 +51,7 @@ def test_every_tool_classified_no_unmapped(matrix):
 
 def test_counts_reconcile(matrix):
     """The split must sum to the total — fixes the audit's non-reconciling tally."""
-    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 236
+    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 238
 
 
 def test_pricing_is_exempt(matrix):
@@ -86,7 +87,7 @@ def test_outputs_written_and_valid(tmp_path, monkeypatch):
     )
     assert rc.returncode == 0, rc.stderr
     data = json.loads((CLI_ROOT / "parity-matrix.json").read_text(encoding="utf-8"))
-    assert data["total_tools"] == 236
+    assert data["total_tools"] == 238
     md = (CLI_ROOT / "PARITY.md").read_text(encoding="utf-8")
     assert "OrbiAds CLI <-> MCP Parity Matrix" in md
     assert "single source of truth" in md.lower()

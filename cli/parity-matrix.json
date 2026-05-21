@@ -1,7 +1,7 @@
 {
-  "total_tools": 236,
+  "total_tools": 238,
   "counts": {
-    "EXEMPT": 47,
+    "EXEMPT": 49,
     "FULL": 189
   },
   "per_area": {
@@ -46,13 +46,15 @@
       "FULL": 3
     },
     "line_items": {
-      "FULL": 15
+      "FULL": 15,
+      "EXEMPT": 1
     },
     "network": {
       "FULL": 4
     },
     "orders": {
-      "FULL": 13
+      "FULL": 13,
+      "EXEMPT": 1
     },
     "placements": {
       "FULL": 4
@@ -1602,6 +1604,16 @@
       "cli_present": true
     },
     {
+      "tool": "line_item_lifecycle",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "TBD",
+      "cli": null,
+      "exempt": "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "list_line_items_by_order",
       "module": "line_items",
       "area": "line_items",
@@ -1800,6 +1812,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "order_lifecycle",
+      "module": "orders",
+      "area": "orders",
+      "rest": "TBD",
+      "cli": null,
+      "exempt": "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress).",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "update_contact",
