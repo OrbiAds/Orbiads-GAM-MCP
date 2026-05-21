@@ -313,3 +313,4 @@ tools:
   update_product:                 {area: products, rest: "PATCH /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
   archive_product:                {area: products, rest: "POST /api/products/{product_id}:archive", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
   get_products_adcp:              {area: products, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP discovery — protocol-first integration via MCP only, no REST/CLI surface planned (buy-agent path)."}
+  get_pricing_suggestion:         {area: products, rest: "GET /api/products/{product_id}/pricing-suggestion", cli: null, exempt: "Epic 67 Pricing assistant — same CLI-deferred policy as other Product tools (Epic 64). REST shipped."}  # 67.1

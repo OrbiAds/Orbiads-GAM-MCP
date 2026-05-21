@@ -1,7 +1,7 @@
 {
-  "total_tools": 235,
+  "total_tools": 236,
   "counts": {
-    "EXEMPT": 46,
+    "EXEMPT": 47,
     "FULL": 189
   },
   "per_area": {
@@ -67,7 +67,7 @@
       "EXEMPT": 5
     },
     "products": {
-      "EXEMPT": 6
+      "EXEMPT": 7
     },
     "reporting": {
       "FULL": 32
@@ -1978,6 +1978,16 @@
       "rest": "POST /api/products",
       "cli": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "get_pricing_suggestion",
+      "module": "products",
+      "area": "products",
+      "rest": "GET /api/products/{product_id}/pricing-suggestion",
+      "cli": null,
+      "exempt": "Epic 67 Pricing assistant — same CLI-deferred policy as other Product tools (Epic 64). REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
     },
