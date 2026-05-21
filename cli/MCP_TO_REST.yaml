@@ -318,5 +318,5 @@ tools:
   # dedicated story that completes the lifecycle work. EXEMPT for now to
   # keep the parity guard green ; replace with FULL entries when that
   # story ships.
-  line_item_lifecycle:            {area: line_items, rest: "TBD", cli: null, exempt: "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress)."}
-  order_lifecycle:                {area: orders, rest: "TBD", cli: null, exempt: "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress)."}
+  line_item_lifecycle:            {area: line_items, rest: "POST /api/gam/line-items/lifecycle", cli: "line-items lifecycle"}
+  order_lifecycle:                {area: orders, rest: "POST /api/gam/orders/lifecycle", cli: "orders lifecycle"}

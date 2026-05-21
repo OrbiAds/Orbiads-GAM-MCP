@@ -164,6 +164,36 @@ def archive(
 
 
 @app.command()
+def lifecycle(
+    ctx: typer.Context,
+    action: str = typer.Argument(
+        ...,
+        help="Lifecycle action: approve, approve_without_reservation_changes, archive, unarchive, pause, resume, retire, disapprove, submit_for_approval.",
+    ),
+    order_id: str = typer.Argument(..., help="GAM Order ID (direct ID — no job_id needed)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Run a lifecycle action on an Order by direct GAM ID (Epic 68 §9).
+
+    REST parity for MCP `order_lifecycle`. Covers all 9 OrderAction WSDL
+    subtypes including pause/resume/retire/disapprove/submit_for_approval
+    that the legacy per-action endpoints didn't expose.
+    """
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Run lifecycle action '{action}' on order {order_id}?", effective_ctx):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            "/api/gam/orders/lifecycle",
+            json={"order_id": order_id, "action": action},
+        )
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
 def update(
     ctx: typer.Context,
     order_id: str = typer.Argument(..., help="Order ID"),

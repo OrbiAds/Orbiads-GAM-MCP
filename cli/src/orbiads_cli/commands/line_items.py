@@ -95,6 +95,47 @@ def archive(
 
 
 @app.command()
+def lifecycle(
+    ctx: typer.Context,
+    action: str = typer.Argument(
+        ...,
+        help="Lifecycle action: activate, pause, resume, approve, archive, unarchive, reserve, release, retire.",
+    ),
+    ids: str = typer.Option(
+        ...,
+        "--ids",
+        help="Comma-separated GAM Line Item IDs (e.g. '12345,67890'). Direct GAM IDs — no Firestore job_id required.",
+    ),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Run a lifecycle action on Line Items by direct GAM ID (Epic 68 §9).
+
+    Works on Line Items created directly in GAM, bypassing the
+    Firestore job model. REST parity for MCP `line_item_lifecycle`.
+    """
+    out: OutputContext = ctx.obj
+    line_item_ids = [s.strip() for s in ids.split(",") if s.strip()]
+    if not line_item_ids:
+        typer.echo("Error: --ids must contain at least one numeric ID", err=True)
+        raise typer.Exit(code=2)
+
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(
+        f"Run lifecycle action '{action}' on {len(line_item_ids)} line item(s)?",
+        effective_ctx,
+    ):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            "/api/gam/line-items/lifecycle",
+            json={"line_item_ids": line_item_ids, "action": action},
+        )
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
 def update(
     ctx: typer.Context,
     job_id: str = typer.Argument(..., help="Job ID"),

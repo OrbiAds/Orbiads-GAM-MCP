@@ -1,8 +1,8 @@
 {
   "total_tools": 238,
   "counts": {
-    "EXEMPT": 49,
-    "FULL": 189
+    "EXEMPT": 47,
+    "FULL": 191
   },
   "per_area": {
     "adcp": {
@@ -46,15 +46,13 @@
       "FULL": 3
     },
     "line_items": {
-      "FULL": 15,
-      "EXEMPT": 1
+      "FULL": 16
     },
     "network": {
       "FULL": 4
     },
     "orders": {
-      "FULL": 13,
-      "EXEMPT": 1
+      "FULL": 14
     },
     "placements": {
       "FULL": 4
@@ -192,6 +190,7 @@
     "line-items create-preferred-deal",
     "line-items duplicate",
     "line-items get",
+    "line-items lifecycle",
     "line-items list-by-order",
     "line-items pause",
     "line-items private-deals",
@@ -211,6 +210,7 @@
     "orders archive",
     "orders create",
     "orders get",
+    "orders lifecycle",
     "orders list",
     "orders list-delivering",
     "orders update",
@@ -1607,11 +1607,11 @@
       "tool": "line_item_lifecycle",
       "module": "line_items",
       "area": "line_items",
-      "rest": "TBD",
-      "cli": null,
-      "exempt": "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress).",
-      "status": "EXEMPT",
-      "cli_present": null
+      "rest": "POST /api/gam/line-items/lifecycle",
+      "cli": "line-items lifecycle",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "list_line_items_by_order",
@@ -1817,11 +1817,11 @@
       "tool": "order_lifecycle",
       "module": "orders",
       "area": "orders",
-      "rest": "TBD",
-      "cli": null,
-      "exempt": "Epic 68/69 parent>child lifecycle tool — REST/CLI surface pending dedicated story (work in progress).",
-      "status": "EXEMPT",
-      "cli_present": null
+      "rest": "POST /api/gam/orders/lifecycle",
+      "cli": "orders lifecycle",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "update_contact",
