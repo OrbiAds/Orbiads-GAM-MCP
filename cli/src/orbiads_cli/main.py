@@ -22,6 +22,7 @@ from orbiads_cli.commands import (
     audiences,     # Story 61.7
     audit_log,     # Story 61.7
     preview,       # Story 61.7
+    api,           # Generic API passthrough for migration coverage
     contacts,      # Story 62.4
     users,         # Story 62.4
     roles,         # Story 62.4
@@ -87,6 +88,7 @@ app.add_typer(settings_cmd.app, name="settings")  # Story 61.7 — server-side t
 app.add_typer(audiences.app, name="audiences")    # Story 61.7
 app.add_typer(audit_log.app, name="audit")        # Story 61.7
 app.add_typer(preview.app, name="preview")        # Story 61.7
+app.add_typer(api.app, name="api")                # Generic API passthrough
 app.add_typer(contacts.app, name="contacts")      # Story 62.4
 app.add_typer(users.app, name="users")            # Story 62.4
 app.add_typer(roles.app, name="roles")            # Story 62.4

@@ -44,6 +44,16 @@ class TestCampaignsExtensions_61_4:
         assert result.exit_code == 0, result.output
         client.patch.assert_called_once_with("/api/campaigns/c1", json={"name": "renamed"})
 
+    def test_pause_uses_bulk_action(self, authenticated_config):
+        client = _mock_client(post_return={"succeeded": ["c1"], "failed": []})
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["campaigns", "pause", "c1", "--yes"])
+        assert result.exit_code == 0
+        client.post.assert_called_once_with(
+            "/api/campaigns/bulk-action",
+            json={"campaignIds": ["c1"], "action": "pause"},
+        )
+
     def test_add_line_items_posts_batch(self, authenticated_config, tmp_path):
         client = _mock_client(post_return={"created": 3})
         f = _write_json(tmp_path, {"lineItems": [{"name": "li1"}]})

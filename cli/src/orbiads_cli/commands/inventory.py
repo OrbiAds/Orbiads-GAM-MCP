@@ -207,7 +207,7 @@ def blueprint_generate(
     """Generate an inventory blueprint (dry run)."""
     payload = _load_json_payload(file)
     try:
-        data = get_client().post("/api/gam/blueprint/generate", json=payload)
+        data = get_client().post("/api/gam/inventory/blueprint/generate", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -221,7 +221,7 @@ def blueprint_push(
     """Push an inventory blueprint to GAM."""
     payload = _load_json_payload(file)
     try:
-        data = get_client().post("/api/gam/blueprint/push", json=payload)
+        data = get_client().post("/api/gam/inventory/blueprint/push", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

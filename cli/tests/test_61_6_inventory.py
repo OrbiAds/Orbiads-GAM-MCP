@@ -52,8 +52,8 @@ def test_inventory_get_delete_verbs(authenticated_config, argv, method, path):
 POST_WITH_FILE = [
     (["inventory", "create-ad-units"],           "/api/gam/ad-units/save-adunits"),
     (["inventory", "audit"],                     "/api/gam/inventory/audit"),
-    (["inventory", "blueprint-generate"],        "/api/gam/blueprint/generate"),
-    (["inventory", "blueprint-push"],            "/api/gam/blueprint/push"),
+    (["inventory", "blueprint-generate"],        "/api/gam/inventory/blueprint/generate"),
+    (["inventory", "blueprint-push"],            "/api/gam/inventory/blueprint/push"),
     (["inventory", "validate-fluid"],            "/api/gam/ad-units/validate-fluid"),
     (["inventory", "forecast"],                  "/api/gam/inventory/forecast"),
     (["inventory", "create-key"],                "/api/gam/custom-targeting-keys"),

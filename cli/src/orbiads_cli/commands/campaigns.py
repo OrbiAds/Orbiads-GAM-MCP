@@ -85,7 +85,10 @@ def pause(
             raise typer.Exit(code=0)
 
         client = get_client()
-        client.post(f"/api/campaigns/{campaign_id}/pause")
+        client.post(
+            "/api/campaigns/bulk-action",
+            json={"campaignIds": [campaign_id], "action": "pause"},
+        )
         success(f"Campaign {campaign_id} paused successfully.")
     except CliApiError as e:
         handle_error(e)
