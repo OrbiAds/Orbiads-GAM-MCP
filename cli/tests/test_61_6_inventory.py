@@ -50,7 +50,7 @@ def test_inventory_get_delete_verbs(authenticated_config, argv, method, path):
 
 # POST verbs with --file body
 POST_WITH_FILE = [
-    (["inventory", "create-ad-units"],           "/api/gam/ad-units/save-adunits"),
+    (["inventory", "save-adunits"],              "/api/gam/ad-units/save-adunits"),
     (["inventory", "audit"],                     "/api/gam/inventory/audit"),
     (["inventory", "blueprint-generate"],        "/api/gam/inventory/blueprint/generate"),
     (["inventory", "blueprint-push"],            "/api/gam/inventory/blueprint/push"),

@@ -115,7 +115,7 @@ tools:
   # ── inventory (10) ────────────────────────────────────────────────
   get_ad_unit_tree:            {area: inventory, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   audit_inventory:             {area: inventory, rest: "POST /api/gam/inventory/audit", cli: "inventory audit"}  # 61.6
-  create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory create-ad-units"}  # 61.6
+  create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory save-adunits"}  # 61.6 / 73.4
   generate_ads_json:           {area: inventory, rest: "GET /api/gam/inventory/manifest/ads.json", cli: "inventory ads-json"}  # 61.6
   generate_inventory_blueprint: {area: inventory, rest: "POST /api/gam/blueprint/generate", cli: "inventory blueprint-generate"}  # 61.6
   push_inventory_blueprint:    {area: inventory, rest: "POST /api/gam/blueprint/push", cli: "inventory blueprint-push"}  # 61.6
@@ -258,23 +258,22 @@ tools:
   get_available_languages:     {area: targeting, rest: "GET /api/gam/languages", cli: "inventory languages"}  # 62.5
 
   # ── Epic 64 — Programmatic Deals + ADCP + Partner Tokens + GAM Features Probe ──
-  # CLI parity for Epic 64 is intentionally deferred to a dedicated CLI extension
-  # story (post `story-64-frontend-deals-adcp-reporting`). These tools live
-  # behind the MCP layer only for the moment: the buy-agent integration path
-  # (partner tokens + ADCP) is protocol-first, and the tenant-side UI ships
-  # before any CLI surface is exposed. Re-classify when the CLI story lands.
+  # Story 73.8 exposes the PMP/private-auction/buyer REST subset through the
+  # dedicated `programmatic` CLI group. Remaining Epic 64 PG/PD, ADCP, partner
+  # token, feature-probe, and product-catalog surfaces stay explicitly deferred
+  # until their own CLI extension stories land.
 
   # ── deals — PMP REST (Story 64.1c) ────────────────────────────────
-  list_pmp_deals:                 {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  get_pmp_deal:                   {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  create_pmp_deal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  update_pmp_deal:                {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  list_private_auctions:          {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  get_private_auction:            {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  create_private_auction:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  update_private_auction:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  list_programmatic_buyers:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  get_programmatic_buyer:         {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  list_pmp_deals:                 {area: deals, rest: "GET /api/gam/pmp-deals", cli: "programmatic deals list"}
+  get_pmp_deal:                   {area: deals, rest: "GET /api/gam/pmp-deals/{deal_id}", cli: "programmatic deals get"}
+  create_pmp_deal:                {area: deals, rest: "POST /api/gam/pmp-deals", cli: "programmatic deals create"}
+  update_pmp_deal:                {area: deals, rest: "PATCH /api/gam/pmp-deals/{deal_id}", cli: "programmatic deals update"}
+  list_private_auctions:          {area: deals, rest: "GET /api/gam/private-auctions", cli: "programmatic auctions list"}
+  get_private_auction:            {area: deals, rest: "GET /api/gam/private-auctions/{auction_id}", cli: "programmatic auctions get"}
+  create_private_auction:         {area: deals, rest: "POST /api/gam/private-auctions", cli: "programmatic auctions create"}
+  update_private_auction:         {area: deals, rest: "PATCH /api/gam/private-auctions/{auction_id}", cli: "programmatic auctions update"}
+  list_programmatic_buyers:       {area: deals, rest: "GET /api/gam/programmatic-buyers", cli: "programmatic buyers list"}
+  get_programmatic_buyer:         {area: deals, rest: "GET /api/gam/programmatic-buyers/{buyer_id}", cli: "programmatic buyers get"}
 
   # ── deals — PG/PD SOAP (Stories 64.6-64.11) ───────────────────────
   get_proposal:                   {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}

@@ -154,6 +154,28 @@ def update(
         handle_error(e)
 
 
+@app.command("update-all")
+def update_all(
+    ctx: typer.Context,
+    job_id: str = typer.Argument(..., help="Job ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the update body"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Bulk-update every line item under a job."""
+    out: OutputContext = ctx.obj
+    payload = _load_json_payload(file)
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Update ALL line items of job {job_id}?", effective_ctx):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            f"/api/gam/jobs/{job_id}/line-items/update-all", json=payload
+        )
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command()
 def duplicate(
     ctx: typer.Context,

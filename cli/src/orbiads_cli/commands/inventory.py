@@ -16,6 +16,9 @@ _AD_UNIT_COLUMNS = ["id", "name", "sizes", "parentPath"]
 _PLACEMENT_COLUMNS = ["id", "name", "adUnitCount"]
 _KEY_COLUMNS = ["id", "name", "type", "valuesCount"]
 _VALUE_COLUMNS = ["id", "name"]
+_BP_TEMPLATE_COLUMNS = ["id", "name", "description", "icon"]
+_BP_BUNDLE_COLUMNS = ["id", "name", "createdAt"]
+_BP_POSITION_COLUMNS = ["id", "name", "label", "usageCount"]
 
 
 @app.command("ad-units")
@@ -133,8 +136,8 @@ def _load_json_payload(path: str) -> dict:
 # ── ad-unit mutations ────────────────────────────────────────────────────
 
 
-@app.command("create-ad-units")
-def create_ad_units(
+@app.command("save-adunits")
+def save_adunits(
     ctx: typer.Context,
     file: str = typer.Option(..., "--file", "-f", help="JSON file: selectedAdUnitIds array"),
 ):
@@ -142,6 +145,48 @@ def create_ad_units(
     payload = _load_json_payload(file)
     try:
         data = get_client().post("/api/gam/ad-units/save-adunits", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("create-ad-units")
+def create_ad_units(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file containing a single ad-unit object OR a list of ad-unit objects.",
+    ),
+):
+    """Create one or more ad units."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("import-ad-units")
+def import_ad_units(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with {units: [...], dryRun: bool}"
+    ),
+    dry_run: Optional[bool] = typer.Option(
+        None,
+        "--dry-run/--no-dry-run",
+        help="Override body's dryRun. If unset, the file's dryRun is used as-is.",
+    ),
+):
+    """Bulk import ad units with dependency resolution."""
+    payload = _load_json_payload(file)
+    if dry_run is not None and isinstance(payload, dict):
+        payload["dryRun"] = dry_run
+    try:
+        data = get_client().post("/api/gam/ad-units/import", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -262,7 +307,7 @@ def size_mappings_create(
         ...,
         "--file",
         "-f",
-        help='JSON file with {"adUnitId": "...", "mappings": [...]}'
+        help='JSON file with {"adUnitId": "...", "mappings": [...]}',
     ),
 ):
     """Create a size mapping for an ad unit."""
@@ -338,6 +383,180 @@ def inventory_health(
         handle_error(e)
 
 
+# Inventory blueprint sub-Typer (Story 73.6) ----------------------------------
+blueprint_app = typer.Typer(help="Manage inventory blueprints", no_args_is_help=True)
+app.add_typer(blueprint_app, name="blueprint")
+
+bp_templates_app = typer.Typer(help="Browse blueprint templates", no_args_is_help=True)
+blueprint_app.add_typer(bp_templates_app, name="templates")
+
+bp_bundles_app = typer.Typer(help="Manage size bundles", no_args_is_help=True)
+blueprint_app.add_typer(bp_bundles_app, name="size-bundles")
+
+bp_positions_app = typer.Typer(help="Manage custom positions", no_args_is_help=True)
+blueprint_app.add_typer(bp_positions_app, name="custom-positions")
+
+
+@blueprint_app.command("validate")
+def blueprint_validate(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the blueprint to validate"
+    ),
+):
+    """Validate a blueprint against best-practice rules."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/inventory/blueprint/validate", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blueprint_app.command("export")
+def blueprint_export(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help='JSON file with {"blueprint": {...}, "format": "json"|"csv"|"gam_batch"}',
+    ),
+):
+    """Export a blueprint to JSON, CSV, or GAM Batch."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/inventory/blueprint/export", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_templates_app.command("list")
+def bp_templates_list(ctx: typer.Context):
+    """List predefined blueprint templates."""
+    try:
+        data = get_client().get("/api/gam/inventory/blueprint/templates")
+        if isinstance(data, dict):
+            items = data.get("templates", data.get("results", []))
+        else:
+            items = data if isinstance(data, list) else []
+        render(items, _BP_TEMPLATE_COLUMNS, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_templates_app.command("get")
+def bp_templates_get(
+    ctx: typer.Context,
+    template_id: str = typer.Argument(..., help="Template ID"),
+):
+    """Fetch a blueprint template by ID."""
+    try:
+        data = get_client().get(f"/api/gam/inventory/blueprint/templates/{template_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_bundles_app.command("list")
+def bp_bundles_list(ctx: typer.Context):
+    """List size bundles."""
+    try:
+        data = get_client().get("/api/gam/inventory/blueprint/size-bundles")
+        if isinstance(data, dict):
+            items = data.get("sizeBundles", data.get("bundles", data.get("results", [])))
+        else:
+            items = data if isinstance(data, list) else []
+        render(items, _BP_BUNDLE_COLUMNS, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_bundles_app.command("create")
+def bp_bundles_create(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the bundle body"),
+):
+    """Create a size bundle."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            "/api/gam/inventory/blueprint/size-bundles", json=payload
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_bundles_app.command("delete")
+def bp_bundles_delete(
+    ctx: typer.Context,
+    bundle_id: str = typer.Argument(..., help="Bundle ID"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Delete a size bundle."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Delete size bundle {bundle_id}?", effective_ctx):
+        raise typer.Exit(code=0)
+    try:
+        get_client().delete(f"/api/gam/inventory/blueprint/size-bundles/{bundle_id}")
+        info(f"Size bundle {bundle_id} deleted.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blueprint_app.command("recalculate-sizes")
+def blueprint_recalculate_sizes(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the blueprint / selector body"
+    ),
+):
+    """Recalculate sizes for a blueprint."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            "/api/gam/inventory/blueprint/recalculate-sizes", json=payload
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_positions_app.command("list")
+def bp_positions_list(ctx: typer.Context):
+    """List custom positions."""
+    try:
+        data = get_client().get("/api/gam/inventory/blueprint/custom-positions")
+        if isinstance(data, dict):
+            items = data.get("customPositions", data.get("positions", data.get("results", [])))
+        else:
+            items = data if isinstance(data, list) else []
+        render(items, _BP_POSITION_COLUMNS, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_positions_app.command("create")
+def bp_positions_create(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the custom position body"
+    ),
+):
+    """Create a custom position."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            "/api/gam/inventory/blueprint/custom-positions", json=payload
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("blueprint-generate")
 def blueprint_generate(
     ctx: typer.Context,
@@ -378,6 +597,20 @@ def validate_fluid(
     payload = _load_json_payload(file)
     try:
         data = get_client().post("/api/gam/ad-units/validate-fluid", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("validate-fluid-batch")
+def validate_fluid_batch(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"),
+):
+    """Batch-validate Fluid ad-unit compatibility."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/ad-units/validate-fluid-batch", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
