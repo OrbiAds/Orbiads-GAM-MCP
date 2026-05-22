@@ -7,7 +7,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import render, render_detail, info
+from orbiads_cli.output import OutputContext, confirm, info, render, render_detail
 
 app = typer.Typer(help="Run and export reports", no_args_is_help=True)
 
@@ -90,6 +90,19 @@ def templates_list(ctx: typer.Context):
         handle_error(e)
 
 
+@templates_app.command("get")
+def templates_get(
+    ctx: typer.Context,
+    template_id: str = typer.Argument(..., help="Template ID"),
+):
+    """Fetch a single report template by ID."""
+    try:
+        data = get_client().get(f"/api/gam/reports/templates/{template_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @templates_app.command("save")
 def templates_save(
     ctx: typer.Context,
@@ -132,6 +145,19 @@ def templates_delete(
         handle_error(e)
 
 
+@templates_app.command("favorite")
+def templates_favorite(
+    ctx: typer.Context,
+    template_id: str = typer.Argument(..., help="Template ID"),
+):
+    """Toggle the favorite flag on a report template."""
+    try:
+        data = get_client().post(f"/api/gam/reports/templates/{template_id}/favorite")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @templates_app.command("duplicate")
 def templates_duplicate(
     ctx: typer.Context,
@@ -158,7 +184,93 @@ def templates_run(
         handle_error(e)
 
 
-# ── reporting gam-reports sub-group (4 verbs) ─────────────────────────────
+# --- reporting links sub-group (Story 73.5) ---------------------------------
+links_app = typer.Typer(help="Manage GAM report links (Story 73.5)", no_args_is_help=True)
+app.add_typer(links_app, name="links")
+
+_LINK_LIST_COLUMNS = ["id", "templateId", "gamReportId", "syncStatus"]
+
+
+@links_app.command("list")
+def links_list(ctx: typer.Context):
+    """List GAM report links."""
+    try:
+        data = get_client().get("/api/gam/reports/links")
+        if isinstance(data, dict):
+            items = data.get("links", data.get("results", []))
+        else:
+            items = data if isinstance(data, list) else []
+        render(items, _LINK_LIST_COLUMNS, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@links_app.command("sync")
+def links_sync(
+    ctx: typer.Context,
+    link_id: str = typer.Argument(..., help="Link ID"),
+):
+    """Recompute the fingerprint and sync status for a link."""
+    try:
+        data = get_client().patch(f"/api/gam/reports/links/{link_id}/sync", json={})
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@links_app.command("resolve")
+def links_resolve(
+    ctx: typer.Context,
+    link_id: str = typer.Argument(..., help="Link ID"),
+    directive: str = typer.Option(
+        ...,
+        "--directive",
+        help="One of: applyTemplate, importGam, ignore",
+    ),
+):
+    """Resolve drift between an OrbiAds template and linked GAM report."""
+    try:
+        data = get_client().patch(
+            f"/api/gam/reports/links/{link_id}/resolve",
+            json={"directive": directive},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@links_app.command("diff")
+def links_diff(
+    ctx: typer.Context,
+    link_id: str = typer.Argument(..., help="Link ID"),
+):
+    """Show the diff between an OrbiAds template and linked GAM report."""
+    try:
+        data = get_client().get(f"/api/gam/reports/links/{link_id}/diff")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@links_app.command("delete")
+def links_delete(
+    ctx: typer.Context,
+    link_id: str = typer.Argument(..., help="Link ID"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Delete a GAM report link."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Delete link {link_id}?", effective_ctx):
+        raise typer.Exit(code=0)
+    try:
+        get_client().delete(f"/api/gam/reports/links/{link_id}")
+        info(f"Link {link_id} deleted.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+# --- reporting gam-reports sub-group ----------------------------------------
 gam_reports_app = typer.Typer(help="Manage GAM reports linked to OrbiAds templates", no_args_is_help=True)
 app.add_typer(gam_reports_app, name="gam-reports")
 
@@ -187,6 +299,65 @@ def gam_reports_get(
     """Get a GAM report's metadata."""
     try:
         data = get_client().get(f"/api/gam/reports/gam-reports/{gam_report_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@gam_reports_app.command("link")
+def gam_reports_link(
+    ctx: typer.Context,
+    gam_report_id: str = typer.Argument(..., help="GAM report ID"),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help='JSON file with {"templateId": "...", "linkMode": "manual"|"auto"}',
+    ),
+):
+    """Link a GAM report to an OrbiAds template."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            f"/api/gam/reports/gam-reports/{gam_report_id}/link",
+            json=payload,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@gam_reports_app.command("clone-to-template")
+def gam_reports_clone_to_template(
+    ctx: typer.Context,
+    gam_report_id: str = typer.Argument(..., help="GAM report ID"),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help='JSON file with {"templateName": "..."}',
+    ),
+):
+    """Clone a GAM report as a new OrbiAds template."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post(
+            f"/api/gam/reports/gam-reports/{gam_report_id}/clone-to-template",
+            json=payload,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@gam_reports_app.command("open-url")
+def gam_reports_open_url(
+    ctx: typer.Context,
+    gam_report_id: str = typer.Argument(..., help="GAM report ID"),
+):
+    """Print the GAM UI URL for a saved GAM report."""
+    try:
+        data = get_client().get(f"/api/gam/reports/gam-reports/{gam_report_id}/open-url")
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
