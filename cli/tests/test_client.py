@@ -94,6 +94,9 @@ class TestTokenRefresh:
 
         assert result == {"refreshed": True}
         assert call_count["n"] == 2
+        assert mock_refresh_post.call_args.kwargs["headers"] == {
+            "Referer": "https://orbiads.com/"
+        }
 
         # Verify new token was persisted
         updated_cfg = config_mod.load()

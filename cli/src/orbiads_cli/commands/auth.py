@@ -8,7 +8,11 @@ import typer
 from rich.console import Console
 
 from orbiads_cli import config
-from orbiads_cli.config import DEFAULT_API_URL, DEFAULT_FIREBASE_API_KEY
+from orbiads_cli.config import (
+    DEFAULT_API_URL,
+    DEFAULT_FIREBASE_API_KEY,
+    DEFAULT_FIREBASE_REFERER,
+)
 
 app = typer.Typer(help="Authentication (login, logout, status)", no_args_is_help=True)
 
@@ -36,6 +40,7 @@ def _exchange_custom_token(custom_token: str) -> tuple[str, str]:
     try:
         resp = httpx.post(
             f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={firebase_key}",
+            headers={"Referer": DEFAULT_FIREBASE_REFERER},
             json={"token": custom_token, "returnSecureToken": True},
             timeout=_HTTP_TIMEOUT,
         )

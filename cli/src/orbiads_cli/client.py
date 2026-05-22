@@ -10,7 +10,7 @@ import httpx
 import typer
 
 from orbiads_cli import config
-from orbiads_cli.config import DEFAULT_FIREBASE_API_KEY
+from orbiads_cli.config import DEFAULT_FIREBASE_API_KEY, DEFAULT_FIREBASE_REFERER
 
 # Firebase Web API keys are public client identifiers, not server secrets.
 # ORBIADS_FIREBASE_KEY remains as an override for staging/self-hosted builds.
@@ -180,6 +180,7 @@ class OrbiAdsClient:
         try:
             resp = httpx.post(
                 _get_firebase_refresh_url(),
+                headers={"Referer": DEFAULT_FIREBASE_REFERER},
                 data={
                     "grant_type": "refresh_token",
                     "refresh_token": refresh_token,

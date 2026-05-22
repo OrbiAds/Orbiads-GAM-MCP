@@ -145,6 +145,7 @@ class TestAuthLogin:
         assert mock_post.call_count == 2
         firebase_call = mock_post.call_args_list[1]
         assert "accounts:signInWithCustomToken" in firebase_call.args[0]
+        assert firebase_call.kwargs["headers"] == {"Referer": "https://orbiads.com/"}
         assert firebase_call.kwargs["json"]["token"] == "firebase-custom-token"
 
     def test_login_expired_exits_4(self, tmp_config):
