@@ -1,0 +1,4 @@
+# Routes intentionally NOT covered by dedicated CLI commands.
+# Each entry must include a `reason`. The migration-gate test reads this file.
+
+exemptions: []

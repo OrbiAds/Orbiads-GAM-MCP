@@ -14,6 +14,7 @@ from orbiads_cli.commands import (
     creatives,
     inventory,
     reporting,
+    features,
     billing,
     network,
     line_items,    # Story 61.4
@@ -80,6 +81,7 @@ app.add_typer(orders.app, name="orders")
 app.add_typer(creatives.app, name="creatives")
 app.add_typer(inventory.app, name="inventory")
 app.add_typer(reporting.app, name="reporting")
+app.add_typer(features.app, name="features")
 app.add_typer(billing.app, name="billing")
 app.add_typer(network.app, name="network")
 app.add_typer(line_items.app, name="line-items")  # Story 61.4
