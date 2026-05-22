@@ -336,7 +336,9 @@ def size_mappings_get(
 def size_mappings_update(
     ctx: typer.Context,
     ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the mappings body"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the mappings body"
+    ),
 ):
     """Replace the size mapping for an ad unit."""
     payload = _load_json_payload(file)
@@ -531,7 +533,9 @@ def bp_positions_list(ctx: typer.Context):
     try:
         data = get_client().get("/api/gam/inventory/blueprint/custom-positions")
         if isinstance(data, dict):
-            items = data.get("customPositions", data.get("positions", data.get("results", [])))
+            items = data.get(
+                "customPositions", data.get("positions", data.get("results", []))
+            )
         else:
             items = data if isinstance(data, list) else []
         render(items, _BP_POSITION_COLUMNS, ctx.obj)
