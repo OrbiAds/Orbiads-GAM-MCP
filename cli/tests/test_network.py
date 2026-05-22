@@ -140,14 +140,25 @@ class TestNetworkList:
         assert result.exit_code == 0
 
     def test_list_api_error(self, tmp_config):
-        """API 404 yields exit code 3."""
+        """API error yields mapped exit code."""
         _setup_auth(tmp_config)
-        client = _mock_client(side_effect=CliApiError(3, "Not found", "GAM_NO_PENDING_OAUTH"))
+        client = _mock_client(side_effect=CliApiError(4, "Unauthorized", "AUTH_REQUIRED"))
 
         with patch("orbiads_cli.commands.network.get_client", return_value=client):
             result = runner.invoke(app, ["network", "list"])
 
-        assert result.exit_code == 3
+        assert result.exit_code == 4
+
+    def test_list_uses_accessible_networks_endpoint(self, tmp_config):
+        """List uses the current network management endpoint, not pending OAuth."""
+        _setup_auth(tmp_config)
+        client = _mock_client(get_return={"networks": []})
+
+        with patch("orbiads_cli.commands.network.get_client", return_value=client):
+            result = runner.invoke(app, ["network", "list"])
+
+        assert result.exit_code == 0
+        client.get.assert_called_once_with("/api/gam/accessible-networks")
 
 
 # ===========================================================================
@@ -169,6 +180,10 @@ class TestNetworkSwitch:
         # Verify local config updated
         cfg = config_mod.load()
         assert cfg["networkCode"] == "99999"
+        client.post.assert_called_once_with(
+            "/api/gam/switch-network",
+            json={"networkCode": "99999"},
+        )
         # Confirmation message goes to stderr (captured in output by CliRunner)
         assert "Switched to network 99999" in result.output
 

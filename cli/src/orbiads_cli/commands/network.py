@@ -26,7 +26,7 @@ def list_networks(ctx: typer.Context):
     """List accessible GAM networks."""
     try:
         client = get_client()
-        data = client.get("/api/auth/gam/pending-networks")
+        data = client.get("/api/gam/accessible-networks")
         networks = data.get("networks", []) if isinstance(data, dict) else data
         render(networks, ["networkCode", "displayName"], ctx.obj)
     except CliApiError as e:
@@ -41,7 +41,7 @@ def switch(
     """Switch active GAM network."""
     try:
         client = get_client()
-        client.post("/api/auth/gam/select-network", json={"networkCode": network_code})
+        client.post("/api/gam/switch-network", json={"networkCode": network_code})
 
         # Update local config
         cfg = config.load() or {}
