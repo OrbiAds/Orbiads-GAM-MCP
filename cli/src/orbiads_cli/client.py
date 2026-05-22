@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import os
 import re
+import sys
 import time
 from typing import Any
 
@@ -21,6 +23,64 @@ def _get_firebase_refresh_url() -> str:
 
 # Exponential backoff delays for 429 retries (seconds).
 _BACKOFF_DELAYS = [1, 2, 4]
+
+_CONTEXT_ENV_KEYS = {
+    "claude": "CLAUDECODE",
+    "cursor": "CURSOR_TRACE_ID",
+    "github_actions": "GITHUB_ACTIONS",
+    "gitlab": "GITLAB_CI",
+    "ci": "CI",
+    "jetbrains": "JETBRAINS_IDE",
+    "idea": "IDEA_INITIAL_DIRECTORY",
+    "vscode_pid": "VSCODE_PID",
+    "term_program": "TERM_PROGRAM",
+    "windows_terminal": "WT_SESSION",
+    "wsl": "WSL_DISTRO_NAME",
+}
+
+
+def _is_truthy(value: str | None) -> bool:
+    return (value or "").lower() in {"1", "true", "yes", "on"}
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+
+
+def _stdin_is_tty() -> bool:
+    try:
+        return sys.stdin.isatty()
+    except Exception:
+        return True
+
+
+def _detect_context() -> str:
+    """Detect the agent/terminal context once per CLI process."""
+    env = os.environ
+    if env.get(_CONTEXT_ENV_KEYS["claude"]) == "1":
+        return "claude-code"
+    if env.get(_CONTEXT_ENV_KEYS["cursor"]) is not None:
+        return "cursor"
+    if _is_truthy(env.get(_CONTEXT_ENV_KEYS["github_actions"])):
+        return "github-actions"
+    if _is_truthy(env.get(_CONTEXT_ENV_KEYS["gitlab"])):
+        return "gitlab-ci"
+    if _is_truthy(env.get(_CONTEXT_ENV_KEYS["ci"])):
+        return "ci"
+    if env.get(_CONTEXT_ENV_KEYS["jetbrains"]) or env.get(_CONTEXT_ENV_KEYS["idea"]):
+        return "jetbrains"
+    term_program = env.get(_CONTEXT_ENV_KEYS["term_program"], "")
+    if env.get(_CONTEXT_ENV_KEYS["vscode_pid"]) or term_program.lower() == "vscode":
+        return "vscode"
+    if term_program.lower() == "iterm.app":
+        return "iterm"
+    if env.get(_CONTEXT_ENV_KEYS["windows_terminal"]) is not None:
+        return "windows-terminal"
+    if distro := env.get(_CONTEXT_ENV_KEYS["wsl"]):
+        return f"wsl-{_slug(distro)}"
+    if not _stdin_is_tty():
+        return "scripted"
+    return "terminal-unknown"
 
 
 # ---------------------------------------------------------------------------
@@ -88,8 +148,11 @@ def _parse_credits_message(message: str, details: dict[str, Any]) -> None:
 class OrbiAdsClient:
     """Thin wrapper around ``httpx.Client`` with auth and retry logic."""
 
+    _cli_context = "terminal-unknown"
+
     def __init__(self, cfg: dict) -> None:
         self._cfg = cfg
+        self._cli_context = _detect_context()
         # X-OrbiAds-Client identifies CLI-originated requests on the backend so
         # `CliAnalyticsMiddleware` can fire `cli_command_called` GA4 events
         # (Story 74.2). Format must be `cli/<version>` — the middleware
@@ -99,6 +162,7 @@ class OrbiAdsClient:
             headers={
                 "Authorization": f"Bearer {cfg['token']}",
                 "X-OrbiAds-Client": f"cli/{__version__}",
+                "X-OrbiAds-Client-Context": self._cli_context,
             },
             timeout=30.0,
         )

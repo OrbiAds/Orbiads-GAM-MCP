@@ -6,13 +6,14 @@ backoff, refresh token expiry, JSend envelope parsing, exit code mapping.
 All HTTP calls are mocked via unittest.mock patching of httpx.
 """
 
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import call, patch
 
 import httpx
 import pytest
 
 from orbiads_cli import config as config_mod
-from orbiads_cli.client import OrbiAdsClient, CliApiError, _exit_code
+from orbiads_cli import client as client_mod
+from orbiads_cli.client import OrbiAdsClient, CliApiError, _detect_context, _exit_code
 
 
 # ---------------------------------------------------------------------------
@@ -65,6 +66,7 @@ class TestBearerHeader:
         assert header == f"cli/{__version__}"
         # Defensive: ensure the version is non-empty and well-formed.
         assert re.match(r"^cli/\d+\.\d+\.\d+", header)
+        assert client._http.headers["X-OrbiAds-Client-Context"]
         client.close()
 
     def test_header_sent_on_request(self, tmp_config):
@@ -77,6 +79,58 @@ class TestBearerHeader:
             # The header is on the client, not passed per-request
 
         client.close()
+
+
+class TestCliContextDetection:
+    _ENV_KEYS = [
+        "CLAUDECODE",
+        "CURSOR_TRACE_ID",
+        "GITHUB_ACTIONS",
+        "GITLAB_CI",
+        "CI",
+        "JETBRAINS_IDE",
+        "IDEA_INITIAL_DIRECTORY",
+        "VSCODE_PID",
+        "TERM_PROGRAM",
+        "WT_SESSION",
+        "WSL_DISTRO_NAME",
+    ]
+
+    def _clear_env(self, monkeypatch):
+        for key in self._ENV_KEYS:
+            monkeypatch.delenv(key, raising=False)
+
+    @pytest.mark.parametrize(
+        ("env", "expected"),
+        [
+            ({"CLAUDECODE": "1"}, "claude-code"),
+            ({"CURSOR_TRACE_ID": "abc"}, "cursor"),
+            ({"GITHUB_ACTIONS": "true"}, "github-actions"),
+            ({"CI": "true"}, "ci"),
+            ({"TERM_PROGRAM": "vscode"}, "vscode"),
+            ({"TERM_PROGRAM": "iTerm.app"}, "iterm"),
+            ({"WT_SESSION": "abc"}, "windows-terminal"),
+            ({"WSL_DISTRO_NAME": "Ubuntu"}, "wsl-ubuntu"),
+        ],
+    )
+    def test_detect_context_from_env(self, monkeypatch, env, expected):
+        self._clear_env(monkeypatch)
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+
+        assert _detect_context() == expected
+
+    def test_detect_context_scripted_when_stdin_not_tty(self, monkeypatch):
+        self._clear_env(monkeypatch)
+        monkeypatch.setattr(client_mod.sys.stdin, "isatty", lambda: False)
+
+        assert _detect_context() == "scripted"
+
+    def test_detect_context_terminal_unknown_when_interactive(self, monkeypatch):
+        self._clear_env(monkeypatch)
+        monkeypatch.setattr(client_mod.sys.stdin, "isatty", lambda: True)
+
+        assert _detect_context() == "terminal-unknown"
 
 
 # ===========================================================================
