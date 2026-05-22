@@ -281,6 +281,19 @@ def device_categories(ctx: typer.Context):
 # ── custom targeting key mutations ───────────────────────────────────────
 
 
+@app.command("technology-targets")
+def technology_targets(
+    ctx: typer.Context,
+    target_type: str = typer.Option(..., "--type", help="Target type: device, os, browser"),
+):
+    """List available technology targets."""
+    try:
+        data = get_client().get("/api/gam/technology-targets", params={"type": target_type})
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("create-key")
 def create_key(
     ctx: typer.Context,

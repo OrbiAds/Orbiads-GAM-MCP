@@ -165,3 +165,90 @@ def delivery_defaults_set(
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
+
+
+# GAM preferences
+gam_preferences_app = typer.Typer(help="Manage saved GAM targeting preferences", no_args_is_help=True)
+app.add_typer(gam_preferences_app, name="gam-preferences")
+
+
+@gam_preferences_app.command("get")
+def gam_preferences_get(ctx: typer.Context):
+    """Get saved GAM targeting preferences."""
+    try:
+        data = get_client().get("/api/gam/preferences")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@gam_preferences_app.command("set")
+def gam_preferences_set(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the GAM preferences body"),
+):
+    """Replace saved GAM targeting preferences."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().put("/api/gam/preferences", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# segmentation
+segmentation_app = typer.Typer(help="Manage segmentation preferences", no_args_is_help=True)
+app.add_typer(segmentation_app, name="segmentation")
+
+
+@segmentation_app.command("get")
+def segmentation_get(ctx: typer.Context):
+    """Get segmentation preferences."""
+    try:
+        data = get_client().get("/api/gam/segmentation-preferences")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@segmentation_app.command("set")
+def segmentation_set(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the segmentation preferences body"),
+):
+    """Replace segmentation preferences."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().put("/api/gam/segmentation-preferences", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# format-keys
+format_keys_app = typer.Typer(help="Manage GAM format-key config", no_args_is_help=True)
+app.add_typer(format_keys_app, name="format-keys")
+
+
+@format_keys_app.command("get")
+def format_keys_get(ctx: typer.Context):
+    """Get GAM format-key config."""
+    try:
+        data = get_client().get("/api/gam/format-keys-config")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@format_keys_app.command("set")
+def format_keys_set(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the format-key config body"),
+):
+    """Replace GAM format-key config."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().put("/api/gam/format-keys-config", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)

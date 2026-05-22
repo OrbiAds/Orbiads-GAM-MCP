@@ -262,7 +262,7 @@
 
 | Tool | Status | REST | CLI |
 |------|--------|------|-----|
-| `get_network_info` | FULL | GET /api/gam/network-info | `network info` |
+| `get_network_info` | FULL | GET /api/gam/network-info | `network gam-info` |
 | `list_accessible_networks` | FULL | GET /api/gam/accessible-networks | `network list` |
 | `switch_network` | FULL | POST /api/gam/switch-network | `network switch` |
 | `update_network` | FULL | PATCH /api/gam/network | `network update` |

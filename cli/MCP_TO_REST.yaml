@@ -147,7 +147,7 @@ tools:
   list_private_deals:       {area: line_items, rest: "GET /api/gam/private-deals", cli: "line-items private-deals"}  # 62.3
 
   # ── network (4) ───────────────────────────────────────────────────
-  get_network_info:         {area: network, rest: "GET /api/gam/network-info", cli: "network info"}
+  get_network_info:         {area: network, rest: "GET /api/gam/network-info", cli: "network gam-info"}
   switch_network:           {area: network, rest: "POST /api/gam/switch-network", cli: "network switch"}
   list_accessible_networks: {area: network, rest: "GET /api/gam/accessible-networks", cli: "network list"}
   update_network:           {area: network, rest: "PATCH /api/gam/network", cli: "network update"}  # 62.5

@@ -30,6 +30,34 @@ def _load_json_payload(path: str) -> dict:
         raise typer.Exit(code=2)
 
 
+urls_app = typer.Typer(help="Manage saved preview URLs", no_args_is_help=True)
+app.add_typer(urls_app, name="urls")
+
+
+@urls_app.command("get")
+def urls_get(ctx: typer.Context):
+    """Get saved preview URLs."""
+    try:
+        data = get_client().get("/api/gam/preview-urls")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@urls_app.command("set")
+def urls_set(
+    ctx: typer.Context,
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with previewUrls array"),
+):
+    """Replace saved preview URLs."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().put("/api/gam/preview-urls", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command()
 def share(
     ctx: typer.Context,
