@@ -9,7 +9,7 @@ from typing import Any
 import httpx
 import typer
 
-from orbiads_cli import config
+from orbiads_cli import __version__, config
 from orbiads_cli.config import DEFAULT_FIREBASE_API_KEY, DEFAULT_FIREBASE_REFERER
 
 # Firebase Web API keys are public client identifiers, not server secrets.
@@ -90,9 +90,16 @@ class OrbiAdsClient:
 
     def __init__(self, cfg: dict) -> None:
         self._cfg = cfg
+        # X-OrbiAds-Client identifies CLI-originated requests on the backend so
+        # `CliAnalyticsMiddleware` can fire `cli_command_called` GA4 events
+        # (Story 74.2). Format must be `cli/<version>` — the middleware
+        # enforces the `cli/` prefix and caps the version to 32 chars.
         self._http = httpx.Client(
             base_url=cfg["apiUrl"],
-            headers={"Authorization": f"Bearer {cfg['token']}"},
+            headers={
+                "Authorization": f"Bearer {cfg['token']}",
+                "X-OrbiAds-Client": f"cli/{__version__}",
+            },
             timeout=30.0,
         )
         self._refreshed = False  # guard: at most one refresh per request

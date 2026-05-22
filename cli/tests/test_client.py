@@ -50,6 +50,23 @@ class TestBearerHeader:
         assert client._http.headers["Authorization"] == "Bearer tok-123"
         client.close()
 
+    def test_x_orbiads_client_header_set(self, tmp_config):
+        """Story 74.2 — header drives the backend CliAnalyticsMiddleware which
+        fires cli_command_called GA4 events. Format MUST be ``cli/<version>``
+        with the literal ``cli/`` prefix; the backend rejects anything else.
+        """
+        import re
+
+        from orbiads_cli import __version__
+
+        cfg = _make_cfg(tmp_config)
+        client = OrbiAdsClient(cfg)
+        header = client._http.headers["X-OrbiAds-Client"]
+        assert header == f"cli/{__version__}"
+        # Defensive: ensure the version is non-empty and well-formed.
+        assert re.match(r"^cli/\d+\.\d+\.\d+", header)
+        client.close()
+
     def test_header_sent_on_request(self, tmp_config):
         cfg = _make_cfg(tmp_config)
         client = OrbiAdsClient(cfg)
