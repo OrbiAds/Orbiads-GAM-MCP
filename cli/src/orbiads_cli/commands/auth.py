@@ -8,7 +8,7 @@ import typer
 from rich.console import Console
 
 from orbiads_cli import config
-from orbiads_cli.config import DEFAULT_API_URL
+from orbiads_cli.config import DEFAULT_API_URL, DEFAULT_FIREBASE_API_KEY
 
 app = typer.Typer(help="Authentication (login, logout, status)", no_args_is_help=True)
 
@@ -26,6 +26,31 @@ def _get_api_url() -> str:
     """Return the configured API URL or the default."""
     cfg = config.load()
     return cfg.get("apiUrl", DEFAULT_API_URL) if cfg else DEFAULT_API_URL
+
+
+def _exchange_custom_token(custom_token: str) -> tuple[str, str]:
+    """Exchange a Firebase custom token for CLI session tokens."""
+    import os
+
+    firebase_key = os.environ.get("ORBIADS_FIREBASE_KEY") or DEFAULT_FIREBASE_API_KEY
+    try:
+        resp = httpx.post(
+            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={firebase_key}",
+            json={"token": custom_token, "returnSecureToken": True},
+            timeout=_HTTP_TIMEOUT,
+        )
+        resp.raise_for_status()
+    except httpx.HTTPError as exc:
+        err_console.print(f"[red]Failed to finalize login: {exc}[/red]")
+        raise typer.Exit(code=1) from None
+
+    data = resp.json()
+    id_token = data.get("idToken")
+    refresh_token = data.get("refreshToken")
+    if not id_token or not refresh_token:
+        err_console.print("[red]Failed to finalize login: invalid Firebase response.[/red]")
+        raise typer.Exit(code=1)
+    return id_token, refresh_token
 
 
 @app.command()
@@ -100,10 +125,19 @@ def login() -> None:
                 status_value = poll_data["status"]
 
                 if status_value == "authorized":
-                    # Save tokens
+                    if poll_data.get("customToken"):
+                        access_token, refresh_token = _exchange_custom_token(
+                            poll_data["customToken"]
+                        )
+                    else:
+                        # Backward compatibility for legacy servers that returned
+                        # Firebase tokens directly.
+                        access_token = poll_data["accessToken"]
+                        refresh_token = poll_data["refreshToken"]
+
                     config.set_token(
-                        poll_data["accessToken"],
-                        poll_data["refreshToken"],
+                        access_token,
+                        refresh_token,
                     )
                     spinner.stop()
                     err_console.print("[bold green]Authenticated successfully![/bold green]")

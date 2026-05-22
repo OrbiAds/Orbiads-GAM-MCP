@@ -58,6 +58,18 @@ def _poll_authorized() -> httpx.Response:
     })
 
 
+def _poll_authorized_custom_token() -> httpx.Response:
+    return _resp(200, {
+        "data": {
+            "status": "authorized",
+            "customToken": "firebase-custom-token",
+            "accessToken": None,
+            "refreshToken": None,
+        },
+        "error": None,
+    })
+
+
 def _poll_expired() -> httpx.Response:
     return _resp(200, {"data": {"status": "expired"}, "error": None})
 
@@ -97,6 +109,43 @@ class TestAuthLogin:
         assert cfg is not None
         assert cfg["token"] == "id-tok-abc"
         assert cfg["refreshToken"] == "ref-tok-abc"
+
+    def test_login_success_exchanges_custom_token(self, tmp_config):
+        """Current path: device-code returns customToken, CLI exchanges via Firebase."""
+        responses = [_poll_pending(), _poll_authorized_custom_token()]
+        call_idx = {"i": 0}
+
+        def mock_get(url, **kwargs):
+            resp = responses[call_idx["i"]]
+            call_idx["i"] += 1
+            return resp
+
+        post_responses = [
+            _resp(200, _device_code_response()),
+            _resp(200, {
+                "idToken": "firebase-id-token",
+                "refreshToken": "firebase-refresh-token",
+            }),
+        ]
+
+        with patch("orbiads_cli.commands.auth.httpx.post", side_effect=post_responses) as mock_post, \
+             patch("orbiads_cli.commands.auth.httpx.get", side_effect=mock_get), \
+             patch("orbiads_cli.commands.auth.webbrowser.open"), \
+             patch("orbiads_cli.commands.auth.time.sleep"):
+
+            result = runner.invoke(app, ["login"])
+
+        assert result.exit_code == 0
+        assert "Authenticated successfully" in result.output
+
+        cfg = config_mod.load()
+        assert cfg is not None
+        assert cfg["token"] == "firebase-id-token"
+        assert cfg["refreshToken"] == "firebase-refresh-token"
+        assert mock_post.call_count == 2
+        firebase_call = mock_post.call_args_list[1]
+        assert "accounts:signInWithCustomToken" in firebase_call.args[0]
+        assert firebase_call.kwargs["json"]["token"] == "firebase-custom-token"
 
     def test_login_expired_exits_4(self, tmp_config):
         """Device code expires → exit code 4."""

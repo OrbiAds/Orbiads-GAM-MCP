@@ -9,6 +9,7 @@ CONFIG_DIR = Path.home() / ".orbiads"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
 DEFAULT_API_URL = "https://gam-native-backend-754225819371.europe-west1.run.app"
+DEFAULT_FIREBASE_API_KEY = "AIzaSyAr2J5-a6GjIStBSOoIKB48DzSr0K-wHiQ"
 DEFAULT_OUTPUT = "table"
 
 _IS_WINDOWS = platform.system() == "Windows"
