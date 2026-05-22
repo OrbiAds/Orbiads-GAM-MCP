@@ -8,7 +8,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import OutputContext, render, render_detail, info
+from orbiads_cli.output import OutputContext, confirm, info, render, render_detail
 
 app = typer.Typer(help="Explore GAM inventory", no_args_is_help=True)
 
@@ -194,6 +194,145 @@ def ads_json(ctx: typer.Context):
     """Fetch the ads.json manifest for the network."""
     try:
         data = get_client().get("/api/gam/inventory/manifest/ads.json")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# Inventory understanding and size mappings (Story 73.7) ----------------------
+understanding_app = typer.Typer(
+    help="Inventory understanding analyses", no_args_is_help=True
+)
+app.add_typer(understanding_app, name="understanding")
+
+size_mappings_app = typer.Typer(
+    help="Manage GAM responsive size mappings", no_args_is_help=True
+)
+app.add_typer(size_mappings_app, name="size-mappings")
+
+
+@understanding_app.command("analyze")
+def understanding_analyze(
+    ctx: typer.Context,
+    reuse_latest: bool = typer.Option(
+        False,
+        "--reuse-latest/--no-reuse-latest",
+        help=(
+            "Return the latest cached analysis if one exists. Default: run a "
+            "fresh synchronous analysis, which can take several minutes on "
+            "large GAM networks."
+        ),
+    ),
+):
+    """Run or reuse an inventory understanding analysis.
+
+    Note: this call runs synchronously and can take several minutes on large
+    GAM networks. Until Epic 71 ships an async pattern, use --reuse-latest for
+    fast cached reads when possible.
+    """
+    try:
+        data = get_client().post(
+            "/api/gam/inventory/understanding/analyze",
+            json={"reuseLatest": reuse_latest},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@understanding_app.command("get")
+def understanding_get(
+    ctx: typer.Context,
+    analysis_id: str = typer.Argument(..., help="Analysis ID"),
+):
+    """Fetch a previously run inventory understanding analysis by ID."""
+    try:
+        data = get_client().get(
+            f"/api/gam/inventory/understanding/analyses/{analysis_id}"
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@size_mappings_app.command("create")
+def size_mappings_create(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help='JSON file with {"adUnitId": "...", "mappings": [...]}'
+    ),
+):
+    """Create a size mapping for an ad unit."""
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/inventory/size-mappings", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@size_mappings_app.command("get")
+def size_mappings_get(
+    ctx: typer.Context,
+    ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
+):
+    """Get the size mapping for an ad unit."""
+    try:
+        data = get_client().get(f"/api/gam/inventory/size-mappings/{ad_unit_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@size_mappings_app.command("update")
+def size_mappings_update(
+    ctx: typer.Context,
+    ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the mappings body"),
+):
+    """Replace the size mapping for an ad unit."""
+    payload = _load_json_payload(file)
+    payload["adUnitId"] = ad_unit_id
+    try:
+        data = get_client().put(
+            f"/api/gam/inventory/size-mappings/{ad_unit_id}", json=payload
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@size_mappings_app.command("delete")
+def size_mappings_delete(
+    ctx: typer.Context,
+    ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Delete the size mapping for an ad unit."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Delete size mapping for {ad_unit_id}?", effective_ctx):
+        raise typer.Exit(code=0)
+    try:
+        get_client().delete(f"/api/gam/inventory/size-mappings/{ad_unit_id}")
+        info(f"Size mapping for {ad_unit_id} deleted.")
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("health")
+def inventory_health(
+    ctx: typer.Context,
+    period: str = typer.Option(
+        "30d", "--period", help="Lookback window: 7d, 30d, or 90d"
+    ),
+):
+    """Inventory health snapshot."""
+    try:
+        data = get_client().get("/api/gam/inventory/health", params={"period": period})
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
