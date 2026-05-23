@@ -74,9 +74,9 @@ tools:
   # ── creatives (39) ────────────────────────────────────────────────
   list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
   get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
-  upload_creative:              {area: creatives, rest: "POST /api/creatives/upload-single", cli: "creatives upload"}  # stub fixed in 61.3
+  upload_creative_from_url:     {area: creatives, rest: "POST /api/gam/creatives/upload/from-url", cli: "creatives upload-url"}  # Story 75.5 - URL ingestion
   list_creatives_by_line_item:  {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/creatives", cli: "creatives list-by-line-item"}  # 61.7
-  upload_and_associate_creative: {area: creatives, rest: "POST /api/creatives/upload-single", cli: "creatives upload"}  # 61.7
+  upload_and_associate_creative: {area: creatives, rest: "POST /api/gam/creatives/upload", cli: "creatives upload"}  # Story 75.3 - unified GAM upload
   bulk_upload_creatives:        {area: creatives, rest: "POST /api/creatives/upload-multi", cli: "creatives upload-images"}  # 61.7
   create_third_party_creative:  {area: creatives, rest: "POST /api/creatives/upload-third-party", cli: "creatives upload-third-party"}  # 61.7
   create_html5_creative:        {area: creatives, rest: "POST /api/creatives/upload-html5", cli: "creatives upload-html5"}  # 61.7

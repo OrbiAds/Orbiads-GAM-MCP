@@ -1,8 +1,4 @@
 # Routes intentionally NOT covered by dedicated CLI commands.
 # Each entry must include a `reason`. The migration-gate test reads this file.
 
-exemptions:
-  - path: "POST /api/gam/creatives/upload"
-    reason: "Story 75.1 backend foundation; dedicated CLI command is delivered in Story 75.3."
-  - path: "POST /api/gam/creatives/upload/register"
-    reason: "Story 75.2 backend foundation for VIDEO/AUDIO VAST registration; dedicated CLI command is delivered in Story 75.3."
+exemptions: []

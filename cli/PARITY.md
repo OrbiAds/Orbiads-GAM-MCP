@@ -171,8 +171,8 @@
 | `update_creative` | FULL | PATCH /api/gam/creatives/{creative_id} | `creatives update` |
 | `update_lica` | FULL | PATCH /api/gam/licas/{line_item_id}/{creative_id} | `licas update` |
 | `update_native_style` | FULL | PATCH /api/gam/native-styles/{style_id} | `native-styles update` |
-| `upload_and_associate_creative` | FULL | POST /api/creatives/upload-single | `creatives upload` |
-| `upload_creative` | FULL | POST /api/creatives/upload-single | `creatives upload` |
+| `upload_and_associate_creative` | FULL | POST /api/gam/creatives/upload | `creatives upload` |
+| `upload_creative_from_url` | FULL | POST /api/gam/creatives/upload/from-url | `creatives upload-url` |
 | `upload_html5_zip_creative` | FULL | POST /api/creatives/upload-html5 | `creatives upload-html5` |
 
 ### deals

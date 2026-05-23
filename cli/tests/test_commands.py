@@ -311,36 +311,62 @@ class TestInventoryKeys_61_2:
 
 
 # ===========================================================================
-# Story 61.3 — creatives upload real multipart (was a stub)
+# Story 75.3 - creatives upload unified GAM multipart
 # ===========================================================================
 
 
-class TestCreativesUpload_61_3:
-    """Regression tests for Story 61.3 (defect #2 — `creatives upload`)."""
+class TestCreativesUpload_75_3:
+    """Regression tests for the rewritten `creatives upload` command."""
 
-    def test_upload_posts_multipart_to_upload_single(self, authenticated_config, tmp_path):
-        """`orbiads creatives upload <file>` must POST multipart to
-        /api/creatives/upload-single, not error out pointing at MCP."""
+    def test_upload_posts_multipart_to_gam_upload(self, authenticated_config, tmp_path):
+        """`orbiads creatives upload <file>` streams multipart to the GAM route."""
         f = tmp_path / "banner.png"
         f.write_bytes(b"\x89PNG\r\n\x1a\nfake-image-bytes")
         client = MagicMock()
-        client.post_multipart.return_value = {
+        client.post.return_value = {
             "creativeId": "cr-123", "status": "uploaded", "name": "banner.png"
         }
         with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
-            result = runner.invoke(app, ["creatives", "upload", str(f)])
+            result = runner.invoke(
+                app,
+                [
+                    "creatives",
+                    "upload",
+                    str(f),
+                    "--name",
+                    "Banner",
+                    "--advertiser-id",
+                    "456",
+                    "--size",
+                    "300x250",
+                ],
+            )
         assert result.exit_code == 0, result.output
-        client.post_multipart.assert_called_once_with(
-            "/api/creatives/upload-single", str(f)
-        )
+        assert client.post.call_args.args[0] == "/api/gam/creatives/upload"
+        assert client.post.call_args.kwargs["data"]["type"] == "IMAGE"
+        client.post_multipart.assert_not_called()
         assert "cr-123" in result.output
 
     def test_upload_missing_file_exits_2(self, authenticated_config, tmp_path):
         """Missing file → exit 2 (bad args), no HTTP call."""
         client = MagicMock()
         with patch("orbiads_cli.commands.creatives.get_client", return_value=client):
-            result = runner.invoke(app, ["creatives", "upload", str(tmp_path / "nope.png")])
+            result = runner.invoke(
+                app,
+                [
+                    "creatives",
+                    "upload",
+                    str(tmp_path / "nope.png"),
+                    "--name",
+                    "Missing",
+                    "--advertiser-id",
+                    "456",
+                    "--size",
+                    "300x250",
+                ],
+            )
         assert result.exit_code == 2
+        client.post.assert_not_called()
         client.post_multipart.assert_not_called()
         assert "not found" in result.output
 

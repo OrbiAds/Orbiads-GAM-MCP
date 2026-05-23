@@ -3,17 +3,80 @@
 from __future__ import annotations
 
 import json as _json
+import mimetypes
 import os
+import re
+from typing import Any
 
 import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import OutputContext, confirm, info, render, render_detail, success
+from orbiads_cli.output import OutputContext, confirm, render, render_detail, success
 
 app = typer.Typer(help="Manage GAM creatives", no_args_is_help=True)
 
 _LIST_COLUMNS = ["id", "name", "type", "size", "status"]
+
+_EXT_TO_TYPE: dict[str, str] = {
+    ".png": "image",
+    ".jpg": "image",
+    ".jpeg": "image",
+    ".gif": "image",
+    ".svg": "image",
+    ".zip": "html5",
+}
+
+_SIZE_RE = re.compile(r"^(\d+)x(\d+)$", re.IGNORECASE)
+
+
+def _auto_detect_type(path: str) -> str | None:
+    ext = os.path.splitext(path)[1].lower()
+    return _EXT_TO_TYPE.get(ext)
+
+
+def _parse_size(value: str | None) -> str | None:
+    """Convert WxH input to the JSON string expected by the multipart route."""
+    if not value:
+        return None
+    match = _SIZE_RE.match(value.strip())
+    if not match:
+        typer.echo(f"Error: --size must be WxH (e.g. 300x250), got: {value}", err=True)
+        raise typer.Exit(code=2)
+    return _json.dumps(
+        {"width": int(match.group(1)), "height": int(match.group(2))},
+        separators=(",", ":"),
+    )
+
+
+def _format_dry_run_fields(fields: dict[str, str]) -> str:
+    parts: list[str] = []
+    for key, value in fields.items():
+        display = _json.dumps(value) if key == "name" else value
+        parts.append(f"{key}={display}")
+    return " ".join(parts)
+
+
+def _check_file(p: str) -> None:
+    if not os.path.isfile(p):
+        typer.echo(f"Error: file not found: {p}", err=True)
+        raise typer.Exit(code=2)
+
+
+def _post_many_files(client, path: str, file_paths: list[str], field_name: str = "files"):
+    """POST multipart with N files under the same field name."""
+    items, handles = [], []
+    try:
+        for fp in file_paths:
+            ctype, _ = mimetypes.guess_type(fp)
+            ctype = ctype or "application/octet-stream"
+            fh = open(fp, "rb")
+            handles.append(fh)
+            items.append((field_name, (os.path.basename(fp), fh, ctype)))
+        return client._request("POST", path, files=items)
+    finally:
+        for fh in handles:
+            fh.close()
 
 
 @app.command("list")
@@ -65,55 +128,234 @@ def get(
 @app.command()
 def upload(
     ctx: typer.Context,
-    file: str = typer.Argument(..., help="Path to the creative file to upload"),
+    file: str = typer.Argument(..., help="Path to the creative asset (PNG/JPG/GIF/ZIP)"),
+    name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
+    advertiser_id: int = typer.Option(
+        ..., "--advertiser-id", "-a", help="GAM advertiser (company) ID"
+    ),
+    creative_type: str | None = typer.Option(
+        None,
+        "--type",
+        help=(
+            "image | html5 | native (auto-detected from extension if omitted; "
+            "native requires --metadata)"
+        ),
+    ),
+    size: str | None = typer.Option(
+        None,
+        "--size",
+        help="Creative size as WxH (e.g. 300x250). Required for IMAGE.",
+    ),
+    destination_url: str | None = typer.Option(
+        None, "--destination-url", help="Click-through URL (IMAGE/NATIVE)"
+    ),
+    metadata: str | None = typer.Option(
+        None,
+        "--metadata",
+        help='NATIVE only - JSON: {"template_id": int, "headline": str, "body": str, ...}',
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Print the planned request without hitting the network"
+    ),
 ):
-    """Upload a single creative file — Story 61.3.
+    """Stream a creative asset directly to GAM.
 
-    Replaces the previous "use MCP" stub (audit F0-3) with a real multipart
-    POST to ``/api/creatives/upload-single`` (backend creatives.py:302).
-    The backend enforces extension allow-list and a 5MB size limit.
-
-    Sibling upload routes exist for HTML5 / video / audio / image / native /
-    third-party — those verbs will land with Stories 61.4-61.7.
+    This replaces the Story 61.3 legacy job-pipeline upload stub. VIDEO and
+    AUDIO creatives are redirect based; use ``creatives register`` for those.
     """
-    import os
-
     out: OutputContext = ctx.obj
-    if not os.path.isfile(file):
-        typer.echo(f"Error: file not found: {file}", err=True)
+    _check_file(file)
+
+    resolved_type = (creative_type or "").lower() or _auto_detect_type(file)
+    if not resolved_type:
+        typer.echo(
+            f"Error: cannot auto-detect creative type for '{file}'. "
+            "Pass --type explicitly (image | html5 | native).",
+            err=True,
+        )
         raise typer.Exit(code=2)
+
+    if resolved_type in {"video", "audio"}:
+        typer.echo(
+            f"Error: --type {resolved_type} is not supported by `creatives upload`. "
+            f"Use `creatives register --type {resolved_type.upper()} --vast-url ...` instead.",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+
+    size_json = _parse_size(size)
+    if resolved_type == "image" and not size_json:
+        typer.echo(
+            "Error: --size is required for IMAGE creatives (e.g. --size 300x250)",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if resolved_type == "native" and not metadata:
+        typer.echo(
+            "Error: --metadata is required for NATIVE creatives "
+            '(e.g. --metadata \'{"template_id":789,"headline":"Buy Now"}\')',
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if metadata:
+        try:
+            _json.loads(metadata)
+        except _json.JSONDecodeError as exc:
+            typer.echo(f"Error: invalid --metadata JSON: {exc}", err=True)
+            raise typer.Exit(code=2) from exc
+
+    fields: dict[str, str] = {
+        "advertiser_id": str(advertiser_id),
+        "name": name,
+        "type": resolved_type.upper(),
+    }
+    if size_json:
+        fields["size"] = size_json
+    if destination_url:
+        fields["destination_url"] = destination_url
+    if metadata:
+        fields["metadata"] = metadata
+
+    content_type, _ = mimetypes.guess_type(file)
+    content_type = content_type or "application/octet-stream"
+    filename = os.path.basename(file)
+    size_bytes = os.path.getsize(file)
+
+    if dry_run:
+        typer.echo("[dry-run] POST /api/gam/creatives/upload", err=True)
+        typer.echo(f"[dry-run] file: {filename} ({size_bytes} bytes, {content_type})", err=True)
+        typer.echo(f"[dry-run] fields: {_format_dry_run_fields(fields)}", err=True)
+        raise typer.Exit(code=0)
+
     try:
         client = get_client()
-        data = client.post_multipart("/api/creatives/upload-single", file)
+        with open(file, "rb") as fh:
+            # Keep client.post() and the literal /api/gam path visible to the
+            # AST route-parity guard; post_multipart() is intentionally avoided.
+            data = client.post(
+                "/api/gam/creatives/upload",
+                files={"file": (filename, fh, content_type)},
+                data=fields,
+            )
         render_detail(data, out)
     except CliApiError as e:
         handle_error(e)
 
 
-# === Story 61.7 — upload variants + list-by-line-item ======================
-
-
-def _check_file(p: str) -> None:
-    if not os.path.isfile(p):
-        typer.echo(f"Error: file not found: {p}", err=True)
+@app.command()
+def register(
+    ctx: typer.Context,
+    creative_type: str = typer.Option(..., "--type", help="VIDEO or AUDIO"),
+    advertiser_id: int = typer.Option(..., "--advertiser-id", "-a", help="GAM advertiser ID"),
+    name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
+    vast_url: str = typer.Option(..., "--vast-url", help="VAST 3/4 XML URL"),
+    size: str | None = typer.Option(
+        None, "--size", help="Size WxH (default 640x360 for VIDEO)"
+    ),
+    duration_ms: int = typer.Option(
+        30000, "--duration-ms", help="Duration in milliseconds", min=1
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+):
+    """Register a VIDEO or AUDIO creative via VAST redirect URL."""
+    out: OutputContext = ctx.obj
+    resolved_type = creative_type.upper()
+    if resolved_type not in {"VIDEO", "AUDIO"}:
+        typer.echo(f"Error: --type must be VIDEO or AUDIO, got: {creative_type}", err=True)
         raise typer.Exit(code=2)
 
+    body: dict[str, Any] = {
+        "type": resolved_type,
+        "advertiserId": advertiser_id,
+        "name": name,
+        "vastRedirectUrl": vast_url,
+        "durationMs": duration_ms,
+    }
+    if size:
+        match = _SIZE_RE.match(size.strip())
+        if not match:
+            typer.echo(f"Error: --size must be WxH (e.g. 640x360), got: {size}", err=True)
+            raise typer.Exit(code=2)
+        body["size"] = {"width": int(match.group(1)), "height": int(match.group(2))}
 
-def _post_many_files(client, path: str, file_paths: list[str], field_name: str = "files"):
-    """POST multipart with N files under the same field name."""
-    import mimetypes
-    items, handles = [], []
+    if dry_run:
+        typer.echo("[dry-run] POST /api/gam/creatives/upload/register", err=True)
+        typer.echo(f"[dry-run] body: {_json.dumps(body, sort_keys=True)}", err=True)
+        raise typer.Exit(code=0)
+
     try:
-        for fp in file_paths:
-            ctype, _ = mimetypes.guess_type(fp)
-            ctype = ctype or "application/octet-stream"
-            fh = open(fp, "rb")
-            handles.append(fh)
-            items.append((field_name, (os.path.basename(fp), fh, ctype)))
-        return client._request("POST", path, files=items)
-    finally:
-        for fh in handles:
-            fh.close()
+        data = get_client().post("/api/gam/creatives/upload/register", json=body)
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("upload-url")
+def upload_url(
+    ctx: typer.Context,
+    asset_url: str = typer.Argument(..., help="Public http(s) URL of the creative asset"),
+    name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
+    advertiser_id: int = typer.Option(..., "--advertiser-id", "-a", help="GAM advertiser ID"),
+    creative_type: str | None = typer.Option(
+        None,
+        "--type",
+        help="image | html5 | native (auto-detected from Content-Type if omitted)",
+    ),
+    size: str | None = typer.Option(None, "--size", help="Size WxH (required for IMAGE)"),
+    destination_url: str | None = typer.Option(None, "--destination-url"),
+    metadata: str | None = typer.Option(
+        None,
+        "--metadata",
+        help='NATIVE only - JSON: {"template_id": int, "headline": str, ...}',
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+):
+    """Fetch a remote asset URL server-side and create a GAM creative."""
+    out: OutputContext = ctx.obj
+    if not (asset_url.startswith("http://") or asset_url.startswith("https://")):
+        typer.echo(f"Error: --asset-url must be http(s):// URL (got: {asset_url})", err=True)
+        raise typer.Exit(code=2)
+
+    body: dict[str, Any] = {
+        "assetUrl": asset_url,
+        "advertiserId": advertiser_id,
+        "name": name,
+    }
+    if creative_type:
+        resolved_type = creative_type.upper()
+        if resolved_type not in {"IMAGE", "HTML5", "NATIVE"}:
+            typer.echo(
+                f"Error: --type must be image|html5|native (got: {creative_type}). "
+                "For VIDEO/AUDIO use `creatives register --type VIDEO|AUDIO --vast-url ...`.",
+                err=True,
+            )
+            raise typer.Exit(code=2)
+        body["type"] = resolved_type
+    if size:
+        match = _SIZE_RE.match(size.strip())
+        if not match:
+            typer.echo(f"Error: --size must be WxH (e.g. 300x250), got: {size}", err=True)
+            raise typer.Exit(code=2)
+        body["size"] = {"width": int(match.group(1)), "height": int(match.group(2))}
+    if destination_url:
+        body["destinationUrl"] = destination_url
+    if metadata:
+        try:
+            body["metadata"] = _json.loads(metadata)
+        except _json.JSONDecodeError as exc:
+            typer.echo(f"Error: invalid --metadata JSON: {exc}", err=True)
+            raise typer.Exit(code=2) from exc
+
+    if dry_run:
+        typer.echo("[dry-run] POST /api/gam/creatives/upload/from-url", err=True)
+        typer.echo(f"[dry-run] body: {_json.dumps(body, sort_keys=True)}", err=True)
+        raise typer.Exit(code=0)
+
+    try:
+        data = get_client().post("/api/gam/creatives/upload/from-url", json=body)
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
 
 
 @app.command("upload-third-party")
@@ -195,7 +437,6 @@ def upload_native_classic(
 ):
     """Upload a classic native creative (main image + optional logo)."""
     _check_file(main_image)
-    import mimetypes
     handles = []
     try:
         ct, _ = mimetypes.guess_type(main_image)
@@ -229,13 +470,9 @@ def list_by_line_item(
             items = data.get("creatives", data.get("results", []))
         else:
             items = data if isinstance(data, list) else []
-        from orbiads_cli.output import render
         render(items, ["id", "name", "type", "size"], ctx.obj)
     except CliApiError as e:
         handle_error(e)
-
-
-# === Story 62.1 — creatives Tier B (update/archive/duplicate/preview/list) ==
 
 
 def _load_json_payload(path: str) -> dict:
@@ -270,7 +507,7 @@ def archive(
     creative_id: str = typer.Argument(..., help="Creative ID"),
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
-    """Archive (deactivate) a creative — reversible via the GAM UI."""
+    """Archive (deactivate) a creative; reversible via the GAM UI."""
     out: OutputContext = ctx.obj
     effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
     if not confirm(f"Archive creative {creative_id}?", effective_ctx):
