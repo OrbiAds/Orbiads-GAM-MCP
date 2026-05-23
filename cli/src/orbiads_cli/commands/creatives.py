@@ -25,6 +25,13 @@ _EXT_TO_TYPE: dict[str, str] = {
     ".gif": "image",
     ".svg": "image",
     ".zip": "html5",
+    ".mp4": "video",
+    ".webm": "video",
+    ".mov": "video",
+    ".qt": "video",
+    ".mp3": "audio",
+    ".ogg": "audio",
+    ".aac": "audio",
 }
 
 _SIZE_RE = re.compile(r"^(\d+)x(\d+)$", re.IGNORECASE)
@@ -55,6 +62,38 @@ def _format_dry_run_fields(fields: dict[str, str]) -> str:
         display = _json.dumps(value) if key == "name" else value
         parts.append(f"{key}={display}")
     return " ".join(parts)
+
+
+def _compute_transcode_status(creative: dict[str, Any]) -> dict[str, Any]:
+    creative_type = creative.get("creativeType") or creative.get("type") or ""
+    status = creative.get("status")
+    vast_preview_url = creative.get("vastPreviewUrl") or creative.get("vast_preview_url")
+    error = creative.get("lastError") or creative.get("error")
+    if creative_type not in {"VideoCreative", "AudioCreative", "VIDEO", "AUDIO"}:
+        return {
+            "status": "INVALID_CREATIVE_TYPE",
+            "message": f"Creative type {creative_type or '<unknown>'} is not VIDEO/AUDIO.",
+            "vastPreviewUrl": None,
+        }
+    if error:
+        return {"status": "FAILED", "message": str(error), "vastPreviewUrl": vast_preview_url}
+    if vast_preview_url:
+        return {
+            "status": "READY",
+            "message": "Transcode complete.",
+            "vastPreviewUrl": vast_preview_url,
+        }
+    if creative_type in {"AudioCreative", "AUDIO"} and status == "ACTIVE":
+        return {
+            "status": "READY",
+            "message": "Audio creative is active.",
+            "vastPreviewUrl": None,
+        }
+    return {
+        "status": "PROCESSING",
+        "message": f"Transcode in progress (status={status or 'unknown'}).",
+        "vastPreviewUrl": None,
+    }
 
 
 def _check_file(p: str) -> None:
@@ -128,7 +167,7 @@ def get(
 @app.command()
 def upload(
     ctx: typer.Context,
-    file: str = typer.Argument(..., help="Path to the creative asset (PNG/JPG/GIF/ZIP)"),
+    file: str = typer.Argument(..., help="Path to the creative asset (PNG/JPG/GIF/ZIP/MP4/MP3)"),
     name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
     advertiser_id: int = typer.Option(
         ..., "--advertiser-id", "-a", help="GAM advertiser (company) ID"
@@ -137,7 +176,7 @@ def upload(
         None,
         "--type",
         help=(
-            "image | html5 | native (auto-detected from extension if omitted; "
+            "image | html5 | native | video | audio (auto-detected from extension if omitted; "
             "native requires --metadata)"
         ),
     ),
@@ -154,14 +193,19 @@ def upload(
         "--metadata",
         help='NATIVE only - JSON: {"template_id": int, "headline": str, "body": str, ...}',
     ),
+    duration_ms: int | None = typer.Option(
+        None,
+        "--duration-ms",
+        help="Required for VIDEO/AUDIO, e.g. 30000 for a 30s clip",
+        min=1,
+    ),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Print the planned request without hitting the network"
     ),
 ):
     """Stream a creative asset directly to GAM.
 
-    This replaces the Story 61.3 legacy job-pipeline upload stub. VIDEO and
-    AUDIO creatives are redirect based; use ``creatives register`` for those.
+    This replaces the Story 61.3 legacy job-pipeline upload stub.
     """
     out: OutputContext = ctx.obj
     _check_file(file)
@@ -170,15 +214,7 @@ def upload(
     if not resolved_type:
         typer.echo(
             f"Error: cannot auto-detect creative type for '{file}'. "
-            "Pass --type explicitly (image | html5 | native).",
-            err=True,
-        )
-        raise typer.Exit(code=2)
-
-    if resolved_type in {"video", "audio"}:
-        typer.echo(
-            f"Error: --type {resolved_type} is not supported by `creatives upload`. "
-            f"Use `creatives register --type {resolved_type.upper()} --vast-url ...` instead.",
+            "Pass --type explicitly (image | html5 | native | video | audio).",
             err=True,
         )
         raise typer.Exit(code=2)
@@ -187,6 +223,18 @@ def upload(
     if resolved_type == "image" and not size_json:
         typer.echo(
             "Error: --size is required for IMAGE creatives (e.g. --size 300x250)",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if resolved_type == "video" and not size_json:
+        typer.echo(
+            "Error: --size is required for VIDEO creatives (e.g. --size 1280x720)",
+            err=True,
+        )
+        raise typer.Exit(code=2)
+    if resolved_type in {"video", "audio"} and duration_ms is None:
+        typer.echo(
+            "Error: --duration-ms is required for VIDEO/AUDIO creatives",
             err=True,
         )
         raise typer.Exit(code=2)
@@ -215,6 +263,8 @@ def upload(
         fields["destination_url"] = destination_url
     if metadata:
         fields["metadata"] = metadata
+    if duration_ms is not None:
+        fields["duration_ms"] = str(duration_ms)
 
     content_type, _ = mimetypes.guess_type(file)
     content_type = content_type or "application/octet-stream"
@@ -238,6 +288,28 @@ def upload(
                 data=fields,
             )
         render_detail(data, out)
+        if data.get("status") == "PENDING_TRANSCODE" and data.get("creativeId"):
+            typer.echo(
+                "Transcode in progress - poll with "
+                f"`orbiads creatives transcode-status {data['creativeId']}` "
+                "(5-15 min typical).",
+                err=True,
+            )
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("transcode-status")
+def transcode_status(
+    ctx: typer.Context,
+    creative_id: str = typer.Argument(..., help="GAM video/audio creative ID"),
+):
+    """Poll hosted video/audio transcode status."""
+    out: OutputContext = ctx.obj
+    try:
+        data = get_client().get(f"/api/gam/creatives/{creative_id}")
+        creative = data.get("data", data) if isinstance(data, dict) else {}
+        render_detail(_compute_transcode_status(creative), out)
     except CliApiError as e:
         handle_error(e)
 

@@ -198,8 +198,8 @@ def test_upload_unknown_extension_requires_type(authenticated_config, tmp_path):
     get_client_mock.assert_not_called()
 
 
-def test_upload_rejects_video_audio_types(authenticated_config, tmp_path):
-    """AC5 - VIDEO/AUDIO are registered by URL, not uploaded as multipart."""
+def test_upload_video_requires_duration(authenticated_config, tmp_path):
+    """Story 75.6 - VIDEO uploads require duration for GAM transcode."""
     png = _mk_png(tmp_path)
 
     with patch("orbiads_cli.commands.creatives.get_client") as get_client_mock:
@@ -215,11 +215,13 @@ def test_upload_rejects_video_audio_types(authenticated_config, tmp_path):
                 "V",
                 "--advertiser-id",
                 "1",
+                "--size",
+                "1280x720",
             ],
         )
 
     assert result.exit_code == 2
-    assert "Use `creatives register" in result.output
+    assert "--duration-ms is required" in result.output
     get_client_mock.assert_not_called()
 
 

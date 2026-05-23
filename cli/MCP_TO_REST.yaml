@@ -74,6 +74,7 @@ tools:
   # ── creatives (39) ────────────────────────────────────────────────
   list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
   get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
+  get_video_transcode_status:   {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives transcode-status"}  # Story 75.6 - hosted video/audio transcode polling
   upload_creative_from_url:     {area: creatives, rest: "POST /api/gam/creatives/upload/from-url", cli: "creatives upload-url"}  # Story 75.5 - URL ingestion
   list_creatives_by_line_item:  {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/creatives", cli: "creatives list-by-line-item"}  # 61.7
   upload_and_associate_creative: {area: creatives, rest: "POST /api/gam/creatives/upload", cli: "creatives upload"}  # Story 75.3 - unified GAM upload

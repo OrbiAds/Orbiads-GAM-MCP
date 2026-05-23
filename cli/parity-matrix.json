@@ -1,8 +1,8 @@
 {
-  "total_tools": 242,
+  "total_tools": 243,
   "counts": {
     "EXEMPT": 41,
-    "FULL": 201
+    "FULL": 202
   },
   "per_area": {
     "adcp": {
@@ -32,7 +32,7 @@
       "FULL": 7
     },
     "creatives": {
-      "FULL": 39
+      "FULL": 40
     },
     "deals": {
       "EXEMPT": 16,
@@ -140,6 +140,7 @@
     "creatives native-style-previews",
     "creatives preview-url",
     "creatives register",
+    "creatives transcode-status",
     "creatives update",
     "creatives upload",
     "creatives upload-audio",
@@ -1065,6 +1066,16 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives/{creative_id}/native-style-previews",
       "cli": "creatives native-style-previews",
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "get_video_transcode_status",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creatives/{creative_id}",
+      "cli": "creatives transcode-status",
       "exempt": null,
       "status": "FULL",
       "cli_present": true
