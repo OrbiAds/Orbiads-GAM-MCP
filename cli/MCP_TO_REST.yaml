@@ -91,7 +91,9 @@ tools:
       set_data_declaration: {rest: "PATCH /api/gam/creative-wrappers/{wrapper_id}/data-declaration", cli: "creative-wrappers set-data-declaration"}
       list_rich_media_ads_companies: {rest: "GET /api/gam/rich-media-ads-companies", cli: "creative-wrappers list-companies"}
       find_third_party_company: {rest: "GET /api/gam/rich-media-ads-companies/search", cli: "creative-wrappers find-company"}
-    notes: "Story 76.1 parent covers list/get/create/update/activate/deactivate/archive; Story 76.5 adds data declaration + RichMediaAdsCompany catalogue sub-actions."
+      create_preset: {rest: "NO-REST", cli: null, exempt: "Story 76.2 MCP-only vendor preset helper; no new top-level REST/CLI row by design."}
+      list_wrapper_presets: {rest: "NO-REST", cli: null, exempt: "Story 76.2 MCP-only preset catalogue discovery helper; snippets are not exposed over REST/CLI."}
+    notes: "Story 76.1 parent covers list/get/create/update/activate/deactivate/archive; Story 76.5 adds data declaration + RichMediaAdsCompany catalogue sub-actions; Story 76.2 adds MCP-only vendor presets."
   list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
   get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
   get_video_transcode_status:   {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives transcode-status"}  # Story 75.6 - hosted video/audio transcode polling

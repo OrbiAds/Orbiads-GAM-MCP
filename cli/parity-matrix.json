@@ -951,6 +951,16 @@
         "find_third_party_company": {
           "rest": "GET /api/gam/rich-media-ads-companies/search",
           "cli": "creative-wrappers find-company"
+        },
+        "create_preset": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Story 76.2 MCP-only vendor preset helper; no new top-level REST/CLI row by design."
+        },
+        "list_wrapper_presets": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Story 76.2 MCP-only preset catalogue discovery helper; snippets are not exposed over REST/CLI."
         }
       },
       "exempt": null,
