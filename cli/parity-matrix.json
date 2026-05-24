@@ -1,7 +1,7 @@
 {
-  "total_tools": 243,
+  "total_tools": 244,
   "counts": {
-    "EXEMPT": 41,
+    "EXEMPT": 42,
     "FULL": 202
   },
   "per_area": {
@@ -78,7 +78,8 @@
       "FULL": 32
     },
     "settings": {
-      "FULL": 9
+      "FULL": 9,
+      "EXEMPT": 1
     },
     "targeting": {
       "FULL": 18
@@ -2549,6 +2550,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "settings",
+      "module": "settings",
+      "area": "settings",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.1 parent>child POC. Legacy settings tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration batch after the pattern is validated.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "update_delivery_defaults",
