@@ -68,7 +68,7 @@ def extract_mcp_tools(tools_dir: Path) -> dict[str, str]:
             continue
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
         for fn in ast.walk(tree):
-            if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)) and any(
+            if isinstance(fn, ast.FunctionDef | ast.AsyncFunctionDef) and any(
                 _is_mcp_tool_decorator(d) for d in fn.decorator_list
             ):
                 if fn.name in tools:
@@ -158,7 +158,7 @@ def extract_cli_commands(cli_src: Path) -> set[str]:
                     typer_paths[child_var] = f"{typer_paths[parent]} {sub_name}"
 
         for fn in ast.walk(tree):
-            if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if not isinstance(fn, ast.FunctionDef | ast.AsyncFunctionDef):
                 continue
             for dec in fn.decorator_list:
                 target = dec.func if isinstance(dec, ast.Call) else dec
@@ -237,8 +237,8 @@ def build_matrix() -> dict:
     }
 
 
-def write_outputs(m: dict) -> None:
-    OUT_JSON.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+def write_outputs(m: dict, out_json: Path = OUT_JSON, out_md: Path = OUT_MD) -> None:
+    out_json.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     c = m["counts"]
     order = ["FULL", "REST-ONLY", "MCP-ONLY", "EXEMPT", "UNMAPPED"]
@@ -278,7 +278,7 @@ def write_outputs(m: dict) -> None:
             f"| `{r['tool']}` | {r['status']} | {r.get('rest') or '—'} | "
             f"{('`' + r['cli'] + '`') if r.get('cli') else '—'} |"
         )
-    OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    out_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -289,10 +289,25 @@ def main() -> int:
         help="Story 63.2 guard mode: exit 2 if any non-EXEMPT tool is not FULL",
     )
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Override write destination for parity-matrix.json and PARITY.md. "
+            "When omitted, writes to the canonical orbiads/cli paths."
+        ),
+    )
     args = ap.parse_args()
 
     m = build_matrix()
-    write_outputs(m)
+    out_json = OUT_JSON
+    out_md = OUT_MD
+    if args.output_dir is not None:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        out_json = args.output_dir / "parity-matrix.json"
+        out_md = args.output_dir / "PARITY.md"
+    write_outputs(m, out_json=out_json, out_md=out_md)
 
     c = m["counts"]
     if not args.quiet:
