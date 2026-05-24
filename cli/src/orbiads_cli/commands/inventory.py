@@ -285,6 +285,23 @@ def understanding_analyze(
         handle_error(e)
 
 
+@understanding_app.command("latest")
+def understanding_latest(ctx: typer.Context):
+    """Return the most recent non-expired inventory analysis (Story 71.2).
+
+    Reads the L1 in-process cache first, then falls back to the Firestore
+    L2 cache that survives Cloud Run cold starts. Returns 404
+    NO_LATEST_ANALYSIS if neither layer has a valid candidate.
+    """
+    try:
+        data = get_client().get(
+            "/api/gam/inventory/understanding/analyses/latest"
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @understanding_app.command("get")
 def understanding_get(
     ctx: typer.Context,
