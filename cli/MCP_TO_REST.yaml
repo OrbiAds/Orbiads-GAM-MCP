@@ -37,7 +37,6 @@ tools:
   perform_audience_segment_action: {area: audiences, rest: "POST /api/gam/audience-segments/action", cli: "audiences action"}  # 62.5
 
   # ── audit (1 + 1 parent) ──────────────────────────────────────────
-  gam_audit:       {area: audit, rest: "NO-REST", cli: null, exempt: "Story 65.12 parent>child audit dispatcher (22 checks). REST symmetric route + CLI verb deferred to the Epic 65 CLI extension story (post-65.10c), mirroring the audit_skill / gam_admin EXEMPT pattern."}  # 65.12
   query_audit_log: {area: audit, rest: "GET /api/settings/audit/", cli: "audit log"}  # 61.7
 
   # ── auth (6) — capability parity via auth/network commands ─────────
