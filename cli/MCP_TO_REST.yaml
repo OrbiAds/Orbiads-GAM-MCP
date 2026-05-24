@@ -28,14 +28,16 @@ tools:
   update_agency:             {area: advertisers, rest: "PATCH /api/gam/agencies/{agency_id}", cli: "advertisers agencies update"}  # 62.4
   find_advertiser:           {area: advertisers, rest: "GET /api/gam/advertisers/search", cli: "advertisers find"}  # 62.4
 
-  # ── audiences (5) ─────────────────────────────────────────────────
+  # ── audiences (5 + 1 parent) ──────────────────────────────────────
+  audiences:                     {area: audiences, rest: "NO-REST", cli: null, exempt: "Story 68.2 parent>child migration batch 1. Legacy audiences tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.2
   list_audience_segments:        {area: audiences, rest: "GET /api/gam/audience-segments", cli: "audiences list"}  # 61.7
   get_audience_segment:          {area: audiences, rest: "GET /api/gam/audience-segments/{segment_id}", cli: "audiences get"}  # 62.5
   create_audience_segment:       {area: audiences, rest: "POST /api/gam/audience-segments", cli: "audiences create"}  # 62.5
   update_audience_segment:       {area: audiences, rest: "PATCH /api/gam/audience-segments/{segment_id}", cli: "audiences update"}  # 62.5
   perform_audience_segment_action: {area: audiences, rest: "POST /api/gam/audience-segments/action", cli: "audiences action"}  # 62.5
 
-  # ── audit (1) ─────────────────────────────────────────────────────
+  # ── audit (1 + 1 parent) ──────────────────────────────────────────
+  gam_audit:       {area: audit, rest: "NO-REST", cli: null, exempt: "Story 65.12 parent>child audit dispatcher (22 checks). REST symmetric route + CLI verb deferred to the Epic 65 CLI extension story (post-65.10c), mirroring the audit_skill / gam_admin EXEMPT pattern."}  # 65.12
   query_audit_log: {area: audit, rest: "GET /api/settings/audit/", cli: "audit log"}  # 61.7
 
   # ── auth (6) — capability parity via auth/network commands ─────────
@@ -125,7 +127,8 @@ tools:
   archive_inactive_ad_units:   {area: inventory, rest: "POST /api/gam/ad-units/archive-inactive", cli: "inventory archive-inactive"}  # 62.5a
   list_ad_unit_sizes:          {area: inventory, rest: "GET /api/gam/ad-units/sizes", cli: "inventory sizes"}  # 62.5
 
-  # ── jobs (3) — Story 61.4 ─────────────────────────────────────────
+  # ── jobs (3 + 1 parent) — Story 61.4 + 68.2 parent ────────────────
+  jobs:          {area: jobs, rest: "NO-REST", cli: null, exempt: "Story 68.2 parent>child migration batch 1. Legacy jobs tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.2
   get_job:       {area: jobs, rest: "GET /api/jobs/{job_id}", cli: "jobs get"}            # 61.4
   list_jobs:     {area: jobs, rest: "GET /api/jobs/", cli: "jobs list"}                   # 61.4
   duplicate_job: {area: jobs, rest: "POST /api/jobs/{job_id}/duplicate", cli: "jobs duplicate"}  # 61.4
@@ -174,10 +177,12 @@ tools:
   archive_placement: {area: placements, rest: "DELETE /api/gam/placements/{placement_id}", cli: "inventory placement-archive"}  # 61.6
   create_placement:  {area: placements, rest: "POST /api/gam/placements", cli: "inventory placement-create"}  # 62.5
 
-  # ── pql (1) ───────────────────────────────────────────────────────
+  # ── pql (1 + 1 parent) ────────────────────────────────────────────
+  pql:           {area: pql, rest: "NO-REST", cli: null, exempt: "Story 68.2 parent>child migration batch 1. Legacy pql tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.2
   run_pql_query: {area: pql, rest: "POST /api/gam/pql", cli: "pql query"}  # 62.5
 
-  # ── preview (3) ───────────────────────────────────────────────────
+  # ── preview (3 + 1 parent) ────────────────────────────────────────
+  preview:                   {area: preview, rest: "NO-REST", cli: null, exempt: "Story 68.2 parent>child migration batch 1. Legacy preview tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.2
   get_preview_urls:          {area: preview, rest: "POST /api/preview/share", cli: "preview share"}  # 61.7
   get_campaign_preview_urls: {area: preview, rest: "POST /api/creatives/{job_id}/gam-preview-link", cli: "preview campaign"}  # 61.7
   check_creative_coverage:   {area: preview, rest: "POST /api/gam/coverage", cli: "preview coverage"}  # 62.5

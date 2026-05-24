@@ -28,9 +28,14 @@ def matrix():
 
 
 def test_all_mcp_tools_extracted():
-    """AST extraction must find every @mcp.tool (244 as of Story 68.1)."""
+    """AST extraction must find every @mcp.tool.
+
+    Story 68.2: +4 EXEMPT parents (pql, preview, jobs, audiences) folding
+    12 legacy tools behind the parent>child pattern + 1 EXEMPT parent
+    (gam_audit) from Story 65.12 scaffold. Total 244 (Story 68.1 settings POC)
+    → 249."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    assert len(tools) == 244, f"expected 244 @mcp.tool, found {len(tools)}"
+    assert len(tools) == 249, f"expected 249 @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
     assert tools["run_pql_query"] == "pql"
@@ -39,7 +44,7 @@ def test_all_mcp_tools_extracted():
 
 def test_every_tool_classified_no_unmapped(matrix):
     """The curated map must cover 100% of tools — zero UNMAPPED."""
-    assert matrix["total_tools"] == 244
+    assert matrix["total_tools"] == 249
     statuses = {r["status"] for r in matrix["rows"]}
     assert statuses <= VALID_STATUSES
     unmapped = [r["tool"] for r in matrix["rows"] if r["status"] == "UNMAPPED"]
@@ -48,7 +53,7 @@ def test_every_tool_classified_no_unmapped(matrix):
 
 def test_counts_reconcile(matrix):
     """The split must sum to the total — fixes the audit's non-reconciling tally."""
-    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 244
+    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 249
 
 
 def test_pricing_is_exempt(matrix):
@@ -84,7 +89,7 @@ def test_outputs_written_and_valid(tmp_path, monkeypatch):
     )
     assert rc.returncode == 0, rc.stderr
     data = json.loads((CLI_ROOT / "parity-matrix.json").read_text(encoding="utf-8"))
-    assert data["total_tools"] == 244
+    assert data["total_tools"] == 249
     md = (CLI_ROOT / "PARITY.md").read_text(encoding="utf-8")
     assert "OrbiAds CLI <-> MCP Parity Matrix" in md
     assert "single source of truth" in md.lower()

@@ -1,7 +1,7 @@
 {
-  "total_tools": 244,
+  "total_tools": 249,
   "counts": {
-    "EXEMPT": 42,
+    "EXEMPT": 47,
     "FULL": 202
   },
   "per_area": {
@@ -12,11 +12,12 @@
       "FULL": 10
     },
     "audiences": {
+      "EXEMPT": 1,
       "FULL": 5
     },
     "audit": {
       "FULL": 1,
-      "EXEMPT": 3
+      "EXEMPT": 4
     },
     "auth": {
       "FULL": 6
@@ -48,7 +49,8 @@
       "FULL": 10
     },
     "jobs": {
-      "FULL": 3
+      "FULL": 3,
+      "EXEMPT": 1
     },
     "line_items": {
       "FULL": 16
@@ -63,10 +65,12 @@
       "FULL": 4
     },
     "pql": {
+      "EXEMPT": 1,
       "FULL": 1
     },
     "preview": {
-      "FULL": 3
+      "FULL": 3,
+      "EXEMPT": 1
     },
     "pricing": {
       "EXEMPT": 5
@@ -461,6 +465,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "audiences",
+      "module": "audiences",
+      "area": "audiences",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.2 parent>child migration batch 1. Legacy audiences tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "create_audience_segment",
@@ -1473,6 +1487,16 @@
       "cli_present": null
     },
     {
+      "tool": "gam_audit",
+      "module": "gam_audit",
+      "area": "audit",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 65.12 parent>child audit dispatcher (22 checks). REST symmetric route + CLI verb deferred to the Epic 65 CLI extension story (post-65.10c), mirroring the audit_skill / gam_admin EXEMPT pattern.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "get_gam_features",
       "module": "gam_features",
       "area": "gam_features",
@@ -1621,6 +1645,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "jobs",
+      "module": "jobs",
+      "area": "jobs",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.2 parent>child migration batch 1. Legacy jobs tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "list_jobs",
@@ -2013,6 +2047,16 @@
       "cli_present": true
     },
     {
+      "tool": "pql",
+      "module": "pql",
+      "area": "pql",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.2 parent>child migration batch 1. Legacy pql tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "run_pql_query",
       "module": "pql",
       "area": "pql",
@@ -2051,6 +2095,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "preview",
+      "module": "preview",
+      "area": "preview",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.2 parent>child migration batch 1. Legacy preview tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "create_premium_rate",
