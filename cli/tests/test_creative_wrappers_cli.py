@@ -62,6 +62,70 @@ def test_creative_wrappers_create_posts_json_file(authenticated_config, tmp_path
     client.post.assert_called_once_with("/api/gam/creative-wrappers", json=payload)
 
 
+def test_creative_wrappers_provision_posts_payload(authenticated_config):
+    client = MagicMock()
+    client.post.return_value = {"labelId": 777, "wrapperId": 8801}
+
+    with patch("orbiads_cli.commands.creative_wrappers.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            [
+                "creative-wrappers",
+                "provision",
+                "--vendor",
+                "IAS@v3",
+                "--label-name",
+                "IAS rollout",
+                "--ad-unit-ids",
+                "1001",
+                "--placement-ids",
+                "2001",
+                "--custom-arg",
+                "tenant_account_id=ias-tenant-7",
+                "--dry-run",
+            ],
+        )
+
+    assert result.exit_code == 0, result.output
+    client.post.assert_called_once_with(
+        "/api/gam/creative-wrappers/provision",
+        json={
+            "vendor": "IAS@v3",
+            "adUnitIds": [1001],
+            "placementIds": [2001],
+            "customArgs": {"tenant_account_id": "ias-tenant-7"},
+            "labelName": "IAS rollout",
+            "activate": True,
+            "dryRun": True,
+        },
+    )
+
+
+def test_creative_wrappers_provision_rejects_misleading_label_id_alias(authenticated_config):
+    client = MagicMock()
+
+    with patch("orbiads_cli.commands.creative_wrappers.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            [
+                "creative-wrappers",
+                "provision",
+                "--vendor",
+                "IAS@v3",
+                "--label-id",
+                "777",
+                "--ad-unit-ids",
+                "1001",
+                "--custom-arg",
+                "tenant_account_id=ias-tenant-7",
+            ],
+        )
+
+    assert result.exit_code == 2
+    assert "No such option: --label-id" in result.output
+    client.post.assert_not_called()
+
+
 def test_creative_wrappers_update_and_lifecycle_calls(authenticated_config, tmp_path):
     client = MagicMock()
     client.patch.return_value = {"id": 2}

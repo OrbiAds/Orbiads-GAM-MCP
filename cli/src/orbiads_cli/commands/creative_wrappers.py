@@ -26,6 +26,21 @@ def _load_json_payload(path: str) -> dict:
         raise typer.Exit(code=2) from exc
 
 
+def _parse_custom_args(values: list[str]) -> dict[str, str]:
+    parsed: dict[str, str] = {}
+    for value in values:
+        if "=" not in value:
+            typer.echo(f"Error: --custom-arg must use key=value, got: {value}", err=True)
+            raise typer.Exit(code=2)
+        key, arg_value = value.split("=", 1)
+        key = key.strip()
+        if not key:
+            typer.echo("Error: --custom-arg key must be non-empty", err=True)
+            raise typer.Exit(code=2)
+        parsed[key] = arg_value
+    return parsed
+
+
 @app.command("list")
 def list_wrappers(
     ctx: typer.Context,
@@ -74,6 +89,52 @@ def create_wrapper(
     payload = _load_json_payload(file)
     try:
         data = get_client().post("/api/gam/creative-wrappers", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as exc:
+        handle_error(exc)
+
+
+@app.command("provision")
+def provision_wrapper(
+    ctx: typer.Context,
+    vendor: str = typer.Option(..., "--vendor", help="Preset key, e.g. IAS@v3"),
+    label_name: str | None = typer.Option(
+        None,
+        "--label-name",
+        help="CREATIVE_WRAPPER Label display name override",
+    ),
+    ad_unit_ids: list[int] = typer.Option(
+        [],
+        "--ad-unit-ids",
+        help="Repeat for each AdUnit ID",
+    ),
+    placement_ids: list[int] = typer.Option(
+        [],
+        "--placement-ids",
+        help="Repeat for each Placement ID",
+    ),
+    custom_args: list[str] = typer.Option(
+        [],
+        "--custom-arg",
+        "--custom-args",
+        help="Repeat as key=value for vendor template args",
+    ),
+    activate: bool = typer.Option(True, "--activate/--no-activate"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Return the provision plan only"),
+):
+    """Provision a vendor wrapper label, wrapper, inventory bindings, and activation."""
+    payload: dict[str, object] = {
+        "vendor": vendor,
+        "adUnitIds": list(ad_unit_ids) or None,
+        "placementIds": list(placement_ids) or None,
+        "customArgs": _parse_custom_args(custom_args) or None,
+        "labelName": label_name,
+        "activate": activate,
+        "dryRun": dry_run,
+    }
+    payload = {key: value for key, value in payload.items() if value is not None}
+    try:
+        data = get_client().post("/api/gam/creative-wrappers/provision", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as exc:
         handle_error(exc)

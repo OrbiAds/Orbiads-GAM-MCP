@@ -151,6 +151,7 @@
     "creative-wrappers get",
     "creative-wrappers list",
     "creative-wrappers list-companies",
+    "creative-wrappers provision",
     "creative-wrappers set-data-declaration",
     "creative-wrappers update",
     "creatives archive",
@@ -961,6 +962,10 @@
           "rest": "NO-REST",
           "cli": null,
           "exempt": "Story 76.2 MCP-only preset catalogue discovery helper; snippets are not exposed over REST/CLI."
+        },
+        "provision": {
+          "rest": "POST /api/gam/creative-wrappers/provision",
+          "cli": "creative-wrappers provision"
         }
       },
       "exempt": null,

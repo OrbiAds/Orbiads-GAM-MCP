@@ -93,6 +93,7 @@ def test_creative_wrapper_skill_documents_every_sub_action(matrix):
         "find_third_party_company",
         "create_preset",
         "list_wrapper_presets",
+        "provision",
     }
     assert row["sub_actions"]["list"]["rest"] == "GET /api/gam/creative-wrappers"
     assert row["sub_actions"]["deactivate"]["cli"] == "creative-wrappers deactivate"
@@ -103,6 +104,11 @@ def test_creative_wrapper_skill_documents_every_sub_action(matrix):
     )
     assert row["sub_actions"]["create_preset"]["rest"] == "NO-REST"
     assert "Story 76.2" in row["sub_actions"]["list_wrapper_presets"]["exempt"]
+    assert (
+        row["sub_actions"]["provision"]["rest"]
+        == "POST /api/gam/creative-wrappers/provision"
+    )
+    assert row["sub_actions"]["provision"]["cli"] == "creative-wrappers provision"
 
 
 def test_mcp_only_tools_have_no_rest(matrix):
