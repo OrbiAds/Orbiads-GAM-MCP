@@ -1,7 +1,7 @@
 {
-  "total_tools": 253,
+  "total_tools": 257,
   "counts": {
-    "EXEMPT": 51,
+    "EXEMPT": 55,
     "FULL": 202
   },
   "per_area": {
@@ -16,13 +16,14 @@
       "FULL": 5
     },
     "audit": {
-      "FULL": 1,
-      "EXEMPT": 4
+      "EXEMPT": 5,
+      "FULL": 1
     },
     "auth": {
       "FULL": 6
     },
     "billing": {
+      "EXEMPT": 1,
       "FULL": 2
     },
     "campaign_ops": {
@@ -44,7 +45,7 @@
       "EXEMPT": 1
     },
     "gam_features": {
-      "EXEMPT": 3
+      "EXEMPT": 4
     },
     "inventory": {
       "FULL": 10,
@@ -58,7 +59,8 @@
       "FULL": 16
     },
     "network": {
-      "FULL": 4
+      "FULL": 4,
+      "EXEMPT": 1
     },
     "orders": {
       "FULL": 14
@@ -531,6 +533,16 @@
       "cli_present": true
     },
     {
+      "tool": "audit",
+      "module": "audit",
+      "area": "audit",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.5 parent>child migration batch 2. Legacy audit tools keep their existing parity mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "query_audit_log",
       "module": "audit",
       "area": "audit",
@@ -619,6 +631,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "billing",
+      "module": "billing",
+      "area": "billing",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.5 parent>child migration batch 2. Legacy billing tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "get_credit_balance",
@@ -1511,6 +1533,16 @@
       "cli_present": null
     },
     {
+      "tool": "gam_features",
+      "module": "gam_features",
+      "area": "gam_features",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.5 parent>child migration batch 2. Legacy gam_features tools keep their existing explicit EXEMPT classifications during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "get_gam_features",
       "module": "gam_features",
       "area": "gam_features",
@@ -1869,6 +1901,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "network",
+      "module": "network",
+      "area": "network",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.5 parent>child migration batch 2. Legacy network tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "switch_network",
