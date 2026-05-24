@@ -32,6 +32,7 @@ from orbiads_cli.commands import (
     native_styles,     # Story 62.1
     creative_templates,# Story 62.1
     creative_qa,              # Story 62.6
+    creative_wrappers,        # Story 76.1
     custom_targeting_values,  # Story 62.5
     pql,                      # Story 62.5
 )
@@ -100,5 +101,6 @@ app.add_typer(licas.app, name="licas")                                  # Story 
 app.add_typer(native_styles.app, name="native-styles")                  # Story 62.1
 app.add_typer(creative_templates.app, name="creative-templates")        # Story 62.1
 app.add_typer(creative_qa.app, name="creative-qa")                      # Story 62.6
+app.add_typer(creative_wrappers.app, name="creative-wrappers")          # Story 76.1
 app.add_typer(custom_targeting_values.app, name="custom-targeting-values")  # Story 62.5
 app.add_typer(pql.app, name="pql")                                       # Story 62.5

@@ -75,7 +75,20 @@ tools:
   validate_tag_snippet:      {area: creative_qa, rest: "POST /api/gam/creative-qa/validate-tag", cli: "creative-qa validate-tag"}  # 62.6
   pre_archive_check:         {area: creative_qa, rest: "POST /api/gam/creative-qa/pre-archive-check", cli: "creative-qa pre-archive-check"}  # 62.6
 
-  # ── creatives (39) ────────────────────────────────────────────────
+  # ── creatives (39 + 1 parent) ─────────────────────────────────────
+  creative_wrapper_skill:
+    area: creative_wrappers
+    rest: "POST /api/gam/creative-wrappers"
+    cli: "creative-wrappers create"
+    sub_actions:
+      list:       {rest: "GET /api/gam/creative-wrappers", cli: "creative-wrappers list"}
+      get:        {rest: "GET /api/gam/creative-wrappers/{wrapper_id}", cli: "creative-wrappers get"}
+      create:     {rest: "POST /api/gam/creative-wrappers", cli: "creative-wrappers create"}
+      update:     {rest: "PATCH /api/gam/creative-wrappers/{wrapper_id}", cli: "creative-wrappers update"}
+      activate:   {rest: "POST /api/gam/creative-wrappers/{wrapper_id}/activate", cli: "creative-wrappers activate"}
+      deactivate: {rest: "POST /api/gam/creative-wrappers/{wrapper_id}/deactivate", cli: "creative-wrappers deactivate"}
+      archive:    {rest: "NO-REST", cli: null, exempt: "Story 76.1 AC #11: GAM has no archiveCreativeWrappers operation; MCP returns NOT_SUPPORTED."}
+    notes: "Story 76.1 parent covers list/get/create/update/activate/deactivate/archive."
   list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
   get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
   get_video_transcode_status:   {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives transcode-status"}  # Story 75.6 - hosted video/audio transcode polling

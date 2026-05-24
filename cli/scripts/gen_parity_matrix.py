@@ -191,6 +191,21 @@ def classify(entry: dict, cli_present: set[str]) -> str:
     return "REST-ONLY"
 
 
+def _format_sub_actions(sub_actions: dict | None) -> str:
+    if not sub_actions:
+        return "—"
+    parts = []
+    for name, action in sub_actions.items():
+        rest = action.get("rest") or "NO-REST"
+        cli = action.get("cli")
+        cli_text = f"`{cli}`" if cli else "—"
+        if action.get("exempt"):
+            parts.append(f"`{name}`: {rest} / {cli_text} ({action['exempt']})")
+        else:
+            parts.append(f"`{name}`: {rest} / {cli_text}")
+    return "<br>".join(parts)
+
+
 def build_matrix() -> dict:
     tools = extract_mcp_tools(MCP_TOOLS_DIR)
     cli_present = extract_cli_commands(CLI_SRC)
@@ -215,6 +230,7 @@ def build_matrix() -> dict:
                 "area": entry.get("area", module),
                 "rest": entry.get("rest"),
                 "cli": cli_cmd,
+                "sub_actions": entry.get("sub_actions") or None,
                 "exempt": entry.get("exempt"),
                 "status": status,
                 "cli_present": (cli_cmd in cli_present) if cli_cmd else None,
@@ -271,12 +287,18 @@ def write_outputs(m: dict, out_json: Path = OUT_JSON, out_md: Path = OUT_MD) -> 
                 "",
                 f"### {cur_area}",
                 "",
-                "| Tool | Status | REST | CLI |",
-                "|------|--------|------|-----|",
+                "| Tool | Status | REST | CLI | Sub-actions |",
+                "|------|--------|------|-----|-------------|",
             ]
         lines.append(
             f"| `{r['tool']}` | {r['status']} | {r.get('rest') or '—'} | "
             f"{('`' + r['cli'] + '`') if r.get('cli') else '—'} |"
+        )
+        rest_text = r.get("rest") or "—"
+        cli_text = f"`{r['cli']}`" if r.get("cli") else "—"
+        lines[-1] = (
+            f"| `{r['tool']}` | {r['status']} | {rest_text} | "
+            f"{cli_text} | {_format_sub_actions(r.get('sub_actions'))} |"
         )
     out_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

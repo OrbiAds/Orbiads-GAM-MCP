@@ -33,9 +33,10 @@ def test_all_mcp_tools_extracted():
     Story 68.6: +4 EXEMPT parents (creative_qa, inventory, placements,
     targeting) folding 39 legacy tools behind the parent>child pattern.
     Story 68.5: +4 EXEMPT parents (audit, billing, gam_features, network).
-    Total 249 (Story 65.12 gam_audit parent) -> 257."""
+    Story 76.1: +1 FULL parent creative_wrapper_skill.
+    Total 257 -> 258."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    assert len(tools) == 257, f"expected 257 @mcp.tool, found {len(tools)}"
+    assert len(tools) == 258, f"expected 258 @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
     assert tools["run_pql_query"] == "pql"
@@ -44,7 +45,7 @@ def test_all_mcp_tools_extracted():
 
 def test_every_tool_classified_no_unmapped(matrix):
     """The curated map must cover 100% of tools — zero UNMAPPED."""
-    assert matrix["total_tools"] == 257
+    assert matrix["total_tools"] == 258
     statuses = {r["status"] for r in matrix["rows"]}
     assert statuses <= VALID_STATUSES
     unmapped = [r["tool"] for r in matrix["rows"] if r["status"] == "UNMAPPED"]
@@ -53,7 +54,7 @@ def test_every_tool_classified_no_unmapped(matrix):
 
 def test_counts_reconcile(matrix):
     """The split must sum to the total — fixes the audit's non-reconciling tally."""
-    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 257
+    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 258
 
 
 def test_pricing_is_exempt(matrix):
@@ -76,6 +77,23 @@ def test_full_tools_have_a_real_cli_command(matrix):
     assert drift == [], f"FULL tools mapped to non-existent CLI command: {drift}"
 
 
+def test_creative_wrapper_skill_documents_every_sub_action(matrix):
+    row = next(r for r in matrix["rows"] if r["tool"] == "creative_wrapper_skill")
+
+    assert set(row["sub_actions"]) == {
+        "list",
+        "get",
+        "create",
+        "update",
+        "activate",
+        "deactivate",
+        "archive",
+    }
+    assert row["sub_actions"]["list"]["rest"] == "GET /api/gam/creative-wrappers"
+    assert row["sub_actions"]["deactivate"]["cli"] == "creative-wrappers deactivate"
+    assert row["sub_actions"]["archive"]["rest"] == "NO-REST"
+
+
 def test_mcp_only_tools_have_no_rest(matrix):
     for r in matrix["rows"]:
         if r["status"] == "MCP-ONLY":
@@ -89,7 +107,7 @@ def test_outputs_written_and_valid(tmp_path, monkeypatch):
     )
     assert rc.returncode == 0, rc.stderr
     data = json.loads((CLI_ROOT / "parity-matrix.json").read_text(encoding="utf-8"))
-    assert data["total_tools"] == 257
+    assert data["total_tools"] == 258
     md = (CLI_ROOT / "PARITY.md").read_text(encoding="utf-8")
     assert "OrbiAds CLI <-> MCP Parity Matrix" in md
     assert "single source of truth" in md.lower()

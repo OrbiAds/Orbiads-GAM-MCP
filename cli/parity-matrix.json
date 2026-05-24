@@ -1,8 +1,8 @@
 {
-  "total_tools": 257,
+  "total_tools": 258,
   "counts": {
     "EXEMPT": 55,
-    "FULL": 202
+    "FULL": 203
   },
   "per_area": {
     "adcp": {
@@ -33,6 +33,9 @@
     "creative_qa": {
       "FULL": 7,
       "EXEMPT": 1
+    },
+    "creative_wrappers": {
+      "FULL": 1
     },
     "creatives": {
       "FULL": 40
@@ -141,6 +144,12 @@
     "creative-templates ensure-classic-native",
     "creative-templates get",
     "creative-templates list",
+    "creative-wrappers activate",
+    "creative-wrappers create",
+    "creative-wrappers deactivate",
+    "creative-wrappers get",
+    "creative-wrappers list",
+    "creative-wrappers update",
     "creatives archive",
     "creatives compress-image",
     "creatives duplicate",
@@ -348,6 +357,7 @@
       "area": "adcp",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
       "status": "EXEMPT",
       "cli_present": null
@@ -358,6 +368,7 @@
       "area": "adcp",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
       "status": "EXEMPT",
       "cli_present": null
@@ -368,6 +379,7 @@
       "area": "adcp",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
       "status": "EXEMPT",
       "cli_present": null
@@ -378,6 +390,7 @@
       "area": "advertisers",
       "rest": "POST /api/gam/advertisers",
       "cli": "advertisers create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -388,6 +401,7 @@
       "area": "advertisers",
       "rest": "POST /api/gam/agencies",
       "cli": "advertisers agencies create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -398,6 +412,7 @@
       "area": "advertisers",
       "rest": "GET /api/gam/advertisers/search",
       "cli": "advertisers find",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -408,6 +423,7 @@
       "area": "advertisers",
       "rest": "POST /api/gam/advertisers/find-or-create",
       "cli": "advertisers find-or-create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -418,6 +434,7 @@
       "area": "advertisers",
       "rest": "POST /api/gam/orders",
       "cli": "orders create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -428,6 +445,7 @@
       "area": "advertisers",
       "rest": "GET /api/gam/advertisers/{advertiser_id}",
       "cli": "advertisers get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -438,6 +456,7 @@
       "area": "advertisers",
       "rest": "GET /api/gam/agencies",
       "cli": "advertisers agencies list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -448,6 +467,7 @@
       "area": "advertisers",
       "rest": "GET /api/gam/advertisers",
       "cli": "advertisers list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -458,6 +478,7 @@
       "area": "advertisers",
       "rest": "PATCH /api/gam/advertisers/{advertiser_id}",
       "cli": "advertisers update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -468,6 +489,7 @@
       "area": "advertisers",
       "rest": "PATCH /api/gam/agencies/{agency_id}",
       "cli": "advertisers agencies update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -478,6 +500,7 @@
       "area": "audiences",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.2 parent>child migration batch 1. Legacy audiences tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -488,6 +511,7 @@
       "area": "audiences",
       "rest": "POST /api/gam/audience-segments",
       "cli": "audiences create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -498,6 +522,7 @@
       "area": "audiences",
       "rest": "GET /api/gam/audience-segments/{segment_id}",
       "cli": "audiences get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -508,6 +533,7 @@
       "area": "audiences",
       "rest": "GET /api/gam/audience-segments",
       "cli": "audiences list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -518,6 +544,7 @@
       "area": "audiences",
       "rest": "POST /api/gam/audience-segments/action",
       "cli": "audiences action",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -528,6 +555,7 @@
       "area": "audiences",
       "rest": "PATCH /api/gam/audience-segments/{segment_id}",
       "cli": "audiences update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -538,6 +566,7 @@
       "area": "audit",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.5 parent>child migration batch 2. Legacy audit tools keep their existing parity mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -548,6 +577,7 @@
       "area": "audit",
       "rest": "GET /api/settings/audit/",
       "cli": "audit log",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -558,6 +588,7 @@
       "area": "audit",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 65 Story 65.11 pure-compute cost preview tool (no GAM call). REST + CLI parity deferred to the same Epic 65 CLI extension story as gam_admin (post-65.9/65.10c).",
       "status": "EXEMPT",
       "cli_present": null
@@ -568,6 +599,7 @@
       "area": "audit",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 65 Story 65.10a parent>child flagship tool (3 sub-actions hygiene_check/ops_diagnostic/standards_baseline). Story 65.10a ships hygiene_check; 65.10b/c add the other two. REST symmetric route + CLI verb deferred to the same Epic 65 CLI extension story as gam_admin (post-65.10c).",
       "status": "EXEMPT",
       "cli_present": null
@@ -578,6 +610,7 @@
       "area": "auth",
       "rest": "GET /api/auth/gam/connection-state",
       "cli": "auth status",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -588,6 +621,7 @@
       "area": "auth",
       "rest": "DELETE /api/auth/gam/revoke",
       "cli": "auth logout",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -598,6 +632,7 @@
       "area": "auth",
       "rest": "GET /api/me",
       "cli": "auth status",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -608,6 +643,7 @@
       "area": "auth",
       "rest": "POST /api/auth/gam/device-code",
       "cli": "auth login",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -618,6 +654,7 @@
       "area": "auth",
       "rest": "GET /api/auth/gam/device-token-status",
       "cli": "auth login",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -628,6 +665,7 @@
       "area": "auth",
       "rest": "POST /api/auth/gam/select-network",
       "cli": "network switch",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -638,6 +676,7 @@
       "area": "billing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.5 parent>child migration batch 2. Legacy billing tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -648,6 +687,7 @@
       "area": "billing",
       "rest": "GET /api/billing",
       "cli": "billing balance",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -658,6 +698,7 @@
       "area": "billing",
       "rest": "GET /api/billing/transactions",
       "cli": "billing transactions",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -668,6 +709,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/archive",
       "cli": "campaigns archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -678,6 +720,7 @@
       "area": "campaign_ops",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
       "status": "EXEMPT",
       "cli_present": null
@@ -688,6 +731,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
       "cli": "campaigns attach-creatives",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -698,6 +742,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/line-items",
       "cli": "campaigns add-line-items",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -708,6 +753,7 @@
       "area": "campaign_ops",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
       "status": "EXEMPT",
       "cli_present": null
@@ -718,6 +764,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/deploy",
       "cli": "campaigns deploy",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -728,6 +775,7 @@
       "area": "campaign_ops",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap.",
       "status": "EXEMPT",
       "cli_present": null
@@ -738,6 +786,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/pause",
       "cli": "campaigns pause",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -748,6 +797,7 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/recover",
       "cli": "campaigns recover",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -758,6 +808,7 @@
       "area": "campaign_ops",
       "rest": "PATCH /api/campaigns/{campaign_id}",
       "cli": "campaigns update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -768,6 +819,7 @@
       "area": "creative_qa",
       "rest": "GET /api/gam/creative-qa/creatives/{creative_id}/tracking",
       "cli": "creative-qa audit-tracking",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -778,6 +830,7 @@
       "area": "creative_qa",
       "rest": "GET /api/gam/creative-qa/orders/{order_id}/tracking",
       "cli": "creative-qa audit-order-tracking",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -788,6 +841,7 @@
       "area": "creative_qa",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.6 parent>child migration batch 3. Legacy creative_qa tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -798,6 +852,7 @@
       "area": "creative_qa",
       "rest": "POST /api/gam/creative-qa/pre-archive-check",
       "cli": "creative-qa pre-archive-check",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -808,6 +863,7 @@
       "area": "creative_qa",
       "rest": "POST /api/gam/creative-qa/scan-compliance",
       "cli": "creative-qa scan-compliance",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -818,6 +874,7 @@
       "area": "creative_qa",
       "rest": "GET /api/gam/creative-qa/creatives/{creative_id}/ssl",
       "cli": "creative-qa validate-ssl",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -828,6 +885,7 @@
       "area": "creative_qa",
       "rest": "POST /api/gam/creative-qa/validate-ssl-batch",
       "cli": "creative-qa validate-ssl-batch",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -838,6 +896,48 @@
       "area": "creative_qa",
       "rest": "POST /api/gam/creative-qa/validate-tag",
       "cli": "creative-qa validate-tag",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "creative_wrapper_skill",
+      "module": "creative_wrappers",
+      "area": "creative_wrappers",
+      "rest": "POST /api/gam/creative-wrappers",
+      "cli": "creative-wrappers create",
+      "sub_actions": {
+        "list": {
+          "rest": "GET /api/gam/creative-wrappers",
+          "cli": "creative-wrappers list"
+        },
+        "get": {
+          "rest": "GET /api/gam/creative-wrappers/{wrapper_id}",
+          "cli": "creative-wrappers get"
+        },
+        "create": {
+          "rest": "POST /api/gam/creative-wrappers",
+          "cli": "creative-wrappers create"
+        },
+        "update": {
+          "rest": "PATCH /api/gam/creative-wrappers/{wrapper_id}",
+          "cli": "creative-wrappers update"
+        },
+        "activate": {
+          "rest": "POST /api/gam/creative-wrappers/{wrapper_id}/activate",
+          "cli": "creative-wrappers activate"
+        },
+        "deactivate": {
+          "rest": "POST /api/gam/creative-wrappers/{wrapper_id}/deactivate",
+          "cli": "creative-wrappers deactivate"
+        },
+        "archive": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Story 76.1 AC #11: GAM has no archiveCreativeWrappers operation; MCP returns NOT_SUPPORTED."
+        }
+      },
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -848,6 +948,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/creatives/{creative_id}/archive",
       "cli": "creatives archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -858,6 +959,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/native-styles/{style_id}/archive",
       "cli": "native-styles archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -868,6 +970,7 @@
       "area": "creatives",
       "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
       "cli": "campaigns attach-creatives",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -878,6 +981,7 @@
       "area": "creatives",
       "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
       "cli": "campaigns attach-creatives",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -888,6 +992,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-multi",
       "cli": "creatives upload-images",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -898,6 +1003,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/compress-image",
       "cli": "creatives compress-image",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -908,6 +1014,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-audio",
       "cli": "creatives upload-audio",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -918,6 +1025,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-native-classic",
       "cli": "creatives upload-native-classic",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -928,6 +1036,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-companion",
       "cli": "creatives upload-companion",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -938,6 +1047,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-html5",
       "cli": "creatives upload-html5",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -948,6 +1058,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-html5",
       "cli": "creatives upload-html5",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -958,6 +1069,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-images",
       "cli": "creatives upload-images",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -968,6 +1080,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-third-party",
       "cli": "creatives upload-third-party",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -978,6 +1091,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-vast-redirect",
       "cli": "creatives upload-vast-redirect",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -988,6 +1102,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-video",
       "cli": "creatives upload-video",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -998,6 +1113,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/licas/{line_item_id}/{creative_id}/deactivate",
       "cli": "licas deactivate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1008,6 +1124,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/licas/delete",
       "cli": "licas delete",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1018,6 +1135,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/creatives/{creative_id}/duplicate",
       "cli": "creatives duplicate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1028,6 +1146,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/native-styles/{style_id}/duplicate",
       "cli": "native-styles duplicate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1038,6 +1157,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/creative-templates/classic-native/ensure",
       "cli": "creative-templates ensure-classic-native",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1048,6 +1168,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/{job_id}/gam-preview-link",
       "cli": "preview campaign",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1058,6 +1179,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives/{creative_id}",
       "cli": "creatives get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1068,6 +1190,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives/{creative_id}/preview-url",
       "cli": "creatives preview-url",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1078,6 +1201,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creative-templates/{template_id}",
       "cli": "creative-templates get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1088,6 +1212,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/licas/batch",
       "cli": "licas batch",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1098,6 +1223,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/line-items/{line_item_id}/licas",
       "cli": "licas list-by-line-item",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1108,6 +1234,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/native-styles/{style_id}",
       "cli": "native-styles get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1118,6 +1245,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives/{creative_id}/native-style-previews",
       "cli": "creatives native-style-previews",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1128,6 +1256,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives/{creative_id}",
       "cli": "creatives transcode-status",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1138,6 +1267,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creative-templates",
       "cli": "creative-templates list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1148,6 +1278,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/advertisers/{advertiser_id}/creatives",
       "cli": "creatives list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1158,6 +1289,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/line-items/{line_item_id}/creatives",
       "cli": "creatives list-by-line-item",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1168,6 +1300,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/creatives",
       "cli": "creatives list-by-network",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1178,6 +1311,7 @@
       "area": "creatives",
       "rest": "GET /api/gam/native-styles",
       "cli": "native-styles list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1188,6 +1322,7 @@
       "area": "creatives",
       "rest": "PATCH /api/gam/creatives/{creative_id}",
       "cli": "creatives update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1198,6 +1333,7 @@
       "area": "creatives",
       "rest": "PATCH /api/gam/licas/{line_item_id}/{creative_id}",
       "cli": "licas update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1208,6 +1344,7 @@
       "area": "creatives",
       "rest": "PATCH /api/gam/native-styles/{style_id}",
       "cli": "native-styles update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1218,6 +1355,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/creatives/upload",
       "cli": "creatives upload",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1228,6 +1366,7 @@
       "area": "creatives",
       "rest": "POST /api/gam/creatives/upload/from-url",
       "cli": "creatives upload-url",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1238,6 +1377,7 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-html5",
       "cli": "creatives upload-html5",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1248,6 +1388,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1258,6 +1399,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1268,6 +1410,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1278,6 +1421,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1288,6 +1432,7 @@
       "area": "deals",
       "rest": "POST /api/gam/pmp-deals",
       "cli": "programmatic deals create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1298,6 +1443,7 @@
       "area": "deals",
       "rest": "POST /api/gam/private-auctions",
       "cli": "programmatic auctions create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1308,6 +1454,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1318,6 +1465,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1328,6 +1476,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1338,6 +1487,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1348,6 +1498,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1358,6 +1509,7 @@
       "area": "deals",
       "rest": "GET /api/gam/pmp-deals/{deal_id}",
       "cli": "programmatic deals get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1368,6 +1520,7 @@
       "area": "deals",
       "rest": "GET /api/gam/private-auctions/{auction_id}",
       "cli": "programmatic auctions get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1378,6 +1531,7 @@
       "area": "deals",
       "rest": "GET /api/gam/programmatic-buyers/{buyer_id}",
       "cli": "programmatic buyers get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1388,6 +1542,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1398,6 +1553,7 @@
       "area": "deals",
       "rest": "GET /api/gam/pmp-deals",
       "cli": "programmatic deals list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1408,6 +1564,7 @@
       "area": "deals",
       "rest": "GET /api/gam/private-auctions",
       "cli": "programmatic auctions list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1418,6 +1575,7 @@
       "area": "deals",
       "rest": "GET /api/gam/programmatic-buyers",
       "cli": "programmatic buyers list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1428,6 +1586,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1438,6 +1597,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1448,6 +1608,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1458,6 +1619,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1468,6 +1630,7 @@
       "area": "deals",
       "rest": "PATCH /api/gam/pmp-deals/{deal_id}",
       "cli": "programmatic deals update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1478,6 +1641,7 @@
       "area": "deals",
       "rest": "PATCH /api/gam/private-auctions/{auction_id}",
       "cli": "programmatic auctions update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1488,6 +1652,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1498,6 +1663,7 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1508,6 +1674,7 @@
       "area": "audit",
       "rest": "POST /api/audit/export",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 65 Story 65.9 SSE streaming CSV export. REST endpoint shipped; CLI verb `audit export` deferred to the same Epic 65 CLI extension story as gam_admin / audit_skill (post-65.10c). The cron use-case is served by the standalone script `scripts/export_authoring_audit_cron.py` calling REST directly.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1518,6 +1685,7 @@
       "area": "admin",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 65 Story 65.8 parent>child tool (48 area/action tuples). REST symmetric route + CLI verb deferred to a dedicated CLI extension story (post-65.9/65.10c).",
       "status": "EXEMPT",
       "cli_present": null
@@ -1528,6 +1696,7 @@
       "area": "audit",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 65 Story 65.12 parent>child GAM audit dispatcher covering 22 checks. REST symmetric route + CLI verb are deferred to the Epic 65 CLI extension story, matching the gam_admin / audit_skill parent policy.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1538,6 +1707,7 @@
       "area": "gam_features",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.5 parent>child migration batch 2. Legacy gam_features tools keep their existing explicit EXEMPT classifications during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1548,6 +1718,7 @@
       "area": "gam_features",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1558,6 +1729,7 @@
       "area": "gam_features",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1568,6 +1740,7 @@
       "area": "gam_features",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1578,6 +1751,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/ad-units/archive-inactive",
       "cli": "inventory archive-inactive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1588,6 +1762,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/inventory/audit",
       "cli": "inventory audit",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1598,6 +1773,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/ad-units/save-adunits",
       "cli": "inventory save-adunits",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1608,6 +1784,7 @@
       "area": "inventory",
       "rest": "GET /api/gam/ad-units/inactive",
       "cli": "inventory list-inactive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1618,6 +1795,7 @@
       "area": "inventory",
       "rest": "GET /api/gam/inventory/manifest/ads.json",
       "cli": "inventory ads-json",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1628,6 +1806,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/blueprint/generate",
       "cli": "inventory blueprint-generate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1638,6 +1817,7 @@
       "area": "inventory",
       "rest": "GET /api/gam/ad-units",
       "cli": "inventory ad-units",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1648,6 +1828,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/ad-units/by-ids",
       "cli": "inventory ad-units-by-ids",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1658,6 +1839,7 @@
       "area": "inventory",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1668,6 +1850,7 @@
       "area": "inventory",
       "rest": "GET /api/gam/ad-units/sizes",
       "cli": "inventory sizes",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1678,6 +1861,7 @@
       "area": "inventory",
       "rest": "POST /api/gam/blueprint/push",
       "cli": "inventory blueprint-push",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1688,6 +1872,7 @@
       "area": "jobs",
       "rest": "POST /api/jobs/{job_id}/duplicate",
       "cli": "jobs duplicate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1698,6 +1883,7 @@
       "area": "jobs",
       "rest": "GET /api/jobs/{job_id}",
       "cli": "jobs get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1708,6 +1894,7 @@
       "area": "jobs",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.2 parent>child migration batch 1. Legacy jobs tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1718,6 +1905,7 @@
       "area": "jobs",
       "rest": "GET /api/jobs/",
       "cli": "jobs list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1728,6 +1916,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/jobs/{job_id}/line-items/activate",
       "cli": "line-items activate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1738,6 +1927,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/{line_item_id}/approve",
       "cli": "line-items approve",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1748,6 +1938,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/jobs/{job_id}/line-items/archive",
       "cli": "line-items archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1758,6 +1949,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/adexchange",
       "cli": "line-items create-adexchange",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1768,6 +1960,7 @@
       "area": "line_items",
       "rest": "POST /api/campaigns/{id}/line-items",
       "cli": "campaigns add-line-items",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1778,6 +1971,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/open-bidding",
       "cli": "line-items create-open-bidding",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1788,6 +1982,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/preferred-deal",
       "cli": "line-items create-preferred-deal",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1798,6 +1993,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/{line_item_id}/duplicate",
       "cli": "line-items duplicate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1808,6 +2004,7 @@
       "area": "line_items",
       "rest": "GET /api/gam/line-items/{line_item_id}",
       "cli": "line-items get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1818,6 +2015,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/line-items/lifecycle",
       "cli": "line-items lifecycle",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1828,6 +2026,7 @@
       "area": "line_items",
       "rest": "GET /api/gam/orders/{order_id}/line-items",
       "cli": "line-items list-by-order",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1838,6 +2037,7 @@
       "area": "line_items",
       "rest": "GET /api/gam/private-deals",
       "cli": "line-items private-deals",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1848,6 +2048,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/jobs/{job_id}/line-items/pause",
       "cli": "line-items pause",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1858,6 +2059,7 @@
       "area": "line_items",
       "rest": "POST /api/gam/jobs/{job_id}/line-items/{line_item_id}/update",
       "cli": "line-items update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1868,6 +2070,7 @@
       "area": "line_items",
       "rest": "PATCH /api/campaigns/{id}/line-items/{li}/targeting",
       "cli": "line-items update-targeting",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1878,6 +2081,7 @@
       "area": "line_items",
       "rest": "GET /api/gam/jobs/{job_id}/verify",
       "cli": "line-items verify",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1888,6 +2092,7 @@
       "area": "network",
       "rest": "GET /api/gam/network-info",
       "cli": "network gam-info",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1898,6 +2103,7 @@
       "area": "network",
       "rest": "GET /api/gam/accessible-networks",
       "cli": "network list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1908,6 +2114,7 @@
       "area": "network",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.5 parent>child migration batch 2. Legacy network tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -1918,6 +2125,7 @@
       "area": "network",
       "rest": "POST /api/gam/switch-network",
       "cli": "network switch",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1928,6 +2136,7 @@
       "area": "network",
       "rest": "PATCH /api/gam/network",
       "cli": "network update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1938,6 +2147,7 @@
       "area": "orders",
       "rest": "POST /api/gam/orders/{order_id}/approve",
       "cli": "orders approve",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1948,6 +2158,7 @@
       "area": "orders",
       "rest": "POST /api/gam/orders/{order_id}/archive",
       "cli": "orders archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1958,6 +2169,7 @@
       "area": "orders",
       "rest": "POST /api/gam/contacts",
       "cli": "contacts create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1968,6 +2180,7 @@
       "area": "orders",
       "rest": "POST /api/gam/orders",
       "cli": "orders create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1978,6 +2191,7 @@
       "area": "orders",
       "rest": "GET /api/gam/contacts",
       "cli": "contacts list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1988,6 +2202,7 @@
       "area": "orders",
       "rest": "GET /api/gam/orders/{order_id}",
       "cli": "orders get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -1998,6 +2213,7 @@
       "area": "orders",
       "rest": "GET /api/gam/orders?status=delivering",
       "cli": "orders list-delivering",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2008,6 +2224,7 @@
       "area": "orders",
       "rest": "GET /api/gam/orders",
       "cli": "orders list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2018,6 +2235,7 @@
       "area": "orders",
       "rest": "GET /api/gam/roles",
       "cli": "roles list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2028,6 +2246,7 @@
       "area": "orders",
       "rest": "GET /api/gam/users",
       "cli": "users list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2038,6 +2257,7 @@
       "area": "orders",
       "rest": "POST /api/gam/orders/lifecycle",
       "cli": "orders lifecycle",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2048,6 +2268,7 @@
       "area": "orders",
       "rest": "PATCH /api/gam/contacts/{contact_id}",
       "cli": "contacts update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2058,6 +2279,7 @@
       "area": "orders",
       "rest": "PATCH /api/gam/orders/{order_id}",
       "cli": "orders update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2068,6 +2290,7 @@
       "area": "orders",
       "rest": "GET /api/gam/jobs/{job_id}/verify",
       "cli": "line-items verify",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2078,6 +2301,7 @@
       "area": "placements",
       "rest": "DELETE /api/gam/placements/{placement_id}",
       "cli": "inventory placement-archive",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2088,6 +2312,7 @@
       "area": "placements",
       "rest": "POST /api/gam/placements",
       "cli": "inventory placement-create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2098,6 +2323,7 @@
       "area": "placements",
       "rest": "GET /api/gam/placements",
       "cli": "inventory placements",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2108,6 +2334,7 @@
       "area": "placements",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.6 parent>child migration batch 3. Legacy placements tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2118,6 +2345,7 @@
       "area": "placements",
       "rest": "PATCH /api/gam/placements/{placement_id}",
       "cli": "inventory placement-update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2128,6 +2356,7 @@
       "area": "pql",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.2 parent>child migration batch 1. Legacy pql tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2138,6 +2367,7 @@
       "area": "pql",
       "rest": "POST /api/gam/pql",
       "cli": "pql query",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2148,6 +2378,7 @@
       "area": "preview",
       "rest": "POST /api/gam/coverage",
       "cli": "preview coverage",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2158,6 +2389,7 @@
       "area": "preview",
       "rest": "POST /api/creatives/{job_id}/gam-preview-link",
       "cli": "preview campaign",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2168,6 +2400,7 @@
       "area": "preview",
       "rest": "POST /api/preview/share",
       "cli": "preview share",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2178,6 +2411,7 @@
       "area": "preview",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.2 parent>child migration batch 1. Legacy preview tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2188,6 +2422,7 @@
       "area": "pricing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
       "status": "EXEMPT",
       "cli_present": null
@@ -2198,6 +2433,7 @@
       "area": "pricing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
       "status": "EXEMPT",
       "cli_present": null
@@ -2208,6 +2444,7 @@
       "area": "pricing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
       "status": "EXEMPT",
       "cli_present": null
@@ -2218,6 +2455,7 @@
       "area": "pricing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "GAM RateCardService removed v202502+ — no API replacement (MEMORY.md)",
       "status": "EXEMPT",
       "cli_present": null
@@ -2228,6 +2466,7 @@
       "area": "pricing",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)",
       "status": "EXEMPT",
       "cli_present": null
@@ -2238,6 +2477,7 @@
       "area": "products",
       "rest": "POST /api/products/{product_id}:archive",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2248,6 +2488,7 @@
       "area": "products",
       "rest": "POST /api/products",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2258,6 +2499,7 @@
       "area": "products",
       "rest": "GET /api/products/{product_id}/pricing-suggestion",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 67 Pricing assistant — same CLI-deferred policy as other Product tools (Epic 64). REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2268,6 +2510,7 @@
       "area": "products",
       "rest": "GET /api/products/{product_id}",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2278,6 +2521,7 @@
       "area": "products",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 ADCP discovery — protocol-first integration via MCP only, no REST/CLI surface planned (buy-agent path).",
       "status": "EXEMPT",
       "cli_present": null
@@ -2288,6 +2532,7 @@
       "area": "products",
       "rest": "GET /api/products",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2298,6 +2543,7 @@
       "area": "products",
       "rest": "PATCH /api/products/{product_id}",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2308,6 +2554,7 @@
       "area": "reporting",
       "rest": "GET /api/campaigns/{id}/health-alerts",
       "cli": "reporting alerts-budget",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2318,6 +2565,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/jobs/{job_id}/delivery-status",
       "cli": "reporting delivery-status",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2328,6 +2576,7 @@
       "area": "reporting",
       "rest": "GET /api/campaigns/alerts",
       "cli": "reporting alerts-underdelivery",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2338,6 +2587,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/templates/{template_id}/publish-to-gam",
       "cli": "reporting gam-reports create-from-template",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2348,6 +2598,7 @@
       "area": "reporting",
       "rest": "DELETE /api/gam/reports/gam-reports/{gam_report_id}",
       "cli": "reporting gam-reports delete",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2358,6 +2609,7 @@
       "area": "reporting",
       "rest": "DELETE /api/gam/reports/templates/{template_id}",
       "cli": "reporting templates delete",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2368,6 +2620,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/templates/{template_id}/clone",
       "cli": "reporting templates duplicate",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2378,6 +2631,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/{execution_id}/export.csv",
       "cli": "reporting export-csv",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2388,6 +2642,7 @@
       "area": "reporting",
       "rest": "GET /api/jobs/{job_id}/report",
       "cli": "reporting delivery-report",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2398,6 +2653,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/inventory",
       "cli": "reporting inventory",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2408,6 +2664,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/billing",
       "cli": "reporting billing-report",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2418,6 +2675,7 @@
       "area": "reporting",
       "rest": "GET /api/jobs/{job_id}/forecast",
       "cli": "reporting forecast-line-item",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2428,6 +2686,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/ga4/dimensions",
       "cli": "reporting ga4 dimensions",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2438,6 +2697,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/ga4/metrics",
       "cli": "reporting ga4 metrics",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2448,6 +2708,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/gam-reports/{gam_report_id}",
       "cli": "reporting gam-reports get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2458,6 +2719,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/forecast/prospective",
       "cli": "reporting forecast prospective",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2468,6 +2730,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/available-date-ranges",
       "cli": "reporting date-ranges",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2478,6 +2741,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/available-dimensions",
       "cli": "reporting dimensions",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2488,6 +2752,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/available-metrics",
       "cli": "reporting metrics",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2498,6 +2763,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/executions",
       "cli": "reporting executions",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2508,6 +2774,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/forecast/standalone",
       "cli": "reporting forecast standalone",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2518,6 +2785,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/forecast/traffic",
       "cli": "reporting forecast traffic",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2528,6 +2796,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/gam-reports",
       "cli": "reporting gam-reports list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2538,6 +2807,7 @@
       "area": "reporting",
       "rest": "GET /api/gam/reports/templates",
       "cli": "reporting templates list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2548,6 +2818,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reporting/skill",
       "cli": "reporting skill",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2558,6 +2829,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/custom",
       "cli": "reporting run",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2568,6 +2840,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/ga4/run",
       "cli": "reporting ga4 run",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2578,6 +2851,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/gam-reports/{gam_report_id}/run",
       "cli": "reporting export",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2588,6 +2862,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/templates/{template_id}/run",
       "cli": "reporting templates run",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2598,6 +2873,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/templates",
       "cli": "reporting templates save",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2608,6 +2884,7 @@
       "area": "reporting",
       "rest": "POST /api/gam/reports/templates/{template_id}/update-in-gam",
       "cli": "reporting gam-reports update-from-template",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2618,6 +2895,7 @@
       "area": "reporting",
       "rest": "PUT /api/gam/reports/templates/{template_id}",
       "cli": "reporting templates update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2628,6 +2906,7 @@
       "area": "settings",
       "rest": "POST /api/settings/presets",
       "cli": "settings presets create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2638,6 +2917,7 @@
       "area": "settings",
       "rest": "DELETE /api/settings/presets/{preset_id}",
       "cli": "settings presets delete",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2648,6 +2928,7 @@
       "area": "settings",
       "rest": "GET /api/settings/delivery-defaults",
       "cli": "settings delivery-defaults get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2658,6 +2939,7 @@
       "area": "settings",
       "rest": "GET /api/settings/naming",
       "cli": "settings naming get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2668,6 +2950,7 @@
       "area": "settings",
       "rest": "GET /api/settings/general",
       "cli": "settings general get",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2678,6 +2961,7 @@
       "area": "settings",
       "rest": "GET /api/settings/presets",
       "cli": "settings presets list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2688,6 +2972,7 @@
       "area": "settings",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.1 parent>child POC. Legacy settings tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration batch after the pattern is validated.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2698,6 +2983,7 @@
       "area": "settings",
       "rest": "PUT /api/settings/delivery-defaults",
       "cli": "settings delivery-defaults set",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2708,6 +2994,7 @@
       "area": "settings",
       "rest": "PUT /api/settings/naming",
       "cli": "settings naming set",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2718,6 +3005,7 @@
       "area": "settings",
       "rest": "PUT /api/settings/general",
       "cli": "settings general set",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2728,6 +3016,7 @@
       "area": "targeting",
       "rest": "DELETE /api/gam/ad-units/{ad_unit_id}",
       "cli": "inventory archive-ad-unit",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2738,6 +3027,7 @@
       "area": "targeting",
       "rest": "POST /api/gam/custom-targeting-keys",
       "cli": "inventory create-key",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2748,6 +3038,7 @@
       "area": "targeting",
       "rest": "POST /api/gam/custom-targeting-keys/{key_id}/values",
       "cli": "custom-targeting-values create",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2758,6 +3049,7 @@
       "area": "targeting",
       "rest": "DELETE /api/gam/custom-targeting-keys/{key_id}",
       "cli": "inventory delete-key",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2768,6 +3060,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/geo-targets",
       "cli": "inventory countries",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2778,6 +3071,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/languages",
       "cli": "inventory languages",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2788,6 +3082,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/custom-targeting-values",
       "cli": "custom-targeting-values list",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2798,6 +3093,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/device-categories",
       "cli": "inventory device-categories",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2808,6 +3104,7 @@
       "area": "targeting",
       "rest": "POST /api/gam/inventory/forecast",
       "cli": "inventory forecast",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2818,6 +3115,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/ad-units",
       "cli": "inventory ad-units",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2828,6 +3126,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/custom-targeting-keys",
       "cli": "inventory keys",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2838,6 +3137,7 @@
       "area": "targeting",
       "rest": "POST /api/gam/custom-targeting-values/action",
       "cli": "custom-targeting-values action",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2848,6 +3148,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/ad-units/search",
       "cli": "inventory search-ad-units",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2858,6 +3159,7 @@
       "area": "targeting",
       "rest": "GET /api/gam/custom-targeting/search",
       "cli": "inventory search-custom-targeting",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2868,6 +3170,7 @@
       "area": "targeting",
       "rest": "NO-REST",
       "cli": null,
+      "sub_actions": null,
       "exempt": "Story 68.6 parent>child migration batch 3. Legacy targeting tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
@@ -2878,6 +3181,7 @@
       "area": "targeting",
       "rest": "PATCH /api/gam/ad-units/{ad_unit_id}",
       "cli": "inventory update-ad-unit",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2888,6 +3192,7 @@
       "area": "targeting",
       "rest": "PATCH /api/gam/custom-targeting-keys/{key_id}",
       "cli": "inventory update-key",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2898,6 +3203,7 @@
       "area": "targeting",
       "rest": "PATCH /api/gam/custom-targeting-values/{value_id}",
       "cli": "custom-targeting-values update",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -2908,6 +3214,7 @@
       "area": "targeting",
       "rest": "POST /api/gam/ad-units/validate-fluid",
       "cli": "inventory validate-fluid",
+      "sub_actions": null,
       "exempt": null,
       "status": "FULL",
       "cli_present": true
