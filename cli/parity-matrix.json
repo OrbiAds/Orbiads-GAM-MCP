@@ -147,8 +147,11 @@
     "creative-wrappers activate",
     "creative-wrappers create",
     "creative-wrappers deactivate",
+    "creative-wrappers find-company",
     "creative-wrappers get",
     "creative-wrappers list",
+    "creative-wrappers list-companies",
+    "creative-wrappers set-data-declaration",
     "creative-wrappers update",
     "creatives archive",
     "creatives compress-image",
@@ -936,6 +939,18 @@
           "rest": "NO-REST",
           "cli": null,
           "exempt": "Story 76.1 AC #11: GAM has no archiveCreativeWrappers operation; MCP returns NOT_SUPPORTED."
+        },
+        "set_data_declaration": {
+          "rest": "PATCH /api/gam/creative-wrappers/{wrapper_id}/data-declaration",
+          "cli": "creative-wrappers set-data-declaration"
+        },
+        "list_rich_media_ads_companies": {
+          "rest": "GET /api/gam/rich-media-ads-companies",
+          "cli": "creative-wrappers list-companies"
+        },
+        "find_third_party_company": {
+          "rest": "GET /api/gam/rich-media-ads-companies/search",
+          "cli": "creative-wrappers find-company"
         }
       },
       "exempt": null,

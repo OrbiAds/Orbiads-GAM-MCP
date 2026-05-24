@@ -88,7 +88,10 @@ tools:
       activate:   {rest: "POST /api/gam/creative-wrappers/{wrapper_id}/activate", cli: "creative-wrappers activate"}
       deactivate: {rest: "POST /api/gam/creative-wrappers/{wrapper_id}/deactivate", cli: "creative-wrappers deactivate"}
       archive:    {rest: "NO-REST", cli: null, exempt: "Story 76.1 AC #11: GAM has no archiveCreativeWrappers operation; MCP returns NOT_SUPPORTED."}
-    notes: "Story 76.1 parent covers list/get/create/update/activate/deactivate/archive."
+      set_data_declaration: {rest: "PATCH /api/gam/creative-wrappers/{wrapper_id}/data-declaration", cli: "creative-wrappers set-data-declaration"}
+      list_rich_media_ads_companies: {rest: "GET /api/gam/rich-media-ads-companies", cli: "creative-wrappers list-companies"}
+      find_third_party_company: {rest: "GET /api/gam/rich-media-ads-companies/search", cli: "creative-wrappers find-company"}
+    notes: "Story 76.1 parent covers list/get/create/update/activate/deactivate/archive; Story 76.5 adds data declaration + RichMediaAdsCompany catalogue sub-actions."
   list_creatives_by_advertiser: {area: creatives, rest: "GET /api/gam/advertisers/{advertiser_id}/creatives", cli: "creatives list"}
   get_creative:                 {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives get"}
   get_video_transcode_status:   {area: creatives, rest: "GET /api/gam/creatives/{creative_id}", cli: "creatives transcode-status"}  # Story 75.6 - hosted video/audio transcode polling

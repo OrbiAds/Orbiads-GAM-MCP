@@ -83,3 +83,60 @@ def test_creative_wrappers_update_and_lifecycle_calls(authenticated_config, tmp_
     client.patch.assert_called_once_with("/api/gam/creative-wrappers/2", json={"htmlFooter": "<f></f>"})
     assert client.post.call_args_list[0].args[0] == "/api/gam/creative-wrappers/2/activate"
     assert client.post.call_args_list[1].args[0] == "/api/gam/creative-wrappers/2/deactivate"
+
+
+def test_creative_wrappers_set_data_declaration_calls_rest(authenticated_config):
+    client = MagicMock()
+    client.patch.return_value = {"id": 2}
+
+    with patch("orbiads_cli.commands.creative_wrappers.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            [
+                "creative-wrappers",
+                "set-data-declaration",
+                "--wrapper-id",
+                "2",
+                "--declaration-type",
+                "DECLARED",
+                "--third-party-company-ids",
+                "23",
+                "--third-party-company-ids",
+                "45",
+            ],
+        )
+
+    assert result.exit_code == 0, result.output
+    client.patch.assert_called_once_with(
+        "/api/gam/creative-wrappers/2/data-declaration",
+        json={"declarationType": "DECLARED", "thirdPartyCompanyIds": [23, 45]},
+    )
+
+
+def test_creative_wrappers_company_lookup_commands_call_rest(authenticated_config):
+    client = MagicMock()
+    client.get.return_value = {"results": []}
+
+    with patch("orbiads_cli.commands.creative_wrappers.get_client", return_value=client):
+        listed = runner.invoke(app, ["creative-wrappers", "list-companies", "--force-refresh"])
+        found = runner.invoke(
+            app,
+            [
+                "creative-wrappers",
+                "find-company",
+                "--name",
+                "Integral Ad Science",
+                "--min-score",
+                "0.7",
+            ],
+        )
+
+    assert listed.exit_code == 0, listed.output
+    assert found.exit_code == 0, found.output
+    assert client.get.call_args_list[0].args[0] == "/api/gam/rich-media-ads-companies"
+    assert client.get.call_args_list[0].kwargs["params"] == {"forceRefresh": True}
+    assert client.get.call_args_list[1].args[0] == "/api/gam/rich-media-ads-companies/search"
+    assert client.get.call_args_list[1].kwargs["params"] == {
+        "name": "Integral Ad Science",
+        "minScore": 0.7,
+    }

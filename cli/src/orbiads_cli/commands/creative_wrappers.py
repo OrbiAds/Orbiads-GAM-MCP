@@ -94,6 +94,69 @@ def update_wrapper(
         handle_error(exc)
 
 
+@app.command("set-data-declaration")
+def set_data_declaration(
+    ctx: typer.Context,
+    wrapper_id: int = typer.Option(..., "--wrapper-id", min=1, help="CreativeWrapper ID"),
+    declaration_type: str = typer.Option(
+        ...,
+        "--declaration-type",
+        help="Declaration type: NONE or DECLARED",
+    ),
+    third_party_company_ids: list[int] = typer.Option(
+        [],
+        "--third-party-company-ids",
+        help="Repeat for each RichMediaAdsCompany ID",
+    ),
+):
+    """Set ThirdPartyDataDeclaration on a CreativeWrapper."""
+    payload = {
+        "declarationType": declaration_type,
+        "thirdPartyCompanyIds": list(third_party_company_ids),
+    }
+    try:
+        data = get_client().patch(
+            f"/api/gam/creative-wrappers/{wrapper_id}/data-declaration",
+            json=payload,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as exc:
+        handle_error(exc)
+
+
+@app.command("list-companies")
+def list_companies(
+    ctx: typer.Context,
+    force_refresh: bool = typer.Option(False, "--force-refresh", help="Bypass the cache"),
+):
+    """List RichMediaAdsCompany vendor entries."""
+    try:
+        data = get_client().get(
+            "/api/gam/rich-media-ads-companies",
+            params={"forceRefresh": force_refresh},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as exc:
+        handle_error(exc)
+
+
+@app.command("find-company")
+def find_company(
+    ctx: typer.Context,
+    name: str = typer.Option(..., "--name", help="Company name to fuzzy-match"),
+    min_score: float = typer.Option(0.6, "--min-score", min=0.0, max=1.0),
+):
+    """Find a RichMediaAdsCompany by fuzzy name match."""
+    try:
+        data = get_client().get(
+            "/api/gam/rich-media-ads-companies/search",
+            params={"name": name, "minScore": min_score},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as exc:
+        handle_error(exc)
+
+
 @app.command("activate")
 def activate_wrapper(
     ctx: typer.Context,

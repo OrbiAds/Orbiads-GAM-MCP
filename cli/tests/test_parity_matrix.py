@@ -88,10 +88,17 @@ def test_creative_wrapper_skill_documents_every_sub_action(matrix):
         "activate",
         "deactivate",
         "archive",
+        "set_data_declaration",
+        "list_rich_media_ads_companies",
+        "find_third_party_company",
     }
     assert row["sub_actions"]["list"]["rest"] == "GET /api/gam/creative-wrappers"
     assert row["sub_actions"]["deactivate"]["cli"] == "creative-wrappers deactivate"
     assert row["sub_actions"]["archive"]["rest"] == "NO-REST"
+    assert (
+        row["sub_actions"]["set_data_declaration"]["rest"]
+        == "PATCH /api/gam/creative-wrappers/{wrapper_id}/data-declaration"
+    )
 
 
 def test_mcp_only_tools_have_no_rest(matrix):
