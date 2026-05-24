@@ -1,7 +1,7 @@
 {
-  "total_tools": 249,
+  "total_tools": 253,
   "counts": {
-    "EXEMPT": 47,
+    "EXEMPT": 51,
     "FULL": 202
   },
   "per_area": {
@@ -30,7 +30,8 @@
       "EXEMPT": 3
     },
     "creative_qa": {
-      "FULL": 7
+      "FULL": 7,
+      "EXEMPT": 1
     },
     "creatives": {
       "FULL": 40
@@ -46,7 +47,8 @@
       "EXEMPT": 3
     },
     "inventory": {
-      "FULL": 10
+      "FULL": 10,
+      "EXEMPT": 1
     },
     "jobs": {
       "FULL": 3,
@@ -62,7 +64,8 @@
       "FULL": 14
     },
     "placements": {
-      "FULL": 4
+      "FULL": 4,
+      "EXEMPT": 1
     },
     "pql": {
       "EXEMPT": 1,
@@ -86,7 +89,8 @@
       "EXEMPT": 1
     },
     "targeting": {
-      "FULL": 18
+      "FULL": 18,
+      "EXEMPT": 1
     }
   },
   "cli_commands_detected": [
@@ -755,6 +759,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "creative_qa",
+      "module": "creative_qa",
+      "area": "creative_qa",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.6 parent>child migration batch 3. Legacy creative_qa tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "pre_archive_check",
@@ -1607,6 +1621,16 @@
       "cli_present": true
     },
     {
+      "tool": "inventory",
+      "module": "inventory",
+      "area": "inventory",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "list_ad_unit_sizes",
       "module": "inventory",
       "area": "inventory",
@@ -2035,6 +2059,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "placements",
+      "module": "placements",
+      "area": "placements",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.6 parent>child migration batch 3. Legacy placements tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "update_placement",
@@ -2785,6 +2819,16 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "targeting",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": "NO-REST",
+      "cli": null,
+      "exempt": "Story 68.6 parent>child migration batch 3. Legacy targeting tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "update_ad_unit",

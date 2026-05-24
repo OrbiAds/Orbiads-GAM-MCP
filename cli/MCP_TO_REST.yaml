@@ -63,7 +63,8 @@ tools:
   create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
 
-  # ── creative_qa (7) — no REST surface at all ──────────────────────
+  # ── creative_qa (7 + 1 parent) — no REST surface at all ──────────────────────
+  creative_qa:               {area: creative_qa, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy creative_qa tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
   scan_creative_compliance:  {area: creative_qa, rest: "POST /api/gam/creative-qa/scan-compliance", cli: "creative-qa scan-compliance"}  # 62.6
   validate_creative_ssl:     {area: creative_qa, rest: "GET /api/gam/creative-qa/creatives/{creative_id}/ssl", cli: "creative-qa validate-ssl"}  # 62.6
   validate_creative_ssl_batch: {area: creative_qa, rest: "POST /api/gam/creative-qa/validate-ssl-batch", cli: "creative-qa validate-ssl-batch"}  # 62.6
@@ -114,7 +115,8 @@ tools:
   list_creative_templates:      {area: creatives, rest: "GET /api/gam/creative-templates", cli: "creative-templates list"}  # 62.1
   get_creative_template:        {area: creatives, rest: "GET /api/gam/creative-templates/{template_id}", cli: "creative-templates get"}  # 62.1
 
-  # ── inventory (10) ────────────────────────────────────────────────
+  # ── inventory (10 + 1 parent) ────────────────────────────────────────────────
+  inventory:                   {area: inventory, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
   get_ad_unit_tree:            {area: inventory, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   audit_inventory:             {area: inventory, rest: "POST /api/gam/inventory/audit", cli: "inventory audit"}  # 61.6
   create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory save-adunits"}  # 61.6 / 73.4
@@ -170,7 +172,8 @@ tools:
   create_contact:        {area: orders, rest: "POST /api/gam/contacts", cli: "contacts create"}  # 62.4
   update_contact:        {area: orders, rest: "PATCH /api/gam/contacts/{contact_id}", cli: "contacts update"}  # 62.4
 
-  # ── placements (4) ────────────────────────────────────────────────
+  # ── placements (4 + 1 parent) ────────────────────────────────────────────────
+  placements:       {area: placements, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy placements tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
   list_placements:   {area: placements, rest: "GET /api/gam/placements", cli: "inventory placements"}
   update_placement:  {area: placements, rest: "PATCH /api/gam/placements/{placement_id}", cli: "inventory placement-update"}  # 61.6
   archive_placement: {area: placements, rest: "DELETE /api/gam/placements/{placement_id}", cli: "inventory placement-archive"}  # 61.6
@@ -244,7 +247,8 @@ tools:
   get_delivery_defaults:     {area: settings, rest: "GET /api/settings/delivery-defaults", cli: "settings delivery-defaults get"}  # 61.7
   update_delivery_defaults:  {area: settings, rest: "PUT /api/settings/delivery-defaults", cli: "settings delivery-defaults set"}  # 61.7
 
-  # ── targeting (18) ────────────────────────────────────────────────
+  # ── targeting (18 + 1 parent) ────────────────────────────────────────────────
+  targeting:                   {area: targeting, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy targeting tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
   list_ad_units:               {area: targeting, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   list_custom_targeting_keys:  {area: targeting, rest: "GET /api/gam/custom-targeting-keys", cli: "inventory keys"}  # CLI path bug fixed in 61.2
   create_custom_targeting_key: {area: targeting, rest: "POST /api/gam/custom-targeting-keys", cli: "inventory create-key"}  # 61.6
