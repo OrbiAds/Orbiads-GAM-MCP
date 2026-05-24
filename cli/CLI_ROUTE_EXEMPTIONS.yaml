@@ -1,4 +1,9 @@
 # Routes intentionally NOT covered by dedicated CLI commands.
 # Each entry must include a `reason`. The migration-gate test reads this file.
 
-exemptions: []
+exemptions:
+  - path: POST /api/gam/inventory/understanding/jobs
+    reason: >
+      Story 71.1 backend-only dark async endpoint. CLI continues to use the
+      synchronous inventory understanding analyze/get commands until the
+      EventSource/polling client work ships in Story 71.3.
