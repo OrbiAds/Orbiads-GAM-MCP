@@ -44,6 +44,7 @@ def test_upload_video_happy_path(authenticated_config, tmp_path):
     fields = client.post.call_args.kwargs["data"]
     assert fields["type"] == "VIDEO"
     assert fields["duration_ms"] == "30000"
+    assert client.post.call_args.kwargs["timeout"] == 300.0
     assert "transcode-status" in result.output
 
 

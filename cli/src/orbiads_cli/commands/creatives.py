@@ -35,6 +35,7 @@ _EXT_TO_TYPE: dict[str, str] = {
 }
 
 _SIZE_RE = re.compile(r"^(\d+)x(\d+)$", re.IGNORECASE)
+_CREATIVE_UPLOAD_TIMEOUT_S = 300.0
 
 
 def _auto_detect_type(path: str) -> str | None:
@@ -286,6 +287,7 @@ def upload(
                 "/api/gam/creatives/upload",
                 files={"file": (filename, fh, content_type)},
                 data=fields,
+                timeout=_CREATIVE_UPLOAD_TIMEOUT_S,
             )
         render_detail(data, out)
         if data.get("status") == "PENDING_TRANSCODE" and data.get("creativeId"):
