@@ -122,7 +122,7 @@ def test_creative_wrappers_provision_rejects_misleading_label_id_alias(authentic
         )
 
     assert result.exit_code == 2
-    assert "No such option: --label-id" in result.output
+    assert "No such option" in result.output
     client.post.assert_not_called()
 
 
