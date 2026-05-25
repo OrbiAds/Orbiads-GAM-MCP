@@ -1,7 +1,7 @@
 {
-  "total_tools": 259,
+  "total_tools": 260,
   "counts": {
-    "EXEMPT": 56,
+    "EXEMPT": 57,
     "FULL": 203
   },
   "per_area": {
@@ -88,7 +88,8 @@
       "EXEMPT": 7
     },
     "reporting": {
-      "FULL": 32
+      "FULL": 32,
+      "EXEMPT": 1
     },
     "settings": {
       "FULL": 9,
@@ -2853,6 +2854,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "reporting",
+      "module": "reporting",
+      "area": "reporting",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.7b parent>child MCP dispatcher (Epic 68 Phase B). Legacy reporting, forecast, GA4, template, billing-report, and alert wrappers keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "reporting_skill",

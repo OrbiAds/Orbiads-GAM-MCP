@@ -221,7 +221,8 @@ tools:
   create_premium_rate: {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
   update_premium_rate: {area: pricing, rest: "NO-REST", cli: null, exempt: "GAM PremiumRateService removed v202502+ — no API replacement (MEMORY.md)"}
 
-  # ── reporting (31) ────────────────────────────────────────────────
+  # ── reporting (31 legacy + 1 parent) ──────────────────────────────
+  reporting:                {area: reporting, rest: "NO-REST", cli: null, exempt: "Story 68.7b parent>child MCP dispatcher (Epic 68 Phase B). Legacy reporting, forecast, GA4, template, billing-report, and alert wrappers keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7b
   run_custom_report:        {area: reporting, rest: "POST /api/gam/reports/custom", cli: "reporting run"}
   run_gam_report:           {area: reporting, rest: "POST /api/gam/reports/gam-reports/{gam_report_id}/run", cli: "reporting export"}
   fetch_inventory_report:   {area: reporting, rest: "POST /api/gam/reports/inventory", cli: "reporting inventory"}  # 61.5
