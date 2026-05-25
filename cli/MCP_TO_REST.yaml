@@ -77,6 +77,7 @@ tools:
   pre_archive_check:         {area: creative_qa, rest: "POST /api/gam/creative-qa/pre-archive-check", cli: "creative-qa pre-archive-check"}  # 62.6
 
   # ── creatives (39 + 1 parent) ─────────────────────────────────────
+  creative_assets:             {area: creatives, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under action=upload_*/create_*/compress_image/get_video_transcode_status keep their existing FULL/EXEMPT CLI parity. Story 75 unified upload REST surface remains the canonical CLI/REST entrypoint and is unaffected by this MCP refactor."}  # 68.7c
   creative_wrapper_skill:
     area: creative_wrappers
     rest: "POST /api/gam/creative-wrappers"
