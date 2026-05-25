@@ -159,6 +159,7 @@ tools:
   duplicate_job: {area: jobs, rest: "POST /api/jobs/{job_id}/duplicate", cli: "jobs duplicate"}  # 61.4
 
   # ── line_items (15) — Story 61.4 covers the 8 REST-ONLY ───────────
+  line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}                # 61.4 capability parity
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
   pause_line_items:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/pause", cli: "line-items pause"}               # 61.4

@@ -34,10 +34,10 @@ def test_all_mcp_tools_extracted():
     targeting) folding 39 legacy tools behind the parent>child pattern.
     Story 68.5: +4 EXEMPT parents (audit, billing, gam_features, network).
     Story 76.1: +1 FULL parent creative_wrapper_skill.
-    Story 68.7c: +1 EXEMPT parent creative_assets.
-    Current total: 261."""
+    Story 68.7c-e: +3 EXEMPT parents creative_assets, creatives, line_items.
+    Current total: 263."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    assert len(tools) == 261, f"expected 261 @mcp.tool, found {len(tools)}"
+    assert len(tools) == 263, f"expected 263 @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
     assert tools["run_pql_query"] == "pql"
@@ -46,7 +46,7 @@ def test_all_mcp_tools_extracted():
 
 def test_every_tool_classified_no_unmapped(matrix):
     """The curated map must cover 100% of tools — zero UNMAPPED."""
-    assert matrix["total_tools"] == 261
+    assert matrix["total_tools"] == 263
     statuses = {r["status"] for r in matrix["rows"]}
     assert statuses <= VALID_STATUSES
     unmapped = [r["tool"] for r in matrix["rows"] if r["status"] == "UNMAPPED"]
@@ -55,7 +55,7 @@ def test_every_tool_classified_no_unmapped(matrix):
 
 def test_counts_reconcile(matrix):
     """The split must sum to the total — fixes the audit's non-reconciling tally."""
-    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 261
+    assert sum(matrix["counts"].values()) == matrix["total_tools"] == 263
 
 
 def test_pricing_is_exempt(matrix):
@@ -125,7 +125,7 @@ def test_outputs_written_and_valid(tmp_path, monkeypatch):
     )
     assert rc.returncode == 0, rc.stderr
     data = json.loads((CLI_ROOT / "parity-matrix.json").read_text(encoding="utf-8"))
-    assert data["total_tools"] == 261
+    assert data["total_tools"] == 263
     md = (CLI_ROOT / "PARITY.md").read_text(encoding="utf-8")
     assert "OrbiAds CLI <-> MCP Parity Matrix" in md
     assert "single source of truth" in md.lower()

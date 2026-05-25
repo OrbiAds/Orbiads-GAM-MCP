@@ -1,7 +1,7 @@
 {
-  "total_tools": 262,
+  "total_tools": 263,
   "counts": {
-    "EXEMPT": 59,
+    "EXEMPT": 60,
     "FULL": 203
   },
   "per_area": {
@@ -61,7 +61,8 @@
       "EXEMPT": 1
     },
     "line_items": {
-      "FULL": 16
+      "FULL": 16,
+      "EXEMPT": 1
     },
     "network": {
       "FULL": 4,
@@ -2085,6 +2086,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "line_items",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "list_line_items_by_order",
