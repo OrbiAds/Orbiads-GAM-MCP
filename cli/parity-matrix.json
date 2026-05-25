@@ -1,7 +1,7 @@
 {
-  "total_tools": 265,
+  "total_tools": 266,
   "counts": {
-    "EXEMPT": 62,
+    "EXEMPT": 63,
     "FULL": 203
   },
   "per_area": {
@@ -29,7 +29,7 @@
     },
     "campaign_ops": {
       "FULL": 7,
-      "EXEMPT": 3
+      "EXEMPT": 4
     },
     "creative_qa": {
       "FULL": 7,
@@ -733,6 +733,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "campaign",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "create_display_campaign",
