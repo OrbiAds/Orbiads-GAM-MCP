@@ -7,3 +7,8 @@ exemptions:
       Story 71.1 backend-only dark async endpoint. CLI continues to use the
       synchronous inventory understanding analyze/get commands until the
       EventSource/polling client work ships in Story 71.3.
+  - path: GET /api/gam/inventory/understanding/jobs/{job_id}
+    reason: >
+      Story 71.1 backend-only dark async endpoint. CLI continues to use the
+      synchronous inventory understanding analyze/get commands until the
+      EventSource/polling client work ships in Story 71.3.
