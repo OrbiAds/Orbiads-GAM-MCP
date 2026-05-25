@@ -1,7 +1,7 @@
 {
-  "total_tools": 258,
+  "total_tools": 259,
   "counts": {
-    "EXEMPT": 55,
+    "EXEMPT": 56,
     "FULL": 203
   },
   "per_area": {
@@ -9,6 +9,7 @@
       "EXEMPT": 3
     },
     "advertisers": {
+      "EXEMPT": 1,
       "FULL": 10
     },
     "audiences": {
@@ -385,6 +386,17 @@
       "cli": null,
       "sub_actions": null,
       "exempt": "Epic 64 ADCP — protocol-first integration, no CLI surface planned (buy-agent path).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "companies",
+      "module": "advertisers",
+      "area": "advertisers",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.7a parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under area=advertisers/agencies/contacts keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
     },
