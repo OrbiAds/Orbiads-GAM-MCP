@@ -159,6 +159,7 @@ tools:
   duplicate_job: {area: jobs, rest: "POST /api/jobs/{job_id}/duplicate", cli: "jobs duplicate"}  # 61.4
 
   # ── line_items (15) — Story 61.4 covers the 8 REST-ONLY ───────────
+  deals:                    {area: deals, rest: "NO-REST", cli: null, exempt: "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7g
   line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}                # 61.4 capability parity
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
@@ -184,6 +185,7 @@ tools:
   update_network:           {area: network, rest: "PATCH /api/gam/network", cli: "network update"}  # 62.5
 
   # ── orders (13) ───────────────────────────────────────────────────
+  orders:                {area: orders, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7f
   list_orders:           {area: orders, rest: "GET /api/gam/orders", cli: "orders list"}
   get_order:             {area: orders, rest: "GET /api/gam/orders/{order_id}", cli: "orders get"}
   create_order:          {area: orders, rest: "POST /api/gam/orders", cli: "orders create"}

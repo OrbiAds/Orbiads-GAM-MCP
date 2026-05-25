@@ -1,7 +1,7 @@
 {
-  "total_tools": 263,
+  "total_tools": 265,
   "counts": {
-    "EXEMPT": 60,
+    "EXEMPT": 62,
     "FULL": 203
   },
   "per_area": {
@@ -43,7 +43,7 @@
       "EXEMPT": 2
     },
     "deals": {
-      "EXEMPT": 16,
+      "EXEMPT": 17,
       "FULL": 10
     },
     "admin": {
@@ -69,7 +69,8 @@
       "EXEMPT": 1
     },
     "orders": {
-      "FULL": 14
+      "FULL": 14,
+      "EXEMPT": 1
     },
     "placements": {
       "FULL": 4,
@@ -1538,6 +1539,17 @@
       "cli_present": null
     },
     {
+      "tool": "deals",
+      "module": "deals",
+      "area": "deals",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "edit_proposal_for_negotiation",
       "module": "deals",
       "area": "deals",
@@ -2339,6 +2351,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "orders",
+      "module": "orders",
+      "area": "orders",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "update_contact",
