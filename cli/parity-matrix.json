@@ -1,7 +1,7 @@
 {
-  "total_tools": 261,
+  "total_tools": 262,
   "counts": {
-    "EXEMPT": 58,
+    "EXEMPT": 59,
     "FULL": 203
   },
   "per_area": {
@@ -40,7 +40,7 @@
     },
     "creatives": {
       "FULL": 40,
-      "EXEMPT": 1
+      "EXEMPT": 2
     },
     "deals": {
       "EXEMPT": 16,
@@ -1159,6 +1159,17 @@
       "cli": null,
       "sub_actions": null,
       "exempt": "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under action=upload_*/create_*/compress_image/get_video_transcode_status keep their existing FULL/EXEMPT CLI parity. Story 75 unified upload REST surface remains the canonical CLI/REST entrypoint and is unaffected by this MCP refactor.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "creatives",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.7d parent>child MCP dispatcher (Epic 68 Phase B). Legacy creative metadata, preview, NativeStyle, CreativeTemplate, and LICA wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
     },
