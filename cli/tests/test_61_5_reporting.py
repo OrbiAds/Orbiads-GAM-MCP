@@ -30,8 +30,13 @@ def _write_json(tmp_path, payload):
 
 # Parameterised matrix: command argv -> (mocked_method, expected_path, [json_payload])
 GET_CASES = [
-    (["reporting", "dimensions"],                  "get", "/api/gam/reports/available-dimensions"),
-    (["reporting", "metrics"],                     "get", "/api/gam/reports/available-metrics"),
+    (["reporting", "dimensions"],                  "get", "/api/gam/reports/available-dimensions", {"params": {"api": "rest"}}),
+    (["reporting", "metrics"],                     "get", "/api/gam/reports/available-metrics", {"params": {"api": "rest"}}),
+    (["reporting", "dimensions", "--api", "all"], "get", "/api/gam/reports/available-dimensions", {"params": {"api": "all"}}),
+    (["reporting", "metrics", "--api", "soap"],   "get", "/api/gam/reports/available-metrics", {"params": {"api": "soap"}}),
+]
+
+GET_NO_PARAM_CASES = [
     (["reporting", "date-ranges"],                 "get", "/api/gam/reports/available-date-ranges"),
     (["reporting", "executions"],                  "get", "/api/gam/reports/executions"),
     (["reporting", "delivery-status", "j1"],       "get", "/api/gam/jobs/j1/delivery-status"),
@@ -52,13 +57,53 @@ POST_NO_BODY_CASES = [
 ]
 
 
-@pytest.mark.parametrize("argv,method,path", GET_CASES)
+@pytest.mark.parametrize("argv,method,path,kwargs", GET_CASES)
+def test_reporting_get_verbs_with_params(authenticated_config, argv, method, path, kwargs):
+    client = _mock_client(**{method: {"ok": True, "results": [], "templates": [], "gamReports": []}})
+    with patch("orbiads_cli.commands.reporting.get_client", return_value=client):
+        result = runner.invoke(app, argv)
+    assert result.exit_code == 0, result.output
+    getattr(client, method).assert_called_once_with(path, **kwargs)
+
+
+@pytest.mark.parametrize("argv,method,path", GET_NO_PARAM_CASES)
 def test_reporting_get_verbs(authenticated_config, argv, method, path):
     client = _mock_client(**{method: {"ok": True, "results": [], "templates": [], "gamReports": []}})
     with patch("orbiads_cli.commands.reporting.get_client", return_value=client):
         result = runner.invoke(app, argv)
     assert result.exit_code == 0, result.output
     getattr(client, method).assert_called_once_with(path)
+
+
+def test_reporting_catalogue_rejects_invalid_api(authenticated_config):
+    result = runner.invoke(app, ["reporting", "dimensions", "--api", "legacy"])
+    assert result.exit_code == 2
+    assert "--api must be one of" in result.output
+
+
+@pytest.mark.parametrize("collection_key", ["reports", "items"])
+def test_gam_reports_list_accepts_rest_collection_keys(authenticated_config, collection_key):
+    client = _mock_client(
+        get={
+            collection_key: [
+                {
+                    "reportId": "7040403369",
+                    "displayName": "Daily delivery",
+                    "dimensions": ["DATE"],
+                    "metrics": ["AD_SERVER_IMPRESSIONS"],
+                }
+            ],
+            "total": 1,
+        }
+    )
+
+    with patch("orbiads_cli.commands.reporting.get_client", return_value=client):
+        result = runner.invoke(app, ["--json", "reporting", "gam-reports", "list"])
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    assert payload[0]["reportId"] == "7040403369"
+    client.get.assert_called_once_with("/api/gam/reports/gam-reports")
 
 
 @pytest.mark.parametrize("argv,method,path", POST_NO_BODY_CASES)

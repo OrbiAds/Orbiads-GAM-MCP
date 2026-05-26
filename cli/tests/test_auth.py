@@ -3,6 +3,7 @@
 Uses typer.testing.CliRunner with mocked httpx calls to avoid real API traffic.
 """
 
+import json
 import os
 import platform
 from unittest.mock import patch
@@ -13,6 +14,7 @@ from typer.testing import CliRunner
 
 from orbiads_cli import config as config_mod
 from orbiads_cli.commands.auth import app
+from orbiads_cli.main import app as main_app
 
 runner = CliRunner()
 
@@ -258,6 +260,54 @@ class TestAuthStatus:
         assert "user@example.com" in result.output
         assert "12345" in result.output
 
+    def test_status_uses_config_network_when_me_omits_it(self, tmp_config):
+        """Human output should not say not set when local config has a network."""
+        config_mod.save({
+            "apiUrl": "https://test.example.com",
+            "token": "valid-tok",
+            "refreshToken": "ref-tok",
+            "networkCode": "66235823",
+        })
+
+        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
+            mock_get.return_value = _resp(200, {
+                "data": {"email": "user@example.com"},
+                "error": None,
+            })
+
+            result = runner.invoke(app, ["status"])
+
+        assert result.exit_code == 0
+        assert "66235823" in result.output
+        assert "not set" not in result.output
+
+    def test_status_json_resolves_network_from_connection_state(self, tmp_config):
+        """Global --json should emit valid JSON and resolve the active network."""
+        config_mod.save({
+            "apiUrl": "https://test.example.com",
+            "token": "valid-tok",
+            "refreshToken": "ref-tok",
+        })
+
+        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
+            mock_get.side_effect = [
+                _resp(200, {
+                    "data": {"email": "user@example.com"},
+                    "error": None,
+                }),
+                _resp(200, {
+                    "data": {"networkCode": "66235823"},
+                    "error": None,
+                }),
+            ]
+
+            result = runner.invoke(main_app, ["--json", "auth", "status"])
+
+        assert result.exit_code == 0
+        data = json.loads(result.stdout)
+        assert data["email"] == "user@example.com"
+        assert data["networkCode"] == "66235823"
+
     def test_status_not_authenticated(self, tmp_config):
         """No config file → exit code 4."""
         result = runner.invoke(app, ["status"])
@@ -269,13 +319,45 @@ class TestAuthStatus:
         """Server returns 401 → exit code 4 with re-login hint."""
         config_mod.set_token("expired-tok", "ref-tok")
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
+        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
+             patch("orbiads_cli.commands.auth.httpx.post") as mock_post:
             mock_get.return_value = httpx.Response(401, request=_DUMMY_REQUEST)
+            mock_post.return_value = _resp(400, {"error": {"message": "bad refresh"}})
 
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 4
         assert "invalid" in result.output.lower() or "login" in result.output.lower()
+
+    def test_status_refreshes_expired_token(self, tmp_config):
+        """Expired ID token should refresh once, then return status data."""
+        config_mod.set_token("expired-tok", "ref-tok")
+
+        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
+             patch("orbiads_cli.commands.auth.httpx.post") as mock_post:
+            mock_get.side_effect = [
+                httpx.Response(401, request=_DUMMY_REQUEST),
+                _resp(200, {
+                    "data": {"email": "user@example.com", "networkCode": "12345"},
+                    "error": None,
+                }),
+            ]
+            mock_post.return_value = _resp(200, {
+                "id_token": "fresh-id-token",
+                "refresh_token": "fresh-refresh-token",
+            })
+
+            result = runner.invoke(app, ["status"])
+
+        assert result.exit_code == 0
+        assert "user@example.com" in result.output
+        cfg = config_mod.load()
+        assert cfg is not None
+        assert cfg["token"] == "fresh-id-token"
+        assert cfg["refreshToken"] == "fresh-refresh-token"
+        assert mock_get.call_args_list[1].kwargs["headers"] == {
+            "Authorization": "Bearer fresh-id-token",
+        }
 
 
 # ===========================================================================

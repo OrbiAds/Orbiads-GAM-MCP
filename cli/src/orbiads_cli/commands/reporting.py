@@ -283,7 +283,10 @@ def gam_reports_list(ctx: typer.Context):
     try:
         data = get_client().get("/api/gam/reports/gam-reports")
         if isinstance(data, dict):
-            items = data.get("gamReports", data.get("results", []))
+            items = data.get(
+                "reports",
+                data.get("items", data.get("gamReports", data.get("results", []))),
+            )
         else:
             items = data if isinstance(data, list) else []
         render(items, _GAM_REPORT_LIST_COLUMNS, ctx.obj)
@@ -397,20 +400,46 @@ def gam_reports_update_from_template(
 
 
 @app.command()
-def dimensions(ctx: typer.Context):
+def dimensions(
+    ctx: typer.Context,
+    api: str = typer.Option(
+        "rest",
+        "--api",
+        help="Catalogue mode: rest, soap, or all",
+    ),
+):
     """List available report dimensions (REST catalogue)."""
+    if api not in {"rest", "soap", "all"}:
+        typer.echo("Error: --api must be one of: rest, soap, all", err=True)
+        raise typer.Exit(code=2)
     try:
-        data = get_client().get("/api/gam/reports/available-dimensions")
+        data = get_client().get(
+            "/api/gam/reports/available-dimensions",
+            params={"api": api},
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
 
 
 @app.command()
-def metrics(ctx: typer.Context):
+def metrics(
+    ctx: typer.Context,
+    api: str = typer.Option(
+        "rest",
+        "--api",
+        help="Catalogue mode: rest, soap, or all",
+    ),
+):
     """List available report metrics (REST catalogue)."""
+    if api not in {"rest", "soap", "all"}:
+        typer.echo("Error: --api must be one of: rest, soap, all", err=True)
+        raise typer.Exit(code=2)
     try:
-        data = get_client().get("/api/gam/reports/available-metrics")
+        data = get_client().get(
+            "/api/gam/reports/available-metrics",
+            params={"api": api},
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

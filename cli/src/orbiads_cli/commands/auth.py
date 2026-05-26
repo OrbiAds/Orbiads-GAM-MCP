@@ -13,6 +13,7 @@ from orbiads_cli.config import (
     DEFAULT_FIREBASE_API_KEY,
     DEFAULT_FIREBASE_REFERER,
 )
+from orbiads_cli.output import OutputContext, render_detail
 
 app = typer.Typer(help="Authentication (login, logout, status)", no_args_is_help=True)
 
@@ -56,6 +57,42 @@ def _exchange_custom_token(custom_token: str) -> tuple[str, str]:
         err_console.print("[red]Failed to finalize login: invalid Firebase response.[/red]")
         raise typer.Exit(code=1)
     return id_token, refresh_token
+
+
+def _refresh_stored_token() -> str | None:
+    """Refresh the stored Firebase ID token, mirroring the main CLI client."""
+    import os
+
+    cfg = config.load() or {}
+    refresh_token = cfg.get("refreshToken")
+    if not refresh_token:
+        return None
+
+    firebase_key = os.environ.get("ORBIADS_FIREBASE_KEY") or DEFAULT_FIREBASE_API_KEY
+    try:
+        resp = httpx.post(
+            f"https://securetoken.googleapis.com/v1/token?key={firebase_key}",
+            headers={"Referer": DEFAULT_FIREBASE_REFERER},
+            data={
+                "grant_type": "refresh_token",
+                "refresh_token": refresh_token,
+            },
+            timeout=15.0,
+        )
+    except httpx.HTTPError:
+        return None
+
+    if resp.status_code != 200:
+        return None
+
+    data = resp.json()
+    new_token = data.get("id_token")
+    new_refresh = data.get("refresh_token") or refresh_token
+    if not new_token:
+        return None
+
+    config.set_token(new_token, new_refresh)
+    return str(new_token)
 
 
 @app.command()
@@ -171,7 +208,7 @@ def logout() -> None:
 
 
 @app.command()
-def status() -> None:
+def status(ctx: typer.Context) -> None:
     """Show current authentication status."""
     if not config.has_token():
         err_console.print("Not authenticated.")
@@ -191,6 +228,20 @@ def status() -> None:
         raise typer.Exit(code=1) from None
 
     if resp.status_code == 401:
+        refreshed_token = _refresh_stored_token()
+        if refreshed_token:
+            token = refreshed_token
+            try:
+                resp = httpx.get(
+                    f"{api_url}/api/me",
+                    headers={"Authorization": f"Bearer {token}"},
+                    timeout=_HTTP_TIMEOUT,
+                )
+            except httpx.HTTPError as exc:
+                err_console.print(f"[red]Request failed: {exc}[/red]")
+                raise typer.Exit(code=1) from None
+
+    if resp.status_code == 401:
         err_console.print("[red]Token invalid. Run `orbiads auth login` to re-authenticate.[/red]")
         raise typer.Exit(code=4)
 
@@ -203,10 +254,48 @@ def status() -> None:
         err_console.print(f"[red]Server error: {body['error'].get('message', 'Unknown')}[/red]")
         raise typer.Exit(code=1)
 
-    data = body.get("data", {})
+    data = dict(body.get("data", {}))
     email = data.get("email", "unknown")
-    network = data.get("networkCode", "not set")
+    network = _resolve_network_code(api_url, token, data)
+    data["email"] = email
+    data["networkCode"] = network
+
+    output_ctx = ctx.obj if isinstance(ctx.obj, OutputContext) else OutputContext()
+    if output_ctx.format == "json":
+        render_detail(data, output_ctx)
+        raise typer.Exit(code=0)
 
     err_console.print(f"  Authenticated as: [bold]{email}[/bold]")
-    err_console.print(f"  GAM Network:      [bold]{network}[/bold]")
+    err_console.print(f"  GAM Network:      [bold]{network or 'not set'}[/bold]")
     raise typer.Exit(code=0)
+
+
+def _resolve_network_code(api_url: str, token: str, data: dict) -> str | None:
+    network = data.get("networkCode") or data.get("network_code")
+    if network:
+        return str(network)
+
+    cfg = config.load() or {}
+    if cfg.get("networkCode"):
+        return str(cfg["networkCode"])
+
+    try:
+        resp = httpx.get(
+            f"{api_url}/api/auth/gam/connection-state",
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=_HTTP_TIMEOUT,
+        )
+    except httpx.HTTPError:
+        return None
+
+    if resp.status_code != 200:
+        return None
+
+    try:
+        body = resp.json()
+    except ValueError:
+        return None
+
+    state_data = body.get("data", {})
+    network = state_data.get("networkCode") or state_data.get("network_code")
+    return str(network) if network else None
