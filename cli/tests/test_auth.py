@@ -6,13 +6,14 @@ Uses typer.testing.CliRunner with mocked httpx calls to avoid real API traffic.
 import json
 import os
 import platform
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import httpx
 import pytest
 from typer.testing import CliRunner
 
-from orbiads_cli import config as config_mod
+from orbiads_cli import __version__, config as config_mod
+from orbiads_cli.client import CliApiError
 from orbiads_cli.commands.auth import app
 from orbiads_cli.main import app as main_app
 
@@ -243,22 +244,31 @@ class TestAuthLogout:
 
 
 class TestAuthStatus:
+    """Status now routes through ``OrbiAdsClient`` so the request carries the
+    ``X-OrbiAds-Client: cli/<v>`` header that drives ``CliAnalyticsMiddleware``
+    (Story 74.2). Tests mock ``get_client`` directly — the 401 → refresh →
+    retry loop is covered separately in ``test_client.py::TestTokenRefresh``.
+    """
 
     def test_status_authenticated(self, tmp_config):
         """With valid token and server response, shows user info."""
         config_mod.set_token("valid-tok", "ref-tok")
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
-            mock_get.return_value = _resp(200, {
-                "data": {"email": "user@example.com", "networkCode": "12345"},
-                "error": None,
-            })
+        fake_client = MagicMock()
+        fake_client.get.return_value = {
+            "email": "user@example.com",
+            "networkCode": "12345",
+        }
 
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 0
         assert "user@example.com" in result.output
         assert "12345" in result.output
+        fake_client.get.assert_called_once_with("/api/me")
 
     def test_status_uses_config_network_when_me_omits_it(self, tmp_config):
         """Human output should not say not set when local config has a network."""
@@ -269,12 +279,12 @@ class TestAuthStatus:
             "networkCode": "66235823",
         })
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
-            mock_get.return_value = _resp(200, {
-                "data": {"email": "user@example.com"},
-                "error": None,
-            })
+        fake_client = MagicMock()
+        fake_client.get.return_value = {"email": "user@example.com"}
 
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 0
@@ -289,24 +299,27 @@ class TestAuthStatus:
             "refreshToken": "ref-tok",
         })
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get:
-            mock_get.side_effect = [
-                _resp(200, {
-                    "data": {"email": "user@example.com"},
-                    "error": None,
-                }),
-                _resp(200, {
-                    "data": {"networkCode": "66235823"},
-                    "error": None,
-                }),
-            ]
+        fake_client = MagicMock()
+        fake_client.get.side_effect = [
+            {"email": "user@example.com"},
+            {"networkCode": "66235823"},
+        ]
 
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
             result = runner.invoke(main_app, ["--json", "auth", "status"])
 
         assert result.exit_code == 0
         data = json.loads(result.stdout)
         assert data["email"] == "user@example.com"
         assert data["networkCode"] == "66235823"
+        # Both calls must go through OrbiAdsClient so the CLI analytics header
+        # is attached — never raw httpx.
+        assert fake_client.get.call_args_list[0].args == ("/api/me",)
+        assert fake_client.get.call_args_list[1].args == (
+            "/api/auth/gam/connection-state",
+        )
 
     def test_status_not_authenticated(self, tmp_config):
         """No config file → exit code 4."""
@@ -316,48 +329,166 @@ class TestAuthStatus:
         assert "Not authenticated" in result.output
 
     def test_status_token_invalid_exits_4(self, tmp_config):
-        """Server returns 401 → exit code 4 with re-login hint."""
+        """Server returns 401 + refresh fails → ``OrbiAdsClient`` raises
+        ``CliApiError(exit_code=4)``. The status command surfaces a re-login
+        hint and exits 4.
+        """
         config_mod.set_token("expired-tok", "ref-tok")
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
-             patch("orbiads_cli.commands.auth.httpx.post") as mock_post:
-            mock_get.return_value = httpx.Response(401, request=_DUMMY_REQUEST)
-            mock_post.return_value = _resp(400, {"error": {"message": "bad refresh"}})
+        fake_client = MagicMock()
+        fake_client.get.side_effect = CliApiError(
+            4, "Session expired. Run `orbiads auth login`."
+        )
 
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 4
         assert "invalid" in result.output.lower() or "login" in result.output.lower()
 
     def test_status_refreshes_expired_token(self, tmp_config):
-        """Expired ID token should refresh once, then return status data."""
+        """End-to-end: expired token → refresh inside ``OrbiAdsClient`` →
+        retry → status data. The refresh mechanics are covered in detail by
+        ``test_client.py::TestTokenRefresh::test_401_triggers_refresh_and_retry``;
+        here we only assert the status command works once the client returns
+        a successful payload.
+        """
         config_mod.set_token("expired-tok", "ref-tok")
 
-        with patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
-             patch("orbiads_cli.commands.auth.httpx.post") as mock_post:
-            mock_get.side_effect = [
-                httpx.Response(401, request=_DUMMY_REQUEST),
-                _resp(200, {
-                    "data": {"email": "user@example.com", "networkCode": "12345"},
-                    "error": None,
-                }),
-            ]
-            mock_post.return_value = _resp(200, {
-                "id_token": "fresh-id-token",
-                "refresh_token": "fresh-refresh-token",
-            })
+        fake_client = MagicMock()
+        fake_client.get.return_value = {
+            "email": "user@example.com",
+            "networkCode": "12345",
+        }
 
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 0
         assert "user@example.com" in result.output
-        cfg = config_mod.load()
-        assert cfg is not None
-        assert cfg["token"] == "fresh-id-token"
-        assert cfg["refreshToken"] == "fresh-refresh-token"
-        assert mock_get.call_args_list[1].kwargs["headers"] == {
-            "Authorization": "Bearer fresh-id-token",
+
+
+# ===========================================================================
+# Story 74.2 follow-up — X-OrbiAds-Client header must be sent on every CLI
+# request, including the device-flow bootstrap (no token yet) and the
+# authenticated commands. Without these headers the backend
+# CliAnalyticsMiddleware short-circuits and ``cli_command_called`` GA4
+# events never fire — symptom in GA4: CLI Version / CLI Context / Tool
+# name dimensions report 100% (not set).
+# ===========================================================================
+
+
+class TestCliHeaderInjection:
+    """Defensive regression suite — these tests fail loud if anyone removes
+    the X-OrbiAds-Client / X-OrbiAds-Client-Context headers from any of the
+    five HTTP call sites in ``commands/auth.py``.
+    """
+
+    def _assert_cli_headers(self, call_kwargs: dict) -> None:
+        headers = call_kwargs.get("headers") or {}
+        assert headers.get("X-OrbiAds-Client") == f"cli/{__version__}", (
+            f"Missing or wrong X-OrbiAds-Client header: {headers!r}. "
+            "CliAnalyticsMiddleware (Story 74.2) requires literal 'cli/<v>'."
+        )
+        assert headers.get("X-OrbiAds-Client-Context"), (
+            f"Missing X-OrbiAds-Client-Context header: {headers!r}. "
+            "Required for the cli_context GA4 dimension."
+        )
+
+    def test_login_device_code_request_sends_cli_headers(self, tmp_config):
+        """``auth login`` step 1 (no token yet) → manual header injection."""
+        with patch("orbiads_cli.commands.auth.httpx.post") as mock_post, \
+             patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
+             patch("orbiads_cli.commands.auth.webbrowser.open"), \
+             patch("orbiads_cli.commands.auth.time.sleep"):
+
+            mock_post.return_value = _resp(200, _device_code_response())
+            mock_get.return_value = _poll_authorized()
+
+            runner.invoke(app, ["login"])
+
+        # call_args_list[0] = device-code POST (the only one before custom-token
+        # exchange could fire — and the test's authorized response uses
+        # accessToken path so the exchange does NOT fire).
+        self._assert_cli_headers(mock_post.call_args_list[0].kwargs)
+
+    def test_login_polling_request_sends_cli_headers(self, tmp_config):
+        """``auth login`` step 2 (device-token-status poll) → headers required.
+
+        Each poll iteration calls /api/auth/gam/device-token-status. The
+        backend identifies these as CLI traffic via the same headers as the
+        device-code request.
+        """
+        with patch("orbiads_cli.commands.auth.httpx.post") as mock_post, \
+             patch("orbiads_cli.commands.auth.httpx.get") as mock_get, \
+             patch("orbiads_cli.commands.auth.webbrowser.open"), \
+             patch("orbiads_cli.commands.auth.time.sleep"):
+
+            mock_post.return_value = _resp(200, _device_code_response())
+            mock_get.return_value = _poll_authorized()
+
+            runner.invoke(app, ["login"])
+
+        assert mock_get.call_count >= 1
+        for call in mock_get.call_args_list:
+            self._assert_cli_headers(call.kwargs)
+
+    def test_status_routes_through_client_not_raw_httpx(self, tmp_config):
+        """``auth status`` must NOT bypass OrbiAdsClient — the persistent client
+        is what attaches the X-OrbiAds-Client headers on every request.
+
+        Strategy: patch ``get_client`` AND ``httpx.get`` simultaneously. The
+        former is expected to be called, the latter must NOT be — if it is,
+        the implementation has regressed back to the pre-Story-74.2-followup
+        bypass pattern.
+        """
+        config_mod.set_token("valid-tok", "ref-tok")
+
+        fake_client = MagicMock()
+        fake_client.get.return_value = {
+            "email": "user@example.com",
+            "networkCode": "12345",
         }
+
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ) as mock_factory, \
+             patch("orbiads_cli.commands.auth.httpx.get") as raw_httpx_get:
+            runner.invoke(app, ["status"])
+
+        mock_factory.assert_called_once()
+        raw_httpx_get.assert_not_called()
+
+    def test_resolve_network_code_routes_through_client(self, tmp_config):
+        """``_resolve_network_code`` fallback to /api/auth/gam/connection-state
+        must also go through OrbiAdsClient, never raw httpx.
+        """
+        config_mod.save({
+            "apiUrl": "https://test.example.com",
+            "token": "valid-tok",
+            "refreshToken": "ref-tok",
+        })
+
+        fake_client = MagicMock()
+        # First call: /api/me — no networkCode → triggers connection-state lookup
+        fake_client.get.side_effect = [
+            {"email": "user@example.com"},
+            {"networkCode": "66235823"},
+        ]
+
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ), patch("orbiads_cli.commands.auth.httpx.get") as raw_httpx_get:
+            runner.invoke(app, ["status"])
+
+        # Both /api/me AND /api/auth/gam/connection-state must go through
+        # the client — raw httpx must not be touched.
+        assert fake_client.get.call_count == 2
+        raw_httpx_get.assert_not_called()
 
 
 # ===========================================================================

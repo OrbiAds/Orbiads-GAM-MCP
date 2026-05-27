@@ -7,7 +7,8 @@ import httpx
 import typer
 from rich.console import Console
 
-from orbiads_cli import config
+from orbiads_cli import __version__, config
+from orbiads_cli.client import CliApiError, _detect_context, get_client
 from orbiads_cli.config import (
     DEFAULT_API_URL,
     DEFAULT_FIREBASE_API_KEY,
@@ -31,6 +32,20 @@ def _get_api_url() -> str:
     """Return the configured API URL or the default."""
     cfg = config.load()
     return cfg.get("apiUrl", DEFAULT_API_URL) if cfg else DEFAULT_API_URL
+
+
+def _cli_headers() -> dict[str, str]:
+    """Headers required by the backend ``CliAnalyticsMiddleware`` (Story 74.2).
+
+    The persistent ``OrbiAdsClient`` already injects these on every request,
+    but the device-flow bootstrap (``login`` step 1 + polling) has no token
+    yet and must call ``httpx`` directly. Reuse the same header values here
+    so ``cli_command_called`` GA4 events fire for those calls too.
+    """
+    return {
+        "X-OrbiAds-Client": f"cli/{__version__}",
+        "X-OrbiAds-Client-Context": _detect_context(),
+    }
 
 
 def _exchange_custom_token(custom_token: str) -> tuple[str, str]:
@@ -59,42 +74,6 @@ def _exchange_custom_token(custom_token: str) -> tuple[str, str]:
     return id_token, refresh_token
 
 
-def _refresh_stored_token() -> str | None:
-    """Refresh the stored Firebase ID token, mirroring the main CLI client."""
-    import os
-
-    cfg = config.load() or {}
-    refresh_token = cfg.get("refreshToken")
-    if not refresh_token:
-        return None
-
-    firebase_key = os.environ.get("ORBIADS_FIREBASE_KEY") or DEFAULT_FIREBASE_API_KEY
-    try:
-        resp = httpx.post(
-            f"https://securetoken.googleapis.com/v1/token?key={firebase_key}",
-            headers={"Referer": DEFAULT_FIREBASE_REFERER},
-            data={
-                "grant_type": "refresh_token",
-                "refresh_token": refresh_token,
-            },
-            timeout=15.0,
-        )
-    except httpx.HTTPError:
-        return None
-
-    if resp.status_code != 200:
-        return None
-
-    data = resp.json()
-    new_token = data.get("id_token")
-    new_refresh = data.get("refresh_token") or refresh_token
-    if not new_token:
-        return None
-
-    config.set_token(new_token, new_refresh)
-    return str(new_token)
-
-
 @app.command()
 def login() -> None:
     """Authenticate with OrbiAds via browser device flow."""
@@ -104,6 +83,7 @@ def login() -> None:
     try:
         resp = httpx.post(
             f"{api_url}/api/auth/gam/device-code",
+            headers=_cli_headers(),
             timeout=_HTTP_TIMEOUT,
         )
         resp.raise_for_status()
@@ -149,6 +129,7 @@ def login() -> None:
                     poll_resp = httpx.get(
                         f"{api_url}/api/auth/gam/device-token-status",
                         params={"deviceCode": device_code},
+                        headers=_cli_headers(),
                         timeout=_HTTP_TIMEOUT,
                     )
                     poll_resp.raise_for_status()
@@ -214,49 +195,30 @@ def status(ctx: typer.Context) -> None:
         err_console.print("Not authenticated.")
         raise typer.Exit(code=4)
 
-    api_url = _get_api_url()
-    token = config.get_token()
-
+    # Route through OrbiAdsClient so the request carries
+    # ``X-OrbiAds-Client: cli/<v>`` + context headers — without them the
+    # backend ``CliAnalyticsMiddleware`` never fires the ``cli_command_called``
+    # GA4 event for this command (Story 74.2). The client also handles the
+    # 401 → refresh → retry dance internally, replacing the previous bespoke
+    # logic in this function.
+    client = get_client()
     try:
-        resp = httpx.get(
-            f"{api_url}/api/me",
-            headers={"Authorization": f"Bearer {token}"},
-            timeout=_HTTP_TIMEOUT,
-        )
+        raw = client.get("/api/me")
+    except CliApiError as exc:
+        if exc.exit_code == 4:
+            err_console.print(
+                "[red]Token invalid. Run `orbiads auth login` to re-authenticate.[/red]"
+            )
+        else:
+            err_console.print(f"[red]Server error: {exc.message}[/red]")
+        raise typer.Exit(code=exc.exit_code) from None
     except httpx.HTTPError as exc:
         err_console.print(f"[red]Request failed: {exc}[/red]")
         raise typer.Exit(code=1) from None
 
-    if resp.status_code == 401:
-        refreshed_token = _refresh_stored_token()
-        if refreshed_token:
-            token = refreshed_token
-            try:
-                resp = httpx.get(
-                    f"{api_url}/api/me",
-                    headers={"Authorization": f"Bearer {token}"},
-                    timeout=_HTTP_TIMEOUT,
-                )
-            except httpx.HTTPError as exc:
-                err_console.print(f"[red]Request failed: {exc}[/red]")
-                raise typer.Exit(code=1) from None
-
-    if resp.status_code == 401:
-        err_console.print("[red]Token invalid. Run `orbiads auth login` to re-authenticate.[/red]")
-        raise typer.Exit(code=4)
-
-    if resp.status_code != 200:
-        err_console.print(f"[red]Unexpected response (HTTP {resp.status_code}).[/red]")
-        raise typer.Exit(code=1)
-
-    body = resp.json()
-    if body.get("error"):
-        err_console.print(f"[red]Server error: {body['error'].get('message', 'Unknown')}[/red]")
-        raise typer.Exit(code=1)
-
-    data = dict(body.get("data", {}))
+    data = dict(raw or {})
     email = data.get("email", "unknown")
-    network = _resolve_network_code(api_url, token, data)
+    network = _resolve_network_code(client, data)
     data["email"] = email
     data["networkCode"] = network
 
@@ -270,7 +232,14 @@ def status(ctx: typer.Context) -> None:
     raise typer.Exit(code=0)
 
 
-def _resolve_network_code(api_url: str, token: str, data: dict) -> str | None:
+def _resolve_network_code(client, data: dict) -> str | None:
+    """Resolve the active GAM network code.
+
+    Priority: ``data['networkCode']`` from /api/me → local config cache →
+    server-side ``/api/auth/gam/connection-state``. The connection-state call
+    routes through ``OrbiAdsClient`` so it carries the same X-OrbiAds-Client
+    headers as ``status`` itself (Story 74.2 — CLI GA4 attribution).
+    """
     network = data.get("networkCode") or data.get("network_code")
     if network:
         return str(network)
@@ -280,22 +249,11 @@ def _resolve_network_code(api_url: str, token: str, data: dict) -> str | None:
         return str(cfg["networkCode"])
 
     try:
-        resp = httpx.get(
-            f"{api_url}/api/auth/gam/connection-state",
-            headers={"Authorization": f"Bearer {token}"},
-            timeout=_HTTP_TIMEOUT,
-        )
-    except httpx.HTTPError:
+        state_data = client.get("/api/auth/gam/connection-state")
+    except (CliApiError, httpx.HTTPError):
         return None
 
-    if resp.status_code != 200:
+    if not isinstance(state_data, dict):
         return None
-
-    try:
-        body = resp.json()
-    except ValueError:
-        return None
-
-    state_data = body.get("data", {})
     network = state_data.get("networkCode") or state_data.get("network_code")
     return str(network) if network else None

@@ -1,8 +1,9 @@
 {
-  "total_tools": 267,
+  "total_tools": 271,
   "counts": {
     "EXEMPT": 63,
-    "FULL": 204
+    "FULL": 204,
+    "UNMAPPED": 4
   },
   "per_area": {
     "adcp": {
@@ -27,6 +28,9 @@
       "EXEMPT": 1,
       "FULL": 2
     },
+    "blueprint": {
+      "UNMAPPED": 1
+    },
     "campaign_ops": {
       "FULL": 7,
       "EXEMPT": 4
@@ -46,6 +50,9 @@
       "EXEMPT": 17,
       "FULL": 10
     },
+    "formats": {
+      "UNMAPPED": 1
+    },
     "admin": {
       "EXEMPT": 1
     },
@@ -59,6 +66,9 @@
     "jobs": {
       "FULL": 3,
       "EXEMPT": 1
+    },
+    "jobs_async": {
+      "UNMAPPED": 1
     },
     "line_items": {
       "FULL": 16,
@@ -101,6 +111,9 @@
     "targeting": {
       "FULL": 18,
       "EXEMPT": 1
+    },
+    "tenant_catalog": {
+      "UNMAPPED": 1
     }
   },
   "cli_commands_detected": [
@@ -722,6 +735,15 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "blueprint",
+      "module": "blueprint",
+      "area": "blueprint",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
     },
     {
       "tool": "archive_campaign",
@@ -1781,6 +1803,15 @@
       "cli_present": null
     },
     {
+      "tool": "formats",
+      "module": "formats",
+      "area": "formats",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
+    },
+    {
       "tool": "gam_admin",
       "module": "gam_admin",
       "area": "admin",
@@ -2010,6 +2041,15 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "gam_jobs",
+      "module": "jobs_async",
+      "area": "jobs_async",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
     },
     {
       "tool": "activate_line_items",
@@ -3352,6 +3392,15 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "tenant_catalog",
+      "module": "tenant_catalog",
+      "area": "tenant_catalog",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
     }
   ]
 }
