@@ -77,7 +77,7 @@ Will live in `commands/adops-*.md` with frontmatter `description`, `argument-hin
 | **Backend** (gam-native private monorepo) | Python 3.11+, FastAPI, Pydantic V2, FastMCP, Firestore, Cloud Run |
 | **Frontend** (gam-native private) | SvelteKit 5, TypeScript, Tailwind 4 |
 | **Public repo (this)** | Markdown + JSON + Python CLI |
-| **GAM API target** | `v202602` |
+| **GAM API target** | `v202605` |
 | **MCP protocol** | `2025-03-26` (streamable-http) |
 | **Architecture** | Clean: `domain` ← `adapters` ← `services` ← `api` (private repo); spec-driven generation (public repo) |
 | **API format** | JSend-inspired: `{ data, error }`. JSON camelCase on the wire. |

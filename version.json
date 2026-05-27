@@ -1,5 +1,5 @@
 {
-  "version": "1.6.0",
+  "version": "1.7.0",
   "layers": {
     "skills": "2.0.0",
     "agents": "2.0.0",
@@ -8,7 +8,7 @@
     "cli": "1.1.0"
   },
   "compatibleWith": {
-    "gamApi": "v202602",
+    "gamApi": "v202605",
     "mcpProtocol": "2025-03-26"
   }
 }

@@ -1,12 +1,17 @@
 # OrbiAds — Google Ad Manager MCP
 
+[English](README.md) · [Français](README.fr.md)
+
+![OrbiAds Terminal Mockup](./logo/terminal_mockup.png)
+
 [![MCP Protocol](https://img.shields.io/badge/MCP-2025--03--26-blue)](https://modelcontextprotocol.io)
-[![GAM API](https://img.shields.io/badge/GAM_API-v202602-orange)](https://developers.google.com/ad-manager/api/rel_notes)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](./version.json)
+[![GAM API](https://img.shields.io/badge/GAM_API-v202605-orange)](https://developers.google.com/ad-manager/api/rel_notes)
+[![Version](https://img.shields.io/badge/version-1.7.0-green)](./version.json)
 [![CLI](https://img.shields.io/badge/CLI-pip_install_orbiads--cli-brightgreen)](./docs/install/cli.md)
 [![Works with Claude](https://img.shields.io/badge/Claude-✓-purple)](./docs/install/claude.md)
 [![Works with ChatGPT](https://img.shields.io/badge/ChatGPT-✓-teal)](./docs/install/chatgpt.md)
 [![Works with Gemini](https://img.shields.io/badge/Gemini-✓-blue)](./docs/install/gemini.md)
+[![GLAMA Registry](https://img.shields.io/badge/GLAMA-Registry-blue)](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP)
 
 **A skill for Claude, ChatGPT, Gemini, and OpenAI Codex that gives your AI assistant direct access to Google Ad Manager.**
 
@@ -70,36 +75,44 @@ orbiads network info
 
 ---
 
-## Install the skill
+## Installation Guide
 
-**Claude Code (CLI)** — one command:
+OrbiAds offers three integration pathways depending on your environment.
 
+### 1. Zero-Install MCP Server (ChatGPT, Gemini, Claude Desktop)
+Connect your AI assistant to our hosted server using the Model Context Protocol:
+- **Claude Desktop**: Add this to your `claude_desktop_config.json`:
+  ```json
+  {
+    "mcpServers": {
+      "orbiads": {
+        "type": "http",
+        "url": "https://orbiads.com/mcp"
+      }
+    }
+  }
+  ```
+- **Gemini / AI Studio**: Go to Tools → MCP configuration → Add `https://orbiads.com/mcp`
+- **ChatGPT**: Go to Settings → Connectors → Add connector → MCP URL: `https://orbiads.com/mcp`
+- **GLAMA / MCP Registry**: Access, test, and connect the server directly in your browser via [glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP)
+- **Other environments (Cursor, Codex, Warp)**: Add the `https://orbiads.com/mcp` endpoint to your configuration and copy [`AGENTS.md`](./AGENTS.md) to your project root.
+
+### 2. Claude Code Plugin (Slash Commands)
+Add the `/adops` command set directly into your Claude Code CLI terminal:
 ```bash
 claude plugin install orbiads
 ```
 
-**Claude Desktop** — add to `claude_desktop_config.json`:
+### 3. Agent Skills (Structured Workflows)
+Install our markdown-based guidelines permanently into Claude Code's memory:
+1. Clone this repository locally.
+2. Run the skill installer:
+   ```bash
+   ./install.sh skills --copy
+   ```
+This copies our 6 consolidated skill files to your `~/.claude/skills/` directory. Claude Code will automatically leverage them to prevent hallucinations and strictly apply the preview-to-execute workflow.
 
-```json
-{
-  "mcpServers": {
-    "orbiads": {
-      "type": "http",
-      "url": "https://orbiads.com/mcp"
-    }
-  }
-}
-```
-
-**claude.ai** — Settings → Integrations → Add MCP server → `https://orbiads.com/mcp`
-
-**ChatGPT** — Settings → Connectors → Create connector → MCP URL: `https://orbiads.com/mcp`
-
-**Gemini / AI Studio** — Tools → MCP configuration → `https://orbiads.com/mcp`
-
-**Other tools (Codex, Cursor, Gemini CLI)** — copy [`AGENTS.md`](./AGENTS.md) to your workspace root and add the MCP endpoint to your config
-
-→ Full guides: [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
+→ Installation guides: [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
 
 ---
 
@@ -135,6 +148,7 @@ No scripts. No API tokens to manage. No switching tabs.
 | **Claude** (Desktop / claude.ai / Claude Code) | [docs/install/claude.md](./docs/install/claude.md) | Plugin + MCP remote |
 | **ChatGPT** (Pro connector) | [docs/install/chatgpt.md](./docs/install/chatgpt.md) | MCP remote (HTTP) |
 | **Gemini** | [docs/install/gemini.md](./docs/install/gemini.md) | MCP remote |
+| **GLAMA** (MCP registry) | [glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP) | MCP registry |
 | **Cursor / Codex / Warp / other** | [AGENTS.md](./AGENTS.md) | AGENTS.md + MCP wiring |
 
 All platforms connect to the same hosted MCP endpoint at `https://orbiads.com/mcp`.
@@ -153,11 +167,70 @@ After installing the plugin, these `/adops` commands are available directly in C
 | `/adops deal` | PMP deals, private auctions, Marketplace PG/PD proposals |
 | `/adops creative` | Upload creatives, QA compliance, SSL validation, preview URLs, line item association |
 
-## 27 Parent MCP Tools
+## What's Inside (MCP Tools & Skills)
 
-The full GAM surface is organized into 27 parent tools, each dispatching multiple operations via an `action` discriminator. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the complete matrix with 270 actions, costs, and write-status.
+The OrbiAds surface maps the Google Ad Manager API into **28 parent tools** and **270+ actions**, consolidated into **6 core Agent Skills** to keep context usage clean.
 
-Key parents: `campaign`, `line_items`, `orders`, `creatives`, `creative_qa`, `creative_assets`, `reporting`, `inventory`, `deals`, `audit_skill`, `targeting`, `placements`, `companies`, `billing`, `settings`, `gam_admin`.
+Click on any domain below to see which tools and capabilities are included:
+
+<details>
+<summary><b>1. Campaigns & Creative QA (orbiads-campaigns)</b></summary>
+
+*   `campaign` — Create, update, pause, and rollback campaigns.
+*   `orders` — Create and list orders, contacts, and roles.
+*   `line_items` — Define line item delivery rules, CPMs, and targeting logic.
+*   `creatives` — Upload creatives (images, HTML5, video/audio) and configure native styles.
+*   `creative_assets` — Manage associated image and file assets.
+*   `creative_qa` — Audit click-trackers, perform compliance scans, and validate SSL certificates.
+*   `creative_wrapper_skill` — Manage third-party wrappers and delivery presets.
+*   `formats` — Discover and configure ad creative formats.
+*   `jobs` & `gam_jobs` — Monitor async campaign compilation and deployment workflows.
+</details>
+
+<details>
+<summary><b>2. Inventory & Targeting (orbiads-inventory)</b></summary>
+
+*   `inventory` — Retrieve ad unit trees, sizes, and generate ads.json manifests.
+*   `placements` — Create, update, and list ad placement groups.
+*   `targeting` — Manage custom targeting keys/values, countries, and categories.
+*   `audiences` — Retrieve and modify first-party audience segments.
+*   `blueprint` — Generate and push structured network inventory blueprints.
+</details>
+
+<details>
+<summary><b>3. Reporting & Forecasting (orbiads-reporting)</b></summary>
+
+*   `reporting` — Run custom reports from templates, check line item delivery, and integrate GA4.
+*   `preview` — Verify inventory coverage and export preview URLs.
+*   `pql` — Run raw PQL database queries.
+</details>
+
+<details>
+<summary><b>4. Programmatic Deals (orbiads-deals)</b></summary>
+
+*   `deals` — Manage PMP deals, private auctions, and marketplace buyers.
+*   `companies` — Manage agency and advertiser company profiles.
+</details>
+
+<details>
+<summary><b>5. Network Admin (orbiads-admin)</b></summary>
+
+*   `gam_admin` — Access advanced fields, network labels, teams, and site records.
+*   `gam_features` — Query active Google Ad Manager beta and system features.
+*   `network` — List accessible networks and switch active network context.
+*   `settings` — Configure default CPMs, pacing, and brand naming templates.
+*   `tenant_catalog` — Access tenant-specific catalogs.
+</details>
+
+<details>
+<summary><b>6. Audits & Billing (orbiads-audit)</b></summary>
+
+*   `audit_skill` — Run automated security, hygiene, and wrapper coverage audits.
+*   `billing` — Fetch credit balances and transaction histories.
+*   `audit` — Search network audit logs.
+</details>
+
+> See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the complete parity matrix detailing exact costs, writes, and parameters for all 270+ actions.
 
 ---
 
@@ -204,7 +277,7 @@ Then start with:
 | Endpoint | `https://orbiads.com/mcp` |
 | Transport | `streamable-http` (default) · `sse` |
 | Auth | OAuth 2.0 — Google account via OrbiAds |
-| GAM API version | `v202602` |
+| GAM API version | `v202605` |
 | MCP Protocol | `2025-03-26` |
 
 ---
@@ -249,3 +322,8 @@ Reads are always free. Credits are only consumed on write and deploy operations.
 The contents of this repository — distribution scaffold, skills, agents, workflows, JSON schemas, CLI client, platform integration manifests, documentation, and examples — are released under the [MIT License](./LICENSE).
 
 The OrbiAds MCP server backend and Cloud Run services that the hosted endpoint at `https://orbiads.com/mcp` connects to are NOT in this repository and are governed by separate proprietary terms — [see terms at orbiads.com](https://orbiads.com).
+
+<p align="center">
+  <br/>
+  <img src="./logo/orbiads-logo-brand.png" alt="OrbiAds Brand Logo" width="220"/>
+</p>

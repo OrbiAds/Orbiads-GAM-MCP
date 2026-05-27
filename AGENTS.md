@@ -5,7 +5,7 @@
 
 OrbiAds is a **Google Ad Manager (GAM) copilot for AI agents**. It exposes the entire GAM operations surface (campaigns, inventory, creatives, reporting, audits, deals, billing) through two equivalent transports — a hosted MCP server (`https://orbiads.com/mcp`) and a Python CLI (`pip install orbiads-cli`) — both protected by the same per-tenant billing guard, confirmation tokens, and audit log.
 
-The catalogue is organized **parent>child** (27 parent tools dispatching ~270 operations via an `action` discriminator). New integrations should call the parent tools; the 219 pre-refactor child names remain available as soft-deprecated wrappers.
+The catalogue is organized **parent>child** (28 parent tools dispatching ~270 operations via an `action` discriminator). New integrations should call the parent tools; the 219 pre-refactor child names remain available as soft-deprecated wrappers.
 
 ---
 
@@ -111,13 +111,13 @@ Ad units, placements, custom targeting, blueprint preferences, multi-site networ
 
 | Layer | Detail |
 | --- | --- |
-| GAM API target | `v202602` (locked — see `compatibleWith.gamApi` in `version.json`) |
+| GAM API target | `v202605` (locked — see `compatibleWith.gamApi` in `version.json`) |
 | MCP protocol | `2025-03-26` (streamable-http transport) |
 | Auth | Google OAuth 2.0 (Authorization Code Flow); per-tenant refresh tokens encrypted at rest via Cloud KMS |
 | Server runtime | FastAPI + FastMCP, Cloud Run europe-west1, scale-to-zero (cold start ~3 s) |
 | Storage | Firestore Native Mode (`projects/orbiads`) |
 | CLI runtime | Python 3.10+, `httpx` for HTTP, `typer` for CLI |
-| Catalogue | 27 parent tools, 219 deprecated wrappers (still functional), 24 standalones — **270 tools total**. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md). |
+| Catalogue | 28 parent tools, 219 deprecated wrappers (still functional), 24 standalones — **271 tools total**. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md). |
 
 ---
 
@@ -153,9 +153,9 @@ orbiads-gam-mcp/                       # this repo (public mirror of orbiads/ su
 │   ├── orbiads/                       # orchestrator skill (user-invokable: true)
 │   │   ├── SKILL.md                   # Quick Reference + routing logic + hard rules
 │   │   └── references/                # reference files loaded on demand
-│   └── <parent>/SKILL.md              # 27 sub-skills, one per parent (user-invokable: false)
-├── docs/
-│   ├── tool-matrix/README.md          # the 27 parents + their actions (generated)
+│   └── <group>/SKILL.md               # 6 sub-skills, grouping all parent tools (user-invokable: false)
+├── docs:
+│   ├── tool-matrix/README.md          # the 28 parents + their actions (generated)
 │   ├── install/                       # per-tool install guides (claude.md, cursor.md, ...)
 │   └── safety/                        # boundaries, error codes, rollback recipes
 ├── _docs/

@@ -1,0 +1,91 @@
+# github-action-audit.yml — Automated AdOps Auditing via OrbiAds CLI
+#
+# Place this file in your repository at: .github/workflows/orbiads-audit.yml
+#
+# This workflow runs on a cron schedule (e.g., every night) to check your Google Ad Manager
+# network hygiene, scan for inactive ad units, and run delivery reports, sending alerts if needed.
+
+name: Nightly Google Ad Manager Audit & Reporting
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs every night at 2:00 AM UTC
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+jobs:
+  run-adops-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install OrbiAds CLI
+        run: |
+          pip install orbiads-cli
+          orbiads --version
+
+      - name: Configure OrbiAds Context
+        env:
+          # Authenticate with the OrbiAds hosted backend.
+          # Generate your token from the OrbiAds Dashboard (orbiads.com/settings).
+          # Add ORBIADS_TOKEN to your GitHub Repository Secrets.
+          ORBIADS_TOKEN: ${{ secrets.ORBIADS_TOKEN }}
+          # Set your default GAM Network Code (e.g., 12345678)
+          GAM_NETWORK_CODE: ${{ secrets.GAM_NETWORK_CODE }}
+        run: |
+          # Write credentials to CLI config
+          orbiads config set token "$ORBIADS_TOKEN"
+          orbiads config set network_id "$GAM_NETWORK_CODE"
+          
+          # Verify connection status
+          orbiads auth status
+
+      - name: Step 1 — Verify Credit Balance
+        run: |
+          # Alerts if remaining credits are low (under 10 credits)
+          BALANCE=$(orbiads billing balance --json | jq -r '.balance')
+          echo "Current Credit Balance: $BALANCE"
+          if [ "$BALANCE" -lt 10 ]; then
+            echo "::warning title=Low Credits::OrbiAds credit balance is low ($BALANCE remaining). Re-charge at orbiads.com."
+          fi
+
+      - name: Step 2 — Run Delivery Health Audit
+        run: |
+          # Query delivery log changes in the last 24 hours
+          orbiads audit log --json
+
+      - name: Step 3 — Scan for Inactive Ad Units
+        run: |
+          # Identify ad units that haven't received traffic for > 30 days
+          orbiads inventory list-inactive --days 30 --json > inactive-ad-units.json
+          COUNT=$(jq '. | length' inactive-ad-units.json)
+          echo "Found $COUNT inactive ad units."
+          
+          # Optional: archive them if any found (requires credits)
+          # if [ "$COUNT" -gt 0 ]; then
+          #   orbiads inventory archive-inactive --yes
+          # fi
+
+      - name: Step 4 — Run Delivery Report
+        env:
+          # ID of the report template configured in your GAM account
+          REPORT_TEMPLATE_ID: ${{ secrets.GAM_REPORT_TEMPLATE_ID }}
+        run: |
+          # Run report and export results to CSV
+          orbiads reporting run --template "$REPORT_TEMPLATE_ID" --output csv > delivery-report.csv
+          echo "Report generated successfully."
+
+      - name: Upload Audit Artifacts
+        uses: actions/artifacts-upload@v4
+        with:
+          name: adops-audit-reports
+          path: |
+            inactive-ad-units.json
+            delivery-report.csv

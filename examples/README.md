@@ -5,6 +5,7 @@ Platform-specific examples live in each wrapper: `../claude-plugin/examples/`, `
 
 ## Available Examples
 
+- [github-action-audit.yml](./github-action-audit.yml) — Automated nightly inventory audit and report export via GitHub Actions (CI/CD).
 - `../claude-plugin/examples/bootstrap-session.md` — connect tenant, select network, hand off to inventory
 - `../claude-plugin/examples/native-go-live.md` — image-to-native full flow with QA gate
 - `../claude-plugin/examples/reporting-follow-up.md` — post-deploy delivery monitoring and report

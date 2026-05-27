@@ -6,7 +6,7 @@
 
 # Legacy Tool Mapping — OrbiAds MCP Catalogue
 
-OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 27 parent tools. The 219 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
+OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 29 parent tools. The 233 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
 
 **Migration recommendation:** Update integrations to call the parent tool with `action: <child_name>` instead. Schedule: parents stable from Epic 68 (2026 Q2). Sunset of legacy wrappers TBD per usage telemetry.
 
@@ -16,6 +16,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 |---|---|
 | `audiences` | 5 |
 | `audit` | 1 |
+| `audit_skill` | 2 |
 | `billing` | 2 |
 | `campaign` | 10 |
 | `companies` | 12 |
@@ -32,6 +33,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `placements` | 4 |
 | `pql` | 1 |
 | `preview` | 3 |
+| `products` | 12 |
 | `reporting` | 31 |
 | `settings` | 9 |
 | `targeting` | 18 |
@@ -53,6 +55,13 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | Legacy tool | Replacement action | Source |
 |---|---|---|
 | `query_audit_log` | `query_audit_log` | [backend/src/mcp/tools/audit.py](backend/src/mcp/tools/audit.py) |
+
+### → `audit_skill` (2 legacy wrappers)
+
+| Legacy tool | Replacement action | Source |
+|---|---|---|
+| `audit_skill_estimate_cost` | `estimate_cost` | [backend/src/mcp/tools/audit_estimator.py](backend/src/mcp/tools/audit_estimator.py) |
+| `export_authoring_audit` | `export_authoring` | [backend/src/mcp/tools/export_authoring_audit.py](backend/src/mcp/tools/export_authoring_audit.py) |
 
 ### → `billing` (2 legacy wrappers)
 
@@ -288,6 +297,23 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `check_creative_coverage` | `check_creative_coverage` | [backend/src/mcp/tools/preview.py](backend/src/mcp/tools/preview.py) |
 | `get_campaign_preview_urls` | `get_campaign_preview_urls` | [backend/src/mcp/tools/preview.py](backend/src/mcp/tools/preview.py) |
 | `get_preview_urls` | `get_preview_urls` | [backend/src/mcp/tools/preview.py](backend/src/mcp/tools/preview.py) |
+
+### → `products` (12 legacy wrappers)
+
+| Legacy tool | Replacement action | Source |
+|---|---|---|
+| `archive_product` | `archive` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `create_premium_rate` | `pricing_create_premium_rate` | [backend/src/mcp/tools/pricing.py](backend/src/mcp/tools/pricing.py) |
+| `create_product` | `create` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `get_premium_rate` | `pricing_get_premium_rate` | [backend/src/mcp/tools/pricing.py](backend/src/mcp/tools/pricing.py) |
+| `get_pricing_suggestion` | `pricing_suggestion` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `get_product` | `get` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `get_products_adcp` | `get_adcp` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `list_premium_rates` | `pricing_list_premium_rates` | [backend/src/mcp/tools/pricing.py](backend/src/mcp/tools/pricing.py) |
+| `list_products` | `list` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
+| `list_rate_cards` | `pricing_list_rate_cards` | [backend/src/mcp/tools/pricing.py](backend/src/mcp/tools/pricing.py) |
+| `update_premium_rate` | `pricing_update_premium_rate` | [backend/src/mcp/tools/pricing.py](backend/src/mcp/tools/pricing.py) |
+| `update_product` | `update` | [backend/src/mcp/tools/products.py](backend/src/mcp/tools/products.py) |
 
 ### → `reporting` (31 legacy wrappers)
 
