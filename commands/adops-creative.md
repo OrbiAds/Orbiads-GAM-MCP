@@ -1,6 +1,6 @@
 ---
 name: adops-creative
-description: Creative lifecycle — upload assets, apply naming conventions, run QA compliance scans, validate SSL, generate preview URLs, and associate creatives to line items. Use when the user wants to upload a creative, check creative compliance, validate SSL, get a preview link, or associate a creative to a line item.
+description: Creative lifecycle — upload assets, naming conventions, QA scans, SSL validation, preview URLs, associate creatives to line items.
 argument-hint: "<upload|qa|ssl|preview|associate|list|duplicate> [creative-id]"
 allowed-tools: mcp__orbiads__creatives,mcp__orbiads__creative_assets,mcp__orbiads__creative_qa,mcp__orbiads__creative_wrapper_skill,mcp__orbiads__settings,mcp__orbiads__billing
 model: sonnet

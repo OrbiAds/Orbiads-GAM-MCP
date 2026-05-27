@@ -1,6 +1,6 @@
 ---
 name: adops-audit
-description: Run a multi-dimensional GAM account audit covering delivery health, inventory hygiene, security baseline, creative compliance, and billing alignment. Read-only and free. Use when the user wants to audit their GAM account, check delivery health, review security posture, or get a full account health report.
+description: Multi-dimensional GAM audit: delivery health, inventory hygiene, security baseline, creative compliance, billing alignment. Read-only and free.
 argument-hint: "[delivery|inventory|security|creative|billing|all] [--framework=iso27001|nist|iab|orbiads_baseline]"
 allowed-tools: Task,mcp__orbiads__audit_skill,mcp__orbiads__reporting,mcp__orbiads__inventory,mcp__orbiads__creative_qa,mcp__orbiads__billing,Read,Write
 model: sonnet

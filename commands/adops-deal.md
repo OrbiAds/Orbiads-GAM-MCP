@@ -1,6 +1,6 @@
 ---
 name: adops-deal
-description: Manage programmatic deal lifecycle — PMP deals, private auctions, and Marketplace (PG/PD) proposals. Guards writes with preview → confirm → execute. Use when the user wants to create a deal, manage a proposal, check deal status, or activate a private auction.
+description: Manage programmatic deal lifecycle — PMP, private auctions, Marketplace proposals. Guards writes with preview→confirm→execute.
 argument-hint: "<list|get|create|update|reserve|validate> [deal-id]"
 allowed-tools: mcp__orbiads__deals,mcp__orbiads__companies,mcp__orbiads__billing,mcp__orbiads__settings
 model: sonnet

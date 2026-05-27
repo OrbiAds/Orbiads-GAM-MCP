@@ -1,6 +1,6 @@
 ---
 name: adops-campaign
-description: Deploy, preview, pause or check a GAM campaign. Guides through the full flow — advertiser setup, inventory forecast, line item creation, creative association, and the preview → confirm → execute deploy gate. Use when the user wants to launch a campaign, check campaign status, pause delivery, or rollback a deployment.
+description: Deploy, preview, pause or check a GAM campaign — advertiser setup, forecast, line item creation, creative association, preview→confirm→execute gate.
 argument-hint: "<deploy|preview|pause|status|rollback> [campaign-id]"
 allowed-tools: mcp__orbiads__campaign,mcp__orbiads__companies,mcp__orbiads__orders,mcp__orbiads__line_items,mcp__orbiads__creatives,mcp__orbiads__creative_qa,mcp__orbiads__reporting,mcp__orbiads__targeting,mcp__orbiads__billing
 model: sonnet

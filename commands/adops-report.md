@@ -1,6 +1,6 @@
 ---
 name: adops-report
-description: Query GAM reporting — run custom reports, check delivery status, export CSV, manage saved templates, and generate billing reports. Read-only and free unless noted. Use when the user wants to see delivery data, run a GAM report, export results, check underdelivery alerts, or forecast delivery.
+description: Query GAM reporting — custom reports, delivery status, CSV export, saved templates, billing reports. Read-only and free unless noted.
 argument-hint: "<run|delivery|export|templates|billing|forecast> [params]"
 allowed-tools: mcp__orbiads__reporting
 model: sonnet
