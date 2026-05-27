@@ -1,11 +1,33 @@
 {
   "name": "orbiads",
-  "description": "GAM AdOps copilot — 8 skills covering bootstrap, inventory, forecast, trafficking, native creative, QA, and reporting via OrbiAds MCP.",
-  "version": "1.1.0",
+  "version": "1.6.0",
+  "description": "Google Ad Manager copilot for AI agents — MCP server (orbiads.com/mcp) + Python CLI. Operate campaigns, audit accounts, run reports, and manage GAM inventory from Claude, Cursor, Codex CLI, Gemini CLI, and other LLM tools.",
   "author": {
     "name": "OrbiAds",
     "url": "https://orbiads.com"
   },
+  "homepage": "https://orbiads.com",
   "repository": "https://github.com/OrbiAds/Orbiads-GAM-MCP",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "google-ad-manager",
+    "gam",
+    "adops",
+    "advertising-operations",
+    "mcp",
+    "model-context-protocol",
+    "claude-code-skill",
+    "campaign-deployment",
+    "ad-inventory",
+    "programmatic"
+  ],
+  "skills": [
+    "./skills/"
+  ],
+  "mcpServers": {
+    "orbiads": {
+      "type": "http",
+      "url": "https://orbiads.com/mcp"
+    }
+  }
 }

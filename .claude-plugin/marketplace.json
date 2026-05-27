@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "orbiads-gam-mcp",
+  "owner": {
+    "name": "OrbiAds",
+    "url": "https://orbiads.com"
+  },
+  "plugins": [
+    {
+      "name": "orbiads",
+      "source": ".",
+      "description": "Google Ad Manager copilot — campaigns, audits, reports, inventory via MCP + CLI.",
+      "category": "ad-operations",
+      "tags": ["gam", "adops", "mcp", "google-ad-manager"]
+    }
+  ]
+}
