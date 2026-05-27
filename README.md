@@ -75,9 +75,7 @@ orbiads network info
 **Claude Code (CLI)** — one command:
 
 ```bash
-./install.sh claude          # current project
-./install.sh claude --global # all projects
-./install.sh skills          # load all 8 skills for this session
+claude plugin install orbiads
 ```
 
 **Claude Desktop** — add to `claude_desktop_config.json`:
@@ -99,7 +97,7 @@ orbiads network info
 
 **Gemini / AI Studio** — Tools → MCP configuration → `https://orbiads.com/mcp`
 
-**OpenAI Codex** — copy [`openai-codex/AGENTS.md`](./openai-codex/AGENTS.md) and [`openai-codex/mcp/config.remote.json`](./openai-codex/mcp/config.remote.json) to your workspace root
+**Other tools (Codex, Cursor, Gemini CLI)** — copy [`AGENTS.md`](./AGENTS.md) to your workspace root and add the MCP endpoint to your config
 
 → Full guides: [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
 
@@ -134,43 +132,32 @@ No scripts. No API tokens to manage. No switching tabs.
 
 | Platform | Setup guide | Mode |
 | --- | --- | --- |
-| **Claude** (Desktop / claude.ai) | [docs/install/claude.md](./docs/install/claude.md) | Plugin + MCP remote |
+| **Claude** (Desktop / claude.ai / Claude Code) | [docs/install/claude.md](./docs/install/claude.md) | Plugin + MCP remote |
 | **ChatGPT** (Pro connector) | [docs/install/chatgpt.md](./docs/install/chatgpt.md) | MCP remote (HTTP) |
-| **Gemini** | [docs/install/gemini.md](./docs/install/gemini.md) | Extension + MCP fallback |
-| **OpenAI Codex** | [docs/install/openai-codex.md](./docs/install/openai-codex.md) | AGENTS.md + MCP wiring |
+| **Gemini** | [docs/install/gemini.md](./docs/install/gemini.md) | MCP remote |
+| **Cursor / Codex / Warp / other** | [AGENTS.md](./AGENTS.md) | AGENTS.md + MCP wiring |
 
 All platforms connect to the same hosted MCP endpoint at `https://orbiads.com/mcp`.
 
 ---
 
-## 8 Built-in Skills
+## 5 Slash Commands
 
-Each skill is a guided, guardrailed workflow. Your AI assistant loads them on demand.
+After installing the plugin, these `/adops` commands are available directly in Claude Code.
 
-| Skill | What it does |
+| Command | What it does |
 | --- | --- |
-| `bootstrap` | Connect your GAM account, verify credentials, select network |
-| `inventory-ad-units` | Browse and query ad units, placements, and targeting keys |
-| `availability-forecast` | Check inventory availability before trafficking — no writes |
-| `advertiser-order-line-items` | Create and manage advertisers, orders, and line items |
-| `placements-targeting` | Build and verify targeting configurations |
-| `native-image` | Traffic native and image creatives with inline upload |
-| `qa-preview` | Preview and coverage check before any live push |
-| `deploy-reporting` | Deploy with dry-run protection + post-push delivery reports |
+| `/adops campaign` | Deploy, preview, pause, rollback — with mandatory forecast gate before any write |
+| `/adops audit` | Multi-dimensional account audit: delivery, inventory, security, creatives, billing |
+| `/adops report` | Custom reports, delivery queries, CSV export, billing summaries, forecasts |
+| `/adops deal` | PMP deals, private auctions, Marketplace PG/PD proposals |
+| `/adops creative` | Upload creatives, QA compliance, SSL validation, preview URLs, line item association |
 
----
+## 27 Parent MCP Tools
 
-## 5 Composed Workflows
+The full GAM surface is organized into 27 parent tools, each dispatching multiple operations via an `action` discriminator. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the complete matrix with 270 actions, costs, and write-status.
 
-End-to-end workflows that chain skills automatically.
-
-| Workflow | Description |
-| --- | --- |
-| `inventory-to-placement` | From ad unit discovery to targeting-ready placement |
-| `image-to-native` | Upload image → create native creative → traffic line item |
-| `image-to-html5` | Same flow for HTML5 display creatives |
-| `audio-video-trafficking` | Audio/video line item setup with format guardrails |
-| `deploy-to-reporting` | Push campaign + monitor delivery + generate report |
+Key parents: `campaign`, `line_items`, `orders`, `creatives`, `creative_qa`, `creative_assets`, `reporting`, `inventory`, `deals`, `audit_skill`, `targeting`, `placements`, `companies`, `billing`, `settings`, `gam_admin`.
 
 ---
 
@@ -202,7 +189,7 @@ Pick your platform and follow the guide:
 - [Claude setup →](./docs/install/claude.md)
 - [ChatGPT setup →](./docs/install/chatgpt.md)
 - [Gemini setup →](./docs/install/gemini.md)
-- [OpenAI Codex setup →](./docs/install/openai-codex.md)
+- [Other tools (Cursor, Codex, Warp) →](./AGENTS.md)
 
 Then start with:
 
@@ -225,15 +212,19 @@ Then start with:
 ## Repository Structure
 
 ```text
-shared/           ← Canonical skills, agents, prompts, workflows, JSON schemas
-docs/             ← Installation guides, safety rules, tool matrix, query library
+skills/           ← 27 parent-tool sub-skills + orchestrator (generated from backend)
+commands/         ← 5 /adops slash commands for Claude Code
+agents/           ← Parallel audit subagents (audit-delivery, audit-inventory, …)
+hooks/            ← Claude Code hooks (hooks.json)
 cli/              ← OrbiAds CLI package (pip install orbiads-cli)
-claude-plugin/    ← Claude plugin packaging (manifest, system prompt, router)
-openai-codex/     ← AGENTS.md + router for OpenAI/Codex workspaces
-gemini-extension/ ← Gemini extension descriptor + function declarations
+docs/             ← Installation guides, tool matrix, query library
+_docs/            ← Internal: legacy tool mapping, anti-collision rules
+.claude-plugin/   ← Claude plugin manifest (plugin.json, marketplace.json)
+AGENTS.md         ← Cross-LLM contract for Cursor, Codex, Gemini, Warp, etc.
+CLAUDE.md         ← Claude Code project guidance
 ```
 
-> Business logic lives in `shared/`. Platform wrappers are thin adapters that point back to it.
+> Skills and the tool matrix are **generated** from the backend catalogue — do not hand-edit them. See `CLAUDE.md` for the generated vs. hand-authored breakdown.
 
 ---
 

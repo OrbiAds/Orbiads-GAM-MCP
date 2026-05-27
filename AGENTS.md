@@ -13,15 +13,15 @@ The catalogue is organized **parent>child** (27 parent tools dispatching ~270 op
 
 | Slash command (future) | What it does | Parent MCP tools involved |
 | --- | --- | --- |
-| `/adops campaign` | Deploy / preview / cancel / status — guarded preview→confirm→execute | `campaign`, `line_items`, `creatives`, `creative_qa`, `orders` |
-| `/adops audit` | Multi-dimensional GAM account audit via parallel subagents | `audit_skill`, `audit`, `audit_estimator` |
-| `/adops report` | Reporting queries via REST Interactive Reports API | `reporting` |
-| `/adops deal` | Programmatic deal lifecycle (Marketplace + ADCP) | `deals`, `companies` |
-| `/adops creative` | Creative lifecycle + QA + association | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill` |
+| `/adops campaign` | Deploy / preview / pause / status / rollback — guarded forecast→preview→confirm→execute | `campaign`, `line_items`, `creatives`, `creative_qa`, `orders`, `reporting` |
+| `/adops audit` | Multi-dimensional GAM account audit via parallel subagents | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` |
+| `/adops report` | Reporting queries — delivery, custom reports, CSV export, templates, billing, forecast | `reporting` |
+| `/adops deal` | Programmatic deal lifecycle — PMP, private auction, Marketplace PG/PD | `deals`, `companies`, `settings` |
+| `/adops creative` | Creative upload, QA, SSL validation, preview URLs, association | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill`, `settings` |
 | `/adops inventory` | Ad units + placements + targeting + blueprint | `inventory`, `placements`, `targeting`, `blueprint` |
 | `/adops admin` | Multi-user / team / label / site (Epic 65) | `gam_admin` |
 
-> Slash commands ship in Story 81.3 (Epic 81). For now, agents call the parent MCP tools directly.
+Slash commands are defined in `commands/adops-*.md` (shipped in Story 81.3, Epic 81). Claude Code discovers them automatically after `claude plugin install orbiads`.
 
 ---
 

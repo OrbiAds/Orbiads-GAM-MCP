@@ -1,7 +1,0 @@
-{
-  "jobId": "job_abc123",
-  "campaignActionStatus": "dry_run_ready",
-  "deliveryStatus": "pending_post_launch",
-  "alerts": [],
-  "recommendedNextAction": "confirm_real_deploy"
-}

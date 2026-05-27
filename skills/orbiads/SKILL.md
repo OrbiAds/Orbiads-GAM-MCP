@@ -16,7 +16,7 @@ Every write costs credits. Every write requires explicit user confirmation throu
 | User intent | Verb | Parent MCP tools | Notes |
 | --- | --- | --- | --- |
 | "Deploy a campaign" / "launch a campaign" | **campaign** | `campaign`, `orders`, `line_items`, `creatives`, `creative_qa` | State machine: build → validate → preview → confirm → execute. See `references/campaign-workflow.md`. |
-| "Audit my account" / "what's wrong with my GAM setup" | **audit** | `audit_skill`, `audit`, `audit_estimator` | Multi-dimensional. Story 81.4 will parallelize via subagents — for now, sequence the dimensions explicitly. |
+| "Audit my account" / "what's wrong with my GAM setup" | **audit** | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` | Multi-dimensional. Parallel subagents via Task tool — see `agents/` directory. |
 | "Show me delivery" / "fetch a report" | **report** | `reporting` | REST Interactive Reports API. Free. Build query → run → poll → CSV. |
 | "Create a deal" / "programmatic activation" | **deal** | `deals`, `companies` | Same preview→confirm pattern as campaigns. |
 | "Upload a creative" / "QA my creatives" | **creative** | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill` | Compliance scan, SSL validation, preview URLs. |
@@ -92,9 +92,16 @@ audit DIMENSIONS:
   - billing           (rate card coverage, fixed CPM analysis)    → billing + line_items + deals
 ```
 
-Sequence them by impact: ALWAYS run `delivery + inventory`; spawn `security_baseline` only if the user passed a framework flag; spawn `creative` only if line items > 0; spawn `billing` only when Epic 67 (pricing assistant) ships.
+Sequence them by impact: ALWAYS run `delivery + inventory`; spawn `security_baseline` only if the user passed a framework flag; spawn `creative` only if line items > 0; spawn `billing` to check for overruns and discrepancies.
 
-**Story 81.4 (planned)**: the orchestration becomes parallel via the Claude Code `Task` tool with `context: fork` — each dimension runs in its own subagent with a dedicated output file (`audit-delivery-{tenant}.md`, etc.). The orchestrator aggregates after all complete.
+**Parallel audit pattern** (Story 81.4, delivered): use the Claude Code `Task` tool with `context: fork` — each dimension runs in its own subagent file under `agents/` with a dedicated output file. The orchestrator aggregates after all complete.
+
+Subagent files:
+- `agents/audit-delivery.md` → `audit-delivery-{network_code}.md`
+- `agents/audit-inventory.md` → `audit-inventory-{network_code}.md`
+- `agents/audit-security-baseline.md` → `audit-security-{network_code}.md`
+- `agents/audit-creative.md` → `audit-creative-{network_code}.md`
+- `agents/audit-billing.md` → `audit-billing-{network_code}.md`
 
 ---
 
