@@ -139,6 +139,7 @@ tools:
   ensure_classic_native_template: {area: creatives, rest: "POST /api/gam/creative-templates/classic-native/ensure", cli: "creative-templates ensure-classic-native"}  # 62.1
   list_creative_templates:      {area: creatives, rest: "GET /api/gam/creative-templates", cli: "creative-templates list"}  # 62.1
   get_creative_template:        {area: creatives, rest: "GET /api/gam/creative-templates/{template_id}", cli: "creative-templates get"}  # 62.1
+  discover_native_formats:      {area: creatives, rest: "GET /api/gam/creative-templates", cli: "creative-templates list"}  # 78.4 capability parity: list plus native eligibility filter
 
   # ── inventory (10 + 1 parent) ────────────────────────────────────────────────
   inventory:                   {area: inventory, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6

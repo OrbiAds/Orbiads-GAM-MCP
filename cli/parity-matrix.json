@@ -1,8 +1,8 @@
 {
-  "total_tools": 266,
+  "total_tools": 267,
   "counts": {
     "EXEMPT": 63,
-    "FULL": 203
+    "FULL": 204
   },
   "per_area": {
     "adcp": {
@@ -39,7 +39,7 @@
       "FULL": 1
     },
     "creatives": {
-      "FULL": 40,
+      "FULL": 41,
       "EXEMPT": 2
     },
     "deals": {
@@ -1203,6 +1203,17 @@
       "area": "creatives",
       "rest": "POST /api/gam/licas/delete",
       "cli": "licas delete",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "discover_native_formats",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "GET /api/gam/creative-templates",
+      "cli": "creative-templates list",
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",

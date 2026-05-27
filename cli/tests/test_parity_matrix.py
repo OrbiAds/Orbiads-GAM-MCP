@@ -22,8 +22,8 @@ _spec.loader.exec_module(gpm)
 VALID_STATUSES = {"FULL", "REST-ONLY", "MCP-ONLY", "EXEMPT", "UNMAPPED"}
 
 
-def _expected_total(has_68_7g_deals: bool) -> int:
-    return 264 + int(has_68_7g_deals)
+def _expected_total(has_68_7g_deals: bool, has_68_7h_campaign: bool = True) -> int:
+    return 265 + int(has_68_7g_deals) + int(has_68_7h_campaign)
 
 
 @pytest.fixture(scope="module")
@@ -41,7 +41,7 @@ def test_all_mcp_tools_extracted():
     Story 68.7c-f: +4 EXEMPT parents creative_assets, creatives, line_items,
     orders. Story 68.7g adds deals when present."""
     tools = gpm.extract_mcp_tools(gpm.MCP_TOOLS_DIR)
-    expected_total = _expected_total("deals" in tools)
+    expected_total = _expected_total("deals" in tools, "campaign" in tools)
     assert len(tools) == expected_total, f"expected {expected_total} @mcp.tool, found {len(tools)}"
     # spot-check a few known tools land in the right module
     assert tools["deploy_campaign"] == "campaign_ops"
