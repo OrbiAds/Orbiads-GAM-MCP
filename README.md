@@ -255,5 +255,6 @@ Reads are always free. Credits are only consumed on write and deploy operations.
 
 ## License
 
-This repository contains the MCP distribution scaffold and platform integration guides for OrbiAds.
-The OrbiAds MCP server and backend are proprietary — [see terms at orbiads.com](https://orbiads.com).
+The contents of this repository — distribution scaffold, skills, agents, workflows, JSON schemas, CLI client, platform integration manifests, documentation, and examples — are released under the [MIT License](./LICENSE).
+
+The OrbiAds MCP server backend and Cloud Run services that the hosted endpoint at `https://orbiads.com/mcp` connects to are NOT in this repository and are governed by separate proprietary terms — [see terms at orbiads.com](https://orbiads.com).
