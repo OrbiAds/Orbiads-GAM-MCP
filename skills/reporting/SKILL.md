@@ -42,16 +42,16 @@ _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
-- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
+- **Mode:** mixed · **Actions:** 3 (2 writes, 1 reads)
 - **Source:** [`backend/src/mcp/tools/preview.py:605`](backend/src/mcp/tools/preview.py#L605)
 
 > **Legacy wrappers:** 3 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `get_campaign_preview_urls` | 0.25 | yes | required |
+| `get_preview_urls` | 0.25 | yes | required |
 | `check_creative_coverage` | 0 | — | — |
-| `get_campaign_preview_urls` | 0.25 | — | — |
-| `get_preview_urls` | 0.25 | — | — |
 
 ### `orbiads:reporting` (Epic 68.7b)
 

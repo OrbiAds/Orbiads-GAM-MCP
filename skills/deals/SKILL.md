@@ -94,9 +94,9 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 7 (3 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/products.py:229`](backend/src/mcp/tools/products.py#L229)
+- **Source:** [`backend/src/mcp/tools/products.py:255`](backend/src/mcp/tools/products.py#L255)
 
-> **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|

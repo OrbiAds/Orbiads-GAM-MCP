@@ -127,7 +127,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 27 (10 writes, 17 reads)
+- **Mode:** mixed · **Actions:** 27 (11 writes, 16 reads)
 - **Source:** [`backend/src/mcp/tools/creatives.py:732`](backend/src/mcp/tools/creatives.py#L732)
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
@@ -137,6 +137,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `archive_creative` | 0 | yes | — |
 | `archive_native_style` | 0 | yes | — |
 | `associate_creative` | 0 | yes | — |
+| `bulk_associate_creatives` | 0 | yes | — |
 | `deactivate_lica` | 0 | yes | — |
 | `delete_licas` | 0 | yes | — |
 | `duplicate_creative` | 0.5 | yes | required |
@@ -144,7 +145,6 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `update_creative` | 0 | yes | — |
 | `update_lica` | 0 | yes | — |
 | `update_native_style` | 0 | yes | — |
-| `bulk_associate_creatives` | 0 | — | — |
 | `discover_native_formats` | 0.5 | — | — |
 | `ensure_classic_native_template` | 0 | — | — |
 | `get_campaign_preview_links` | 0 | — | — |

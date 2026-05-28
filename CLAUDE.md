@@ -106,6 +106,16 @@ If you (Claude) are editing this repo to add/change a feature:
    python -m pytest ../scripts/generate_skills/tests/
    ```
 
+5. **Glama stub maintenance** — `orbiads/server.py` is the Glama registry stub. The drift check above
+   also validates it automatically: it fails if any parent tool in the backend catalog is missing from
+   or extra in `server.py`. **Whenever you add, remove, or rename a parent MCP tool:**
+   - Update `server.py` TOOLS list to match (add the `_t(...)` entry or remove it).
+   - Update the tool description with MODE / AUTH / CREDITS / OUTPUT / SIDE EFFECTS / WHEN TO USE.
+   - Re-run `--check` to confirm parity.
+   - After the double-push to `orbiads-mcp/main`, trigger a new **Build** on
+     [glama.ai](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP) so the registry re-indexes
+     the updated tool definitions and recalculates the TDQS score.
+
 ---
 
 ## Safety boundaries (mirror of AGENTS.md but emphasized for Claude)

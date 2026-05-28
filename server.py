@@ -784,18 +784,24 @@ WHEN TO USE: Use products to manage the GAM product catalogue for Programmatic D
     # ── reporting ──────────────────────────────────────────────────────────────
     _t(
         "reporting",
-        """Full GAM and GA4 reporting — delivery reports, custom reports, forecasting, traffic data, and billing.
+        """Full GAM and GA4 reporting — delivery reports, custom reports, forecasting, traffic data, billing, and report management.
 
-MODE: read-only (reports are read operations; report templates are saved configuration)
+MODE: mixed (read + write)
+  READ: all report-run, forecast, list, get, and discovery actions (majority of actions)
+  WRITE: save_report_template (creates), update_report_template (mutates), duplicate_report_template (creates), delete_report_template (destructive), create_gam_report (creates in GAM), update_gam_report (mutates in GAM), delete_gam_report (destructive soft-delete — PATCH visibility=HIDDEN)
 AUTH: OAuth 2.0 required
-CREDITS: 0 (free)
-OUTPUT: Delivery/custom reports return rows of dimension+metric values. Forecasts return estimated_impressions, estimated_clicks, and confidence intervals. Report templates return template objects for reuse.
+CREDITS: 0 (all actions free)
+OUTPUT: Delivery/custom reports return rows of dimension+metric values. Forecasts return estimated_impressions, estimated_clicks, and confidence intervals. Template/GAM report actions return the object after mutation.
+SIDE EFFECTS:
+  • delete_report_template permanently removes the template from the tenant — irreversible.
+  • delete_gam_report uses soft-delete (PATCH visibility=HIDDEN on the GAM REST API) — the report is hidden from the UI but not purged; there is no DELETE endpoint on GAM reports.
+  • save_report_template and create_gam_report persist new entities that count against quotas.
 WHEN TO USE: Use reporting for all data extraction and analysis. Use reporting_skill for high-level multi-step reporting workflows described in natural language.
-  • For delivery analysis: check_delivery_status or fetch_delivery_report.
-  • For custom ad-hoc reports: run_custom_report.
-  • For forecasting: get_standalone_forecast or get_delivery_forecast_by_line_item.
-  • For GA4 data: run_ga_report.
-  • For reusable reports: save/run report templates.
+  • Delivery analysis: check_delivery_status or fetch_delivery_report.
+  • Custom ad-hoc reports: run_custom_report.
+  • Forecasting: get_standalone_forecast or get_delivery_forecast_by_line_item.
+  • GA4 data: run_ga_report.
+  • Reusable reports: save_report_template / run_report_from_template.
 LIMITATIONS: Some SOAP-era metrics (TOTAL_*, AD_SERVER_ALL_REVENUE) and dimensions (MONTH_AND_YEAR, CREATIVE_SIZE) are rejected by the REST API. Use get_report_dimensions/get_report_metrics to discover valid options.""",
         [
             ("check_delivery_status", "Check delivery status (actual vs booked) for an order or line item. Returns pacing indicator."),

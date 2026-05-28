@@ -9,7 +9,7 @@ metadata:
     - network
     - settings
     - tenant_catalog
-  action_count: 68
+  action_count: 70
   read_only: false
 user-invokable: false
 ---
@@ -23,7 +23,7 @@ user-invokable: false
 
 _Manage global settings, naming conventions, delivery defaults, network configurations, and custom presets._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 68
+**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 70
 
 ## Tools Reference
 
@@ -104,15 +104,17 @@ _Parent gam_features tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 4 (1 writes, 3 reads)
-- **Source:** [`backend/src/mcp/tools/network.py:115`](backend/src/mcp/tools/network.py#L115)
+- **Mode:** mixed · **Actions:** 6 (2 writes, 4 reads)
+- **Source:** [`backend/src/mcp/tools/network.py:236`](backend/src/mcp/tools/network.py#L236)
 
 > **Legacy wrappers:** 4 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `set_preview_url_library` | 0 | yes | — |
 | `update_network` | 0 | yes | — |
 | `get_network_info` | 0 | — | — |
+| `get_preview_url_library` | 0 | — | — |
 | `list_accessible_networks` | 0 | — | — |
 | `switch_network` | 0 | — | — |
 
