@@ -200,3 +200,70 @@ def test_preview_urls_set_missing_file_exits_2(authenticated_config, tmp_path):
 
     assert result.exit_code == 2
     assert "file not found" in result.output
+
+
+# ---------------------------------------------------------------------------
+# Story 77.1 — --network-code routing (AC#5)
+# ---------------------------------------------------------------------------
+
+
+def test_preview_urls_get_with_network_code_passes_query_param(authenticated_config):
+    """preview urls get --network-code NET001 → GET /api/gam/preview-urls?networkCode=NET001."""
+    client = _mock_client(get={"data": {"previewUrls": [], "networkCode": "NET001"}})
+
+    with patch("orbiads_cli.commands.preview.get_client", return_value=client):
+        result = runner.invoke(
+            app, ["--json", "preview", "urls", "get", "--network-code", "NET001"]
+        )
+
+    assert result.exit_code == 0, result.output
+    client.get.assert_called_once_with(
+        "/api/gam/preview-urls", params={"networkCode": "NET001"}
+    )
+
+
+def test_preview_urls_get_without_network_code_sends_no_params(authenticated_config):
+    """preview urls get (no --network-code) → GET /api/gam/preview-urls with no params."""
+    client = _mock_client(get={"data": {"previewUrls": []}})
+
+    with patch("orbiads_cli.commands.preview.get_client", return_value=client):
+        result = runner.invoke(app, ["--json", "preview", "urls", "get"])
+
+    assert result.exit_code == 0, result.output
+    client.get.assert_called_once_with("/api/gam/preview-urls")
+
+
+def test_preview_urls_set_with_network_code_passes_query_param(authenticated_config, tmp_path):
+    """preview urls set --file ... --network-code NET001 → PUT ?networkCode=NET001."""
+    payload = {"previewUrls": [{"name": "Home", "url": "https://example.com"}]}
+    file_path = _write_json(tmp_path, payload)
+    client = _mock_client(put={"data": {"previewUrls": [], "networkCode": "NET001"}})
+
+    with patch("orbiads_cli.commands.preview.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            ["--json", "preview", "urls", "set", "--file", file_path, "--network-code", "NET001"],
+        )
+
+    assert result.exit_code == 0, result.output
+    client.put.assert_called_once_with(
+        "/api/gam/preview-urls",
+        json=payload,
+        params={"networkCode": "NET001"},
+    )
+
+
+def test_preview_urls_set_without_network_code_sends_no_params(authenticated_config, tmp_path):
+    """preview urls set --file ... (no --network-code) → PUT with json only, no params."""
+    payload = {"previewUrls": [{"name": "Home", "url": "https://example.com"}]}
+    file_path = _write_json(tmp_path, payload)
+    client = _mock_client(put={"data": {"previewUrls": []}})
+
+    with patch("orbiads_cli.commands.preview.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            ["--json", "preview", "urls", "set", "--file", file_path],
+        )
+
+    assert result.exit_code == 0, result.output
+    client.put.assert_called_once_with("/api/gam/preview-urls", json=payload)

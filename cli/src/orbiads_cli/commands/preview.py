@@ -35,10 +35,21 @@ app.add_typer(urls_app, name="urls")
 
 
 @urls_app.command("get")
-def urls_get(ctx: typer.Context):
-    """Get saved preview URLs."""
+def urls_get(
+    ctx: typer.Context,
+    network_code: str = typer.Option(
+        None,
+        "--network-code",
+        "-n",
+        help="GAM network code to scope the library (e.g. 45515589). Defaults to active network.",
+    ),
+):
+    """Get saved preview URLs scoped to a GAM network."""
+    kwargs: dict = {}
+    if network_code:
+        kwargs["params"] = {"networkCode": network_code}
     try:
-        data = get_client().get("/api/gam/preview-urls")
+        data = get_client().get("/api/gam/preview-urls", **kwargs)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -48,11 +59,20 @@ def urls_get(ctx: typer.Context):
 def urls_set(
     ctx: typer.Context,
     file: str = typer.Option(..., "--file", "-f", help="JSON file with previewUrls array"),
+    network_code: str = typer.Option(
+        None,
+        "--network-code",
+        "-n",
+        help="GAM network code to scope the library. Defaults to active network.",
+    ),
 ):
-    """Replace saved preview URLs."""
+    """Replace saved preview URLs for a GAM network."""
     payload = _load_json_payload(file)
+    kwargs: dict = {"json": payload}
+    if network_code:
+        kwargs["params"] = {"networkCode": network_code}
     try:
-        data = get_client().put("/api/gam/preview-urls", json=payload)
+        data = get_client().put("/api/gam/preview-urls", **kwargs)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
