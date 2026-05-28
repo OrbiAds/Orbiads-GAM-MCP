@@ -348,11 +348,11 @@ tools:
   probe_gam_features:             {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
   refresh_gam_features:           {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
 
-  # ── products — Product Catalog (Story 64.23) ──────────────────────
+  # ── products — Product Catalog (Story 64.23 + Story 68.8 parent) ──────
+  products:                  {area: products, rest: "NO-REST", cli: null, exempt: "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B) — consolidates create_product, list_products, get_product, update_product, archive_product, get_products_adcp, get_pricing_suggestion. REST symmetric route + CLI verb deferred to the Epic 68 migration close-out story."}  # 68.8
   # REST surface lives under /api/products (Story 64.23 follow-up, see
-  # backend/src/api/routes/products.py). CLI parity is still deferred to the
-  # dedicated CLI extension story (post 64-frontend), so each entry is marked
-  # exempt — the parity generator counts them as EXEMPT (not MCP-ONLY).
+  # backend/src/api/routes/products.py). Legacy tools remain FULL through their
+  # existing REST mappings during coexistence; parent REST/CLI is deferred above.
   create_product:                 {area: products, rest: "POST /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
   list_products:                  {area: products, rest: "GET /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
   get_product:                    {area: products, rest: "GET /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}

@@ -1,7 +1,7 @@
 {
-  "total_tools": 271,
+  "total_tools": 272,
   "counts": {
-    "EXEMPT": 63,
+    "EXEMPT": 64,
     "FULL": 204,
     "UNMAPPED": 4
   },
@@ -98,7 +98,7 @@
       "EXEMPT": 5
     },
     "products": {
-      "EXEMPT": 7
+      "EXEMPT": 8
     },
     "reporting": {
       "FULL": 32,
@@ -2697,6 +2697,17 @@
       "cli": null,
       "sub_actions": null,
       "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "products",
+      "module": "products",
+      "area": "products",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B) — consolidates create_product, list_products, get_product, update_product, archive_product, get_products_adcp, get_pricing_suggestion. REST symmetric route + CLI verb deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
     },
