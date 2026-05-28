@@ -1,9 +1,8 @@
 {
-  "total_tools": 272,
+  "total_tools": 273,
   "counts": {
-    "EXEMPT": 64,
-    "FULL": 204,
-    "UNMAPPED": 4
+    "EXEMPT": 68,
+    "FULL": 205
   },
   "per_area": {
     "adcp": {
@@ -29,7 +28,7 @@
       "FULL": 2
     },
     "blueprint": {
-      "UNMAPPED": 1
+      "EXEMPT": 1
     },
     "campaign_ops": {
       "FULL": 7,
@@ -51,7 +50,7 @@
       "FULL": 10
     },
     "formats": {
-      "UNMAPPED": 1
+      "EXEMPT": 1
     },
     "admin": {
       "EXEMPT": 1
@@ -65,10 +64,7 @@
     },
     "jobs": {
       "FULL": 3,
-      "EXEMPT": 1
-    },
-    "jobs_async": {
-      "UNMAPPED": 1
+      "EXEMPT": 2
     },
     "line_items": {
       "FULL": 16,
@@ -88,6 +84,9 @@
     },
     "pql": {
       "EXEMPT": 1,
+      "FULL": 1
+    },
+    "prebid": {
       "FULL": 1
     },
     "preview": {
@@ -113,7 +112,7 @@
       "EXEMPT": 1
     },
     "tenant_catalog": {
-      "UNMAPPED": 1
+      "EXEMPT": 1
     }
   },
   "cli_commands_detected": [
@@ -297,6 +296,10 @@
     "orders list-delivering",
     "orders update",
     "pql query",
+    "prebid cleanup",
+    "prebid generate-line-items",
+    "prebid generate-targeting-keys",
+    "prebid preview",
     "preview campaign",
     "preview coverage",
     "preview share",
@@ -740,10 +743,12 @@
       "tool": "blueprint",
       "module": "blueprint",
       "area": "blueprint",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Story 78.13 parent>child MCP editor for tenant blueprint preferences. Symmetric REST/CLI is deferred until the Epic 78 foundation stabilizes.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "archive_campaign",
@@ -1806,10 +1811,12 @@
       "tool": "formats",
       "module": "formats",
       "area": "formats",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Story 78.2 parent>child custom format registry. REST/CLI parity is deferred; MCP is the canonical LLM-driven editor during the foundation phase.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "gam_admin",
@@ -2045,11 +2052,13 @@
     {
       "tool": "gam_jobs",
       "module": "jobs_async",
-      "area": "jobs_async",
-      "rest": null,
+      "area": "jobs",
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Epic 82 gam_jobs parent dispatcher for async Cloud Function/PubSub offload. REST/CLI parity is deferred to the async jobs UX close-out story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "activate_line_items",
@@ -2531,6 +2540,39 @@
       "rest": "POST /api/gam/pql",
       "cli": "pql query",
       "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "prebid_skill",
+      "module": "prebid_skill",
+      "area": "prebid",
+      "rest": "POST /api/prebid/generate-line-items",
+      "cli": "prebid generate-line-items",
+      "sub_actions": {
+        "generate_line_items": {
+          "rest": "POST /api/prebid/generate-line-items",
+          "cli": "prebid generate-line-items"
+        },
+        "generate_targeting_keys": {
+          "rest": "POST /api/prebid/generate-targeting-keys",
+          "cli": "prebid generate-targeting-keys"
+        },
+        "preview_batch": {
+          "rest": "POST /api/prebid/preview",
+          "cli": "prebid preview"
+        },
+        "cleanup": {
+          "rest": "POST /api/prebid/cleanup",
+          "cli": "prebid cleanup"
+        },
+        "update_line_items": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Story 70.6 implements the update-line-items migration surface."
+        }
+      },
       "exempt": null,
       "status": "FULL",
       "cli_present": true
@@ -3408,10 +3450,12 @@
       "tool": "tenant_catalog",
       "module": "tenant_catalog",
       "area": "tenant_catalog",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Story 78.1 parent>child tenant catalog scan orchestration. Long-running scan UX is MCP-first while Cloud Function scan implementation matures.",
+      "status": "EXEMPT",
+      "cli_present": null
     }
   ]
 }

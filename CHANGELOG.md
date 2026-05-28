@@ -14,6 +14,7 @@ Replaces the flat catalogue (8 shared skills + ~270 child tools at v1.0.0) with 
 - **Epic 65**: `audit_skill`, `gam_admin`
 - **Epic 68**: `audiences`, `audit`, `billing`, `creative_assets`, `creative_qa`, `creatives`, `gam_features`, `inventory`, `jobs`, `line_items`, `network`, `orders`, `placements`, `pql`, `preview`, `reporting`, `settings`, `targeting`
 - **Epic 76**: `creative_wrapper_skill`
+- **Epic 70**: `prebid_skill` REST/CLI parity for generated line items, targeting keys, preview, and cleanup
 - **Epic 78**: `blueprint`, `formats`, `tenant_catalog`
 - **Epic 82**: `gam_jobs`
 

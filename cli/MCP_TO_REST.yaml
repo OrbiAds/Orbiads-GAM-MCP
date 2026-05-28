@@ -279,7 +279,17 @@ tools:
   update_delivery_defaults:  {area: settings, rest: "PUT /api/settings/delivery-defaults", cli: "settings delivery-defaults set"}  # 61.7
 
   # Epic 70 / 78 / 82 parent tools with deferred symmetric REST+CLI surfaces.
-  prebid_skill:   {area: prebid, rest: "NO-REST", cli: null, exempt: "Story 70.1 parent>child MCP dispatcher (5 Prebid sub-actions). CLI shell `prebid` is registered for boot/parity readiness; sub-verbs and symmetric REST/CLI land in Story 70.5+ after implementations ship."}  # 70.1
+  prebid_skill:
+    area: prebid
+    rest: "POST /api/prebid/generate-line-items"
+    cli: "prebid generate-line-items"
+    sub_actions:
+      generate_line_items: {rest: "POST /api/prebid/generate-line-items", cli: "prebid generate-line-items"}
+      generate_targeting_keys: {rest: "POST /api/prebid/generate-targeting-keys", cli: "prebid generate-targeting-keys"}
+      preview_batch: {rest: "POST /api/prebid/preview", cli: "prebid preview"}
+      cleanup: {rest: "POST /api/prebid/cleanup", cli: "prebid cleanup"}
+      update_line_items: {rest: "NO-REST", cli: null, exempt: "Story 70.6 implements the update-line-items migration surface."}
+    notes: "Story 70.5 REST + CLI parity for shipped Prebid sub-actions."
   blueprint:      {area: blueprint, rest: "NO-REST", cli: null, exempt: "Story 78.13 parent>child MCP editor for tenant blueprint preferences. Symmetric REST/CLI is deferred until the Epic 78 foundation stabilizes."}  # 78.13
   formats:        {area: formats, rest: "NO-REST", cli: null, exempt: "Story 78.2 parent>child custom format registry. REST/CLI parity is deferred; MCP is the canonical LLM-driven editor during the foundation phase."}  # 78.2
   tenant_catalog: {area: tenant_catalog, rest: "NO-REST", cli: null, exempt: "Story 78.1 parent>child tenant catalog scan orchestration. Long-running scan UX is MCP-first while Cloud Function scan implementation matures."}  # 78.1
