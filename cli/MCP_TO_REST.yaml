@@ -278,6 +278,13 @@ tools:
   get_delivery_defaults:     {area: settings, rest: "GET /api/settings/delivery-defaults", cli: "settings delivery-defaults get"}  # 61.7
   update_delivery_defaults:  {area: settings, rest: "PUT /api/settings/delivery-defaults", cli: "settings delivery-defaults set"}  # 61.7
 
+  # Epic 70 / 78 / 82 parent tools with deferred symmetric REST+CLI surfaces.
+  prebid_skill:   {area: prebid, rest: "NO-REST", cli: null, exempt: "Story 70.1 parent>child MCP dispatcher (5 Prebid sub-actions). CLI shell `prebid` is registered for boot/parity readiness; sub-verbs and symmetric REST/CLI land in Story 70.5+ after implementations ship."}  # 70.1
+  blueprint:      {area: blueprint, rest: "NO-REST", cli: null, exempt: "Story 78.13 parent>child MCP editor for tenant blueprint preferences. Symmetric REST/CLI is deferred until the Epic 78 foundation stabilizes."}  # 78.13
+  formats:        {area: formats, rest: "NO-REST", cli: null, exempt: "Story 78.2 parent>child custom format registry. REST/CLI parity is deferred; MCP is the canonical LLM-driven editor during the foundation phase."}  # 78.2
+  tenant_catalog: {area: tenant_catalog, rest: "NO-REST", cli: null, exempt: "Story 78.1 parent>child tenant catalog scan orchestration. Long-running scan UX is MCP-first while Cloud Function scan implementation matures."}  # 78.1
+  gam_jobs:       {area: jobs, rest: "NO-REST", cli: null, exempt: "Epic 82 gam_jobs parent dispatcher for async Cloud Function/PubSub offload. REST/CLI parity is deferred to the async jobs UX close-out story."}  # 82.5
+
   # ── targeting (18 + 1 parent) ────────────────────────────────────────────────
   targeting:                   {area: targeting, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy targeting tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
   list_ad_units:               {area: targeting, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
