@@ -290,6 +290,10 @@ def upload(
                 timeout=_CREATIVE_UPLOAD_TIMEOUT_S,
             )
         render_detail(data, out)
+        if data.get("serviceWarnings"):
+            typer.echo("\n⚠️  GAM Service Warnings:", err=True)
+            for w in data["serviceWarnings"]:
+                typer.echo(f"  • {w}", err=True)
         if data.get("status") == "PENDING_TRANSCODE" and data.get("creativeId"):
             typer.echo(
                 "Transcode in progress - poll with "
