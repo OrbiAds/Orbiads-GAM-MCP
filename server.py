@@ -722,36 +722,24 @@ TOOLS: list[dict] = [
 
 
 # ── MCP JSON-RPC over stdio ────────────────────────────────────────────────────
-# Protocol: Content-Length framing (same as LSP / JSON-RPC 2.0 over stdio)
+# Protocol: newline-delimited JSON (one message per line, no Content-Length)
 # Ref: https://spec.modelcontextprotocol.io/specification/basic/transports/#stdio
 
 def _read_message() -> dict | None:
-    """Read one JSON-RPC message from stdin (Content-Length framed)."""
-    headers: dict[str, str] = {}
-    while True:
-        raw = sys.stdin.buffer.readline()
-        if not raw:
-            return None
-        line = raw.decode("utf-8").rstrip("\r\n")
-        if not line:
-            break
-        if ": " in line:
-            k, v = line.split(": ", 1)
-            headers[k.lower()] = v
-
-    length = int(headers.get("content-length", 0))
-    if not length:
+    """Read one JSON-RPC message from stdin (newline-delimited)."""
+    line = sys.stdin.readline()
+    if not line:
         return None
-    body = sys.stdin.buffer.read(length)
-    return json.loads(body.decode("utf-8"))
+    line = line.strip()
+    if not line:
+        return None
+    return json.loads(line)
 
 
 def _write_message(obj: dict) -> None:
-    """Write one JSON-RPC message to stdout (Content-Length framed)."""
-    body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
-    header = f"Content-Length: {len(body)}\r\n\r\n".encode("utf-8")
-    sys.stdout.buffer.write(header + body)
-    sys.stdout.buffer.flush()
+    """Write one JSON-RPC message to stdout (newline-delimited)."""
+    sys.stdout.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    sys.stdout.flush()
 
 
 def _handle(req: dict) -> dict | None:
