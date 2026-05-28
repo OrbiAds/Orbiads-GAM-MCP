@@ -65,6 +65,29 @@ Same billing model, same credits, same confirmation tokens as the MCP server.
 
 ---
 
+## How to upload a creative
+
+MCP does not support hydration-free binary transport between servers (see `_docs/research/mcp-binary-transport-2026-05.md`). Choose the path based on asset size:
+
+| Asset | Path | Why |
+|-------|------|-----|
+| Image (< ~100 KB) | MCP `creative_assets` tool — pass base64 inline | ~25K tokens max, tolerable |
+| Any asset with a public/local URL | `creative_assets(action="upload_from_url", url=...)` | 0 LLM tokens — server fetches directly |
+| HTML5 ZIP, video, audio (> 100 KB) | CLI: `orbiads creatives upload <file>` | 0 LLM tokens — local process uploads over HTTPS |
+| Local heavy file, no shell access | Host the file at an HTTP URL, then use `upload_from_url` | Only viable MCP path for large local files |
+
+**Rule for agents:** if the user mentions a local file > 100 KB (ZIP, video, audio), redirect immediately to the CLI or ask for a hosted URL. Do **not** attempt to read the file via `resources/read` or receive it as base64 — this saturates the context window without benefit.
+
+```bash
+# Local file — always use the CLI
+orbiads creatives upload ~/Downloads/banner_300x250.zip --advertiser-id 123 --name "Banner 300x250"
+
+# Already hosted — use MCP directly
+creative_assets(action="upload_from_url", url="https://cdn.example.com/banner.zip", advertiser_id="123", name="Banner 300x250")
+```
+
+---
+
 ## Boundaries — hard rules every agent MUST follow
 
 1. **Never invent a `tenantId` or `networkCode`.** Always call `get_my_tenant_id` (or `auth check_credentials`) first. If the user has not authenticated, refuse to continue and instruct them to run `orbiads auth login` or open the MCP OAuth flow.
