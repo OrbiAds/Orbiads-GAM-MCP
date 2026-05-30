@@ -124,6 +124,46 @@ def update(
         handle_error(e)
 
 
+@app.command()
+def archive(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM Company ID to archive"),
+    reason: str = typer.Option(None, "--reason", "-r", help="Optional reason (logged in audit_log)"),
+):
+    """Archive a GAM Advertiser (Story 87.1)."""
+    out: OutputContext = ctx.obj
+    if not confirm(f"Archive advertiser {company_id}?", out):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            f"/api/gam/companies/{company_id}/archive",
+            json={"area": "advertisers", "reason": reason},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
+def activate(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM Company ID to activate"),
+    reason: str = typer.Option(None, "--reason", "-r", help="Optional reason (logged in audit_log)"),
+):
+    """Activate (unarchive) a GAM Advertiser (Story 87.1)."""
+    out: OutputContext = ctx.obj
+    if not confirm(f"Activate advertiser {company_id}?", out):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            f"/api/gam/companies/{company_id}/activate",
+            json={"area": "advertisers", "reason": reason},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("rich-media-list")
 def rich_media_list(
     ctx: typer.Context,
@@ -197,6 +237,46 @@ def agencies_update(
     payload = _load_json_payload(file)
     try:
         data = get_client().patch(f"/api/gam/agencies/{agency_id}", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@agencies_app.command("archive")
+def agencies_archive(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM Agency company ID to archive"),
+    reason: str = typer.Option(None, "--reason", "-r", help="Optional reason (logged in audit_log)"),
+):
+    """Archive a GAM Agency (Story 87.1)."""
+    out: OutputContext = ctx.obj
+    if not confirm(f"Archive agency {company_id}?", out):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            f"/api/gam/companies/{company_id}/archive",
+            json={"area": "agencies", "reason": reason},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@agencies_app.command("activate")
+def agencies_activate(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM Agency company ID to activate"),
+    reason: str = typer.Option(None, "--reason", "-r", help="Optional reason (logged in audit_log)"),
+):
+    """Activate (unarchive) a GAM Agency (Story 87.1)."""
+    out: OutputContext = ctx.obj
+    if not confirm(f"Activate agency {company_id}?", out):
+        raise typer.Exit(code=0)
+    try:
+        data = get_client().post(
+            f"/api/gam/companies/{company_id}/activate",
+            json={"area": "agencies", "reason": reason},
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

@@ -1,10 +1,14 @@
 {
-  "total_tools": 273,
+  "total_tools": 275,
   "counts": {
+    "FULL": 206,
     "EXEMPT": 68,
-    "FULL": 205
+    "UNMAPPED": 1
   },
   "per_area": {
+    "ad_review": {
+      "FULL": 1
+    },
     "adcp": {
       "EXEMPT": 3
     },
@@ -69,6 +73,9 @@
     "line_items": {
       "FULL": 16,
       "EXEMPT": 1
+    },
+    "mcm": {
+      "UNMAPPED": 1
     },
     "network": {
       "FULL": 4,
@@ -376,6 +383,30 @@
     "users list"
   ],
   "rows": [
+    {
+      "tool": "ad_review_center",
+      "module": "ad_review",
+      "area": "ad_review",
+      "rest": "POST /api/gam/ad-review/search",
+      "cli": "ad-review search",
+      "sub_actions": {
+        "search": {
+          "rest": "POST /api/gam/ad-review/search",
+          "cli": "ad-review search"
+        },
+        "allow_batch": {
+          "rest": "POST /api/gam/ad-review/batch-allow",
+          "cli": "ad-review allow"
+        },
+        "block_batch": {
+          "rest": "POST /api/gam/ad-review/batch-block",
+          "cli": "ad-review block"
+        }
+      },
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": false
+    },
     {
       "tool": "create_media_buy_from_adcp",
       "module": "adcp",
@@ -2246,6 +2277,15 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "mcm",
+      "module": "mcm",
+      "area": "mcm",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
     },
     {
       "tool": "get_network_info",

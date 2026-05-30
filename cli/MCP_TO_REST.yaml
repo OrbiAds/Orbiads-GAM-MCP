@@ -54,13 +54,9 @@ tools:
   get_credit_balance: {area: billing, rest: "GET /api/billing", cli: "billing balance"}
   list_transactions:  {area: billing, rest: "GET /api/billing/transactions", cli: "billing transactions"}
 
-  # MCM (REST-only GAM feature surfaced through REST + CLI)
-  mcm:
-    area: mcm
-    rest: "GET /api/gam/mcm/earnings"
-    cli: "mcm earnings"
-    sub_actions:
-      earnings_fetch: {rest: "GET /api/gam/mcm/earnings", cli: "mcm earnings"}
+  # MCM — Multi-Customer Management earnings (Epic 88, Story 88.1)
+  mcm:              {area: mcm, rest: "GET /api/gam/mcm/earnings", cli: "mcm earnings", exempt: "Story 88.1 MCM earnings parent tool — CLI registered separately in main.py as part of Epic 88 story completion."}  # 88.1
+  live_stream:      {area: live_stream, rest: "GET|POST|PATCH|DELETE /api/gam/live-stream/ad-breaks", cli: "live-stream list|get|create|patch|delete", exempt: "Story 88.4 live stream ad breaks parent tool — action-dispatched REST-only surface."}  # 88.4
 
   # Ad Review Center (REST-only GAM feature surfaced through REST + CLI)
   ad_review_center:
