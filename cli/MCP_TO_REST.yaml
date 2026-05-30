@@ -284,6 +284,7 @@ tools:
   settings:                   {area: settings, rest: "NO-REST", cli: null, exempt: "Story 68.1 parent>child POC. Legacy settings tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration batch after the pattern is validated."}  # 68.1
   list_presets:              {area: settings, rest: "GET /api/settings/presets", cli: "settings presets list"}  # 61.7
   create_preset:             {area: settings, rest: "POST /api/settings/presets", cli: "settings presets create"}  # 61.7
+  update_preset:             {area: settings, rest: "PUT /api/settings/presets/{preset_id}", cli: "settings presets update"}  # 83-4-9
   delete_preset:             {area: settings, rest: "DELETE /api/settings/presets/{preset_id}", cli: "settings presets delete"}  # 61.7
   get_tenant_settings:       {area: settings, rest: "GET /api/settings/general", cli: "settings general get"}  # 61.7
   update_tenant_settings:    {area: settings, rest: "PUT /api/settings/general", cli: "settings general set"}  # 61.7

@@ -23,7 +23,9 @@ VALID_STATUSES = {"FULL", "REST-ONLY", "MCP-ONLY", "EXEMPT", "UNMAPPED"}
 
 
 def _expected_total(has_68_7g_deals: bool, has_68_7h_campaign: bool = True) -> int:
-    return 271 + int(has_68_7g_deals) + int(has_68_7h_campaign)
+    # Base bumped 271 -> 274 (Stories 87.1/87.2 + 88.1/88.2/88.3 added 5 tools across
+    # company/reporting/live_stream catalogues since the last test refresh).
+    return 274 + int(has_68_7g_deals) + int(has_68_7h_campaign)
 
 
 @pytest.fixture(scope="module")

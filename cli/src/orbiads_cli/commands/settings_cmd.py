@@ -63,6 +63,29 @@ def presets_create(
         handle_error(e)
 
 
+@presets_app.command("update")
+def presets_update(
+    ctx: typer.Context,
+    preset_id: str = typer.Argument(..., help="Preset ID"),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file with the partial update body (name and/or config)",
+    ),
+):
+    """Update an existing preset (partial: name and/or config).
+
+    Story 83-4-9 — closes the MCP/CLI gap (REST endpoint was already shipped).
+    """
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().put(f"/api/settings/presets/{preset_id}", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @presets_app.command("delete")
 def presets_delete(
     ctx: typer.Context,
