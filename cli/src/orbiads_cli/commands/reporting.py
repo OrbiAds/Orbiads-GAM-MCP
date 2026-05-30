@@ -738,6 +738,40 @@ def billing_report(
         handle_error(e)
 
 
+# === Story 87.2 — saved-queries verb ==========================================
+
+
+@app.command("saved-queries")
+def saved_queries(
+    ctx: typer.Context,
+    limit: int = typer.Option(200, "--limit", help="Page size (1-200)", min=1, max=200),
+    offset: int = typer.Option(0, "--offset", help="Page offset"),
+    name: str | None = typer.Option(None, "--name", help="Substring match on saved query name"),
+):
+    """List GAM saved queries from the console (Story 87.2).
+
+    Returns queries either created by or shared with the current user.
+    Mirrors ``reporting_skill(action='list_saved_queries')``.
+    """
+    query_params: dict = {"limit": limit, "offset": offset}
+    if name is not None:
+        query_params["nameFilter"] = name
+    try:
+        data = get_client().get(
+            "/api/gam/reporting/saved-queries",
+            params={k: v for k, v in query_params.items() if v is not None},
+        )
+        if isinstance(data, dict):
+            items = data.get("savedQueries", [])
+            render(items, ["id", "name", "isCompatibleWithApiVersion"], ctx.obj)
+            total = data.get("totalResultSetSize", len(items))
+            info(f"Total: {total} | limit={data.get('limit', limit)} offset={data.get('offset', offset)}")
+        else:
+            render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 # === Story 66.1 (Epic 66) — reporting_skill parent>child tool =================
 
 
