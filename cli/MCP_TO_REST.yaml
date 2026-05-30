@@ -62,6 +62,16 @@ tools:
     sub_actions:
       earnings_fetch: {rest: "GET /api/gam/mcm/earnings", cli: "mcm earnings"}
 
+  # Ad Review Center (REST-only GAM feature surfaced through REST + CLI)
+  ad_review_center:
+    area: ad_review
+    rest: "POST /api/gam/ad-review/search"
+    cli: "ad-review search"
+    sub_actions:
+      search:      {rest: "POST /api/gam/ad-review/search", cli: "ad-review search"}
+      allow_batch: {rest: "POST /api/gam/ad-review/batch-allow", cli: "ad-review allow"}
+      block_batch: {rest: "POST /api/gam/ad-review/batch-block", cli: "ad-review block"}
+
   # ── campaign_ops (10) ─────────────────────────────────────────────
   deploy_campaign:         {area: campaign_ops, rest: "POST /api/campaigns/{id}/deploy", cli: "campaigns deploy"}
   pause_campaign:          {area: campaign_ops, rest: "POST /api/campaigns/{id}/pause", cli: "campaigns pause"}
