@@ -19,6 +19,7 @@ from orbiads_cli.commands import (
     billing,
     network,
     line_items,    # Story 61.4
+    mcm,           # Story 88.1
     jobs,          # Story 61.4
     settings_cmd,  # Story 61.7
     audiences,     # Story 61.7
@@ -89,6 +90,7 @@ app.add_typer(features.app, name="features")
 app.add_typer(billing.app, name="billing")
 app.add_typer(network.app, name="network")
 app.add_typer(line_items.app, name="line-items")  # Story 61.4
+app.add_typer(mcm.app, name="mcm")                # Story 88.1
 app.add_typer(jobs.app, name="jobs")              # Story 61.4
 app.add_typer(settings_cmd.app, name="settings")  # Story 61.7 — server-side tenant settings (distinct from `config`)
 app.add_typer(audiences.app, name="audiences")    # Story 61.7

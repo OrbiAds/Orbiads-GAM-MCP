@@ -54,6 +54,14 @@ tools:
   get_credit_balance: {area: billing, rest: "GET /api/billing", cli: "billing balance"}
   list_transactions:  {area: billing, rest: "GET /api/billing/transactions", cli: "billing transactions"}
 
+  # MCM (REST-only GAM feature surfaced through REST + CLI)
+  mcm:
+    area: mcm
+    rest: "GET /api/gam/mcm/earnings"
+    cli: "mcm earnings"
+    sub_actions:
+      earnings_fetch: {rest: "GET /api/gam/mcm/earnings", cli: "mcm earnings"}
+
   # ── campaign_ops (10) ─────────────────────────────────────────────
   deploy_campaign:         {area: campaign_ops, rest: "POST /api/campaigns/{id}/deploy", cli: "campaigns deploy"}
   pause_campaign:          {area: campaign_ops, rest: "POST /api/campaigns/{id}/pause", cli: "campaigns pause"}
