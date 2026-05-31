@@ -235,25 +235,26 @@ def status(ctx: typer.Context) -> None:
 def _resolve_network_code(client, data: dict) -> str | None:
     """Resolve the active GAM network code.
 
-    Priority: ``data['networkCode']`` from /api/me → local config cache →
-    server-side ``/api/auth/gam/connection-state``. The connection-state call
-    routes through ``OrbiAdsClient`` so it carries the same X-OrbiAds-Client
-    headers as ``status`` itself (Story 74.2 — CLI GA4 attribution).
+    Priority: ``data['networkCode']`` from /api/me → server-side
+    ``/api/auth/gam/connection-state`` → local config cache. The local cache is
+    only a fallback because it can be stale after a network switch outside this
+    CLI installation.
     """
     network = data.get("networkCode") or data.get("network_code")
     if network:
         return str(network)
 
-    cfg = config.load() or {}
-    if cfg.get("networkCode"):
-        return str(cfg["networkCode"])
-
     try:
         state_data = client.get("/api/auth/gam/connection-state")
     except (CliApiError, httpx.HTTPError):
-        return None
+        state_data = None
 
-    if not isinstance(state_data, dict):
-        return None
-    network = state_data.get("networkCode") or state_data.get("network_code")
-    return str(network) if network else None
+    if isinstance(state_data, dict):
+        network = state_data.get("networkCode") or state_data.get("network_code")
+        if network:
+            return str(network)
+
+    cfg = config.load() or {}
+    if cfg.get("networkCode"):
+        return str(cfg["networkCode"])
+    return None
