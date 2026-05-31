@@ -286,6 +286,10 @@ tools:
   create_preset:             {area: settings, rest: "POST /api/settings/presets", cli: "settings presets create"}  # 61.7
   update_preset:             {area: settings, rest: "PUT /api/settings/presets/{preset_id}", cli: "settings presets update"}  # 83-4-9
   delete_preset:             {area: settings, rest: "DELETE /api/settings/presets/{preset_id}", cli: "settings presets delete"}  # 61.7
+  list_preset_suggestions:   {area: settings, rest: "GET /api/settings/presets/suggestions", cli: "settings presets suggestions list"}  # 83-4-10
+  accept_preset_suggestion:  {area: settings, rest: "POST /api/settings/presets/suggestions/{signature_hash}:accept", cli: "settings presets suggestions accept"}  # 83-4-10
+  dismiss_preset_suggestion: {area: settings, rest: "POST /api/settings/presets/suggestions/{signature_hash}:dismiss", cli: "settings presets suggestions dismiss"}  # 83-4-10
+  recompute_preset_suggestions: {area: settings, rest: "POST /api/settings/presets/suggestions:recompute", cli: "settings presets suggestions recompute"}  # 83-4-10
   get_tenant_settings:       {area: settings, rest: "GET /api/settings/general", cli: "settings general get"}  # 61.7
   update_tenant_settings:    {area: settings, rest: "PUT /api/settings/general", cli: "settings general set"}  # 61.7
   get_naming_conventions:    {area: settings, rest: "GET /api/settings/naming", cli: "settings naming get"}  # 61.7

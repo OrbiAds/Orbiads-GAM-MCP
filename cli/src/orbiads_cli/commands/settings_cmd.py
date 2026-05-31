@@ -33,6 +33,8 @@ def _load_json_payload(path: str) -> dict:
 # ── presets ────────────────────────────────────────────────────────────────
 presets_app = typer.Typer(help="Manage delivery presets", no_args_is_help=True)
 app.add_typer(presets_app, name="presets")
+suggestions_app = typer.Typer(help="Manage auto-detected preset suggestions", no_args_is_help=True)
+presets_app.add_typer(suggestions_app, name="suggestions")
 
 
 @presets_app.command("list")
@@ -102,6 +104,61 @@ def presets_delete(
 # ── general / naming / delivery-defaults — explicit get+set sub-Typers ────
 # These are inlined (rather than built by a factory) so the parity-matrix
 # generator's AST parser can statically detect every sub-command.
+
+@suggestions_app.command("list")
+def preset_suggestions_list(
+    ctx: typer.Context,
+    limit: int = typer.Option(5, "--limit", "-n", min=1, max=20, help="Maximum suggestions"),
+):
+    """List auto-detected preset suggestions."""
+    try:
+        data = get_client().get("/api/settings/presets/suggestions", params={"limit": limit})
+        items = data if isinstance(data, list) else []
+        render(items, ["signatureHash", "suggestedName", "occurrences30d"], ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@suggestions_app.command("accept")
+def preset_suggestions_accept(
+    ctx: typer.Context,
+    signature_hash: str = typer.Argument(..., help="Suggestion signature hash"),
+    name: str | None = typer.Option(None, "--name", help="Optional preset name override"),
+):
+    """Accept a suggestion and create a saved preset."""
+    try:
+        payload = {"name": name} if name is not None else {}
+        data = get_client().post(
+            f"/api/settings/presets/suggestions/{signature_hash}:accept",
+            json=payload,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@suggestions_app.command("dismiss")
+def preset_suggestions_dismiss(
+    ctx: typer.Context,
+    signature_hash: str = typer.Argument(..., help="Suggestion signature hash"),
+):
+    """Dismiss a preset suggestion."""
+    try:
+        data = get_client().post(f"/api/settings/presets/suggestions/{signature_hash}:dismiss")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@suggestions_app.command("recompute")
+def preset_suggestions_recompute(ctx: typer.Context):
+    """Queue a manual preset-suggestions recompute."""
+    try:
+        data = get_client().post("/api/settings/presets/suggestions:recompute")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
 
 # general
 general_app = typer.Typer(help="Manage tenant general settings", no_args_is_help=True)
