@@ -202,14 +202,15 @@ WHEN TO USE: Use blueprint to define or update the standard inventory structure 
 MODE: write-heavy (most actions modify GAM data)
 AUTH: OAuth 2.0 required
 CREDITS: deploy = 2–5 credits depending on line item count. Other write operations = 0.5–1 credit. Reads = 0.
-CONFIRMATION TOKEN: deploy and rollback require a confirmation_token obtained from a prior dry-run preview. This prevents accidental deployment.
-DEPLOY WORKFLOW: deploy requires an existing Firestore jobs/{jobId} document from the OrbiAds campaign draft/job workflow. For direct MCP-only display trafficking, use create_display instead of deploy.
+CONFIRMATION TOKEN: create_draft, deploy and rollback require a confirmation_token obtained from a prior dry-run preview. This prevents accidental deployment.
+DEPLOY WORKFLOW: create_draft creates a Firestore campaigns/{campaignId} document from MCP. deploy accepts either campaignId (modern campaigns/{id}) or jobId (legacy jobs/{id}). For direct GAM-only display trafficking, use create_display.
 OUTPUT: deploy returns {campaign_id, order_id, line_item_ids[], creative_ids[], status}. rollback returns {reverted_to_version, entities_affected}.
 SIDE EFFECTS: deploy creates Order + LineItems + Creatives + LICAs in GAM — irreversible without rollback. rollback archives the current version and restores the previous one.
 WHEN TO USE: Use campaign for end-to-end campaign creation from a blueprint. Use line_items or orders for surgical updates to existing campaigns.
 DESTRUCTIVE: rollback and archive are non-trivial — they modify live GAM entities.""",
         [
-            ("deploy", "Deploy a complete campaign job to GAM: requires jobId from an existing OrbiAds Firestore jobs/{jobId} document plus confirmation_token. Creates Order, LineItems, Creatives, and LICAs."),
+            ("deploy", "Deploy a complete campaign to GAM: accepts campaignId from create_draft/REST or legacy jobId, plus confirmation_token. Creates Order, LineItems, Creatives, and LICAs."),
+            ("create_draft", "Create an OrbiAds campaigns/{campaignId} draft from MCP without using the web UI. Write, requires confirmation_token."),
             ("update", "Update an existing campaign's metadata, budget, or targeting without full redeployment. Write."),
             ("ensure_template", "Ensure a native ad template exists in GAM, creating it if absent. Idempotent write."),
             ("create_native_style", "Create a GAM native ad style for use in native campaigns. Write."),
@@ -223,7 +224,7 @@ DESTRUCTIVE: rollback and archive are non-trivial — they modify live GAM entit
         extra={
             "campaign_id": {
                 "type": "string",
-                "description": "OrbiAds campaign identifier (required for update/rollback/pause/archive).",
+                "description": "OrbiAds campaigns/{campaignId} identifier, accepted by deploy and campaign lifecycle actions.",
             },
             "confirmation_token": {
                 "type": "string",
@@ -231,7 +232,7 @@ DESTRUCTIVE: rollback and archive are non-trivial — they modify live GAM entit
             },
             "jobId": {
                 "type": "string",
-                "description": "Firestore jobs/{jobId} document created by the OrbiAds campaign draft/job workflow. create_display does not produce this value.",
+                "description": "Legacy Firestore jobs/{jobId} document. deploy also accepts modern campaignId.",
             },
         },
     ),
@@ -804,7 +805,7 @@ SIDE EFFECTS:
 WHEN TO USE: Use reporting for all data extraction and analysis. Use reporting_skill for high-level multi-step reporting workflows described in natural language.
   • Delivery analysis: check_delivery_status or fetch_delivery_report.
   • Custom ad-hoc reports: run_custom_report.
-  • Forecasting: get_standalone_forecast or get_delivery_forecast_by_line_item.
+  • Forecasting: get_standalone_forecast or get_delivery_forecast_by_line_item. For pre-flight feasibility, pass sizes/creativeSizes, geo/geoTargeting, priority, frequencyCaps, lineItemType and cpmMicroAmount so the estimate is constrained like the planned Line Item.
   • GA4 data: run_ga_report.
   • Reusable reports: save_report_template / run_report_from_template.
 LIMITATIONS: Some SOAP-era metrics (TOTAL_*, AD_SERVER_ALL_REVENUE) and dimensions (MONTH_AND_YEAR, CREATIVE_SIZE) are rejected by the REST API. Use get_report_dimensions/get_report_metrics to discover valid options.""",
@@ -818,7 +819,7 @@ LIMITATIONS: Some SOAP-era metrics (TOTAL_*, AD_SERVER_ALL_REVENUE) and dimensio
             ("get_report_dimensions", "List valid dimension names for custom reports. Use to discover available breakdown options."),
             ("get_report_metrics", "List valid metric names for custom reports. Use to discover available measurements."),
             ("get_report_date_ranges", "List valid relative date range strings (LAST_7_DAYS, LAST_MONTH, etc.)."),
-            ("get_standalone_forecast", "Get a forecasted impression estimate for a targeting specification without an existing line item."),
+            ("get_standalone_forecast", "Get a constrained forecast for a prospective line item. Accepts adUnitIds, startDate, endDate, sizes/creativeSizes, geo/geoTargeting, priority, frequencyCaps, lineItemType and cpmMicroAmount."),
             ("get_delivery_forecast_by_line_item", "Get a delivery forecast for one or more existing line items."),
             ("get_prospective_delivery_forecast", "Get a prospective forecast for a hypothetical line item configuration."),
             ("get_traffic_data", "Get historical traffic data (impressions available) for targeting criteria."),
