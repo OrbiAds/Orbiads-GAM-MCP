@@ -57,6 +57,27 @@ def test_advertisers_update(authenticated_config, tmp_path):
     )
 
 
+def test_advertisers_rich_media_list(authenticated_config):
+    client = _mock_client(get={"richMediaCompanies": [{"id": "1", "displayName": "Celtra"}]})
+    with patch("orbiads_cli.commands.advertisers.get_client", return_value=client):
+        result = runner.invoke(
+            app, ["advertisers", "rich-media-list", "--verified", "--page-size", "25"]
+        )
+    assert result.exit_code == 0
+    client.get.assert_called_once_with(
+        "/api/gam/companies/rich-media",
+        params={"verifiedOnly": True, "pageSize": 25},
+    )
+
+
+def test_advertisers_rich_media_get(authenticated_config):
+    client = _mock_client(get={"id": "1", "displayName": "Celtra"})
+    with patch("orbiads_cli.commands.advertisers.get_client", return_value=client):
+        result = runner.invoke(app, ["advertisers", "rich-media-get", "1"])
+    assert result.exit_code == 0
+    client.get.assert_called_once_with("/api/gam/companies/rich-media/1")
+
+
 def test_advertisers_agencies_list(authenticated_config):
     client = _mock_client(get={"agencies": [{"id": "ag-1"}]})
     with patch("orbiads_cli.commands.advertisers.get_client", return_value=client):

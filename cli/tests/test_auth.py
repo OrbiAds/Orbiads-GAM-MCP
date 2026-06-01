@@ -270,8 +270,8 @@ class TestAuthStatus:
         assert "12345" in result.output
         fake_client.get.assert_called_once_with("/api/me")
 
-    def test_status_uses_config_network_when_me_omits_it(self, tmp_config):
-        """Human output should not say not set when local config has a network."""
+    def test_status_uses_config_network_when_server_state_unavailable(self, tmp_config):
+        """Human output should fall back to local config only if server state is unavailable."""
         config_mod.save({
             "apiUrl": "https://test.example.com",
             "token": "valid-tok",
@@ -280,7 +280,10 @@ class TestAuthStatus:
         })
 
         fake_client = MagicMock()
-        fake_client.get.return_value = {"email": "user@example.com"}
+        fake_client.get.side_effect = [
+            {"email": "user@example.com"},
+            CliApiError(1, "connection state unavailable"),
+        ]
 
         with patch(
             "orbiads_cli.commands.auth.get_client", return_value=fake_client
@@ -290,6 +293,33 @@ class TestAuthStatus:
         assert result.exit_code == 0
         assert "66235823" in result.output
         assert "not set" not in result.output
+
+    def test_status_prefers_connection_state_over_stale_config(self, tmp_config):
+        """The server connection-state is authoritative over a stale local cache."""
+        config_mod.save({
+            "apiUrl": "https://test.example.com",
+            "token": "valid-tok",
+            "refreshToken": "ref-tok",
+            "networkCode": "66235823",
+        })
+
+        fake_client = MagicMock()
+        fake_client.get.side_effect = [
+            {"email": "user@example.com"},
+            {"networkCode": "33047445"},
+        ]
+
+        with patch(
+            "orbiads_cli.commands.auth.get_client", return_value=fake_client
+        ):
+            result = runner.invoke(app, ["status"])
+
+        assert result.exit_code == 0
+        assert "33047445" in result.output
+        assert "66235823" not in result.output
+        assert fake_client.get.call_args_list[1].args == (
+            "/api/auth/gam/connection-state",
+        )
 
     def test_status_json_resolves_network_from_connection_state(self, tmp_config):
         """Global --json should emit valid JSON and resolve the active network."""

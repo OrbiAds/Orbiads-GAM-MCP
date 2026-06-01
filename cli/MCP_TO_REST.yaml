@@ -54,6 +54,20 @@ tools:
   get_credit_balance: {area: billing, rest: "GET /api/billing", cli: "billing balance"}
   list_transactions:  {area: billing, rest: "GET /api/billing/transactions", cli: "billing transactions"}
 
+  # MCM — Multi-Customer Management earnings (Epic 88, Story 88.1)
+  mcm:              {area: mcm, rest: "GET /api/gam/mcm/earnings", cli: "mcm earnings", exempt: "Story 88.1 MCM earnings parent tool — CLI registered separately in main.py as part of Epic 88 story completion."}  # 88.1
+  live_stream:      {area: live_stream, rest: "GET|POST|PATCH|DELETE /api/gam/live-stream/ad-breaks", cli: "live-stream list|get|create|patch|delete", exempt: "Story 88.4 live stream ad breaks parent tool — action-dispatched REST-only surface."}  # 88.4
+
+  # Ad Review Center (REST-only GAM feature surfaced through REST + CLI)
+  ad_review_center:
+    area: ad_review
+    rest: "POST /api/gam/ad-review/search"
+    cli: "ad-review search"
+    sub_actions:
+      search:      {rest: "POST /api/gam/ad-review/search", cli: "ad-review search"}
+      allow_batch: {rest: "POST /api/gam/ad-review/batch-allow", cli: "ad-review allow"}
+      block_batch: {rest: "POST /api/gam/ad-review/batch-block", cli: "ad-review block"}
+
   # ── campaign_ops (10) ─────────────────────────────────────────────
   deploy_campaign:         {area: campaign_ops, rest: "POST /api/campaigns/{id}/deploy", cli: "campaigns deploy"}
   pause_campaign:          {area: campaign_ops, rest: "POST /api/campaigns/{id}/pause", cli: "campaigns pause"}
@@ -270,7 +284,12 @@ tools:
   settings:                   {area: settings, rest: "NO-REST", cli: null, exempt: "Story 68.1 parent>child POC. Legacy settings tools remain FULL through their existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration batch after the pattern is validated."}  # 68.1
   list_presets:              {area: settings, rest: "GET /api/settings/presets", cli: "settings presets list"}  # 61.7
   create_preset:             {area: settings, rest: "POST /api/settings/presets", cli: "settings presets create"}  # 61.7
+  update_preset:             {area: settings, rest: "PUT /api/settings/presets/{preset_id}", cli: "settings presets update"}  # 83-4-9
   delete_preset:             {area: settings, rest: "DELETE /api/settings/presets/{preset_id}", cli: "settings presets delete"}  # 61.7
+  list_preset_suggestions:   {area: settings, rest: "GET /api/settings/presets/suggestions", cli: "settings presets suggestions list"}  # 83-4-10
+  accept_preset_suggestion:  {area: settings, rest: "POST /api/settings/presets/suggestions/{signature_hash}:accept", cli: "settings presets suggestions accept"}  # 83-4-10
+  dismiss_preset_suggestion: {area: settings, rest: "POST /api/settings/presets/suggestions/{signature_hash}:dismiss", cli: "settings presets suggestions dismiss"}  # 83-4-10
+  recompute_preset_suggestions: {area: settings, rest: "POST /api/settings/presets/suggestions:recompute", cli: "settings presets suggestions recompute"}  # 83-4-10
   get_tenant_settings:       {area: settings, rest: "GET /api/settings/general", cli: "settings general get"}  # 61.7
   update_tenant_settings:    {area: settings, rest: "PUT /api/settings/general", cli: "settings general set"}  # 61.7
   get_naming_conventions:    {area: settings, rest: "GET /api/settings/naming", cli: "settings naming get"}  # 61.7

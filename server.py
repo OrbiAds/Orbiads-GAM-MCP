@@ -203,12 +203,13 @@ MODE: write-heavy (most actions modify GAM data)
 AUTH: OAuth 2.0 required
 CREDITS: deploy = 2–5 credits depending on line item count. Other write operations = 0.5–1 credit. Reads = 0.
 CONFIRMATION TOKEN: deploy and rollback require a confirmation_token obtained from a prior dry-run preview. This prevents accidental deployment.
+DEPLOY WORKFLOW: deploy requires an existing Firestore jobs/{jobId} document from the OrbiAds campaign draft/job workflow. For direct MCP-only display trafficking, use create_display instead of deploy.
 OUTPUT: deploy returns {campaign_id, order_id, line_item_ids[], creative_ids[], status}. rollback returns {reverted_to_version, entities_affected}.
 SIDE EFFECTS: deploy creates Order + LineItems + Creatives + LICAs in GAM — irreversible without rollback. rollback archives the current version and restores the previous one.
 WHEN TO USE: Use campaign for end-to-end campaign creation from a blueprint. Use line_items or orders for surgical updates to existing campaigns.
 DESTRUCTIVE: rollback and archive are non-trivial — they modify live GAM entities.""",
         [
-            ("deploy", "Deploy a complete campaign to GAM: creates Order, LineItems, Creatives, and LICAs. Requires confirmation_token. Returns campaign_id and all created entity IDs."),
+            ("deploy", "Deploy a complete campaign job to GAM: requires jobId from an existing OrbiAds Firestore jobs/{jobId} document plus confirmation_token. Creates Order, LineItems, Creatives, and LICAs."),
             ("update", "Update an existing campaign's metadata, budget, or targeting without full redeployment. Write."),
             ("ensure_template", "Ensure a native ad template exists in GAM, creating it if absent. Idempotent write."),
             ("create_native_style", "Create a GAM native ad style for use in native campaigns. Write."),
@@ -227,6 +228,10 @@ DESTRUCTIVE: rollback and archive are non-trivial — they modify live GAM entit
             "confirmation_token": {
                 "type": "string",
                 "description": "Write-confirmation token from a prior estimate/preview call. Required for deploy, rollback, archive.",
+            },
+            "jobId": {
+                "type": "string",
+                "description": "Firestore jobs/{jobId} document created by the OrbiAds campaign draft/job workflow. create_display does not produce this value.",
             },
         },
     ),
@@ -673,7 +678,7 @@ WHEN TO USE: Use network to discover and switch between multiple GAM networks. C
 MODE: mixed (read + write)
 AUTH: OAuth 2.0 required
 CREDITS: Reads = 0. Writes = 0.5 credits.
-OUTPUT: Returns Order objects with id, name, status, advertiserId, agencyId, salespersonId, traffickerId, totalBudget, and startDateTime/endDateTime.
+OUTPUT: Returns Order objects with id, name, status, advertiserId, agencyId, salespersonId, secondarySalespersonIds, traffickerId, customFieldValues, totalBudget, and startDateTime/endDateTime.
 WHEN TO USE: Use orders for Order entity management. Use campaign for full campaign orchestration that includes Order + LineItems. Use order_lifecycle for status transitions.
 NOT the same as order_lifecycle: orders handles data; order_lifecycle handles approve/archive/disapprove transitions.""",
         [
@@ -684,7 +689,7 @@ NOT the same as order_lifecycle: orders handles data; order_lifecycle handles ap
             ("archive", "Archive an order. Destructive write — stops delivery."),
             ("approve", "Approve an order for delivery. Write."),
             ("verify_setup", "Verify an order's setup (targeting, creative associations) before activation. Read-only."),
-            ("update", "Update an order's name, salesperson, or notes. Write."),
+            ("update", "Update an order's name, salespersonId, secondarySalespersonIds, customFieldValues, or notes. Write."),
             ("find_or_create", "Find an existing order matching the criteria or create a new one if not found. Idempotent write."),
             ("list_users", "List users (salespeople, traffickers) associated with an order. Read-only."),
             ("list_roles", "List available order roles. Read-only."),

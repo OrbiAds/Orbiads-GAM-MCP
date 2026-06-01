@@ -13,6 +13,11 @@ exemptions:
       synchronous inventory understanding analyze/get commands until the
       EventSource/polling client work ships in Story 71.3.
   - path: POST /api/gam/jobs
-    reason: "Epic 82 async job enqueue — CLI continues using sync commands until polling is implemented"
+    reason: "Epic 82 async job enqueue - CLI continues using sync commands until polling is implemented"
   - path: GET /api/gam/jobs/{job_id}
-    reason: "Epic 82 async job poll — CLI continues using sync commands until polling is implemented"
+    reason: "Epic 82 async job poll - CLI continues using sync commands until polling is implemented"
+  - path: POST /api/gam/inventory/blueprint/{blueprint_id}/migrate-v2
+    reason: >
+      Story 91.6 one-shot persisted blueprint schema migration endpoint. CLI
+      authoring remains on the existing blueprint parent surface until the
+      Blueprint V2 builder and read-only MCP/CLI story ships.

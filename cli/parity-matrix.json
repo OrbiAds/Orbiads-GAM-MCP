@@ -1,10 +1,13 @@
 {
-  "total_tools": 273,
+  "total_tools": 276,
   "counts": {
-    "EXEMPT": 68,
-    "FULL": 205
+    "FULL": 206,
+    "EXEMPT": 70
   },
   "per_area": {
+    "ad_review": {
+      "FULL": 1
+    },
     "adcp": {
       "EXEMPT": 3
     },
@@ -70,6 +73,12 @@
       "FULL": 16,
       "EXEMPT": 1
     },
+    "live_stream": {
+      "EXEMPT": 1
+    },
+    "mcm": {
+      "EXEMPT": 1
+    },
     "network": {
       "FULL": 4,
       "EXEMPT": 1
@@ -116,14 +125,23 @@
     }
   },
   "cli_commands_detected": [
+    "ad-review allow",
+    "ad-review block",
+    "ad-review search",
+    "advertisers activate",
+    "advertisers agencies activate",
+    "advertisers agencies archive",
     "advertisers agencies create",
     "advertisers agencies list",
     "advertisers agencies update",
+    "advertisers archive",
     "advertisers create",
     "advertisers find",
     "advertisers find-or-create",
     "advertisers get",
     "advertisers list",
+    "advertisers rich-media-get",
+    "advertisers rich-media-list",
     "advertisers update",
     "api request",
     "audiences action",
@@ -272,6 +290,12 @@
     "line-items update-all",
     "line-items update-targeting",
     "line-items verify",
+    "live-stream create",
+    "live-stream delete",
+    "live-stream get",
+    "live-stream list",
+    "live-stream patch",
+    "mcm earnings",
     "native-styles archive",
     "native-styles duplicate",
     "native-styles get",
@@ -348,6 +372,7 @@
     "reporting links sync",
     "reporting metrics",
     "reporting run",
+    "reporting saved-queries",
     "reporting skill",
     "reporting templates delete",
     "reporting templates duplicate",
@@ -371,11 +396,40 @@
     "settings presets create",
     "settings presets delete",
     "settings presets list",
+    "settings presets suggestions accept",
+    "settings presets suggestions dismiss",
+    "settings presets suggestions list",
+    "settings presets suggestions recompute",
+    "settings presets update",
     "settings segmentation get",
     "settings segmentation set",
     "users list"
   ],
   "rows": [
+    {
+      "tool": "ad_review_center",
+      "module": "ad_review",
+      "area": "ad_review",
+      "rest": "POST /api/gam/ad-review/search",
+      "cli": "ad-review search",
+      "sub_actions": {
+        "search": {
+          "rest": "POST /api/gam/ad-review/search",
+          "cli": "ad-review search"
+        },
+        "allow_batch": {
+          "rest": "POST /api/gam/ad-review/batch-allow",
+          "cli": "ad-review allow"
+        },
+        "block_batch": {
+          "rest": "POST /api/gam/ad-review/batch-block",
+          "cli": "ad-review block"
+        }
+      },
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
     {
       "tool": "create_media_buy_from_adcp",
       "module": "adcp",
@@ -2245,6 +2299,28 @@
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "live_stream",
+      "module": "live_stream",
+      "area": "live_stream",
+      "rest": "GET|POST|PATCH|DELETE /api/gam/live-stream/ad-breaks",
+      "cli": "live-stream list|get|create|patch|delete",
+      "sub_actions": null,
+      "exempt": "Story 88.4 live stream ad breaks parent tool — action-dispatched REST-only surface.",
+      "status": "EXEMPT",
+      "cli_present": false
+    },
+    {
+      "tool": "mcm",
+      "module": "mcm",
+      "area": "mcm",
+      "rest": "GET /api/gam/mcm/earnings",
+      "cli": "mcm earnings",
+      "sub_actions": null,
+      "exempt": "Story 88.1 MCM earnings parent tool — CLI registered separately in main.py as part of Epic 88 story completion.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {

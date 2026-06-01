@@ -136,6 +136,10 @@ def _load_json_payload(path: str) -> dict:
 # ── ad-unit mutations ────────────────────────────────────────────────────
 
 
+def _compact_params(params: dict[str, object | None]) -> dict[str, object]:
+    return {key: value for key, value in params.items() if value is not None}
+
+
 @app.command("save-adunits")
 def save_adunits(
     ctx: typer.Context,
@@ -406,6 +410,18 @@ def inventory_health(
 blueprint_app = typer.Typer(help="Manage inventory blueprints", no_args_is_help=True)
 app.add_typer(blueprint_app, name="blueprint")
 
+catalog_app = typer.Typer(help="Read custom targeting catalog", no_args_is_help=True)
+app.add_typer(catalog_app, name="catalog")
+
+blocks_app = typer.Typer(help="Read Blueprint V2 block versions", no_args_is_help=True)
+app.add_typer(blocks_app, name="blocks")
+
+packages_app = typer.Typer(help="Read generated tag packages", no_args_is_help=True)
+app.add_typer(packages_app, name="packages")
+
+preview_app = typer.Typer(help="Read hosted preview URLs", no_args_is_help=True)
+app.add_typer(preview_app, name="preview")
+
 bp_templates_app = typer.Typer(help="Browse blueprint templates", no_args_is_help=True)
 blueprint_app.add_typer(bp_templates_app, name="templates")
 
@@ -414,6 +430,140 @@ blueprint_app.add_typer(bp_bundles_app, name="size-bundles")
 
 bp_positions_app = typer.Typer(help="Manage custom positions", no_args_is_help=True)
 blueprint_app.add_typer(bp_positions_app, name="custom-positions")
+
+
+@blueprint_app.command("get")
+def blueprint_get(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
+    version: str = typer.Option("v2", "--version", help="Blueprint schema version"),
+):
+    """Read a persisted Blueprint V2 document."""
+    try:
+        data = get_client().get(
+            f"/api/inventory/blueprints/{blueprint_id}",
+            params={"version": version},
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blueprint_app.command("list-drafts")
+def blueprint_list_drafts(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """List scoped Blueprint V2 drafts."""
+    try:
+        params = _compact_params({"networkCode": network_code})
+        kwargs = {"params": params} if params else {}
+        data = get_client().get(f"/api/inventory/blueprints/{blueprint_id}/drafts", **kwargs)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blueprint_app.command("diff")
+def blueprint_diff(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
+    draft_id: str = typer.Option(..., "--draft-id", help="Draft ID"),
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """Read the in-memory planning diff for a draft."""
+    try:
+        params = _compact_params({"draftId": draft_id, "networkCode": network_code})
+        data = get_client().get(f"/api/inventory/blueprints/{blueprint_id}/diff", params=params)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@catalog_app.command("get")
+def catalog_get(
+    ctx: typer.Context,
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """Read the custom targeting catalog."""
+    try:
+        params = _compact_params({"networkCode": network_code})
+        kwargs = {"params": params} if params else {}
+        data = get_client().get("/api/inventory/catalog", **kwargs)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blocks_app.command("list-versions")
+def blocks_list_versions(
+    ctx: typer.Context,
+    block_id: str = typer.Argument(..., help="Block ID"),
+    limit: int | None = typer.Option(None, "--limit", min=1, max=100, help="Max versions"),
+    cursor: str | None = typer.Option(None, "--cursor", help="Pagination cursor"),
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """List released versions for a Blueprint V2 block."""
+    try:
+        params = _compact_params({"limit": limit, "cursor": cursor, "networkCode": network_code})
+        kwargs = {"params": params} if params else {}
+        data = get_client().get(f"/api/inventory/blocks/{block_id}/versions", **kwargs)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@blocks_app.command("get-version")
+def blocks_get_version(
+    ctx: typer.Context,
+    block_id: str = typer.Argument(..., help="Block ID"),
+    version: str = typer.Argument(..., help="Version, for example 1.0.0"),
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """Read one released block version."""
+    try:
+        params = _compact_params({"networkCode": network_code})
+        kwargs = {"params": params} if params else {}
+        data = get_client().get(f"/api/inventory/blocks/{block_id}/versions/{version}", **kwargs)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@packages_app.command("list")
+def packages_list(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
+):
+    """List generated tag package metadata for a blueprint."""
+    try:
+        data = get_client().get(f"/api/inventory/blueprints/{blueprint_id}/packages")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@preview_app.command("get-url")
+def preview_get_url(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
+    site: str = typer.Argument(..., help="Site ID"),
+    grouping_id: str = typer.Argument(..., help="Grouping ID"),
+    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+):
+    """Create and return a signed hosted preview URL."""
+    try:
+        params = _compact_params({"networkCode": network_code})
+        kwargs = {"params": params} if params else {}
+        data = get_client().post(
+            "/api/preview/sessions",
+            json={"blueprintId": blueprint_id, "site": site, "groupingId": grouping_id},
+            **kwargs,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
 
 
 @blueprint_app.command("validate")
