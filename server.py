@@ -678,7 +678,7 @@ WHEN TO USE: Use network to discover and switch between multiple GAM networks. C
 MODE: mixed (read + write)
 AUTH: OAuth 2.0 required
 CREDITS: Reads = 0. Writes = 0.5 credits.
-OUTPUT: Returns Order objects with id, name, status, advertiserId, agencyId, salespersonId, traffickerId, totalBudget, and startDateTime/endDateTime.
+OUTPUT: Returns Order objects with id, name, status, advertiserId, agencyId, salespersonId, secondarySalespersonIds, traffickerId, customFieldValues, totalBudget, and startDateTime/endDateTime.
 WHEN TO USE: Use orders for Order entity management. Use campaign for full campaign orchestration that includes Order + LineItems. Use order_lifecycle for status transitions.
 NOT the same as order_lifecycle: orders handles data; order_lifecycle handles approve/archive/disapprove transitions.""",
         [
@@ -689,7 +689,7 @@ NOT the same as order_lifecycle: orders handles data; order_lifecycle handles ap
             ("archive", "Archive an order. Destructive write — stops delivery."),
             ("approve", "Approve an order for delivery. Write."),
             ("verify_setup", "Verify an order's setup (targeting, creative associations) before activation. Read-only."),
-            ("update", "Update an order's name, salesperson, or notes. Write."),
+            ("update", "Update an order's name, salespersonId, secondarySalespersonIds, customFieldValues, or notes. Write."),
             ("find_or_create", "Find an existing order matching the criteria or create a new one if not found. Idempotent write."),
             ("list_users", "List users (salespeople, traffickers) associated with an order. Read-only."),
             ("list_roles", "List available order roles. Read-only."),
