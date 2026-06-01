@@ -431,6 +431,79 @@ blueprint_app.add_typer(bp_bundles_app, name="size-bundles")
 bp_positions_app = typer.Typer(help="Manage custom positions", no_args_is_help=True)
 blueprint_app.add_typer(bp_positions_app, name="custom-positions")
 
+# Story 83-4-11 — Blueprint V2 intelligent starters (Type A scan-based, Type B template-based).
+bp_starter_app = typer.Typer(
+    help="Generate Blueprint V2 starters (Type A from latest inventory scan, Type B from a template)",
+    no_args_is_help=True,
+)
+blueprint_app.add_typer(bp_starter_app, name="starter")
+
+
+@bp_starter_app.command("type-a")
+def blueprint_starter_type_a(
+    ctx: typer.Context,
+    blueprint_id: str = typer.Argument("active", help="Target Blueprint ID"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code (defaults to session network)"
+    ),
+):
+    """Normalize from the latest inventory scan and write a draft to the target blueprint.
+
+    Requires a recent ``InventoryUnderstandingAnalysis`` for the selected
+    network (run ``orbiads inventory analyze`` first). Pattern, sections
+    and naming violations are derived from that scan; nothing is pushed
+    to GAM — only a Blueprint V2 draft is persisted.
+    """
+    payload = _compact_params({"blueprintId": blueprint_id, "networkCode": network_code})
+    try:
+        data = get_client().post(
+            "/api/inventory/blueprints/starters/type-a", json=payload or {}
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@bp_starter_app.command("type-b")
+def blueprint_starter_type_b(
+    ctx: typer.Context,
+    template_id: str = typer.Argument(
+        ..., help="Template ID: site-editorial | e-commerce | premium-publisher"
+    ),
+    site_prefix: str = typer.Option(..., "--site-prefix", help="Site prefix slug (e.g. lemonde)"),
+    blueprint_id: str = typer.Argument("active", help="Target Blueprint ID"),
+    lang: str = typer.Option("fr", "--lang", help="Static lang Key-Value value"),
+    structure: str = typer.Option(
+        "medium", "--structure", help="Section count: small | medium | large"
+    ),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code (defaults to session network)"
+    ),
+):
+    """Generate a Blueprint V2 draft from a named template + site prefix.
+
+    Three templates ship with the platform: ``site-editorial`` (news /
+    editorial), ``e-commerce`` (catalog / product / cart) and
+    ``premium-publisher`` (display + native + video premium).
+    """
+    payload = _compact_params(
+        {
+            "templateId": template_id,
+            "sitePrefix": site_prefix,
+            "blueprintId": blueprint_id,
+            "lang": lang,
+            "structure": structure,
+            "networkCode": network_code,
+        }
+    )
+    try:
+        data = get_client().post(
+            "/api/inventory/blueprints/starters/type-b", json=payload or {}
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
 
 @blueprint_app.command("get")
 def blueprint_get(
