@@ -136,6 +136,7 @@ tools:
   get_native_style_preview_urls: {area: creatives, rest: "GET /api/gam/creatives/{creative_id}/native-style-previews", cli: "creatives native-style-previews"}  # 62.1
   create_vast_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-vast-redirect", cli: "creatives upload-vast-redirect"}  # 62.1
   create_internal_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-internal-redirect", cli: "creatives upload-internal-redirect"}  # 94-2
+  create_image_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-image-redirect", cli: "creatives upload-image-redirect"}  # 94-3
   create_companion_creative:    {area: creatives, rest: "POST /api/creatives/upload-companion", cli: "creatives upload-companion"}  # 62.1
   compress_image_creative:      {area: creatives, rest: "POST /api/creatives/compress-image", cli: "creatives compress-image"}  # 62.1
   get_licas_by_line_item:       {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/licas", cli: "licas list-by-line-item"}  # 62.1

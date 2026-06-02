@@ -1,7 +1,7 @@
 {
-  "total_tools": 280,
+  "total_tools": 281,
   "counts": {
-    "FULL": 207,
+    "FULL": 208,
     "EXEMPT": 73
   },
   "per_area": {
@@ -45,7 +45,7 @@
       "FULL": 1
     },
     "creatives": {
-      "FULL": 42,
+      "FULL": 43,
       "EXEMPT": 2
     },
     "deals": {
@@ -1222,6 +1222,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "create_image_redirect_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-image-redirect",
+      "cli": "creatives upload-image-redirect",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": false
     },
     {
       "tool": "create_internal_redirect_creative",
