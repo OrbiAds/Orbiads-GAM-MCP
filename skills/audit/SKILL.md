@@ -7,7 +7,7 @@ metadata:
     - audit
     - audit_skill
     - billing
-  action_count: 9
+  action_count: 11
   read_only: true
 user-invokable: false
 ---
@@ -21,7 +21,7 @@ user-invokable: false
 
 _Perform delivery, inventory, security, and billing audits. Track credit transactions and system log histories._
 
-**Mode:** read-only · **Tools Included:** 3 · **Total Actions:** 9
+**Mode:** read-only · **Tools Included:** 3 · **Total Actions:** 11
 
 ## Tools Reference
 
@@ -42,8 +42,8 @@ _Parent audit tool for the Epic 68.5 catalogue refactor batch._
 
 _OrbiAds audit suite — single entry point for audit sub-actions._
 
-- **Mode:** read-only · **Actions:** 6 (0 writes, 6 reads)
-- **Source:** [`backend/src/mcp/tools/audit_skill.py:169`](backend/src/mcp/tools/audit_skill.py#L169)
+- **Mode:** read-only · **Actions:** 8 (0 writes, 8 reads)
+- **Source:** [`backend/src/mcp/tools/audit_skill.py:267`](backend/src/mcp/tools/audit_skill.py#L267)
 
 > **Legacy wrappers:** 2 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -51,7 +51,9 @@ _OrbiAds audit suite — single entry point for audit sub-actions._
 |---|---|---|---|
 | `estimate_cost` | 0 | — | — |
 | `export_authoring` | 0 | — | — |
+| `export_xlsx` | 0 | — | — |
 | `hygiene_check` | 0 | — | — |
+| `inventory_extended` | 0 | — | — |
 | `ops_diagnostic` | 0 | — | — |
 | `standards_baseline` | 0 | — | — |
 | `wrapper_coverage` | 0 | — | — |

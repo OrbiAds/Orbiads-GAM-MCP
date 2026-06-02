@@ -4,10 +4,11 @@ description: Consolidated skill for OrbiAds GAM — Reporting, Forecasting & Del
 metadata:
   group: reporting
   parent_mcp_tools:
+    - mcm
     - pql
     - preview
     - reporting
-  action_count: 35
+  action_count: 38
   read_only: false
 user-invokable: false
 ---
@@ -21,22 +22,35 @@ user-invokable: false
 
 _Run delivery and inventory reports, check prospective or standalone availability forecasts, and execute PQL queries._
 
-**Mode:** mixed (read + write) · **Tools Included:** 3 · **Total Actions:** 35
+**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 38
 
 ## Tools Reference
+
+### `orbiads:mcm`
+
+_MCM read-only operations._
+
+- **Mode:** read-only · **Actions:** 1 (0 writes, 1 reads)
+- **Source:** [`backend/src/mcp/tools/mcm.py:42`](backend/src/mcp/tools/mcm.py#L42)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `earnings_fetch` | 0 | — | — |
 
 ### `orbiads:pql` (Epic 68.2)
 
 _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
-- **Mode:** read-only · **Actions:** 1 (0 writes, 1 reads)
-- **Source:** [`backend/src/mcp/tools/pql.py:165`](backend/src/mcp/tools/pql.py#L165)
+- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/pql.py:336`](backend/src/mcp/tools/pql.py#L336)
 
 > **Legacy wrappers:** 1 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `list_tables` | 0 | — | — |
 | `run_query` | 0 | — | — |
+| `validate_query` | 0 | — | — |
 
 ### `orbiads:preview` (Epic 68.2)
 
@@ -58,7 +72,7 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 31 (7 writes, 24 reads)
-- **Source:** [`backend/src/mcp/tools/reporting.py:1268`](backend/src/mcp/tools/reporting.py#L1268)
+- **Source:** [`backend/src/mcp/tools/reporting.py:1332`](backend/src/mcp/tools/reporting.py#L1332)
 
 > **Legacy wrappers:** 31 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

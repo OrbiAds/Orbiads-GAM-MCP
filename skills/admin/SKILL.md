@@ -9,7 +9,7 @@ metadata:
     - network
     - settings
     - tenant_catalog
-  action_count: 70
+  action_count: 77
   read_only: false
 user-invokable: false
 ---
@@ -23,7 +23,7 @@ user-invokable: false
 
 _Manage global settings, naming conventions, delivery defaults, network configurations, and custom presets._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 70
+**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 77
 
 ## Tools Reference
 
@@ -122,29 +122,36 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-- **Mode:** mixed · **Actions:** 9 (5 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/settings.py:314`](backend/src/mcp/tools/settings.py#L314)
+- **Mode:** mixed · **Actions:** 16 (7 writes, 9 reads)
+- **Source:** [`backend/src/mcp/tools/settings.py:545`](backend/src/mcp/tools/settings.py#L545)
 
 > **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `accept_preset_suggestion` | 0 | yes | — |
 | `create_preset` | 0 | yes | — |
 | `delete_preset` | 0 | yes | — |
 | `update_delivery_defaults` | 0 | yes | — |
 | `update_naming_conventions` | 0 | yes | — |
+| `update_preset` | 0 | yes | — |
 | `update_tenant_settings` | 0 | yes | — |
+| `dismiss_preset_suggestion` | 0 | — | — |
 | `get_delivery_defaults` | 0 | — | — |
+| `get_multilang_matrix` | 0 | — | — |
 | `get_naming_conventions` | 0 | — | — |
 | `get_tenant_settings` | 0 | — | — |
+| `list_preset_suggestions` | 0 | — | — |
 | `list_presets` | 0 | — | — |
+| `list_preview_matrices` | 0 | — | — |
+| `recompute_preset_suggestions` | 0 | — | — |
 
 ### `orbiads:tenant_catalog` (Epic 78.1)
 
 _Parent tenant_catalog MCP tool — scan + read tenant inventory catalog (Story 78.1)._
 
 - **Mode:** mixed · **Actions:** 4 (2 writes, 2 reads)
-- **Source:** [`backend/src/mcp/tools/tenant_catalog.py:133`](backend/src/mcp/tools/tenant_catalog.py#L133)
+- **Source:** [`backend/src/mcp/tools/tenant_catalog.py:134`](backend/src/mcp/tools/tenant_catalog.py#L134)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|

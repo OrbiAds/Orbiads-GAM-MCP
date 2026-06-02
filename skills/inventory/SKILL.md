@@ -9,7 +9,7 @@ metadata:
     - inventory
     - placements
     - targeting
-  action_count: 50
+  action_count: 62
   read_only: false
 user-invokable: false
 ---
@@ -23,7 +23,7 @@ user-invokable: false
 
 _Manage ad units, placements, custom targeting keys/values, audiences, and network inventory blueprints._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 50
+**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 62
 
 ## Tools Reference
 
@@ -32,7 +32,7 @@ _Manage ad units, placements, custom targeting keys/values, audiences, and netwo
 _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 5 (3 writes, 2 reads)
-- **Source:** [`backend/src/mcp/tools/audiences.py:219`](backend/src/mcp/tools/audiences.py#L219)
+- **Source:** [`backend/src/mcp/tools/audiences.py:221`](backend/src/mcp/tools/audiences.py#L221)
 
 > **Legacy wrappers:** 5 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -48,8 +48,8 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13)._
 
-- **Mode:** mixed · **Actions:** 13 (7 writes, 6 reads)
-- **Source:** [`backend/src/mcp/tools/blueprint.py:138`](backend/src/mcp/tools/blueprint.py#L138)
+- **Mode:** mixed · **Actions:** 20 (7 writes, 13 reads)
+- **Source:** [`backend/src/mcp/tools/blueprint.py:364`](backend/src/mcp/tools/blueprint.py#L364)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -65,14 +65,21 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 | `add_position` | 0.25 | — | — |
 | `get_active_blueprint` | 0 | — | — |
 | `get_active_preferences` | 0 | — | — |
+| `get_block_version` | 0 | — | — |
+| `get_diff` | 0 | — | — |
+| `get_preview_url` | 0 | — | — |
+| `get_v2` | 0 | — | — |
+| `list_block_versions` | 0 | — | — |
+| `list_drafts` | 0 | — | — |
+| `list_packages` | 0 | — | — |
 | `list_templates` | 0 | — | — |
 
 ### `orbiads:inventory` (Epic 68.6)
 
 _Parent inventory tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 10 (3 writes, 7 reads)
-- **Source:** [`backend/src/mcp/tools/inventory.py:406`](backend/src/mcp/tools/inventory.py#L406)
+- **Mode:** mixed · **Actions:** 12 (3 writes, 9 reads)
+- **Source:** [`backend/src/mcp/tools/inventory.py:430`](backend/src/mcp/tools/inventory.py#L430)
 
 > **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -82,11 +89,13 @@ _Parent inventory tool for Story 68.6._
 | `create_ad_units_batch` | 0.5 | yes | required |
 | `push_inventory_blueprint` | 0.5 | yes | required |
 | `audit_inventory` | 0 | — | — |
+| `blueprint_starter` | 0 | — | — |
 | `find_inactive_ad_units` | 0.25 | — | — |
 | `generate_ads_json` | 0 | — | — |
 | `generate_inventory_blueprint` | 0 | — | — |
 | `get_ad_unit_tree` | 0 | — | — |
 | `get_ad_units_by_ids` | 0 | — | — |
+| `get_catalog` | 0 | — | — |
 | `list_ad_unit_sizes` | 0 | — | — |
 
 ### `orbiads:placements` (Epic 68.6)
@@ -94,7 +103,7 @@ _Parent inventory tool for Story 68.6._
 _Parent placements tool for Story 68.6._
 
 - **Mode:** mixed · **Actions:** 4 (3 writes, 1 reads)
-- **Source:** [`backend/src/mcp/tools/placements.py:192`](backend/src/mcp/tools/placements.py#L192)
+- **Source:** [`backend/src/mcp/tools/placements.py:194`](backend/src/mcp/tools/placements.py#L194)
 
 > **Legacy wrappers:** 4 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -109,10 +118,10 @@ _Parent placements tool for Story 68.6._
 
 _Parent targeting tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 18 (8 writes, 10 reads)
-- **Source:** [`backend/src/mcp/tools/targeting.py:556`](backend/src/mcp/tools/targeting.py#L556)
+- **Mode:** mixed · **Actions:** 21 (8 writes, 13 reads)
+- **Source:** [`backend/src/mcp/tools/targeting.py:599`](backend/src/mcp/tools/targeting.py#L599)
 
-> **Legacy wrappers:** 18 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 21 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -126,9 +135,12 @@ _Parent targeting tool for Story 68.6._
 | `update_custom_targeting_value` | 0 | yes | — |
 | `get_available_countries` | 0 | — | — |
 | `get_available_languages` | 0 | — | — |
+| `get_browsers` | 0 | — | — |
+| `get_content_labels` | 0 | — | — |
 | `get_custom_targeting_values` | 0 | — | — |
 | `get_device_categories` | 0 | — | — |
 | `get_inventory_forecast` | 0 | — | — |
+| `get_operating_systems` | 0 | — | — |
 | `list_ad_units` | 0 | — | — |
 | `list_custom_targeting_keys` | 0 | — | — |
 | `search_ad_units` | 0 | — | — |

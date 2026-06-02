@@ -80,6 +80,77 @@ def _standalone(name: str, description: str, props: dict, required: list[str] | 
 
 TOOLS: list[dict] = [
 
+    # -- ad_review_center ------------------------------------------------------
+    _t(
+        "ad_review_center",
+        """Search and moderate Ad Exchange creatives in GAM Ad Review Center.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: search = 0 credits. allow_batch/block_batch are write operations.
+OUTPUT: search returns Ad Review creative results. Batch actions return moderation summaries.
+WHEN TO USE: Use ad_review_center to find, allow, or block marketplace creatives before they serve on publisher inventory.""",
+        [
+            ("search", "Search Ad Review Center creatives by web property, status, advertiser, or review filters."),
+            ("allow_batch", "Allow multiple reviewed ads in one write operation. Requires ad IDs."),
+            ("block_batch", "Block multiple reviewed ads in one write operation. Requires ad IDs and a block reason."),
+        ],
+    ),
+
+    # -- live_stream -----------------------------------------------------------
+    _t(
+        "live_stream",
+        """Manage live stream ad breaks for GAM video workflows.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: list/get = 0 credits. create/patch/delete are write operations.
+OUTPUT: Returns live stream ad break objects scoped by event, asset key, or custom asset key.
+WHEN TO USE: Use live_stream to inspect, create, update, or delete ad breaks for live video events.""",
+        [
+            ("list", "List ad breaks for an event_id, asset_key, or custom_asset_key."),
+            ("get", "Get a specific ad break by identifier."),
+            ("create", "Create a new live stream ad break."),
+            ("patch", "Update an existing live stream ad break by asset key."),
+            ("delete", "Delete an existing live stream ad break by asset key."),
+        ],
+    ),
+
+    # -- mcm -------------------------------------------------------------------
+    _t(
+        "mcm",
+        """Read Multi-Customer Management earnings for parent publishers.
+
+MODE: read-only
+AUTH: OAuth 2.0 required with MCM principal access
+CREDITS: 0 credits
+OUTPUT: Returns monthly MCM earnings for the requested month and year.
+WHEN TO USE: Use mcm for publisher revenue reporting across MCM child networks.""",
+        [
+            ("earnings_fetch", "Fetch monthly MCM earnings for a given month and year."),
+        ],
+    ),
+
+    # -- prebid_skill ----------------------------------------------------------
+    _t(
+        "prebid_skill",
+        """Plan and operate Prebid.js / header bidding setup for GAM.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: preview and inspect reads are free. Generation/update actions may charge credits when they create or mutate GAM entities.
+OUTPUT: Returns targeting-key plans, line item generation summaries, cleanup previews, or update results.
+WHEN TO USE: Use prebid_skill to generate Prebid targeting keys, create or update Prebid line items, preview batches, inspect existing setup, or clean up generated artifacts.""",
+        [
+            ("preview_batch", "Preview a Prebid batch plan without mutating GAM."),
+            ("generate_targeting_keys", "Generate GAM custom targeting keys and values for Prebid."),
+            ("generate_line_items", "Generate Prebid line items from bucket and placement configuration."),
+            ("update_line_items", "Update existing Prebid line items."),
+            ("inspect_existing_setup", "Inspect existing GAM targeting keys, values, and line items for Prebid readiness."),
+            ("cleanup", "Preview or run cleanup for generated Prebid artifacts."),
+        ],
+    ),
+
     # ── audiences ──────────────────────────────────────────────────────────────
     _t(
         "audiences",

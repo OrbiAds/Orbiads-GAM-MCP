@@ -1,6 +1,42 @@
 # Changelog
 
 
+## v1.8.0 — 2026-06-02
+
+### Catalogue refactor — parent>child consolidation
+
+Replaces the flat catalogue (8 shared skills + ~270 child tools at v1.0.0) with **33 parent tools** that dispatch all operations via an `action` discriminator. The 237 pre-refactor child tools remain available as soft-deprecated wrappers that route to their parent (emit `deprecated_tool_called` analytics).
+
+### New parent tools by Epic batch
+
+- **Epic 20**: `campaign`
+- **Epic 64**: `deals`
+- **Epic 65**: `audit_skill`, `gam_admin`
+- **Epic 68**: `audiences`, `audit`, `billing`, `creative_assets`, `creative_qa`, `creatives`, `gam_features`, `inventory`, `jobs`, `line_items`, `network`, `orders`, `placements`, `pql`, `preview`, `products`, `reporting`, `settings`, `targeting`
+- **Epic 70**: `prebid_skill`
+- **Epic 76**: `creative_wrapper_skill`
+- **Epic 78**: `blueprint`, `formats`, `tenant_catalog`
+- **Epic 82**: `gam_jobs`
+
+### Largest parent tools (by action count)
+
+| Parent | Actions | Mode |
+|---|---|---|
+| `gam_admin` | 48 | mixed (read + write) |
+| `reporting` | 31 | mixed (read + write) |
+| `deals` | 28 | mixed (read + write) |
+| `creatives` | 27 | mixed (read + write) |
+| `creative_assets` | 22 | mixed (read + write) |
+| `targeting` | 21 | mixed (read + write) |
+| `companies` | 20 | mixed (read + write) |
+| `blueprint` | 20 | mixed (read + write) |
+
+### Migration guide
+
+- New consumers: call parent tools with `action: <child_name>` (or `(area, action)` for `companies` / `gam_admin`). See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md).
+- Existing integrations using legacy tool names: no action required — wrappers still work but emit deprecation telemetry. Plan migration per [`_docs/legacy-tool-mapping.md`](./_docs/legacy-tool-mapping.md).
+- GAM API target: `v202605`. MCP protocol: `2025-03-26`.
+
 ## v1.7.0 — 2026-05-28
 
 ### Catalogue refactor — parent>child consolidation

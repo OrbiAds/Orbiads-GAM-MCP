@@ -6,7 +6,7 @@
 
 # Legacy Tool Mapping — OrbiAds MCP Catalogue
 
-OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 29 parent tools. The 230 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
+OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 33 parent tools. The 237 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
 
 **Migration recommendation:** Update integrations to call the parent tool with `action: <child_name>` instead. Schedule: parents stable from Epic 68 (2026 Q2). Sunset of legacy wrappers TBD per usage telemetry.
 
@@ -20,7 +20,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `billing` | 2 |
 | `campaign` | 10 |
 | `companies` | 12 |
-| `creative_assets` | 14 |
+| `creative_assets` | 18 |
 | `creative_qa` | 7 |
 | `creatives` | 27 |
 | `deals` | 29 |
@@ -36,7 +36,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `products` | 9 |
 | `reporting` | 31 |
 | `settings` | 9 |
-| `targeting` | 18 |
+| `targeting` | 21 |
 
 ## Detailed mapping
 
@@ -102,7 +102,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `update_agency` | `agencies.update` | [backend/src/mcp/tools/advertisers.py](backend/src/mcp/tools/advertisers.py) |
 | `update_contact` | `contacts.update` | [backend/src/mcp/tools/orders.py](backend/src/mcp/tools/orders.py) |
 
-### → `creative_assets` (14 legacy wrappers)
+### → `creative_assets` (18 legacy wrappers)
 
 | Legacy tool | Replacement action | Source |
 |---|---|---|
@@ -110,10 +110,14 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `compress_image_creative` | `compress_image` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_audio_creative` | `create_audio` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_classic_native_creative` | `create_classic_native` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
+| `create_click_tracking_creative` | `create_click_tracking` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_companion_creative` | `create_companion` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
+| `create_custom_creative` | `create_custom` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_html5_creative` | `create_html5` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_html5_creative_from_files` | `create_html5_from_files` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_image_creative` | `create_image` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
+| `create_image_redirect_creative` | `create_image_redirect` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
+| `create_internal_redirect_creative` | `create_internal_redirect` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_third_party_creative` | `create_third_party` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_vast_redirect_creative` | `create_vast_redirect` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
 | `create_video_creative` | `create_video` | [backend/src/mcp/tools/creatives.py](backend/src/mcp/tools/creatives.py) |
@@ -362,7 +366,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `update_naming_conventions` | `update_naming_conventions` | [backend/src/mcp/tools/settings.py](backend/src/mcp/tools/settings.py) |
 | `update_tenant_settings` | `update_tenant_settings` | [backend/src/mcp/tools/settings.py](backend/src/mcp/tools/settings.py) |
 
-### → `targeting` (18 legacy wrappers)
+### → `targeting` (21 legacy wrappers)
 
 | Legacy tool | Replacement action | Source |
 |---|---|---|
@@ -372,9 +376,12 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `delete_custom_targeting_key` | `delete_custom_targeting_key` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `get_available_countries` | `get_available_countries` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `get_available_languages` | `get_available_languages` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
+| `get_browsers` | `get_browsers` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
+| `get_content_labels` | `get_content_labels` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `get_custom_targeting_values` | `get_custom_targeting_values` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `get_device_categories` | `get_device_categories` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `get_inventory_forecast` | `get_inventory_forecast` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
+| `get_operating_systems` | `get_operating_systems` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `list_ad_units` | `list_ad_units` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `list_custom_targeting_keys` | `list_custom_targeting_keys` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |
 | `perform_custom_targeting_value_action` | `perform_custom_targeting_value_action` | [backend/src/mcp/tools/targeting.py](backend/src/mcp/tools/targeting.py) |

@@ -4,6 +4,7 @@ description: Consolidated skill for OrbiAds GAM — Campaign Operations & Creati
 metadata:
   group: campaigns
   parent_mcp_tools:
+    - ad_review_center
     - campaign
     - creative_assets
     - creative_qa
@@ -13,8 +14,9 @@ metadata:
     - gam_jobs
     - jobs
     - line_items
+    - live_stream
     - orders
-  action_count: 114
+  action_count: 131
   read_only: false
 user-invokable: false
 ---
@@ -28,16 +30,29 @@ user-invokable: false
 
 _Orchestrate end-to-end campaigns, orders, line items, creative uploads, creative QA compliance scans, and placement bindings._
 
-**Mode:** mixed (read + write) · **Tools Included:** 10 · **Total Actions:** 114
+**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 131
 
 ## Tools Reference
+
+### `orbiads:ad_review_center`
+
+_Ad Review Center - search, allow, or block Ad Exchange creatives._
+
+- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/ad_review.py:126`](backend/src/mcp/tools/ad_review.py#L126)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `allow_batch` | 0 | — | — |
+| `block_batch` | 0 | — | — |
+| `search` | 0 | — | — |
 
 ### `orbiads:campaign` (Epic 20.1)
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-- **Mode:** mixed · **Actions:** 10 (9 writes, 1 reads)
-- **Source:** [`backend/src/mcp/tools/campaign_ops.py:212`](backend/src/mcp/tools/campaign_ops.py#L212)
+- **Mode:** mixed · **Actions:** 11 (10 writes, 1 reads)
+- **Source:** [`backend/src/mcp/tools/campaign_ops.py:489`](backend/src/mcp/tools/campaign_ops.py#L489)
 
 > **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -45,6 +60,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 |---|---|---|---|
 | `archive` | 0 | yes | — |
 | `create_display` | 0 | yes | — |
+| `create_draft` | 0 | yes | — |
 | `create_licas` | 0 | yes | — |
 | `create_line_items_batch` | 1 | yes | required |
 | `create_native_style` | 0.5 | yes | required |
@@ -58,19 +74,26 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Parent creative asset tool for upload/create/compress/transcode actions._
 
-- **Mode:** mixed · **Actions:** 15 (12 writes, 3 reads)
-- **Source:** [`backend/src/mcp/tools/creatives.py:768`](backend/src/mcp/tools/creatives.py#L768)
+- **Mode:** mixed · **Actions:** 22 (19 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/creatives.py:814`](backend/src/mcp/tools/creatives.py#L814)
 
-> **Legacy wrappers:** 14 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 18 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `create_aspect_ratio_image` | 0 | yes | — |
 | `create_audio` | 0 | yes | — |
 | `create_classic_native` | 0 | yes | — |
+| `create_click_tracking` | 0 | yes | — |
 | `create_companion` | 0 | yes | — |
+| `create_custom` | 0 | yes | — |
+| `create_hosted_audio` | 0 | yes | — |
+| `create_hosted_video` | 0 | yes | — |
 | `create_html5` | 0 | yes | — |
 | `create_html5_from_files` | 0 | yes | — |
 | `create_image` | 0 | yes | — |
+| `create_image_redirect` | 0 | yes | — |
+| `create_internal_redirect` | 0 | yes | — |
 | `create_third_party` | 0 | yes | — |
 | `create_vast_redirect` | 0 | yes | — |
 | `create_video` | 0 | yes | — |
@@ -86,7 +109,7 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 _Parent creative QA tool for Story 68.6._
 
 - **Mode:** read-only · **Actions:** 7 (0 writes, 7 reads)
-- **Source:** [`backend/src/mcp/tools/creative_qa.py:140`](backend/src/mcp/tools/creative_qa.py#L140)
+- **Source:** [`backend/src/mcp/tools/creative_qa.py:141`](backend/src/mcp/tools/creative_qa.py#L141)
 
 > **Legacy wrappers:** 7 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -105,7 +128,7 @@ _Parent creative QA tool for Story 68.6._
 _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through one parent tool._
 
 - **Mode:** mixed · **Actions:** 13 (7 writes, 6 reads)
-- **Source:** [`backend/src/mcp/tools/creative_wrappers.py:309`](backend/src/mcp/tools/creative_wrappers.py#L309)
+- **Source:** [`backend/src/mcp/tools/creative_wrappers.py:341`](backend/src/mcp/tools/creative_wrappers.py#L341)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -128,7 +151,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 27 (11 writes, 16 reads)
-- **Source:** [`backend/src/mcp/tools/creatives.py:732`](backend/src/mcp/tools/creatives.py#L732)
+- **Source:** [`backend/src/mcp/tools/creatives.py:778`](backend/src/mcp/tools/creatives.py#L778)
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -214,8 +237,8 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-- **Mode:** mixed · **Actions:** 15 (11 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/line_items.py:217`](backend/src/mcp/tools/line_items.py#L217)
+- **Mode:** mixed · **Actions:** 16 (11 writes, 5 reads)
+- **Source:** [`backend/src/mcp/tools/line_items.py:328`](backend/src/mcp/tools/line_items.py#L328)
 
 > **Legacy wrappers:** 15 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -233,9 +256,25 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `update` | 0 | yes | — |
 | `update_targeting` | 0 | yes | — |
 | `get` | 0 | — | — |
+| `get_full` | 0 | — | — |
 | `list_by_order` | 0 | — | — |
 | `list_private_deals` | 0 | — | — |
 | `verify` | 0 | — | — |
+
+### `orbiads:live_stream`
+
+_Live stream ad breaks orchestration._
+
+- **Mode:** mixed · **Actions:** 5 (3 writes, 2 reads)
+- **Source:** [`backend/src/mcp/tools/live_stream.py:74`](backend/src/mcp/tools/live_stream.py#L74)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `create` | 0 | yes | — |
+| `delete` | 0 | yes | — |
+| `patch` | 0 | yes | — |
+| `get` | 0 | — | — |
+| `list` | 0 | — | — |
 
 ### `orbiads:orders` (Epic 68)
 
