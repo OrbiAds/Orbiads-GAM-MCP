@@ -1,9 +1,8 @@
 {
-  "total_tools": 279,
+  "total_tools": 280,
   "counts": {
-    "FULL": 206,
-    "EXEMPT": 70,
-    "UNMAPPED": 3
+    "FULL": 207,
+    "EXEMPT": 73
   },
   "per_area": {
     "ad_review": {
@@ -46,7 +45,7 @@
       "FULL": 1
     },
     "creatives": {
-      "FULL": 41,
+      "FULL": 42,
       "EXEMPT": 2
     },
     "deals": {
@@ -119,8 +118,7 @@
     },
     "targeting": {
       "FULL": 18,
-      "UNMAPPED": 3,
-      "EXEMPT": 1
+      "EXEMPT": 4
     },
     "tenant_catalog": {
       "EXEMPT": 1
@@ -208,6 +206,7 @@
     "creatives upload-companion",
     "creatives upload-html5",
     "creatives upload-images",
+    "creatives upload-internal-redirect",
     "creatives upload-native-classic",
     "creatives upload-third-party",
     "creatives upload-url",
@@ -1219,6 +1218,17 @@
       "area": "creatives",
       "rest": "POST /api/creatives/upload-images",
       "cli": "creatives upload-images",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_internal_redirect_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-internal-redirect",
+      "cli": "creatives upload-internal-redirect",
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",
@@ -3395,19 +3405,23 @@
       "tool": "get_browsers",
       "module": "targeting",
       "area": "targeting",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Epic 93 (story 93-2) MCP-only read helper backing technologyTargeting browser ID validation (targeting.get_browsers sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "get_content_labels",
       "module": "targeting",
       "area": "targeting",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Epic 93 (story 93-1) MCP-only read helper backing contentLabelTargeting writes (targeting.get_content_labels sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "get_custom_targeting_values",
@@ -3446,10 +3460,12 @@
       "tool": "get_operating_systems",
       "module": "targeting",
       "area": "targeting",
-      "rest": null,
+      "rest": "NO-REST",
       "cli": null,
-      "exempt": null,
-      "status": "UNMAPPED"
+      "sub_actions": null,
+      "exempt": "Epic 93 (story 93-2) MCP-only read helper backing technologyTargeting OS ID validation (targeting.get_operating_systems sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "list_ad_units",

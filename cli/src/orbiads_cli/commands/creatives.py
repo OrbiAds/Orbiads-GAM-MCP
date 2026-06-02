@@ -679,6 +679,48 @@ def upload_vast_redirect(
         handle_error(e)
 
 
+@app.command("upload-internal-redirect")
+def upload_internal_redirect(
+    ctx: typer.Context,
+    advertiser_id: int = typer.Option(..., "--advertiser-id", help="GAM advertiser ID"),
+    name: str = typer.Option(..., "--name", help="Creative name in GAM"),
+    internal_redirect_url: str = typer.Option(
+        ...,
+        "--internal-redirect-url",
+        help="CM360/DFA internal redirect URL (required, max 1024 chars)",
+    ),
+    override_size: bool = typer.Option(
+        False, "--override-size", help="Allow the creative size to differ from the redirect URL"
+    ),
+    locked_orientation: str = typer.Option(
+        None,
+        "--locked-orientation",
+        help="FREE_ORIENTATION | PORTRAIT_ONLY | LANDSCAPE_ONLY",
+    ),
+    width: int = typer.Option(None, "--width", help="Override width (only with --height)"),
+    height: int = typer.Option(None, "--height", help="Override height (only with --width)"),
+):
+    """Create an InternalRedirectCreative (Campaign Manager 360 / DFA tag)."""
+    body: dict = {
+        "advertiserId": advertiser_id,
+        "name": name,
+        "internalRedirectUrl": internal_redirect_url,
+    }
+    if override_size:
+        body["overrideSize"] = True
+    if locked_orientation:
+        body["lockedOrientation"] = locked_orientation
+    if width is not None:
+        body["width"] = width
+    if height is not None:
+        body["height"] = height
+    try:
+        data = get_client().post("/api/creatives/upload-internal-redirect", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("upload-companion")
 def upload_companion(
     ctx: typer.Context,
