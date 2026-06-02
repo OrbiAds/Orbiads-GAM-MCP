@@ -138,6 +138,7 @@ tools:
   create_internal_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-internal-redirect", cli: "creatives upload-internal-redirect"}  # 94-2
   create_image_redirect_creative: {area: creatives, rest: "POST /api/creatives/upload-image-redirect", cli: "creatives upload-image-redirect"}  # 94-3
   create_click_tracking_creative: {area: creatives, rest: "POST /api/creatives/upload-click-tracking", cli: "creatives upload-click-tracking"}  # 94-1
+  create_custom_creative:       {area: creatives, rest: "POST /api/creatives/upload-custom", cli: "creatives upload-custom"}  # 94-4
   create_companion_creative:    {area: creatives, rest: "POST /api/creatives/upload-companion", cli: "creatives upload-companion"}  # 62.1
   compress_image_creative:      {area: creatives, rest: "POST /api/creatives/compress-image", cli: "creatives compress-image"}  # 62.1
   get_licas_by_line_item:       {area: creatives, rest: "GET /api/gam/line-items/{line_item_id}/licas", cli: "licas list-by-line-item"}  # 62.1

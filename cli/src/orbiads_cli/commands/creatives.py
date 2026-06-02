@@ -749,6 +749,92 @@ def upload_click_tracking(
         handle_error(e)
 
 
+@app.command("upload-custom")
+def upload_custom(
+    ctx: typer.Context,
+    advertiser_id: int = typer.Option(..., "--advertiser-id", help="GAM advertiser ID"),
+    name: str = typer.Option(..., "--name", help="Creative name in GAM"),
+    html_snippet: str = typer.Option(
+        ...,
+        "--html-snippet",
+        help="HTML body (required). Reference assets with %%FILE:<macroName>%%.",
+    ),
+    asset: list[str] = typer.Option(
+        None,
+        "--asset",
+        help=(
+            "Embedded asset as macroName=/path/to/file (repeatable). The file is "
+            "read and base64-encoded; each asset is capped at 1 MiB."
+        ),
+    ),
+    destination_url: str = typer.Option(
+        None, "--destination-url", help="Optional click-through URL (no default forced)."
+    ),
+    is_interstitial: bool = typer.Option(
+        False, "--is-interstitial", help="Mark the creative as interstitial."
+    ),
+    locked_orientation: str = typer.Option(
+        None,
+        "--locked-orientation",
+        help="FREE_ORIENTATION | PORTRAIT_ONLY | LANDSCAPE_ONLY",
+    ),
+):
+    """Create a CustomCreative (arbitrary HTML snippet + embedded assets).
+
+    Each --asset is uploaded inline and referenced from --html-snippet via the
+    %%FILE:<macroName>%% macro. destination_url is valid (this type inherits
+    HasDestinationUrlCreative) and never defaulted.
+    """
+    import base64 as _b64
+
+    assets: list[dict] = []
+    for spec in asset or []:
+        if "=" not in spec:
+            handle_error(
+                CliApiError(
+                    "VALIDATION_ERROR",
+                    f"--asset must be macroName=/path/to/file (got: {spec})",
+                )
+            )
+            return
+        macro_name, _, path = spec.partition("=")
+        macro_name = macro_name.strip()
+        path = path.strip()
+        if not macro_name or not path:
+            handle_error(
+                CliApiError("VALIDATION_ERROR", f"--asset has empty macroName or path: {spec}")
+            )
+            return
+        _check_file(path)
+        with open(path, "rb") as fh:
+            raw = fh.read()
+        assets.append(
+            {
+                "macroName": macro_name,
+                "assetByteArrayBase64": _b64.b64encode(raw).decode("ascii"),
+                "fileName": os.path.basename(path),
+            }
+        )
+    body: dict = {
+        "advertiserId": advertiser_id,
+        "name": name,
+        "htmlSnippet": html_snippet,
+    }
+    if assets:
+        body["customCreativeAssets"] = assets
+    if destination_url:
+        body["destinationUrl"] = destination_url
+    if is_interstitial:
+        body["isInterstitial"] = True
+    if locked_orientation:
+        body["lockedOrientation"] = locked_orientation
+    try:
+        data = get_client().post("/api/creatives/upload-custom", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("upload-companion")
 def upload_companion(
     ctx: typer.Context,
