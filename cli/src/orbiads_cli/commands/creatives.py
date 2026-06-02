@@ -721,6 +721,34 @@ def upload_internal_redirect(
         handle_error(e)
 
 
+@app.command("upload-click-tracking")
+def upload_click_tracking(
+    ctx: typer.Context,
+    advertiser_id: int = typer.Option(..., "--advertiser-id", help="GAM advertiser ID"),
+    name: str = typer.Option(..., "--name", help="Creative name in GAM"),
+    click_tracking_url: str = typer.Option(
+        ...,
+        "--click-tracking-url",
+        help="Click tracking URL (required, max 1024 chars)",
+    ),
+):
+    """Create a ClickTrackingCreative (click-tracker for self-served ads).
+
+    For ads served directly from the customer's own web/media servers. No size
+    is sent (not persisted) and this type has no destination URL.
+    """
+    body: dict = {
+        "advertiserId": advertiser_id,
+        "name": name,
+        "clickTrackingUrl": click_tracking_url,
+    }
+    try:
+        data = get_client().post("/api/creatives/upload-click-tracking", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("upload-companion")
 def upload_companion(
     ctx: typer.Context,
