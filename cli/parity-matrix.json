@@ -1,8 +1,9 @@
 {
-  "total_tools": 276,
+  "total_tools": 279,
   "counts": {
     "FULL": 206,
-    "EXEMPT": 70
+    "EXEMPT": 70,
+    "UNMAPPED": 3
   },
   "per_area": {
     "ad_review": {
@@ -118,6 +119,7 @@
     },
     "targeting": {
       "FULL": 18,
+      "UNMAPPED": 3,
       "EXEMPT": 1
     },
     "tenant_catalog": {
@@ -223,18 +225,26 @@
     "inventory archive-ad-unit",
     "inventory archive-inactive",
     "inventory audit",
+    "inventory blocks get-version",
+    "inventory blocks list-versions",
     "inventory blueprint custom-positions create",
     "inventory blueprint custom-positions list",
+    "inventory blueprint diff",
     "inventory blueprint export",
+    "inventory blueprint get",
+    "inventory blueprint list-drafts",
     "inventory blueprint recalculate-sizes",
     "inventory blueprint size-bundles create",
     "inventory blueprint size-bundles delete",
     "inventory blueprint size-bundles list",
+    "inventory blueprint starter type-a",
+    "inventory blueprint starter type-b",
     "inventory blueprint templates get",
     "inventory blueprint templates list",
     "inventory blueprint validate",
     "inventory blueprint-generate",
     "inventory blueprint-push",
+    "inventory catalog get",
     "inventory countries",
     "inventory create-ad-units",
     "inventory create-key",
@@ -246,10 +256,12 @@
     "inventory keys",
     "inventory languages",
     "inventory list-inactive",
+    "inventory packages list",
     "inventory placement-archive",
     "inventory placement-create",
     "inventory placement-update",
     "inventory placements",
+    "inventory preview get-url",
     "inventory save-adunits",
     "inventory search-ad-units",
     "inventory search-custom-targeting",
@@ -3380,6 +3392,24 @@
       "cli_present": true
     },
     {
+      "tool": "get_browsers",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
+    },
+    {
+      "tool": "get_content_labels",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
+    },
+    {
       "tool": "get_custom_targeting_values",
       "module": "targeting",
       "area": "targeting",
@@ -3411,6 +3441,15 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "get_operating_systems",
+      "module": "targeting",
+      "area": "targeting",
+      "rest": null,
+      "cli": null,
+      "exempt": null,
+      "status": "UNMAPPED"
     },
     {
       "tool": "list_ad_units",
