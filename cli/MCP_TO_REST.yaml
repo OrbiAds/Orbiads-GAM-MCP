@@ -327,6 +327,9 @@ tools:
   archive_ad_unit:             {area: targeting, rest: "DELETE /api/gam/ad-units/{ad_unit_id}", cli: "inventory archive-ad-unit"}  # 61.6
   get_available_countries:     {area: targeting, rest: "GET /api/gam/geo-targets", cli: "inventory countries"}  # 61.6
   get_device_categories:       {area: targeting, rest: "GET /api/gam/device-categories", cli: "inventory device-categories"}  # 61.6
+  get_content_labels:          {area: targeting, rest: "NO-REST", cli: null, exempt: "Epic 93 (story 93-1) MCP-only read helper backing contentLabelTargeting writes (targeting.get_content_labels sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep."}  # 93-1
+  get_browsers:                {area: targeting, rest: "NO-REST", cli: null, exempt: "Epic 93 (story 93-2) MCP-only read helper backing technologyTargeting browser ID validation (targeting.get_browsers sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep."}  # 93-2
+  get_operating_systems:       {area: targeting, rest: "NO-REST", cli: null, exempt: "Epic 93 (story 93-2) MCP-only read helper backing technologyTargeting OS ID validation (targeting.get_operating_systems sub-action). REST+CLI parity deferred to the Epic 93 close-out / CLI parity sweep."}  # 93-2
   create_custom_targeting_values:    {area: targeting, rest: "POST /api/gam/custom-targeting-keys/{key_id}/values", cli: "custom-targeting-values create"}  # 62.5
   update_custom_targeting_value:     {area: targeting, rest: "PATCH /api/gam/custom-targeting-values/{value_id}", cli: "custom-targeting-values update"}  # 62.5
   perform_custom_targeting_value_action: {area: targeting, rest: "POST /api/gam/custom-targeting-values/action", cli: "custom-targeting-values action"}  # 62.5
