@@ -21,20 +21,20 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | Parent | Epic | # Actions | Mode | Source |
 |---|---|---|---|---|
 | `ad_review_center` | — | 3 | 📖 read | [ad_review.py](backend/src/mcp/tools/ad_review.py#L126) |
-| `audiences` | 68.2 | 5 | ✍️ mixed/write | [audiences.py](backend/src/mcp/tools/audiences.py#L221) |
+| `audiences` | 68.2 | 5 | ✍️ mixed/write | [audiences.py](backend/src/mcp/tools/audiences.py#L236) |
 | `audit` | 68.5 | 1 | 📖 read | [audit.py](backend/src/mcp/tools/audit.py#L81) |
 | `audit_skill` | 65.0a | 8 | 📖 read | [audit_skill.py](backend/src/mcp/tools/audit_skill.py#L267) |
 | `billing` | 68.5 | 2 | 📖 read | [billing.py](backend/src/mcp/tools/billing.py#L77) |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | [blueprint.py](backend/src/mcp/tools/blueprint.py#L364) |
 | `campaign` | 20.1 | 11 | ✍️ mixed/write | [campaign_ops.py](backend/src/mcp/tools/campaign_ops.py#L489) |
-| `companies` | — | 20 | ✍️ mixed/write | [advertisers.py](backend/src/mcp/tools/advertisers.py#L350) |
+| `companies` | — | 14 | ✍️ mixed/write | [advertisers.py](backend/src/mcp/tools/advertisers.py#L288) |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | [creatives.py](backend/src/mcp/tools/creatives.py#L814) |
 | `creative_qa` | 68.6 | 7 | 📖 read | [creative_qa.py](backend/src/mcp/tools/creative_qa.py#L141) |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | [creative_wrappers.py](backend/src/mcp/tools/creative_wrappers.py#L341) |
 | `creatives` | 68.7d | 27 | ✍️ mixed/write | [creatives.py](backend/src/mcp/tools/creatives.py#L778) |
 | `deals` | 64 | 28 | ✍️ mixed/write | [deals.py](backend/src/mcp/tools/deals.py#L385) |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | [formats.py](backend/src/mcp/tools/formats.py#L154) |
-| `gam_admin` | 65 | 48 | ✍️ mixed/write | [gam_admin.py](backend/src/mcp/tools/gam_admin.py#L163) |
+| `gam_admin` | 65 | 54 | ✍️ mixed/write | [gam_admin.py](backend/src/mcp/tools/gam_admin.py#L161) |
 | `gam_features` | 68.5 | 3 | 📖 read | [gam_features.py](backend/src/mcp/tools/gam_features.py#L115) |
 | `gam_jobs` | 82 | 4 | 📖 read | [jobs_async.py](backend/src/mcp/tools/jobs_async.py#L282) |
 | `inventory` | 68.6 | 12 | ✍️ mixed/write | [inventory.py](backend/src/mcp/tools/inventory.py#L430) |
@@ -44,14 +44,14 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `mcm` | — | 1 | 📖 read | [mcm.py](backend/src/mcp/tools/mcm.py#L42) |
 | `network` | 68.5 | 6 | ✍️ mixed/write | [network.py](backend/src/mcp/tools/network.py#L236) |
 | `orders` | 68 | 11 | ✍️ mixed/write | [orders.py](backend/src/mcp/tools/orders.py#L161) |
-| `placements` | 68.6 | 4 | ✍️ mixed/write | [placements.py](backend/src/mcp/tools/placements.py#L194) |
+| `placements` | 68.6 | 6 | ✍️ mixed/write | [placements.py](backend/src/mcp/tools/placements.py#L245) |
 | `pql` | 68.2 | 3 | 📖 read | [pql.py](backend/src/mcp/tools/pql.py#L336) |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | [prebid_skill.py](backend/src/mcp/tools/prebid_skill.py#L458) |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | [preview.py](backend/src/mcp/tools/preview.py#L605) |
 | `products` | 68.8 | 7 | ✍️ mixed/write | [products.py](backend/src/mcp/tools/products.py#L255) |
-| `reporting` | 68.7b | 31 | ✍️ mixed/write | [reporting.py](backend/src/mcp/tools/reporting.py#L1332) |
+| `reporting` | 68.7b | 31 | ✍️ mixed/write | [reporting.py](backend/src/mcp/tools/reporting.py#L1361) |
 | `settings` | 68.1 | 16 | ✍️ mixed/write | [settings.py](backend/src/mcp/tools/settings.py#L545) |
-| `targeting` | 68.6 | 21 | ✍️ mixed/write | [targeting.py](backend/src/mcp/tools/targeting.py#L599) |
+| `targeting` | 68.6 | 23 | ✍️ mixed/write | [targeting.py](backend/src/mcp/tools/targeting.py#L656) |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | [tenant_catalog.py](backend/src/mcp/tools/tenant_catalog.py#L134) |
 
 ## Parent tools — details
@@ -72,7 +72,7 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
 _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
-**Source:** [backend/src/mcp/tools/audiences.py:221](backend/src/mcp/tools/audiences.py#L221) · **Actions:** 5 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/audiences.py:236](backend/src/mcp/tools/audiences.py#L236) · **Actions:** 5 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 5 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -183,7 +183,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Source:** [backend/src/mcp/tools/advertisers.py:350](backend/src/mcp/tools/advertisers.py#L350) · **Actions:** 20 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/advertisers.py:288](backend/src/mcp/tools/advertisers.py#L288) · **Actions:** 14 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -195,18 +195,12 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `advertisers.create` | 0 | ✅ | — |
 | `advertisers.update` | 0 | ✅ | — |
 | `advertisers.find_or_create` | 0 | — | — |
-| `advertisers.archive` | 0 | ✅ | — |
-| `advertisers.activate` | 0 | ✅ | — |
 | `agencies.list` | 0 | — | — |
 | `agencies.create` | 0 | ✅ | — |
 | `agencies.update` | 0 | ✅ | — |
-| `agencies.archive` | 0 | ✅ | — |
-| `agencies.activate` | 0 | ✅ | — |
 | `contacts.list` | 0 | — | — |
 | `contacts.create` | 0 | ✅ | — |
 | `contacts.update` | 0 | ✅ | — |
-| `contacts.archive` | 0 | ✅ | — |
-| `contacts.activate` | 0 | ✅ | — |
 | `rich_media.list` | 0 | — | — |
 | `rich_media.get` | 0 | — | — |
 
@@ -345,10 +339,10 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `create_proposal` | 5 | ✅ | ✅ required |
 | `update_proposal` | 2 | ✅ | ✅ required |
 | `archive_proposal` | 0 | ✅ | — |
-| `request_buyer_acceptance` | 0 | — | — |
+| `request_buyer_acceptance` | 0 | ✅ | — |
 | `reserve_proposal` | 0 | ✅ | — |
 | `edit_proposal_for_negotiation` | 0 | ✅ | — |
-| `terminate_proposal_negotiations` | 0 | — | — |
+| `terminate_proposal_negotiations` | 0 | ✅ | — |
 | `get_marketplace_comments` | 0 | — | — |
 | `list_proposal_line_items` | 0 | — | — |
 | `create_proposal_line_items` | 3 | ✅ | ✅ required |
@@ -380,9 +374,9 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 ### `gam_admin` — Epic 65
 
-_GAM admin orchestration — single entry point for 48 ops over 7 areas._
+_GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-**Source:** [backend/src/mcp/tools/gam_admin.py:163](backend/src/mcp/tools/gam_admin.py#L163) · **Actions:** 48 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/gam_admin.py:161](backend/src/mcp/tools/gam_admin.py#L161) · **Actions:** 54 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -433,7 +427,13 @@ _GAM admin orchestration — single entry point for 48 ops over 7 areas._
 | `entity_signals.patch` | 0 | ✅ | — |
 | `entity_signals.batch_update` | 0 | — | — |
 | `users.list` | 0 | — | — |
+| `users.get` | 0 | — | — |
+| `users.current` | 0 | — | — |
 | `users.get_roles` | 0 | — | — |
+| `users.create` | 0 | ✅ | — |
+| `users.update` | 0 | ✅ | — |
+| `users.activate` | 0 | ✅ | — |
+| `users.deactivate` | 0 | ✅ | — |
 
 ### `gam_features` — Epic 68.5
 
@@ -561,7 +561,7 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
 | `get_network_info` | 0 | — | — |
-| `switch_network` | 0 | — | — |
+| `switch_network` | 0 | ✅ | — |
 | `list_accessible_networks` | 0 | — | — |
 | `update_network` | 0 | ✅ | — |
 | `get_preview_url_library` | 0 | — | — |
@@ -593,7 +593,7 @@ _Parent orders tool for non-lifecycle Order operations._
 
 _Parent placements tool for Story 68.6._
 
-**Source:** [backend/src/mcp/tools/placements.py:194](backend/src/mcp/tools/placements.py#L194) · **Actions:** 4 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/placements.py:245](backend/src/mcp/tools/placements.py#L245) · **Actions:** 6 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 4 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -602,6 +602,8 @@ _Parent placements tool for Story 68.6._
 | `list_placements` | 0 | — | — |
 | `create_placement` | 0.5 | ✅ | ✅ required |
 | `update_placement` | 0 | ✅ | — |
+| `activate_placement` | 0 | ✅ | — |
+| `deactivate_placement` | 0 | ✅ | — |
 | `archive_placement` | 0 | ✅ | — |
 
 ### `pql` — Epic 68.2
@@ -669,7 +671,7 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
-**Source:** [backend/src/mcp/tools/reporting.py:1332](backend/src/mcp/tools/reporting.py#L1332) · **Actions:** 31 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/reporting.py:1361](backend/src/mcp/tools/reporting.py#L1361) · **Actions:** 31 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 31 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -738,7 +740,7 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
 _Parent targeting tool for Story 68.6._
 
-**Source:** [backend/src/mcp/tools/targeting.py:599](backend/src/mcp/tools/targeting.py#L599) · **Actions:** 21 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/targeting.py:656](backend/src/mcp/tools/targeting.py#L656) · **Actions:** 23 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 21 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -756,6 +758,8 @@ _Parent targeting tool for Story 68.6._
 | `perform_custom_targeting_value_action` | 0 | ✅ | — |
 | `search_ad_units` | 0 | — | — |
 | `update_ad_unit` | 0 | ✅ | — |
+| `activate_ad_unit` | 0 | ✅ | — |
+| `deactivate_ad_unit` | 0 | ✅ | — |
 | `archive_ad_unit` | 0 | ✅ | — |
 | `get_custom_targeting_values` | 0 | — | — |
 | `search_custom_targeting` | 0 | — | — |
@@ -790,14 +794,14 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `gam_audit` | [gam_audit.py](backend/src/mcp/tools/gam_audit.py#L121) | 0 | — |
 | `get_my_tenant_id` | [auth.py](backend/src/mcp/tools/auth.py#L166) | 0 | — |
 | `get_premium_rate` | [pricing.py](backend/src/mcp/tools/pricing.py#L51) | 0 | — |
-| `initiate_gam_auth` | [auth.py](backend/src/mcp/tools/auth.py#L265) | 0 | — |
-| `line_item_lifecycle` | [line_items.py](backend/src/mcp/tools/line_items.py#L936) | 0 | ✅ |
+| `initiate_gam_auth` | [auth.py](backend/src/mcp/tools/auth.py#L265) | 0 | ✅ |
+| `line_item_lifecycle` | [line_items.py](backend/src/mcp/tools/line_items.py#L941) | 0 | ✅ |
 | `list_premium_rates` | [pricing.py](backend/src/mcp/tools/pricing.py#L37) | 0 | — |
 | `list_rate_cards` | [pricing.py](backend/src/mcp/tools/pricing.py#L23) | 0 | — |
 | `order_lifecycle` | [orders.py](backend/src/mcp/tools/orders.py#L675) | 0 | ✅ |
 | `poll_auth_status` | [auth.py](backend/src/mcp/tools/auth.py#L349) | 0 | — |
-| `reporting_skill` | [reporting.py](backend/src/mcp/tools/reporting.py#L1762) | 0 | — |
-| `select_gam_network` | [auth.py](backend/src/mcp/tools/auth.py#L475) | 0 | — |
+| `reporting_skill` | [reporting.py](backend/src/mcp/tools/reporting.py#L1791) | 0 | — |
+| `select_gam_network` | [auth.py](backend/src/mcp/tools/auth.py#L475) | 0 | ✅ |
 
 ## See also
 

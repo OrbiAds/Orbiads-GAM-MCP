@@ -9,7 +9,7 @@ metadata:
     - network
     - settings
     - tenant_catalog
-  action_count: 77
+  action_count: 83
   read_only: false
 user-invokable: false
 ---
@@ -23,16 +23,16 @@ user-invokable: false
 
 _Manage global settings, naming conventions, delivery defaults, network configurations, and custom presets._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 77
+**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 83
 
 ## Tools Reference
 
 ### `orbiads:gam_admin` (Epic 65)
 
-_GAM admin orchestration — single entry point for 48 ops over 7 areas._
+_GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-- **Mode:** mixed · **Actions:** 48 (12 writes, 36 reads)
-- **Source:** [`backend/src/mcp/tools/gam_admin.py:163`](backend/src/mcp/tools/gam_admin.py#L163)
+- **Mode:** mixed · **Actions:** 54 (16 writes, 38 reads)
+- **Source:** [`backend/src/mcp/tools/gam_admin.py:161`](backend/src/mcp/tools/gam_admin.py#L161)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -48,6 +48,10 @@ _GAM admin orchestration — single entry point for 48 ops over 7 areas._
 | `sites.patch` | 0 | yes | — |
 | `teams.create` | 0 | yes | — |
 | `teams.patch` | 0 | yes | — |
+| `users.activate` | 0 | yes | — |
+| `users.create` | 0 | yes | — |
+| `users.deactivate` | 0 | yes | — |
+| `users.update` | 0 | yes | — |
 | `applications.batch_archive` | 0 | — | — |
 | `applications.batch_create` | 0 | — | — |
 | `applications.batch_unarchive` | 0 | — | — |
@@ -82,6 +86,8 @@ _GAM admin orchestration — single entry point for 48 ops over 7 areas._
 | `teams.batch_update` | 0 | — | — |
 | `teams.get` | 0 | — | — |
 | `teams.list` | 0 | — | — |
+| `users.current` | 0 | — | — |
+| `users.get` | 0 | — | — |
 | `users.get_roles` | 0 | — | — |
 | `users.list` | 0 | — | — |
 
@@ -104,7 +110,7 @@ _Parent gam_features tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 6 (2 writes, 4 reads)
+- **Mode:** mixed · **Actions:** 6 (3 writes, 3 reads)
 - **Source:** [`backend/src/mcp/tools/network.py:236`](backend/src/mcp/tools/network.py#L236)
 
 > **Legacy wrappers:** 4 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
@@ -112,11 +118,11 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
 | `set_preview_url_library` | 0 | yes | — |
+| `switch_network` | 0 | yes | — |
 | `update_network` | 0 | yes | — |
 | `get_network_info` | 0 | — | — |
 | `get_preview_url_library` | 0 | — | — |
 | `list_accessible_networks` | 0 | — | — |
-| `switch_network` | 0 | — | — |
 
 ### `orbiads:settings` (Epic 68.1)
 

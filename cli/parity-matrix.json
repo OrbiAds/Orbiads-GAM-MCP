@@ -1,7 +1,7 @@
 {
-  "total_tools": 281,
+  "total_tools": 283,
   "counts": {
-    "FULL": 208,
+    "FULL": 210,
     "EXEMPT": 73
   },
   "per_area": {
@@ -45,7 +45,7 @@
       "FULL": 1
     },
     "creatives": {
-      "FULL": 43,
+      "FULL": 45,
       "EXEMPT": 2
     },
     "deals": {
@@ -203,7 +203,9 @@
     "creatives update",
     "creatives upload",
     "creatives upload-audio",
+    "creatives upload-click-tracking",
     "creatives upload-companion",
+    "creatives upload-custom",
     "creatives upload-html5",
     "creatives upload-images",
     "creatives upload-internal-redirect",
@@ -1180,11 +1182,33 @@
       "cli_present": true
     },
     {
+      "tool": "create_click_tracking_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-click-tracking",
+      "cli": "creatives upload-click-tracking",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
       "tool": "create_companion_creative",
       "module": "creatives",
       "area": "creatives",
       "rest": "POST /api/creatives/upload-companion",
       "cli": "creatives upload-companion",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "create_custom_creative",
+      "module": "creatives",
+      "area": "creatives",
+      "rest": "POST /api/creatives/upload-custom",
+      "cli": "creatives upload-custom",
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",

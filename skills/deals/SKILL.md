@@ -8,7 +8,7 @@ metadata:
     - deals
     - prebid_skill
     - products
-  action_count: 61
+  action_count: 55
   read_only: false
 user-invokable: false
 ---
@@ -22,7 +22,7 @@ user-invokable: false
 
 _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/agency company profiles, and ADCP product catalogs._
 
-**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 61
+**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 55
 
 ## Tools Reference
 
@@ -30,23 +30,17 @@ _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-- **Mode:** mixed · **Actions:** 20 (12 writes, 8 reads)
-- **Source:** [`backend/src/mcp/tools/advertisers.py:350`](backend/src/mcp/tools/advertisers.py#L350)
+- **Mode:** mixed · **Actions:** 14 (6 writes, 8 reads)
+- **Source:** [`backend/src/mcp/tools/advertisers.py:288`](backend/src/mcp/tools/advertisers.py#L288)
 
 > **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
-| `advertisers.activate` | 0 | yes | — |
-| `advertisers.archive` | 0 | yes | — |
 | `advertisers.create` | 0 | yes | — |
 | `advertisers.update` | 0 | yes | — |
-| `agencies.activate` | 0 | yes | — |
-| `agencies.archive` | 0 | yes | — |
 | `agencies.create` | 0 | yes | — |
 | `agencies.update` | 0 | yes | — |
-| `contacts.activate` | 0 | yes | — |
-| `contacts.archive` | 0 | yes | — |
 | `contacts.create` | 0 | yes | — |
 | `contacts.update` | 0 | yes | — |
 | `advertisers.find` | 0 | — | — |
@@ -62,7 +56,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-- **Mode:** mixed · **Actions:** 28 (13 writes, 15 reads)
+- **Mode:** mixed · **Actions:** 28 (15 writes, 13 reads)
 - **Source:** [`backend/src/mcp/tools/deals.py:385`](backend/src/mcp/tools/deals.py#L385)
 
 > **Legacy wrappers:** 29 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
@@ -77,7 +71,9 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `create_proposal` | 5 | yes | required |
 | `create_proposal_line_items` | 3 | yes | required |
 | `edit_proposal_for_negotiation` | 0 | yes | — |
+| `request_buyer_acceptance` | 0 | yes | — |
 | `reserve_proposal` | 0 | yes | — |
+| `terminate_proposal_negotiations` | 0 | yes | — |
 | `update_auction` | 0 | yes | — |
 | `update_deal` | 0 | yes | — |
 | `update_proposal` | 2 | yes | required |
@@ -95,8 +91,6 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `list_buyers` | 0 | — | — |
 | `list_deals` | 0 | — | — |
 | `list_proposal_line_items` | 0 | — | — |
-| `request_buyer_acceptance` | 0 | — | — |
-| `terminate_proposal_negotiations` | 0 | — | — |
 
 ### `orbiads:prebid_skill` (Epic 70)
 
