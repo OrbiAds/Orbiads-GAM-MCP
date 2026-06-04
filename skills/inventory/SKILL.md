@@ -9,7 +9,8 @@ metadata:
     - inventory
     - placements
     - targeting
-  action_count: 66
+    - video_ops
+  action_count: 85
   read_only: false
 user-invokable: false
 ---
@@ -23,7 +24,7 @@ user-invokable: false
 
 _Manage ad units, placements, custom targeting keys/values, audiences, and network inventory blueprints._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 66
+**Mode:** mixed (read + write) · **Tools Included:** 6 · **Total Actions:** 85
 
 ## Tools Reference
 
@@ -31,8 +32,8 @@ _Manage ad units, placements, custom targeting keys/values, audiences, and netwo
 
 _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 5 (3 writes, 2 reads)
-- **Source:** [`backend/src/mcp/tools/audiences.py:236`](backend/src/mcp/tools/audiences.py#L236)
+- **Mode:** mixed · **Actions:** 8 (5 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/audiences.py:330`](backend/src/mcp/tools/audiences.py#L330)
 
 > **Legacy wrappers:** 5 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -40,8 +41,11 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 |---|---|---|---|
 | `create_audience_segment` | 0.5 | yes | required |
 | `perform_audience_segment_action` | 0 | yes | — |
+| `perform_segment_population_action` | 0 | yes | — |
 | `update_audience_segment` | 0 | yes | — |
+| `update_segment_memberships` | 0.5 | yes | required |
 | `get_audience_segment` | 0 | — | — |
+| `get_segment_population_results` | 0 | — | — |
 | `list_audience_segments` | 0 | — | — |
 
 ### `orbiads:blueprint` (Epic 78.13)
@@ -78,8 +82,8 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 _Parent inventory tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 12 (3 writes, 9 reads)
-- **Source:** [`backend/src/mcp/tools/inventory.py:430`](backend/src/mcp/tools/inventory.py#L430)
+- **Mode:** mixed · **Actions:** 14 (3 writes, 11 reads)
+- **Source:** [`backend/src/mcp/tools/inventory.py:464`](backend/src/mcp/tools/inventory.py#L464)
 
 > **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -97,6 +101,8 @@ _Parent inventory tool for Story 68.6._
 | `get_ad_units_by_ids` | 0 | — | — |
 | `get_catalog` | 0 | — | — |
 | `list_ad_unit_sizes` | 0 | — | — |
+| `list_line_item_templates` | 0 | — | — |
+| `list_suggested_ad_units` | 0 | — | — |
 
 ### `orbiads:placements` (Epic 68.6)
 
@@ -120,8 +126,8 @@ _Parent placements tool for Story 68.6._
 
 _Parent targeting tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 23 (10 writes, 13 reads)
-- **Source:** [`backend/src/mcp/tools/targeting.py:656`](backend/src/mcp/tools/targeting.py#L656)
+- **Mode:** mixed · **Actions:** 27 (13 writes, 14 reads)
+- **Source:** [`backend/src/mcp/tools/targeting.py:775`](backend/src/mcp/tools/targeting.py#L775)
 
 > **Legacy wrappers:** 21 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -131,12 +137,15 @@ _Parent targeting tool for Story 68.6._
 | `archive_ad_unit` | 0 | yes | — |
 | `create_custom_targeting_key` | 0.5 | yes | required |
 | `create_custom_targeting_values` | 0.5 | yes | required |
+| `create_targeting_preset` | 0.5 | yes | required |
 | `deactivate_ad_unit` | 0 | yes | — |
 | `delete_custom_targeting_key` | 0 | yes | — |
+| `delete_targeting_preset` | 0 | yes | — |
 | `perform_custom_targeting_value_action` | 0 | yes | — |
 | `update_ad_unit` | 0 | yes | — |
 | `update_custom_targeting_key` | 0 | yes | — |
 | `update_custom_targeting_value` | 0 | yes | — |
+| `update_targeting_preset` | 0 | yes | — |
 | `get_available_countries` | 0 | — | — |
 | `get_available_languages` | 0 | — | — |
 | `get_browsers` | 0 | — | — |
@@ -147,9 +156,30 @@ _Parent targeting tool for Story 68.6._
 | `get_operating_systems` | 0 | — | — |
 | `list_ad_units` | 0 | — | — |
 | `list_custom_targeting_keys` | 0 | — | — |
+| `list_targeting_presets` | 0 | — | — |
 | `search_ad_units` | 0 | — | — |
 | `search_custom_targeting` | 0 | — | — |
 | `validate_fluid` | 0 | — | — |
+
+### `orbiads:video_ops` (Epic 98)
+
+_Video monetization: ad rule management, content metadata, and content bundle operations._
+
+- **Mode:** mixed · **Actions:** 10 (7 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/video_ops.py:141`](backend/src/mcp/tools/video_ops.py#L141)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `activate_content_bundle` | 0 | yes | — |
+| `create_ad_rule` | 0 | yes | — |
+| `create_content_bundle` | 0 | yes | — |
+| `deactivate_content_bundle` | 0 | yes | — |
+| `delete_ad_rule` | 0 | yes | — |
+| `update_ad_rule` | 0 | yes | — |
+| `update_content_bundle` | 0 | yes | — |
+| `list_ad_rules` | 0 | — | — |
+| `list_content` | 0 | — | — |
+| `list_content_bundles` | 0 | — | — |
 
 ## Write protocol
 

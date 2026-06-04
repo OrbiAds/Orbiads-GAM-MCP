@@ -5,10 +5,12 @@ metadata:
   group: deals
   parent_mcp_tools:
     - companies
+    - dai_skill
     - deals
     - prebid_skill
     - products
-  action_count: 55
+    - yield_skill
+  action_count: 74
   read_only: false
 user-invokable: false
 ---
@@ -22,7 +24,7 @@ user-invokable: false
 
 _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/agency company profiles, and ADCP product catalogs._
 
-**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 55
+**Mode:** mixed (read + write) · **Tools Included:** 6 · **Total Actions:** 74
 
 ## Tools Reference
 
@@ -51,6 +53,30 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `contacts.list` | 0 | — | — |
 | `rich_media.get` | 0 | — | — |
 | `rich_media.list` | 0 | — | — |
+
+### `orbiads:dai_skill` (Epic 98)
+
+_DAI (Dynamic Ad Insertion) and broadcasting operations._
+
+- **Mode:** mixed · **Actions:** 14 (10 writes, 4 reads)
+- **Source:** [`backend/src/mcp/tools/dai_skill.py:192`](backend/src/mcp/tools/dai_skill.py#L192)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `create_cdn_configuration` | 0 | yes | — |
+| `create_dai_auth_key` | 0 | yes | — |
+| `create_dai_encoding_profile` | 0 | yes | — |
+| `delete_cdn_configuration` | 0 | yes | — |
+| `delete_dai_encoding_profile` | 0 | yes | — |
+| `perform_dai_auth_key_action` | 0 | yes | — |
+| `register_sessions` | 0 | yes | — |
+| `update_cdn_configuration` | 0 | yes | — |
+| `update_dai_auth_key` | 0 | yes | — |
+| `update_dai_encoding_profile` | 0 | yes | — |
+| `get_stream_activity` | 0 | — | — |
+| `list_cdn_configurations` | 0 | — | — |
+| `list_dai_auth_keys` | 0 | — | — |
+| `list_dai_encoding_profiles` | 0 | — | — |
 
 ### `orbiads:deals` (Epic 64)
 
@@ -126,6 +152,21 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 | `get_adcp` | 0 | — | — |
 | `list` | 0 | — | — |
 | `pricing_suggestion` | 0 | — | — |
+
+### `orbiads:yield_skill` (Epic 98)
+
+_Yield optimization group management and forecast governance._
+
+- **Mode:** mixed · **Actions:** 5 (2 writes, 3 reads)
+- **Source:** [`backend/src/mcp/tools/yield_skill.py:123`](backend/src/mcp/tools/yield_skill.py#L123)
+
+| Action | Cost | Write? | Confirmation token |
+|---|---|---|---|
+| `create_yield_group` | 0 | yes | — |
+| `update_yield_group` | 0 | yes | — |
+| `list_forecast_adjustments` | 0 | — | — |
+| `list_forecast_segments` | 0 | — | — |
+| `list_yield_groups` | 0 | — | — |
 
 ## Write protocol
 

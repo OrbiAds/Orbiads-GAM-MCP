@@ -9,7 +9,7 @@ metadata:
     - network
     - settings
     - tenant_catalog
-  action_count: 83
+  action_count: 87
   read_only: false
 user-invokable: false
 ---
@@ -23,7 +23,7 @@ user-invokable: false
 
 _Manage global settings, naming conventions, delivery defaults, network configurations, and custom presets._
 
-**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 83
+**Mode:** mixed (read + write) · **Tools Included:** 5 · **Total Actions:** 87
 
 ## Tools Reference
 
@@ -31,8 +31,8 @@ _Manage global settings, naming conventions, delivery defaults, network configur
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-- **Mode:** mixed · **Actions:** 54 (16 writes, 38 reads)
-- **Source:** [`backend/src/mcp/tools/gam_admin.py:161`](backend/src/mcp/tools/gam_admin.py#L161)
+- **Mode:** mixed · **Actions:** 58 (19 writes, 39 reads)
+- **Source:** [`backend/src/mcp/tools/gam_admin.py:163`](backend/src/mcp/tools/gam_admin.py#L163)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -48,6 +48,9 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `sites.patch` | 0 | yes | — |
 | `teams.create` | 0 | yes | — |
 | `teams.patch` | 0 | yes | — |
+| `user_team_associations.create` | 0 | yes | — |
+| `user_team_associations.delete` | 0 | yes | — |
+| `user_team_associations.update` | 0 | yes | — |
 | `users.activate` | 0 | yes | — |
 | `users.create` | 0 | yes | — |
 | `users.deactivate` | 0 | yes | — |
@@ -86,6 +89,7 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `teams.batch_update` | 0 | — | — |
 | `teams.get` | 0 | — | — |
 | `teams.list` | 0 | — | — |
+| `user_team_associations.list` | 0 | — | — |
 | `users.current` | 0 | — | — |
 | `users.get` | 0 | — | — |
 | `users.get_roles` | 0 | — | — |

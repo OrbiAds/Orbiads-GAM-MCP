@@ -16,7 +16,7 @@ metadata:
     - line_items
     - live_stream
     - orders
-  action_count: 131
+  action_count: 142
   read_only: false
 user-invokable: false
 ---
@@ -30,7 +30,7 @@ user-invokable: false
 
 _Orchestrate end-to-end campaigns, orders, line items, creative uploads, creative QA compliance scans, and placement bindings._
 
-**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 131
+**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 142
 
 ## Tools Reference
 
@@ -75,7 +75,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 _Parent creative asset tool for upload/create/compress/transcode actions._
 
 - **Mode:** mixed · **Actions:** 22 (19 writes, 3 reads)
-- **Source:** [`backend/src/mcp/tools/creatives.py:814`](backend/src/mcp/tools/creatives.py#L814)
+- **Source:** [`backend/src/mcp/tools/creatives.py:921`](backend/src/mcp/tools/creatives.py#L921)
 
 > **Legacy wrappers:** 18 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -150,8 +150,8 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 27 (11 writes, 16 reads)
-- **Source:** [`backend/src/mcp/tools/creatives.py:778`](backend/src/mcp/tools/creatives.py#L778)
+- **Mode:** mixed · **Actions:** 30 (13 writes, 17 reads)
+- **Source:** [`backend/src/mcp/tools/creatives.py:885`](backend/src/mcp/tools/creatives.py#L885)
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -161,11 +161,13 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `archive_native_style` | 0 | yes | — |
 | `associate_creative` | 0 | yes | — |
 | `bulk_associate_creatives` | 0 | yes | — |
+| `create_creative_set` | 0 | yes | — |
 | `deactivate_lica` | 0 | yes | — |
 | `delete_licas` | 0 | yes | — |
 | `duplicate_creative` | 0.5 | yes | required |
 | `duplicate_native_style` | 0.5 | yes | required |
 | `update_creative` | 0 | yes | — |
+| `update_creative_set` | 0 | yes | — |
 | `update_lica` | 0 | yes | — |
 | `update_native_style` | 0 | yes | — |
 | `discover_native_formats` | 0.5 | — | — |
@@ -179,6 +181,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `get_native_style` | 0 | — | — |
 | `get_native_style_preview_urls` | 0 | — | — |
 | `get_video_transcode_status` | 0 | — | — |
+| `list_creative_sets` | 0 | — | — |
 | `list_creative_templates` | 0 | — | — |
 | `list_creatives_by_advertiser` | 0 | — | — |
 | `list_creatives_by_line_item` | 0 | — | — |
@@ -261,20 +264,28 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `list_private_deals` | 0 | — | — |
 | `verify` | 0 | — | — |
 
-### `orbiads:live_stream`
+### `orbiads:live_stream` (Epic 98)
 
-_Live stream ad breaks orchestration._
+_Live stream ad breaks + event/slate management._
 
-- **Mode:** mixed · **Actions:** 5 (3 writes, 2 reads)
-- **Source:** [`backend/src/mcp/tools/live_stream.py:74`](backend/src/mcp/tools/live_stream.py#L74)
+- **Mode:** mixed · **Actions:** 13 (9 writes, 4 reads)
+- **Source:** [`backend/src/mcp/tools/live_stream.py:95`](backend/src/mcp/tools/live_stream.py#L95)
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
 | `create` | 0 | yes | — |
+| `create_live_stream_event` | 0 | yes | — |
+| `create_live_stream_slate` | 0 | yes | — |
 | `delete` | 0 | yes | — |
+| `delete_live_stream_event` | 0 | yes | — |
+| `delete_live_stream_slate` | 0 | yes | — |
 | `patch` | 0 | yes | — |
+| `update_live_stream_event` | 0 | yes | — |
+| `update_live_stream_slate` | 0 | yes | — |
 | `get` | 0 | — | — |
 | `list` | 0 | — | — |
+| `list_live_stream_events` | 0 | — | — |
+| `list_live_stream_slates` | 0 | — | — |
 
 ### `orbiads:orders` (Epic 68)
 

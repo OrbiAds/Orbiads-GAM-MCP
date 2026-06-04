@@ -97,6 +97,34 @@ WHEN TO USE: Use ad_review_center to find, allow, or block marketplace creatives
         ],
     ),
 
+    # -- dai_skill -----------------------------------------------------------------
+    _t(
+        "dai_skill",
+        """DAI (Dynamic Ad Insertion) and broadcasting operations.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: read = 0 credits.
+OUTPUT: Results for DAI entities.
+WHEN TO USE: Use for managing Dynamic Ad Insertion auth keys and encoding profiles.""",
+        [
+            ("create_cdn_configuration", "Create a CDN configuration."),
+            ("create_dai_auth_key", "Create a DAI authentication key."),
+            ("create_dai_encoding_profile", "Create a DAI encoding profile."),
+            ("delete_cdn_configuration", "Delete a CDN configuration."),
+            ("delete_dai_encoding_profile", "Delete a DAI encoding profile."),
+            ("perform_dai_auth_key_action", "Perform an action on a DAI authentication key."),
+            ("register_sessions", "Register sessions."),
+            ("update_cdn_configuration", "Update a CDN configuration."),
+            ("update_dai_auth_key", "Update a DAI authentication key."),
+            ("update_dai_encoding_profile", "Update a DAI encoding profile."),
+            ("get_stream_activity", "Get stream activity."),
+            ("list_cdn_configurations", "List CDN configurations."),
+            ("list_dai_auth_keys", "List DAI authentication keys."),
+            ("list_dai_encoding_profiles", "List DAI encoding profiles."),
+        ],
+    ),
+
     # -- live_stream -----------------------------------------------------------
     _t(
         "live_stream",
@@ -113,6 +141,30 @@ WHEN TO USE: Use live_stream to inspect, create, update, or delete ad breaks for
             ("create", "Create a new live stream ad break."),
             ("patch", "Update an existing live stream ad break by asset key."),
             ("delete", "Delete an existing live stream ad break by asset key."),
+        ],
+    ),
+
+    # -- video_ops -----------------------------------------------------------------
+    _t(
+        "video_ops",
+        """Video monetization: ad rule management, content metadata, and content bundle operations.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: read = 0 credits.
+OUTPUT: Results for video ops entities.
+WHEN TO USE: Use for managing Ad Rules, Content metadata, and Content bundles.""",
+        [
+            ("create_ad_rules", "Create ad rules."),
+            ("create_content_bundles", "Create content bundles."),
+            ("perform_ad_rule_action", "Perform an action on ad rules."),
+            ("perform_content_action", "Perform an action on content."),
+            ("perform_content_bundle_action", "Perform an action on content bundles."),
+            ("update_ad_rules", "Update ad rules."),
+            ("update_content_bundles", "Update content bundles."),
+            ("get_ad_rules_by_statement", "Get ad rules by statement."),
+            ("get_content_bundles_by_statement", "Get content bundles by statement."),
+            ("get_content_by_statement", "Get content by statement."),
         ],
     ),
 
@@ -789,6 +841,25 @@ WHEN TO USE: Use placements to create named groupings of ad units for targeting 
             ("create_placement", "Create a new placement grouping ad units. Write. Requires name and targetedAdUnitIds."),
             ("update_placement", "Update a placement's name or ad unit membership. Write."),
             ("archive_placement", "Archive a placement. Destructive write — removes from targeting options."),
+        ],
+    ),
+
+    # -- yield_skill ---------------------------------------------------------------
+    _t(
+        "yield_skill",
+        """Yield optimization group management and forecast governance.
+
+MODE: mixed (read + write)
+AUTH: OAuth 2.0 required
+CREDITS: read = 0 credits.
+OUTPUT: Results for yield groups and forecast adjustments.
+WHEN TO USE: Use for managing yield groups and reading forecast adjustments.""",
+        [
+            ("create_yield_group", "Create a yield group."),
+            ("update_yield_group", "Update a yield group."),
+            ("list_forecast_adjustments", "List forecast adjustments."),
+            ("list_forecast_segments", "List forecast segments."),
+            ("list_yield_groups", "List yield groups."),
         ],
     ),
 
