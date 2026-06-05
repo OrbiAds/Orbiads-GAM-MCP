@@ -50,6 +50,29 @@ def get(
 
 
 @app.command()
+def read(
+    ctx: typer.Context,
+    campaign_id: str = typer.Option(None, "--campaign-id", help="Campaign document ID"),
+    order_id: int = typer.Option(None, "--order-id", help="GAM Order ID"),
+):
+    """Read a campaign recap from live GAM."""
+    if campaign_id is None and order_id is None:
+        typer.echo("Error: provide --campaign-id or --order-id", err=True)
+        raise typer.Exit(code=2)
+    try:
+        params: dict[str, str | int] = {}
+        if campaign_id is not None:
+            params["campaignId"] = campaign_id
+        if order_id is not None:
+            params["orderId"] = order_id
+        data = get_client().get("/api/campaigns/live-recap", params=params)
+        out: OutputContext = ctx.obj
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
 def deploy(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),

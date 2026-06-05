@@ -44,6 +44,31 @@ class TestCampaignsExtensions_61_4:
         assert result.exit_code == 0, result.output
         client.patch.assert_called_once_with("/api/campaigns/c1", json={"name": "renamed"})
 
+    def test_read_by_campaign_id_calls_live_recap(self, authenticated_config):
+        client = _mock_client(get_return={"orderId": 456, "source": "gam_live"})
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["--json", "campaigns", "read", "--campaign-id", "c1"])
+        assert result.exit_code == 0, result.output
+        client.get.assert_called_once_with(
+            "/api/campaigns/live-recap",
+            params={"campaignId": "c1"},
+        )
+
+    def test_read_by_order_id_calls_live_recap(self, authenticated_config):
+        client = _mock_client(get_return={"orderId": 456, "source": "gam_live"})
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["--json", "campaigns", "read", "--order-id", "456"])
+        assert result.exit_code == 0, result.output
+        client.get.assert_called_once_with(
+            "/api/campaigns/live-recap",
+            params={"orderId": 456},
+        )
+
+    def test_read_requires_campaign_or_order_id(self, authenticated_config):
+        result = runner.invoke(app, ["campaigns", "read"])
+        assert result.exit_code == 2
+        assert "provide --campaign-id or --order-id" in result.output
+
     def test_pause_uses_bulk_action(self, authenticated_config):
         client = _mock_client(post_return={"succeeded": ["c1"], "failed": []})
         with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
