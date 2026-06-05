@@ -81,7 +81,24 @@ tools:
   ensure_template:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
-  campaign:                {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7h
+  campaign:
+    area: campaign_ops
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 actions). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      deploy: {rest: "POST /api/campaigns/{id}/deploy", cli: "campaigns deploy"}
+      dry_run: {rest: "POST /api/campaigns/{id}/dry-run", cli: "campaigns dry-run"}
+      read: {rest: "GET /api/campaigns/live-recap", cli: "campaigns read"}
+      plan_deployment: {rest: "POST /mcp tools/call campaign.plan_deployment", cli: "campaigns plan-deployment"}
+      deploy_media: {rest: "POST /mcp tools/call campaign.deploy_media", cli: "campaigns deploy-media"}
+      pause: {rest: "POST /api/campaigns/{id}/pause", cli: "campaigns pause"}
+      archive: {rest: "POST /api/campaigns/{id}/archive", cli: "campaigns archive"}
+      update: {rest: "PATCH /api/campaigns/{id}", cli: "campaigns update"}
+      rollback: {rest: "POST /api/campaigns/{id}/recover", cli: "campaigns recover"}
+      create_native_style: {rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C)."}
+      ensure_template: {rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C)."}
+      create_draft: {rest: "NO-REST", cli: null, exempt: "Campaign staging draft creation remains parent-dispatched and REST revival is outside Story 100.11."}
 
   # Epic 98 B-series parent tools: SOAP-only / feature-gated surfaces with parent>child MCP dispatch.
   yield_skill:             {area: yield_skill, rest: "NO-REST", cli: null, exempt: "Epic 98-B1/B2 SOAP-only yield and forecast-governance parent. Dedicated CLI/REST parity is outside the shipped B-series scope."}
@@ -186,7 +203,14 @@ tools:
   duplicate_job: {area: jobs, rest: "POST /api/jobs/{job_id}/duplicate", cli: "jobs duplicate"}  # 61.4
 
   # ── line_items (15) — Story 61.4 covers the 8 REST-ONLY ───────────
-  deals:                    {area: deals, rest: "NO-REST", cli: null, exempt: "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7g
+  deals:
+    area: deals
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 ADCP actions). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      adcp_create: {rest: "NO-REST", cli: null, exempt: "ADCP buy-agent path is MCP-only by design; no user-facing CLI flow in Story 100.11."}
+      adcp_preview: {rest: "NO-REST", cli: null, exempt: "ADCP preview is MCP-only by design; mirrors preview_media_buy_from_adcp policy."}
   line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}                # 61.4 capability parity
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
@@ -399,15 +423,27 @@ tools:
   refresh_gam_features:           {area: gam_features, rest: "NO-REST", cli: null, exempt: "Epic 64 GAM features probe — UI-driven discovery only, no CLI use case."}
 
   # ── products — Product Catalog (Story 64.23 + Story 68.8 parent) ──────
-  products:                  {area: products, rest: "NO-REST", cli: null, exempt: "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B) — consolidates create_product, list_products, get_product, update_product, archive_product, get_products_adcp, get_pricing_suggestion. REST symmetric route + CLI verb deferred to the Epic 68 migration close-out story."}  # 68.8
+  products:
+    area: products
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B). Legacy product tools now have REST + CLI parity; ADCP/pricing discovery sub-actions stay MCP-only/deferred."
+    sub_actions:
+      list: {rest: "GET /api/products", cli: "products list"}
+      get: {rest: "GET /api/products/{product_id}", cli: "products get"}
+      create: {rest: "POST /api/products", cli: "products create"}
+      update: {rest: "PATCH /api/products/{product_id}", cli: "products update"}
+      archive: {rest: "POST /api/products/{product_id}:archive", cli: "products archive"}
+      get_adcp: {rest: "NO-REST", cli: null, exempt: "ADCP buy-agent discovery remains MCP-only by design."}
+      pricing_suggestion: {rest: "GET /api/products/{product_id}/pricing-suggestion", cli: null, exempt: "Epic 67 CLI deferred."}
   # REST surface lives under /api/products (Story 64.23 follow-up, see
   # backend/src/api/routes/products.py). Legacy tools remain FULL through their
   # existing REST mappings during coexistence; parent REST/CLI is deferred above.
-  create_product:                 {area: products, rest: "POST /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
-  list_products:                  {area: products, rest: "GET /api/products", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
-  get_product:                    {area: products, rest: "GET /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
-  update_product:                 {area: products, rest: "PATCH /api/products/{product_id}", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
-  archive_product:                {area: products, rest: "POST /api/products/{product_id}:archive", cli: null, exempt: "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped."}
+  create_product:                 {area: products, rest: "POST /api/products", cli: "products create"}
+  list_products:                  {area: products, rest: "GET /api/products", cli: "products list"}
+  get_product:                    {area: products, rest: "GET /api/products/{product_id}", cli: "products get"}
+  update_product:                 {area: products, rest: "PATCH /api/products/{product_id}", cli: "products update"}
+  archive_product:                {area: products, rest: "POST /api/products/{product_id}:archive", cli: "products archive"}
   get_products_adcp:              {area: products, rest: "NO-REST", cli: null, exempt: "Epic 64 ADCP discovery — protocol-first integration via MCP only, no REST/CLI surface planned (buy-agent path)."}
   get_pricing_suggestion:         {area: products, rest: "GET /api/products/{product_id}/pricing-suggestion", cli: null, exempt: "Epic 67 Pricing assistant — same CLI-deferred policy as other Product tools (Epic 64). REST shipped."}  # 67.1
   # Epic 68/69 parent>child lifecycle tools — REST/CLI mapping pending the

@@ -96,6 +96,69 @@ class TestCampaignsListCommand:
         assert len(data) == 1
         assert data[0]["name"] == "Test"
 
+    def test_campaigns_deploy_with_confirmation_token(self, authenticated_config):
+        client = _mock_client(post_return={})
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(
+                app,
+                [
+                    "campaigns",
+                    "deploy",
+                    "camp-1",
+                    "--yes",
+                    "--confirmation-token",
+                    "tok-1",
+                ],
+            )
+        assert result.exit_code == 0
+        client.post.assert_called_once_with(
+            "/api/campaigns/camp-1/deploy",
+            json={"confirmationToken": "tok-1"},
+        )
+
+    def test_campaigns_deploy_without_token_preserves_legacy_call(self, authenticated_config):
+        client = _mock_client(post_return={})
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["campaigns", "deploy", "camp-1", "--yes"])
+        assert result.exit_code == 0
+        client.post.assert_called_once_with("/api/campaigns/camp-1/deploy")
+
+
+# ===========================================================================
+# products
+# ===========================================================================
+
+
+class TestProductsCommand:
+
+    def test_products_create_dry_run_posts_preview_request(self, authenticated_config, tmp_path):
+        payload_path = tmp_path / "product.json"
+        payload_path.write_text(
+            json.dumps({"name": "Homepage takeover", "deliveryType": "display"}),
+            encoding="utf-8",
+        )
+        client = _mock_client(post_return={"confirmationToken": "tok-2"})
+        with patch("orbiads_cli.commands.products.get_client", return_value=client):
+            result = runner.invoke(
+                app,
+                [
+                    "products",
+                    "create",
+                    "--file",
+                    str(payload_path),
+                    "--dry-run",
+                    "--confirmation-token",
+                    "tok-2",
+                ],
+            )
+        assert result.exit_code == 0
+        client.post.assert_called_once_with(
+            "/api/products",
+            json={"name": "Homepage takeover", "deliveryType": "display"},
+            params={"dryRun": "true"},
+            headers={"X-Confirmation-Token": "tok-2"},
+        )
+
 
 # ===========================================================================
 # orders list

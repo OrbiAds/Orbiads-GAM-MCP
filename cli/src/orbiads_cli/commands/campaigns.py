@@ -72,14 +72,21 @@ def read(
         handle_error(e)
 
 
-@app.command()
+@app.command("dry-run")
 def dry_run(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    job_id: str = typer.Option(None, "--job-id", help="Legacy jobs/{jobId} alternative context"),
 ):
     """Build a deployment execution plan without mutating GAM."""
     try:
-        data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run")
+        payload: dict[str, str] = {}
+        if job_id is not None:
+            payload["jobId"] = job_id
+        if payload:
+            data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run", json=payload)
+        else:
+            data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run")
         out: OutputContext = ctx.obj
         render_detail(data, out)
     except CliApiError as e:
@@ -91,10 +98,17 @@ def deploy(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
     yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Build an ExecutionPlan without deploying"),
+    confirmation_token: str = typer.Option(None, "--confirmation-token", help="Token from campaigns dry-run"),
 ):
     """Deploy a draft campaign to GAM."""
     try:
         out: OutputContext = ctx.obj
+        if dry_run:
+            data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run")
+            render_detail(data, out)
+            return
+
         # Merge local --yes with global --yes
         effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
         if not confirm(f"Deploy campaign {campaign_id}?", effective_ctx):
@@ -102,7 +116,13 @@ def deploy(
 
         info(f"Deploying campaign {campaign_id}...")
         client = get_client()
-        client.post(f"/api/campaigns/{campaign_id}/deploy")
+        if confirmation_token:
+            client.post(
+                f"/api/campaigns/{campaign_id}/deploy",
+                json={"confirmationToken": confirmation_token},
+            )
+        else:
+            client.post(f"/api/campaigns/{campaign_id}/deploy")
         success(f"Campaign {campaign_id} deployed successfully.")
     except CliApiError as e:
         handle_error(e)

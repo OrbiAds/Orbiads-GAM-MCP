@@ -1,8 +1,8 @@
 {
   "total_tools": 288,
   "counts": {
-    "FULL": 212,
-    "EXEMPT": 76
+    "FULL": 217,
+    "EXEMPT": 71
   },
   "per_area": {
     "ad_review": {
@@ -109,7 +109,8 @@
       "EXEMPT": 5
     },
     "products": {
-      "EXEMPT": 8
+      "FULL": 5,
+      "EXEMPT": 3
     },
     "reporting": {
       "FULL": 32,
@@ -169,7 +170,7 @@
     "campaigns attach-creatives",
     "campaigns deploy",
     "campaigns deploy-media",
-    "campaigns dry_run",
+    "campaigns dry-run",
     "campaigns get",
     "campaigns list",
     "campaigns pause",
@@ -356,6 +357,11 @@
     "preview share",
     "preview urls get",
     "preview urls set",
+    "products archive",
+    "products create",
+    "products get",
+    "products list",
+    "products update",
     "programmatic auctions create",
     "programmatic auctions get",
     "programmatic auctions list",
@@ -848,8 +854,60 @@
       "area": "campaign_ops",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
-      "exempt": "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "sub_actions": {
+        "deploy": {
+          "rest": "POST /api/campaigns/{id}/deploy",
+          "cli": "campaigns deploy"
+        },
+        "dry_run": {
+          "rest": "POST /api/campaigns/{id}/dry-run",
+          "cli": "campaigns dry-run"
+        },
+        "read": {
+          "rest": "GET /api/campaigns/live-recap",
+          "cli": "campaigns read"
+        },
+        "plan_deployment": {
+          "rest": "POST /mcp tools/call campaign.plan_deployment",
+          "cli": "campaigns plan-deployment"
+        },
+        "deploy_media": {
+          "rest": "POST /mcp tools/call campaign.deploy_media",
+          "cli": "campaigns deploy-media"
+        },
+        "pause": {
+          "rest": "POST /api/campaigns/{id}/pause",
+          "cli": "campaigns pause"
+        },
+        "archive": {
+          "rest": "POST /api/campaigns/{id}/archive",
+          "cli": "campaigns archive"
+        },
+        "update": {
+          "rest": "PATCH /api/campaigns/{id}",
+          "cli": "campaigns update"
+        },
+        "rollback": {
+          "rest": "POST /api/campaigns/{id}/recover",
+          "cli": "campaigns recover"
+        },
+        "create_native_style": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Pipeline-internal orchestration (Story 62.C)."
+        },
+        "ensure_template": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Pipeline-internal orchestration (Story 62.C)."
+        },
+        "create_draft": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "Campaign staging draft creation remains parent-dispatched and REST revival is outside Story 100.11."
+        }
+      },
+      "exempt": "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 actions). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
     },
@@ -1751,8 +1809,19 @@
       "area": "deals",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
-      "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
+      "sub_actions": {
+        "adcp_create": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "ADCP buy-agent path is MCP-only by design; no user-facing CLI flow in Story 100.11."
+        },
+        "adcp_preview": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "ADCP preview is MCP-only by design; mirrors preview_media_buy_from_adcp policy."
+        }
+      },
+      "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 ADCP actions). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
     },
@@ -2861,22 +2930,22 @@
       "module": "products",
       "area": "products",
       "rest": "POST /api/products/{product_id}:archive",
-      "cli": null,
+      "cli": "products archive",
       "sub_actions": null,
-      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "create_product",
       "module": "products",
       "area": "products",
       "rest": "POST /api/products",
-      "cli": null,
+      "cli": "products create",
       "sub_actions": null,
-      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "get_pricing_suggestion",
@@ -2894,11 +2963,11 @@
       "module": "products",
       "area": "products",
       "rest": "GET /api/products/{product_id}",
-      "cli": null,
+      "cli": "products get",
       "sub_actions": null,
-      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "get_products_adcp",
@@ -2916,11 +2985,11 @@
       "module": "products",
       "area": "products",
       "rest": "GET /api/products",
-      "cli": null,
+      "cli": "products list",
       "sub_actions": null,
-      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "products",
@@ -2928,8 +2997,39 @@
       "area": "products",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
-      "exempt": "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B) — consolidates create_product, list_products, get_product, update_product, archive_product, get_products_adcp, get_pricing_suggestion. REST symmetric route + CLI verb deferred to the Epic 68 migration close-out story.",
+      "sub_actions": {
+        "list": {
+          "rest": "GET /api/products",
+          "cli": "products list"
+        },
+        "get": {
+          "rest": "GET /api/products/{product_id}",
+          "cli": "products get"
+        },
+        "create": {
+          "rest": "POST /api/products",
+          "cli": "products create"
+        },
+        "update": {
+          "rest": "PATCH /api/products/{product_id}",
+          "cli": "products update"
+        },
+        "archive": {
+          "rest": "POST /api/products/{product_id}:archive",
+          "cli": "products archive"
+        },
+        "get_adcp": {
+          "rest": "NO-REST",
+          "cli": null,
+          "exempt": "ADCP buy-agent discovery remains MCP-only by design."
+        },
+        "pricing_suggestion": {
+          "rest": "GET /api/products/{product_id}/pricing-suggestion",
+          "cli": null,
+          "exempt": "Epic 67 CLI deferred."
+        }
+      },
+      "exempt": "Story 68.8 parent>child MCP dispatcher (Epic 68 Phase B). Legacy product tools now have REST + CLI parity; ADCP/pricing discovery sub-actions stay MCP-only/deferred.",
       "status": "EXEMPT",
       "cli_present": null
     },
@@ -2938,11 +3038,11 @@
       "module": "products",
       "area": "products",
       "rest": "PATCH /api/products/{product_id}",
-      "cli": null,
+      "cli": "products update",
       "sub_actions": null,
-      "exempt": "Epic 64 Product Catalog — CLI parity deferred until dedicated CLI extension story (post 64-frontend); REST shipped.",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "check_budget_alerts",
