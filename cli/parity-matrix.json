@@ -1,8 +1,8 @@
 {
   "total_tools": 288,
   "counts": {
-    "FULL": 217,
-    "EXEMPT": 71
+    "FULL": 206,
+    "EXEMPT": 82
   },
   "per_area": {
     "ad_review": {
@@ -34,8 +34,8 @@
       "EXEMPT": 1
     },
     "campaign_ops": {
-      "FULL": 9,
-      "EXEMPT": 4
+      "EXEMPT": 11,
+      "FULL": 2
     },
     "creative_qa": {
       "FULL": 7,
@@ -45,8 +45,8 @@
       "FULL": 1
     },
     "creatives": {
-      "FULL": 45,
-      "EXEMPT": 2
+      "FULL": 43,
+      "EXEMPT": 4
     },
     "dai_skill": {
       "EXEMPT": 1
@@ -73,8 +73,8 @@
       "EXEMPT": 2
     },
     "line_items": {
-      "FULL": 16,
-      "EXEMPT": 1
+      "FULL": 14,
+      "EXEMPT": 3
     },
     "live_stream": {
       "EXEMPT": 1
@@ -841,11 +841,11 @@
       "tool": "archive_campaign",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/archive",
+      "rest": "NO-REST",
       "cli": "campaigns archive",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — campaign archive is MCP-only (campaign.archive); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -856,8 +856,9 @@
       "cli": null,
       "sub_actions": {
         "deploy": {
-          "rest": "POST /api/campaigns/{id}/deploy",
-          "cli": "campaigns deploy"
+          "rest": "POST /mcp tools/call campaign.deploy",
+          "cli": "campaigns deploy",
+          "exempt": "Story 100.14 — campaign deploy is MCP/jobs-only (web deploy = POST /api/jobs/{id}/deploy); no REST on campaigns.py."
         },
         "dry_run": {
           "rest": "POST /api/campaigns/{id}/dry-run",
@@ -876,20 +877,24 @@
           "cli": "campaigns deploy-media"
         },
         "pause": {
-          "rest": "POST /api/campaigns/{id}/pause",
-          "cli": "campaigns pause"
+          "rest": "NO-REST",
+          "cli": "campaigns pause",
+          "exempt": "Story 100.14 — campaign pause is MCP-only (campaign.pause); no REST route on the READ-only campaigns router."
         },
         "archive": {
-          "rest": "POST /api/campaigns/{id}/archive",
-          "cli": "campaigns archive"
+          "rest": "NO-REST",
+          "cli": "campaigns archive",
+          "exempt": "Story 100.14 — campaign archive is MCP-only (campaign.archive); no REST route on the READ-only campaigns router."
         },
         "update": {
-          "rest": "PATCH /api/campaigns/{id}",
-          "cli": "campaigns update"
+          "rest": "NO-REST",
+          "cli": "campaigns update",
+          "exempt": "Story 100.14 — campaign update is MCP-only (campaign.update); no REST route on the READ-only campaigns router."
         },
         "rollback": {
-          "rest": "POST /api/campaigns/{id}/recover",
-          "cli": "campaigns recover"
+          "rest": "NO-REST",
+          "cli": "campaigns recover",
+          "exempt": "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback); no REST route on the READ-only campaigns router."
         },
         "create_native_style": {
           "rest": "NO-REST",
@@ -926,22 +931,22 @@
       "tool": "create_licas",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "rest": "NO-REST",
       "cli": "campaigns attach-creatives",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — LICA creation is MCP-only (campaign.create_licas); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
       "tool": "create_line_items_batch",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/line-items",
+      "rest": "NO-REST",
       "cli": "campaigns add-line-items",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -959,11 +964,11 @@
       "tool": "deploy_campaign",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/deploy",
+      "rest": "NO-REST",
       "cli": "campaigns deploy",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — campaign deploy is MCP/jobs-only (web deploy = POST /api/jobs/{id}/deploy); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -992,11 +997,11 @@
       "tool": "pause_campaign",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/pause",
+      "rest": "NO-REST",
       "cli": "campaigns pause",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — campaign pause is MCP-only (campaign.pause); no REST route on the READ-only campaigns router.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -1014,22 +1019,22 @@
       "tool": "rollback_resources",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "POST /api/campaigns/{id}/recover",
+      "rest": "NO-REST",
       "cli": "campaigns recover",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
       "tool": "update_campaign",
       "module": "campaign_ops",
       "area": "campaign_ops",
-      "rest": "PATCH /api/campaigns/{campaign_id}",
+      "rest": "NO-REST",
       "cli": "campaigns update",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — campaign update is MCP-only (campaign.update); REST route removed from campaigns.py.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -1213,22 +1218,22 @@
       "tool": "associate_creative",
       "module": "creatives",
       "area": "creatives",
-      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "rest": "NO-REST",
       "cli": "campaigns attach-creatives",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
       "tool": "bulk_associate_creatives",
       "module": "creatives",
       "area": "creatives",
-      "rest": "POST /api/campaigns/{id}/line-items/{li}/creatives",
+      "rest": "NO-REST",
       "cli": "campaigns attach-creatives",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -2335,11 +2340,11 @@
       "tool": "create_line_items",
       "module": "line_items",
       "area": "line_items",
-      "rest": "POST /api/campaigns/{id}/line-items",
+      "rest": "NO-REST",
       "cli": "campaigns add-line-items",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
@@ -2456,11 +2461,11 @@
       "tool": "update_line_item_targeting",
       "module": "line_items",
       "area": "line_items",
-      "rest": "PATCH /api/campaigns/{id}/line-items/{li}/targeting",
+      "rest": "NO-REST",
       "cli": "line-items update-targeting",
       "sub_actions": null,
-      "exempt": null,
-      "status": "FULL",
+      "exempt": "Story 100.14 — line-item targeting update is MCP-only (line_items.update_targeting); REST route removed from the READ-only campaigns router.",
+      "status": "EXEMPT",
       "cli_present": true
     },
     {
