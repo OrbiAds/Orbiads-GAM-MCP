@@ -47,11 +47,15 @@ Ask the user for deal type, then follow the corresponding path:
 3. Fetch buyers: `deals(action="list_buyers")`.
 4. Fetch naming conventions: `settings(action="get_naming_conventions")`.
 5. Estimate credit cost: `deals(action="estimate_deal_cost", params={...})`.
-6. Call `deals(action="create_proposal", params={name, buyer_id, targeting, ...})` with `dry_run: true` — returns the preview object and `confirmation_token`. Show the user the diff and cost (5 cr). Wait for explicit confirmation.
-7. Call again with `confirmation_token` to execute.
-8. Add line items: `deals(action="create_proposal_line_items", params={proposal_id, ...})`. Costs 3 cr, requires a fresh `confirmation_token`.
+6. Preview ADCP: `deals(action="adcp_create", params={..., dry_run: true})` — returns a signed `ExecutionPlan` with `dealSpecs[]`, `packageCount`, `partialFailureRisk`, `estimatedCost`, and `confirmationToken`. Show the full plan to the user. If `partialFailureRisk` is present or high, call out that package 0..N-1 may remain in GAM if package N fails.
+7. Execute ADCP: `deals(action="adcp_create", params={..., confirmation_token: "<token>"})` — creates through `DealPipeline` (PMP REST / PG SOAP / PD SOAP).
+8. Add line items when needed: `deals(action="create_proposal_line_items", params={proposal_id, ...})`. Costs 3 cr, requires a fresh `confirmation_token`.
 
-On `CONFIRMATION_REQUIRED`: token expired, re-run the `dry_run` preview. On `IDEMPOTENCY_KEY_MISMATCH`: payload changed between preview and execute, re-run preview.
+### ADCP token contract
+
+- `CONFIRMATION_REQUIRED`: token absent; re-run `deals(action="adcp_create", params={..., dry_run: true})`.
+- `PAYLOAD_MISMATCH`: payload changed between preview and execute; re-run the dry-run.
+- High `partialFailureRisk`: warn the user explicitly that if package N fails after packages 0..N-1, earlier deals remain in GAM because there is no global rollback. Require explicit confirmation before execute.
 
 ## update `<deal-id>`
 
@@ -79,7 +83,8 @@ For Marketplace commentary: `deals(action="get_marketplace_comments", params={pr
 
 ## Hard rules
 
-- Never write without a `confirmation_token`.
+- Never call `deals(action="adcp_create")` without a dry-run preview first.
+- Never bypass the `confirmation_token` — `inspect.unwrap` of legacy wrappers is forbidden.
 - Always run `adcp_validate` before any Marketplace proposal creation.
 - Always estimate cost with `estimate_deal_cost` before proposing a write to the user.
 - Never surface raw buyer IDs in public-facing output.

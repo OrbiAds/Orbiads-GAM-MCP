@@ -113,7 +113,7 @@ Install our markdown-based guidelines permanently into Claude Code's memory:
    ```bash
    ./install.sh skills --copy
    ```
-This copies our 6 consolidated skill files to your `~/.claude/skills/` directory. Claude Code will automatically leverage them to prevent hallucinations and strictly apply the preview-to-execute workflow.
+This copies our 6 consolidated skill files to your `~/.claude/skills/` directory. Claude Code will automatically leverage them to prevent hallucinations and strictly apply the plan-before-mutate workflow.
 
 → Installation guides: [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
 
@@ -164,7 +164,7 @@ After installing the plugin, these `/adops` commands are available directly in C
 
 | Command | What it does |
 | --- | --- |
-| `/adops campaign` | Deploy, preview, pause, rollback — with mandatory forecast gate before any write |
+| `/adops campaign` | Read live state, plan deployment, dry-run (`ExecutionPlan`), deploy, pause, rollback — with mandatory plan→confirm→execute gate |
 | `/adops audit` | Multi-dimensional account audit: delivery, inventory, security, creatives, billing |
 | `/adops report` | Custom reports, delivery queries, CSV export, billing summaries, forecasts |
 | `/adops deal` | PMP deals, private auctions, Marketplace PG/PD proposals |
@@ -179,7 +179,7 @@ Click on any domain below to see which tools and capabilities are included:
 <details>
 <summary><b>1. Campaigns & Creative QA (orbiads-campaigns)</b></summary>
 
-*   `campaign` — Create, update, pause, and rollback campaigns.
+*   `campaign` — Read live campaign state, plan deployment, dry-run, deploy, pause, and rollback campaigns.
 *   `orders` — Create and list orders, contacts, and roles.
 *   `line_items` — Define line item delivery rules, CPMs, and targeting logic.
 *   `creatives` — Upload creatives (images, HTML5, video/audio) and configure native styles.
@@ -239,9 +239,10 @@ Click on any domain below to see which tools and capabilities are included:
 
 ## Safety by Design
 
-Every write action requires explicit confirmation. No campaign goes live by accident.
+Every write action requires an explicit `ExecutionPlan` preview and confirmation token. No campaign goes live by accident.
 
-- **Dry-run mode** on all deployment actions — preview before you push
+- **Plan-before-mutate** on campaign, deal, and product writes — preview the signed `ExecutionPlan` before you push
+- **Dry-run mode** on all deployment actions — `confirmationToken` TTL 300 seconds
 - **Forecast gate** before inventory commits — availability verified upfront
 - **Audit trail** on every action — who did what, when, with what result
 - **Credit guard** — read operations are always free, writes deduct credits transparently

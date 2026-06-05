@@ -85,6 +85,14 @@ If `get_naming_conventions` returns null templates (user has not configured nami
 
 ## Workflow Steps
 
+### Step 0 — Read current state (if campaign exists)
+
+If a `campaign_id` is provided for editing, resuming, or diagnosing an existing campaign:
+
+call `campaign(action="read", params={campaign_id})`
+
+This returns a `CampaignRecap` assembled live from GAM: order → line items → LICAs → creatives + targeting. Use it to ground recommendations in real network state before proposing any edit. **Do not rely on stored data or previous LLM context for GAM state.**
+
 ### Phase 0 — Bootstrap & Configuration
 
 **Pre-condition:** Active network with confirmed `tenantId` and `networkCode`.
@@ -230,6 +238,20 @@ If no preset matches, proceed with manual discovery:
 
 **Output:** Created `creativeIds`, confirmed assignments. Pass to Phase 6.
 
+### Step 5b — Dry-run (mandatory before generic deploy)
+
+call `campaign(action="dry_run", params={campaign_id})`
+
+Review the `ExecutionPlan`:
+
+- `mutations[]`: counts of orders / line items / creatives / LICAs to be written
+- `risks[]`: irreversible or hard-to-rollback operations
+- `warnings[]`: inventory, billing, or naming issues
+- `estimatedCost`: credits required
+- `confirmationToken`: valid 5 minutes
+
+Surface the full plan to the user before calling deploy.
+
 ### Phase 6 — QA & Preview
 
 **Goal:** Last quality gate before going live. Never skip this phase.
@@ -242,8 +264,8 @@ If no preset matches, proceed with manual discovery:
    - CLI: `orbiads creatives get --id <id> --json` (check SSL fields)
 
 3. **Dry-run deployment** — simulate without executing.
-   - MCP: uses `deploy_campaign` with `dry_run=True`
-   - CLI: `orbiads campaigns deploy <id> --dry-run --json`
+   - MCP: uses `campaign(action="dry_run", params={campaign_id})`
+   - CLI: `orbiads campaigns dry-run <id> --json`
 
 4. **Creative coverage check** — verify every line item has at least one matching creative.
    - MCP: uses `check_creative_coverage`
@@ -282,8 +304,8 @@ If no preset matches, proceed with manual discovery:
    - MCP: uses `approve_order`
 
 2. **Deploy the campaign:**
-   - MCP: uses `deploy_campaign` (without `dry_run`)
-   - CLI: `orbiads campaigns deploy <id> --yes --json`
+   - MCP: uses `campaign(action="deploy", params={campaign_id, confirmation_token})`
+   - CLI: `orbiads campaigns deploy <id> --confirmation-token <token> --json`
    - **Requires explicit user confirmation.** Never auto-deploy.
 
 3. **Monitor initial delivery** (first 24h):

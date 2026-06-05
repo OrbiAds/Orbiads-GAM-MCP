@@ -15,10 +15,10 @@ Every write costs credits. Every write requires explicit user confirmation throu
 
 | User intent | Verb | Parent MCP tools | Notes |
 | --- | --- | --- | --- |
-| "Deploy a campaign" / "launch a campaign" | **campaign** | `campaign`, `orders`, `line_items`, `creatives`, `creative_qa` | State machine: build → validate → preview → confirm → execute. See `references/campaign-workflow.md`. |
+| "Deploy a campaign" / "launch a campaign" | **campaign** | `campaign`, `orders`, `line_items`, `creatives`, `creative_qa` | Cycle: read → intent → dry_run (signed `ExecutionPlan`) → confirm → deploy. For media: plan_deployment → deploy_media. |
 | "Audit my account" / "what's wrong with my GAM setup" | **audit** | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` | Multi-dimensional. Parallel subagents via Task tool — see `agents/` directory. |
 | "Show me delivery" / "fetch a report" | **report** | `reporting` | REST Interactive Reports API. Free. Build query → run → poll → CSV. |
-| "Create a deal" / "programmatic activation" | **deal** | `deals`, `companies` | Same preview→confirm pattern as campaigns. |
+| "Create a deal" / "programmatic activation" | **deal** | `deals`, `companies` | ADCP: `adcp_create` with `dry_run=true` → `ExecutionPlan` → `confirmation_token` → execute. Same pattern for Marketplace proposals. |
 | "Upload a creative" / "QA my creatives" | **creative** | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill` | Compliance scan, SSL validation, preview URLs. |
 | "Show me my ad units" / "manage inventory" | **inventory** | `inventory`, `placements`, `targeting`, `blueprint` | Audit + blueprint pattern. Some writes 0.5 credits. |
 | "Multi-user / team / labels / sites" | **admin** | `gam_admin` | Epic 65 surface, 48 actions across teams / sites / labels / custom-fields. |
@@ -49,9 +49,12 @@ For any write-bearing intent (campaign deploy, deal create, creative upload, inv
    - Read state (list_advertisers, list_orders, list_ad_units, etc.)
    - Compose the payload (Pydantic-validated by the parent tool)
 
-2. PREVIEW              (free or 0.0 cost)
-   - Call parent_tool(action=<verb>, params={..., dry_run=true})
-   - Server returns: { preview: {...}, confirmation_token: "<sha256-locked>", estimated_cost: N }
+2. PREVIEW              (free)
+   - Call parent_tool(action=<verb>, params={..., dry_run: true})
+   - Server returns ExecutionPlan:
+       { operation, resourceType, preview, mutations[], risks[],
+         warnings[], estimatedCost, currentBalance, expiresIn: 300,
+         confirmationToken }
 
 3. RENDER PREVIEW to USER
    - Show the diff: what will change in GAM, exact resource IDs (when known)
@@ -71,6 +74,7 @@ For any write-bearing intent (campaign deploy, deal create, creative upload, inv
 **Hard rules** (never bypass):
 
 - ❌ Never call `action="deploy"` (or any write) without a `confirmation_token` ≤ 5 min old.
+- ❌ Never call `deals(action="adcp_create")` without a dry-run preview and matching `confirmation_token`.
 - ❌ Never retry a failed write more than 2 times in a row. GAM SOAP is not idempotent — surface the error.
 - ❌ Never bypass `billing_guard`. Reads are free, writes cost credits, period.
 - ❌ Never invent a `tenantId` / `networkCode`. Always derive from `auth` tools.

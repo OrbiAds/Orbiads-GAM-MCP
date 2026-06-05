@@ -113,7 +113,7 @@ Installez nos guides opérationnels markdown de manière permanente dans la mém
    ```bash
    ./install.sh skills --copy
    ```
-Cela copiera nos 6 compétences consolidées dans votre dossier `~/.claude/skills/`. Claude Code les consultera automatiquement pour éviter les hallucinations et appliquer rigoureusement le workflow de validation preview-to-execute.
+Cela copiera nos 6 compétences consolidées dans votre dossier `~/.claude/skills/`. Claude Code les consultera automatiquement pour éviter les hallucinations et appliquer rigoureusement le workflow plan-before-mutate.
 
 → Guides d'installation complets : [Claude](./docs/install/claude.md) · [ChatGPT](./docs/install/chatgpt.md) · [Gemini](./docs/install/gemini.md) · [OpenAI Codex](./docs/install/openai-codex.md)
 
@@ -164,7 +164,7 @@ Après avoir installé le plugin, ces commandes `/adops` sont disponibles direct
 
 | Commande | Rôle |
 | --- | --- |
-| `/adops campaign` | Déployer, prévisualiser, suspendre, annuler — avec validation prévisionnelle obligatoire avant toute écriture |
+| `/adops campaign` | Lire l'état live, planifier le déploiement, dry-run (`ExecutionPlan`), déployer, suspendre, annuler — avec validation plan→confirm→execute obligatoire |
 | `/adops audit` | Audit de compte multidimensionnel : diffusion, inventaire, sécurité, créations, facturation |
 | `/adops report` | Rapports personnalisés, requêtes de diffusion, export CSV, synthèses de facturation, prévisions |
 | `/adops deal` | Deals PMP, enchères privées, propositions de marché (PG/PD) |
@@ -181,7 +181,7 @@ Cliquez sur un domaine pour déplier la liste des outils inclus :
 <details>
 <summary><b>1. Campagnes & QA Créations (orbiads-campaigns)</b></summary>
 
-*   `campaign` — Créer, mettre à jour, mettre en pause et annuler des campagnes.
+*   `campaign` — Lire l'état live, planifier, dry-run, déployer, mettre en pause et annuler des campagnes.
 *   `orders` — Créer et lister les ordres, contacts et rôles.
 *   `line_items` — Définir les règles de diffusion des éléments publicitaires, CPM et ciblages.
 *   `creatives` — Téléverser les créations (images, HTML5, vidéo/audio) et configurer les styles natifs.
@@ -241,9 +241,10 @@ Cliquez sur un domaine pour déplier la liste des outils inclus :
 
 ## Sécurisé par conception (Safety by Design)
 
-Chaque action d'écriture nécessite une confirmation explicite. Aucune campagne ne part en production par accident.
+Chaque action d'écriture nécessite un aperçu `ExecutionPlan` explicite et un jeton de confirmation. Aucune campagne ne part en production par accident.
 
-- **Mode Simulation (Dry-run)** sur toutes les actions de déploiement — prévisualisez avant de valider.
+- **Plan-before-mutate** sur les écritures campaign, deal et product — prévisualisez l'`ExecutionPlan` signé avant de valider.
+- **Mode Simulation (Dry-run)** sur toutes les actions de déploiement — `confirmationToken` valable 300 secondes.
 - **Validation prévisionnelle obligatoire** avant la réservation de l'inventaire — disponibilité vérifiée en amont.
 - **Journal d'audit** complet sur chaque action — qui a fait quoi, quand et avec quel résultat.
 - **Gestion des crédits transparente** — les lectures sont gratuites, les écritures déduisent des crédits de manière transparente.

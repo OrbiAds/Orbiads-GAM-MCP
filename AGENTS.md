@@ -13,7 +13,7 @@ The catalogue is organized **parent>child** (28 parent tools dispatching ~270 op
 
 | Slash command (future) | What it does | Parent MCP tools involved |
 | --- | --- | --- |
-| `/adops campaign` | Deploy / preview / pause / status / rollback — guarded forecast→preview→confirm→execute | `campaign`, `line_items`, `creatives`, `creative_qa`, `orders`, `reporting` |
+| `/adops campaign` | Read live state, plan deployment, dry-run (ExecutionPlan), deploy, pause, status, rollback — plan→confirm→execute gate | `campaign`, `line_items`, `creatives`, `creative_qa`, `orders`, `reporting` |
 | `/adops audit` | Multi-dimensional GAM account audit via parallel subagents | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` |
 | `/adops report` | Reporting queries — delivery, custom reports, CSV export, templates, billing, forecast | `reporting` |
 | `/adops deal` | Programmatic deal lifecycle — PMP, private auction, Marketplace PG/PD | `deals`, `companies`, `settings` |
@@ -22,6 +22,8 @@ The catalogue is organized **parent>child** (28 parent tools dispatching ~270 op
 | `/adops admin` | Multi-user / team / label / site (Epic 65) | `gam_admin` |
 
 Slash commands are defined in `commands/adops-*.md` (shipped in Story 81.3, Epic 81). Claude Code discovers them automatically after `claude plugin install orbiads`.
+
+> **plan-before-mutate**: all write operations (campaign deploy, deal ADCP create, product publish) require an explicit `ExecutionPlan` preview step (`dry_run: true`) before execution. The plan is signed with a `confirmationToken` (TTL 300 s). Executing without a valid token returns `CONFIRMATION_REQUIRED`.
 
 ---
 

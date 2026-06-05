@@ -10,6 +10,8 @@ model: sonnet
 
 Always confirm the tenant first: `get_my_tenant_id`. Reads are free. Writes require a confirmation token.
 
+> **Media (video/audio)**: To deploy a video or audio creative directly tied to a line item, prefer `/adops campaign plan-deployment --preset video_vast` (or `audio_*`). The plan orchestrates asset + line item + LICA in one `ExecutionPlan`. The `upload` section below remains the path for standalone creatives (image, HTML5, third-party).
+
 ## Naming conventions (always fetch before creating)
 
 Before naming any creative, call `settings(action="get_naming_conventions")` and apply the returned pattern. Typical patterns enforce advertiser code, format type, size, and date. A creative named outside the convention will be rejected at QA or cause reporting ambiguity. If no convention is configured, ask the user to confirm the name explicitly.
