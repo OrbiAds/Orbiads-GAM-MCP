@@ -73,6 +73,20 @@ def read(
 
 
 @app.command()
+def dry_run(
+    ctx: typer.Context,
+    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+):
+    """Build a deployment execution plan without mutating GAM."""
+    try:
+        data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run")
+        out: OutputContext = ctx.obj
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command()
 def deploy(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
