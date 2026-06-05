@@ -41,6 +41,9 @@ orbiads auth login
 orbiads network info
 ```
 
+> [!IMPORTANT]
+> **Avertissement PATH (Windows/macOS/Linux)** : Si vous installez le CLI via `pip` (particulièrement avec `--user`), assurez-vous que le dossier des scripts Python est ajouté à votre variable d'environnement `PATH`. Sans cela, votre terminal et les agents IA locaux (comme Claude Code ou Cursor) ne pourront ni localiser ni exécuter la commande `orbiads`. Consultez la [section Dépannage du guide CLI](docs/install/cli.md#troubleshooting) pour obtenir les commandes de configuration rapide.
+
 ### Comparatif
 
 | Critère | Serveur MCP | CLI |

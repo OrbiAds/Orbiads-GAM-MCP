@@ -226,9 +226,14 @@ When Skills are installed, these slash commands become available:
 
 ### `command not found: orbiads`
 
-Your Python scripts directory is not in PATH. Three solutions:
+Your Python scripts directory is not in your system or user `PATH`. 
 
-**1. Use pipx (recommended — fixes PATH permanently):**
+> [!IMPORTANT]
+> **Why this matters for AI Agents**: If `orbiads` is not in your `PATH`, local AI agents (like Claude Code, Cursor, or Gemini) running on your machine will fail to execute `orbiads` CLI commands, resulting in "command not found" errors.
+
+Three solutions to fix this:
+
+**1. Use pipx (recommended — fixes PATH automatically):**
 ```bash
 pip install pipx
 pipx ensurepath
@@ -242,9 +247,11 @@ pipx install orbiads-cli
 |----|---------|
 | macOS | `echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc` |
 | Linux | `echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc` |
-| Windows (PowerShell admin) | `$p = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"; [Environment]::SetEnvironmentVariable('PATH', $env:PATH + ";$p", 'User')` |
+| Windows (PowerShell - No Admin needed) | `$p = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"; [Environment]::SetEnvironmentVariable('PATH', [Environment]::GetEnvironmentVariable('PATH', 'User') + ";$p", 'User')` |
 
-**3. Use the module directly (no PATH change):**
+*Note: Restart your terminal/IDE for the PATH changes to take effect.*
+
+**3. Run via python module (no PATH change needed):**
 ```bash
 python -m orbiads_cli --version
 python -m orbiads_cli auth login
