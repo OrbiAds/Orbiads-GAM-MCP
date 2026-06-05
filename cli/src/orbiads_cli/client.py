@@ -176,6 +176,9 @@ class OrbiAdsClient:
     def post(self, path: str, **kwargs: Any) -> Any:
         return self._request("POST", path, **kwargs)
 
+    def post_raw(self, path: str, **kwargs: Any) -> Any:
+        return self._request_raw("POST", path, **kwargs)
+
     def patch(self, path: str, **kwargs: Any) -> Any:
         return self._request("PATCH", path, **kwargs)
 
@@ -236,6 +239,22 @@ class OrbiAdsClient:
 
         # Parse JSend envelope
         return self._parse_response(resp)
+
+    def _request_raw(self, method: str, path: str, **kwargs: Any) -> Any:
+        self._refreshed = False
+        resp = self._http.request(method, path, **kwargs)
+
+        if resp.status_code == 401 and not self._refreshed:
+            if self._refresh_token():
+                self._refreshed = True
+                resp = self._http.request(method, path, **kwargs)
+            else:
+                raise CliApiError(4, "Session expired. Run `orbiads auth login`.")
+
+        if resp.status_code == 429:
+            resp = self._retry_with_backoff(method, path, **kwargs)
+
+        return self._parse_raw_response(resp)
 
     # -- token refresh -------------------------------------------------------
 
@@ -343,6 +362,37 @@ class OrbiAdsClient:
             raise CliApiError(exit, message, code, details)
 
         return body.get("data")
+
+    @staticmethod
+    def _parse_raw_response(resp: httpx.Response) -> Any:
+        """Parse non-JSend JSON responses such as MCP JSON-RPC payloads."""
+        try:
+            body = resp.json()
+        except Exception:
+            if resp.status_code >= 400:
+                raise CliApiError(
+                    _exit_code(resp.status_code),
+                    f"HTTP {resp.status_code} (non-JSON response)",
+                )
+            return None
+
+        if resp.status_code >= 400:
+            err = body.get("error") if isinstance(body, dict) else None
+            message = err.get("message", f"HTTP {resp.status_code}") if isinstance(err, dict) else f"HTTP {resp.status_code}"
+            code = err.get("code", "") if isinstance(err, dict) else ""
+            details = err.get("details", {}) if isinstance(err, dict) and isinstance(err.get("details"), dict) else {}
+            raise CliApiError(_exit_code(resp.status_code), message, code, details)
+
+        if isinstance(body, dict) and isinstance(body.get("error"), dict):
+            err = body["error"]
+            message = str(err.get("message", "MCP request failed"))
+            code = str(err.get("code", ""))
+            details = err.get("data", {}) if isinstance(err.get("data"), dict) else {}
+            raise CliApiError(1, message, code, details)
+
+        if isinstance(body, dict) and "result" in body:
+            return body["result"]
+        return body
 
     # -- cleanup -------------------------------------------------------------
 

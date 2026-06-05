@@ -252,3 +252,65 @@ def recover(
         render_detail(data, out)
     except CliApiError as e:
         handle_error(e)
+
+
+def _mcp_campaign_payload(action: str, payload: dict) -> dict:
+    """Build a Streamable HTTP MCP tools/call payload for the campaign parent."""
+    return {
+        "jsonrpc": "2.0",
+        "id": f"campaign-{action}",
+        "method": "tools/call",
+        "params": {
+            "name": "campaign",
+            "arguments": {
+                "action": action,
+                "params": payload,
+            },
+        },
+    }
+
+
+@app.command("plan-deployment")
+def plan_deployment(
+    ctx: typer.Context,
+    preset: str = typer.Option(..., "--preset", help="Deployment preset, e.g. video_vast"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with preset params"),
+):
+    """Create a media deployment execution plan through the campaign MCP parent."""
+    out: OutputContext = ctx.obj
+    preset_params = _load_json_payload(file)
+    payload = {
+        "preset": preset,
+        "params": preset_params,
+    }
+    try:
+        data = get_client().post_raw("/mcp", json=_mcp_campaign_payload("plan_deployment", payload))
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("deploy-media")
+def deploy_media(
+    ctx: typer.Context,
+    confirmation_token: str = typer.Option(..., "--confirmation-token", help="Token from plan-deployment"),
+    preset: str = typer.Option(..., "--preset", help="Deployment preset used for the plan"),
+    file: str = typer.Option(..., "--file", "-f", help="JSON file with the same preset params"),
+    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+):
+    """Execute a planned media deployment through the campaign MCP parent."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(f"Deploy media campaign with preset {preset}?", effective_ctx):
+        raise typer.Exit(code=0)
+    preset_params = _load_json_payload(file)
+    payload = {
+        "preset": preset,
+        "params": preset_params,
+        "confirmationToken": confirmation_token,
+    }
+    try:
+        data = get_client().post_raw("/mcp", json=_mcp_campaign_payload("deploy_media", payload))
+        render_detail(data, out)
+    except CliApiError as e:
+        handle_error(e)

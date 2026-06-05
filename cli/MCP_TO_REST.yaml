@@ -76,10 +76,17 @@ tools:
   create_line_items_batch: {area: campaign_ops, rest: "POST /api/campaigns/{id}/line-items", cli: "campaigns add-line-items"}          # 61.4
   create_licas:            {area: campaign_ops, rest: "POST /api/campaigns/{id}/line-items/{li}/creatives", cli: "campaigns attach-creatives"}  # 61.4
   rollback_resources:      {area: campaign_ops, rest: "POST /api/campaigns/{id}/recover", cli: "campaigns recover"}                    # 61.4
+  plan_deployment_action:  {area: campaign_ops, rest: "POST /mcp tools/call campaign.plan_deployment", cli: "campaigns plan-deployment"} # 100.8 MCP parent passthrough
+  deploy_media_action:     {area: campaign_ops, rest: "POST /mcp tools/call campaign.deploy_media", cli: "campaigns deploy-media"}       # 100.8 MCP parent passthrough
   ensure_template:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   campaign:                {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 68.7h parent>child MCP dispatcher (Epic 68 Phase B). Legacy campaign_ops wrappers keep their existing FULL/EXEMPT parity and pipeline-internal boundaries during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7h
+
+  # Epic 98 B-series parent tools: SOAP-only / feature-gated surfaces with parent>child MCP dispatch.
+  yield_skill:             {area: yield_skill, rest: "NO-REST", cli: null, exempt: "Epic 98-B1/B2 SOAP-only yield and forecast-governance parent. Dedicated CLI/REST parity is outside the shipped B-series scope."}
+  video_ops:               {area: video_ops, rest: "NO-REST", cli: null, exempt: "Epic 98-B3/B5 SOAP-only video monetization parent. Video-capable network operations remain MCP-only pending a dedicated CLI/REST story."}
+  dai_skill:               {area: dai_skill, rest: "NO-REST", cli: null, exempt: "Epic 98-B6/B9 DAI-network-only parent. DAI SOAP operations remain MCP-only pending a dedicated CLI/REST story."}
 
   # ── creative_qa (7 + 1 parent) — no REST surface at all ──────────────────────
   creative_qa:               {area: creative_qa, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy creative_qa tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6

@@ -1,8 +1,8 @@
 {
-  "total_tools": 283,
+  "total_tools": 288,
   "counts": {
-    "FULL": 210,
-    "EXEMPT": 73
+    "FULL": 212,
+    "EXEMPT": 76
   },
   "per_area": {
     "ad_review": {
@@ -34,7 +34,7 @@
       "EXEMPT": 1
     },
     "campaign_ops": {
-      "FULL": 7,
+      "FULL": 9,
       "EXEMPT": 4
     },
     "creative_qa": {
@@ -47,6 +47,9 @@
     "creatives": {
       "FULL": 45,
       "EXEMPT": 2
+    },
+    "dai_skill": {
+      "EXEMPT": 1
     },
     "deals": {
       "EXEMPT": 17,
@@ -122,6 +125,12 @@
     },
     "tenant_catalog": {
       "EXEMPT": 1
+    },
+    "video_ops": {
+      "EXEMPT": 1
+    },
+    "yield_skill": {
+      "EXEMPT": 1
     }
   },
   "cli_commands_detected": [
@@ -159,9 +168,13 @@
     "campaigns archive",
     "campaigns attach-creatives",
     "campaigns deploy",
+    "campaigns deploy-media",
+    "campaigns dry_run",
     "campaigns get",
     "campaigns list",
     "campaigns pause",
+    "campaigns plan-deployment",
+    "campaigns read",
     "campaigns recover",
     "campaigns update",
     "config set",
@@ -207,6 +220,7 @@
     "creatives upload-companion",
     "creatives upload-custom",
     "creatives upload-html5",
+    "creatives upload-image-redirect",
     "creatives upload-images",
     "creatives upload-internal-redirect",
     "creatives upload-native-classic",
@@ -895,6 +909,17 @@
       "cli_present": true
     },
     {
+      "tool": "deploy_media_action",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /mcp tools/call campaign.deploy_media",
+      "cli": "campaigns deploy-media",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
       "tool": "ensure_template",
       "module": "campaign_ops",
       "area": "campaign_ops",
@@ -911,6 +936,17 @@
       "area": "campaign_ops",
       "rest": "POST /api/campaigns/{id}/pause",
       "cli": "campaigns pause",
+      "sub_actions": null,
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
+    },
+    {
+      "tool": "plan_deployment_action",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /mcp tools/call campaign.plan_deployment",
+      "cli": "campaigns plan-deployment",
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",
@@ -1256,7 +1292,7 @@
       "sub_actions": null,
       "exempt": null,
       "status": "FULL",
-      "cli_present": false
+      "cli_present": true
     },
     {
       "tool": "create_internal_redirect_creative",
@@ -1609,6 +1645,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "dai_skill",
+      "module": "dai_skill",
+      "area": "dai_skill",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Epic 98-B6/B9 DAI-network-only parent. DAI SOAP operations remain MCP-only pending a dedicated CLI/REST story.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "archive_proposal",
@@ -3620,6 +3667,28 @@
       "cli": null,
       "sub_actions": null,
       "exempt": "Story 78.1 parent>child tenant catalog scan orchestration. Long-running scan UX is MCP-first while Cloud Function scan implementation matures.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "video_ops",
+      "module": "video_ops",
+      "area": "video_ops",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Epic 98-B3/B5 SOAP-only video monetization parent. Video-capable network operations remain MCP-only pending a dedicated CLI/REST story.",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
+      "tool": "yield_skill",
+      "module": "yield_skill",
+      "area": "yield_skill",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Epic 98-B1/B2 SOAP-only yield and forecast-governance parent. Dedicated CLI/REST parity is outside the shipped B-series scope.",
       "status": "EXEMPT",
       "cli_present": null
     }

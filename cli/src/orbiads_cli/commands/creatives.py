@@ -679,6 +679,36 @@ def upload_vast_redirect(
         handle_error(e)
 
 
+@app.command("upload-image-redirect")
+def upload_image_redirect(
+    ctx: typer.Context,
+    advertiser_id: int = typer.Option(..., "--advertiser-id", help="GAM advertiser ID"),
+    name: str = typer.Option(..., "--name", help="Creative name in GAM"),
+    image_url: str = typer.Option(..., "--image-url", help="Remote image URL"),
+    width: int = typer.Option(..., "--width", help="Creative width in pixels"),
+    height: int = typer.Option(..., "--height", help="Creative height in pixels"),
+    destination_url: str = typer.Option(None, "--destination-url", help="Optional click-through URL"),
+    alt_text: str = typer.Option(None, "--alt-text", help="Optional accessibility alt text"),
+):
+    """Create an ImageRedirectCreative from a remote image URL."""
+    body: dict = {
+        "advertiserId": advertiser_id,
+        "name": name,
+        "imageUrl": image_url,
+        "width": width,
+        "height": height,
+    }
+    if destination_url:
+        body["destinationUrl"] = destination_url
+    if alt_text:
+        body["altText"] = alt_text
+    try:
+        data = get_client().post("/api/creatives/upload-image-redirect", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 @app.command("upload-internal-redirect")
 def upload_internal_redirect(
     ctx: typer.Context,
