@@ -21,3 +21,33 @@ exemptions:
       Story 91.6 one-shot persisted blueprint schema migration endpoint. CLI
       authoring remains on the existing blueprint parent surface until the
       Blueprint V2 builder and read-only MCP/CLI story ships.
+  - path: GET /api/gam/inventory/export
+    reason: >
+      Internal export endpoint for inventory data (CSV/XLSX). Served through
+      the inventory parent MCP tool; no dedicated CLI verb planned until
+      an inventory-export story is scoped.
+  - path: POST /api/gam/audience-segments/segment-population/action
+    reason: >
+      Audience segment population action endpoint (REST batch operation).
+      Covered via the audiences parent>child MCP tool; CLI parity deferred
+      to the Epic 68 migration close-out story.
+  - path: POST /api/gam/audience-segments/segment-population/memberships
+    reason: >
+      Audience segment population memberships endpoint (REST batch operation).
+      Covered via the audiences parent>child MCP tool; CLI parity deferred
+      to the Epic 68 migration close-out story.
+  - path: POST /api/gam/audience-segments/segment-population/results
+    reason: >
+      Audience segment population results endpoint (REST batch query).
+      Covered via the audiences parent>child MCP tool; CLI parity deferred
+      to the Epic 68 migration close-out story.
+  - path: POST /api/gam/creatives/upload/register-hosted
+    reason: >
+      Hosted creative registration endpoint for in-flight upload workflow.
+      Covered via the creatives parent>child MCP tool; no standalone CLI
+      verb planned until the hosted-creative upload CLI story ships.
+  - path: POST /api/gam/inventory/import
+    reason: >
+      Inventory import endpoint for bulk ingestion. Covered via the inventory
+      parent>child MCP tool; CLI parity deferred to the Epic 71 async-job
+      CLI story.
