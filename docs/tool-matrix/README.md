@@ -12,9 +12,9 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 ## Summary
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
-- **239 legacy child wrappers** (soft-deprecated, still routing to parents — see legacy mapping)
+- **240 legacy child wrappers** (soft-deprecated, still routing to parents — see legacy mapping)
 - **13 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **288 tools total** exposed via MCP
+- **289 tools total** exposed via MCP
 
 ## Parent tools — overview
 
@@ -40,7 +40,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_jobs` | 82 | 4 | 📖 read | [jobs_async.py](backend/src/mcp/tools/jobs_async.py#L282) |
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | [inventory.py](backend/src/mcp/tools/inventory.py#L464) |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | [jobs.py](backend/src/mcp/tools/jobs.py#L143) |
-| `line_items` | 68 | 16 | ✍️ mixed/write | [line_items.py](backend/src/mcp/tools/line_items.py#L328) |
+| `line_items` | 68 | 17 | ✍️ mixed/write | [line_items.py](backend/src/mcp/tools/line_items.py#L330) |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | [live_stream.py](backend/src/mcp/tools/live_stream.py#L95) |
 | `mcm` | — | 1 | 📖 read | [mcm.py](backend/src/mcp/tools/mcm.py#L42) |
 | `network` | 68.5 | 6 | ✍️ mixed/write | [network.py](backend/src/mcp/tools/network.py#L236) |
@@ -545,9 +545,9 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-**Source:** [backend/src/mcp/tools/line_items.py:328](backend/src/mcp/tools/line_items.py#L328) · **Actions:** 16 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/line_items.py:330](backend/src/mcp/tools/line_items.py#L330) · **Actions:** 17 · **Mode:** mixed (read + write)
 
-**Legacy wrappers:** 15 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+**Legacy wrappers:** 16 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -563,6 +563,7 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `create_batch` | 0 | ✅ | — |
 | `activate_batch` | 0 | ✅ | — |
 | `pause_batch` | 0 | ✅ | — |
+| `create` | 0 | ✅ | — |
 | `create_adexchange` | 0 | ✅ | — |
 | `create_open_bidding` | 0 | ✅ | — |
 | `create_preferred_deal` | 0 | ✅ | — |
@@ -883,7 +884,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `get_my_tenant_id` | [auth.py](backend/src/mcp/tools/auth.py#L166) | 0 | — |
 | `get_premium_rate` | [pricing.py](backend/src/mcp/tools/pricing.py#L51) | 0 | — |
 | `initiate_gam_auth` | [auth.py](backend/src/mcp/tools/auth.py#L265) | 0 | ✅ |
-| `line_item_lifecycle` | [line_items.py](backend/src/mcp/tools/line_items.py#L941) | 0 | ✅ |
+| `line_item_lifecycle` | [line_items.py](backend/src/mcp/tools/line_items.py#L1029) | 0 | ✅ |
 | `list_premium_rates` | [pricing.py](backend/src/mcp/tools/pricing.py#L37) | 0 | — |
 | `list_rate_cards` | [pricing.py](backend/src/mcp/tools/pricing.py#L23) | 0 | — |
 | `order_lifecycle` | [orders.py](backend/src/mcp/tools/orders.py#L675) | 0 | ✅ |

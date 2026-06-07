@@ -6,7 +6,7 @@
 
 # Legacy Tool Mapping — OrbiAds MCP Catalogue
 
-OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 36 parent tools. The 239 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
+OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 36 parent tools. The 240 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
 
 **Migration recommendation:** Update integrations to call the parent tool with `action: <child_name>` instead. Schedule: parents stable from Epic 68 (2026 Q2). Sunset of legacy wrappers TBD per usage telemetry.
 
@@ -27,7 +27,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `gam_features` | 3 |
 | `inventory` | 10 |
 | `jobs` | 3 |
-| `line_items` | 15 |
+| `line_items` | 16 |
 | `network` | 4 |
 | `orders` | 11 |
 | `placements` | 4 |
@@ -236,7 +236,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `get_job` | `get_job` | [backend/src/mcp/tools/jobs.py](backend/src/mcp/tools/jobs.py) |
 | `list_jobs` | `list_jobs` | [backend/src/mcp/tools/jobs.py](backend/src/mcp/tools/jobs.py) |
 
-### → `line_items` (15 legacy wrappers)
+### → `line_items` (16 legacy wrappers)
 
 | Legacy tool | Replacement action | Source |
 |---|---|---|
@@ -244,6 +244,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `approve_line_item` | `approve` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
 | `archive_line_item` | `archive` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
 | `create_adexchange_line_item` | `create_adexchange` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
+| `create_line_item` | `create` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
 | `create_line_items` | `create_batch` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
 | `create_open_bidding_line_item` | `create_open_bidding` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |
 | `create_preferred_deal_line_item` | `create_preferred_deal` | [backend/src/mcp/tools/line_items.py](backend/src/mcp/tools/line_items.py) |

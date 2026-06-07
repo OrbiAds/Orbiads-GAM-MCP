@@ -222,6 +222,7 @@ tools:
       adcp_preview: {rest: "NO-REST", cli: null, exempt: "ADCP preview is MCP-only by design; mirrors preview_media_buy_from_adcp policy."}
   line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
+  create_line_item:         {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
   pause_line_items:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/pause", cli: "line-items pause"}               # 61.4
   update_line_item:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/{line_item_id}/update", cli: "line-items update"}  # 61.4

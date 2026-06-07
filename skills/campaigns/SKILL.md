@@ -16,7 +16,7 @@ metadata:
     - line_items
     - live_stream
     - orders
-  action_count: 146
+  action_count: 147
   read_only: false
 user-invokable: false
 ---
@@ -30,7 +30,7 @@ user-invokable: false
 
 _Orchestrate end-to-end campaigns, orders, line items, creative uploads, creative QA compliance scans, and placement bindings._
 
-**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 146
+**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 147
 
 ## Tools Reference
 
@@ -244,16 +244,17 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-- **Mode:** mixed · **Actions:** 16 (11 writes, 5 reads)
-- **Source:** [`backend/src/mcp/tools/line_items.py:328`](backend/src/mcp/tools/line_items.py#L328)
+- **Mode:** mixed · **Actions:** 17 (12 writes, 5 reads)
+- **Source:** [`backend/src/mcp/tools/line_items.py:330`](backend/src/mcp/tools/line_items.py#L330)
 
-> **Legacy wrappers:** 15 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 16 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
 | `activate_batch` | 0 | yes | — |
 | `approve` | 0 | yes | — |
 | `archive` | 0 | yes | — |
+| `create` | 0 | yes | — |
 | `create_adexchange` | 0 | yes | — |
 | `create_batch` | 0 | yes | — |
 | `create_open_bidding` | 0 | yes | — |
