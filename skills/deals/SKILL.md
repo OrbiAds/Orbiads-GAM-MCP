@@ -139,7 +139,7 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 7 (3 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/products.py:479`](backend/src/mcp/tools/products.py#L479)
+- **Source:** [`backend/src/mcp/tools/products.py:486`](backend/src/mcp/tools/products.py#L486)
 
 > **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

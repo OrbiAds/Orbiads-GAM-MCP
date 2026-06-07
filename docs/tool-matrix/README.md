@@ -49,7 +49,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `pql` | 68.2 | 3 | 📖 read | [pql.py](backend/src/mcp/tools/pql.py#L341) |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | [prebid_skill.py](backend/src/mcp/tools/prebid_skill.py#L458) |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | [preview.py](backend/src/mcp/tools/preview.py#L605) |
-| `products` | 68.8 | 7 | ✍️ mixed/write | [products.py](backend/src/mcp/tools/products.py#L479) |
+| `products` | 68.8 | 7 | ✍️ mixed/write | [products.py](backend/src/mcp/tools/products.py#L486) |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | [reporting.py](backend/src/mcp/tools/reporting.py#L1402) |
 | `settings` | 68.1 | 16 | ✍️ mixed/write | [settings.py](backend/src/mcp/tools/settings.py#L545) |
 | `targeting` | 68.6 | 27 | ✍️ mixed/write | [targeting.py](backend/src/mcp/tools/targeting.py#L775) |
@@ -703,7 +703,7 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
-**Source:** [backend/src/mcp/tools/products.py:479](backend/src/mcp/tools/products.py#L479) · **Actions:** 7 · **Mode:** mixed (read + write)
+**Source:** [backend/src/mcp/tools/products.py:486](backend/src/mcp/tools/products.py#L486) · **Actions:** 7 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 9 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -877,8 +877,8 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 
 | Tool | Module | Cost | Write? |
 |---|---|---|---|
-| `check_credentials` | [auth.py](backend/src/mcp/tools/auth.py#L541) | 0 | — |
-| `disconnect_gam` | [auth.py](backend/src/mcp/tools/auth.py#L601) | 0 | ✅ |
+| `check_credentials` | [auth.py](backend/src/mcp/tools/auth.py#L549) | 0 | — |
+| `disconnect_gam` | [auth.py](backend/src/mcp/tools/auth.py#L609) | 0 | ✅ |
 | `gam_audit` | [gam_audit.py](backend/src/mcp/tools/gam_audit.py#L121) | 0 | — |
 | `get_my_tenant_id` | [auth.py](backend/src/mcp/tools/auth.py#L166) | 0 | — |
 | `get_premium_rate` | [pricing.py](backend/src/mcp/tools/pricing.py#L51) | 0 | — |
