@@ -8,7 +8,7 @@ metadata:
     - pql
     - preview
     - reporting
-  action_count: 38
+  action_count: 39
   read_only: false
 user-invokable: false
 ---
@@ -22,7 +22,7 @@ user-invokable: false
 
 _Run delivery and inventory reports, check prospective or standalone availability forecasts, and execute PQL queries._
 
-**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 38
+**Mode:** mixed (read + write) · **Tools Included:** 4 · **Total Actions:** 39
 
 ## Tools Reference
 
@@ -42,7 +42,7 @@ _MCM read-only operations._
 _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
 - **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
-- **Source:** [`backend/src/mcp/tools/pql.py:336`](backend/src/mcp/tools/pql.py#L336)
+- **Source:** [`backend/src/mcp/tools/pql.py:341`](backend/src/mcp/tools/pql.py#L341)
 
 > **Legacy wrappers:** 1 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -71,8 +71,8 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 31 (7 writes, 24 reads)
-- **Source:** [`backend/src/mcp/tools/reporting.py:1361`](backend/src/mcp/tools/reporting.py#L1361)
+- **Mode:** mixed · **Actions:** 32 (7 writes, 25 reads)
+- **Source:** [`backend/src/mcp/tools/reporting.py:1402`](backend/src/mcp/tools/reporting.py#L1402)
 
 > **Legacy wrappers:** 31 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -99,6 +99,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `get_prospective_delivery_forecast` | 0 | — | — |
 | `get_report_date_ranges` | 0 | — | — |
 | `get_report_dimensions` | 0 | — | — |
+| `get_report_download_link` | 0 | — | — |
 | `get_report_metrics` | 0 | — | — |
 | `get_report_result` | 0 | — | — |
 | `get_standalone_forecast` | 0 | — | — |

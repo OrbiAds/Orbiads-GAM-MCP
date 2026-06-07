@@ -6,7 +6,7 @@
 
 # Legacy Tool Mapping — OrbiAds MCP Catalogue
 
-OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 36 parent tools. The 237 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
+OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools to a parent>child design with 36 parent tools. The 239 pre-refactor child tools are kept as **soft-deprecated wrappers** that route to their parent. They emit a `deprecated_tool_called` analytics event on use.
 
 **Migration recommendation:** Update integrations to call the parent tool with `action: <child_name>` instead. Schedule: parents stable from Epic 68 (2026 Q2). Sunset of legacy wrappers TBD per usage telemetry.
 
@@ -18,7 +18,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `audit` | 1 |
 | `audit_skill` | 2 |
 | `billing` | 2 |
-| `campaign` | 10 |
+| `campaign` | 12 |
 | `companies` | 12 |
 | `creative_assets` | 18 |
 | `creative_qa` | 7 |
@@ -70,7 +70,7 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `get_credit_balance` | `get_credit_balance` | [backend/src/mcp/tools/billing.py](backend/src/mcp/tools/billing.py) |
 | `list_transactions` | `list_transactions` | [backend/src/mcp/tools/billing.py](backend/src/mcp/tools/billing.py) |
 
-### → `campaign` (10 legacy wrappers)
+### → `campaign` (12 legacy wrappers)
 
 | Legacy tool | Replacement action | Source |
 |---|---|---|
@@ -80,8 +80,10 @@ OrbiAds Epic 68 / 76 refactored the MCP catalogue from a flat list of ~270 tools
 | `create_line_items_batch` | `create_line_items_batch` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `create_native_style` | `create_native_style` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `deploy_campaign` | `deploy` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
+| `deploy_media_action` | `deploy_media` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `ensure_template` | `ensure_template` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `pause_campaign` | `pause` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
+| `plan_deployment_action` | `plan_deployment` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `rollback_resources` | `rollback` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 | `update_campaign` | `update` | [backend/src/mcp/tools/campaign_ops.py](backend/src/mcp/tools/campaign_ops.py) |
 

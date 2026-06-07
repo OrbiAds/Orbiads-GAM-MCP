@@ -83,7 +83,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
 - **Mode:** mixed · **Actions:** 28 (15 writes, 13 reads)
-- **Source:** [`backend/src/mcp/tools/deals.py:385`](backend/src/mcp/tools/deals.py#L385)
+- **Source:** [`backend/src/mcp/tools/deals.py:553`](backend/src/mcp/tools/deals.py#L553)
 
 > **Legacy wrappers:** 29 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -139,7 +139,7 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 7 (3 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/products.py:255`](backend/src/mcp/tools/products.py#L255)
+- **Source:** [`backend/src/mcp/tools/products.py:479`](backend/src/mcp/tools/products.py#L479)
 
 > **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

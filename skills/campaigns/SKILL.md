@@ -16,7 +16,7 @@ metadata:
     - line_items
     - live_stream
     - orders
-  action_count: 142
+  action_count: 146
   read_only: false
 user-invokable: false
 ---
@@ -30,7 +30,7 @@ user-invokable: false
 
 _Orchestrate end-to-end campaigns, orders, line items, creative uploads, creative QA compliance scans, and placement bindings._
 
-**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 142
+**Mode:** mixed (read + write) · **Tools Included:** 12 · **Total Actions:** 146
 
 ## Tools Reference
 
@@ -51,10 +51,10 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-- **Mode:** mixed · **Actions:** 11 (10 writes, 1 reads)
-- **Source:** [`backend/src/mcp/tools/campaign_ops.py:489`](backend/src/mcp/tools/campaign_ops.py#L489)
+- **Mode:** mixed · **Actions:** 15 (11 writes, 4 reads)
+- **Source:** [`backend/src/mcp/tools/campaign_ops.py:562`](backend/src/mcp/tools/campaign_ops.py#L562)
 
-> **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
@@ -65,10 +65,14 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 | `create_line_items_batch` | 1 | yes | required |
 | `create_native_style` | 0.5 | yes | required |
 | `deploy` | 0 | yes | — |
+| `deploy_media` | 1 | yes | required |
 | `pause` | 0 | yes | — |
 | `rollback` | 0 | yes | — |
 | `update` | 0 | yes | — |
+| `dry_run` | 0 | — | — |
 | `ensure_template` | 0 | — | — |
+| `plan_deployment` | 0 | — | — |
+| `read` | 0 | — | — |
 
 ### `orbiads:creative_assets` (Epic 68.7d)
 
