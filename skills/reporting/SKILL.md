@@ -121,6 +121,14 @@ Every write follows the **preview → confirm → execute** pattern enforced by 
 
 Token drift (any payload field changed between preview and execute) returns `IDEMPOTENCY_KEY_MISMATCH`. Refresh by re-running step 1.
 
+## Naming conventions (apply the tenant's, don't invent one)
+
+Before naming any resource you create (order, line item, creative, native style), check the tenant's naming convention with `settings(action="get_naming_conventions")`. The response carries per-entity macro templates (`orderTemplate`, `lineItemTemplate`, `creativeTemplate`, `nativeStyleTemplate`) — e.g. `"{advertiser}-{format}-{size}"`.
+
+- **If a template is set**, fill its macros from your context (`{advertiser}`, `{campaign}`, `{order}`, `{format}`, `{size}`, `{placement}`, `{YYYY}{MM}{DD}`) and pass the resolved string as the resource `name`/`displayName`. Do NOT invent a different scheme.
+- **If no template is set** (fields null), name the resource clearly yourself — the tenant has no convention to honour.
+- Report runs already auto-apply `reportNameTemplate` server-side when `name` is omitted; for the other entities, you (the agent) resolve the macros and pass the name explicitly.
+
 ## Routing back to the orchestrator
 
 This sub-skill is `user-invokable: false`. The `orbiads` orchestrator ([`../orbiads/SKILL.md`](../orbiads/SKILL.md)) routes intents to these tools based on its Quick Reference table. If you load this file directly, you bypass the orchestrator's context intake — re-route through the orchestrator unless you already know exactly which action to call.
