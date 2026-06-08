@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "com.orbiads/gam",
+  "name": "io.github.OrbiAds/gam",
   "title": "OrbiAds — Google Ad Manager",
   "description": "Automate Google Ad Manager: campaigns, line items, creatives, inventory, reporting — 51 tools.",
   "version": "1.9.0",
@@ -23,15 +23,10 @@
       "theme": "light"
     }
   ],
-  "packages": [
+  "remotes": [
     {
-      "registryType": "mcpb",
-      "identifier": "com.orbiads/gam",
-      "version": "1.9.0",
-      "transport": {
-        "type": "streamable-http",
-        "url": "https://orbiads.com/mcp"
-      }
+      "type": "streamable-http",
+      "url": "https://orbiads.com/mcp"
     }
   ]
 }
