@@ -48,6 +48,7 @@ dev = [
 
 [tool.hatch.build]
 exclude = [
+    "/.codex-tmp",
     "/.tmp-*",
     "/.venv",
     "/.pytest_cache",
