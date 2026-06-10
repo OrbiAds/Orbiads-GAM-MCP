@@ -2,20 +2,71 @@
 
 [English](README.md) · [Français](README.fr.md)
 
-![OrbiAds Terminal Mockup](./logo/terminal_mockup.png)
+<p align="center">
+  <img src="./logo/terminal_mockup.png" alt="OrbiAds terminal workflow showing Google Ad Manager checks from the command line" width="920"/>
+  <br/>
+  <sub>Hosted MCP for AI agents, plus a Python CLI for terminal and CI workflows.</sub>
+</p>
 
 [![MCP Protocol](https://img.shields.io/badge/MCP-2025--03--26-blue)](https://modelcontextprotocol.io)
 [![GAM API](https://img.shields.io/badge/GAM_API-v202605-orange)](https://developers.google.com/ad-manager/api/rel_notes)
-[![Version](https://img.shields.io/badge/version-1.7.0-green)](./version.json)
-[![CLI](https://img.shields.io/badge/CLI-pip_install_orbiads--cli-brightgreen)](./docs/install/cli.md)
-[![Works with Claude](https://img.shields.io/badge/Claude-✓-purple)](./docs/install/claude.md)
-[![Works with ChatGPT](https://img.shields.io/badge/ChatGPT-✓-teal)](./docs/install/chatgpt.md)
-[![Works with Gemini](https://img.shields.io/badge/Gemini-✓-blue)](./docs/install/gemini.md)
-[![GLAMA Registry](https://img.shields.io/badge/GLAMA-Registry-blue)](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP)
+[![Version](https://img.shields.io/badge/version-1.9.0-green)](./version.json)
+[![PyPI](https://img.shields.io/pypi/v/orbiads-cli?label=PyPI)](https://pypi.org/project/orbiads-cli/)
+[![Python](https://img.shields.io/pypi/pyversions/orbiads-cli)](./docs/install/cli.md)
+[![License](https://img.shields.io/github/license/OrbiAds/Orbiads-GAM-MCP)](./LICENSE)
+[![Docs](https://img.shields.io/badge/docs-orbiads.com-0a7cff)](https://orbiads.com/docs)
+[![GitHub stars](https://img.shields.io/github/stars/OrbiAds/Orbiads-GAM-MCP?style=social)](https://github.com/OrbiAds/Orbiads-GAM-MCP/stargazers)
+[![Works with Claude](https://img.shields.io/badge/Claude-ready-purple)](./docs/install/claude.md)
+[![Works with ChatGPT](https://img.shields.io/badge/ChatGPT-ready-teal)](./docs/install/chatgpt.md)
+[![Works with Gemini](https://img.shields.io/badge/Gemini-ready-blue)](./docs/install/gemini.md)
+[![Glama](https://img.shields.io/badge/Glama-indexed-blue)](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP)
+[![MCP.so](https://img.shields.io/badge/MCP.so-indexed-111827)](https://mcp.so/server/OrbiAds/Orbiads-GAM-MCP)
+[![Smithery](https://img.shields.io/badge/Smithery-submission_ready-f59e0b)](https://smithery.ai/new)
 
 **A skill for Claude, ChatGPT, Gemini, and OpenAI Codex that gives your AI assistant direct access to Google Ad Manager.**
 
 [**→ Get started free at orbiads.com**](https://orbiads.com) · [**★ Star this repo**](https://github.com/OrbiAds/Orbiads-GAM-MCP)
+
+---
+
+## Try in 3 Minutes
+
+### Hosted MCP, no local install
+
+1. Create a free OrbiAds account at [orbiads.com](https://orbiads.com) and connect Google Ad Manager.
+2. Add this MCP endpoint to Claude, ChatGPT, Gemini, Cursor, Codex, or Warp:
+   ```text
+   https://orbiads.com/mcp
+   ```
+3. Ask your agent:
+   ```text
+   Connect to my GAM account and show me my active networks.
+   ```
+
+### CLI smoke test
+
+```bash
+pip install orbiads-cli
+orbiads auth login
+orbiads network info
+```
+
+Want a deeper setup path? Start with the [CLI guide](./docs/install/cli.md) or the [agent install guides](./docs/install/README.md).
+
+---
+
+## Trust Signals
+
+| Signal | Status | Link |
+| --- | --- | --- |
+| Public repo | MIT licensed mirror of the OrbiAds MCP distribution | [LICENSE](./LICENSE) |
+| PyPI CLI | Published as `orbiads-cli` for terminal and CI workflows | [pypi.org/project/orbiads-cli](https://pypi.org/project/orbiads-cli/) |
+| Hosted MCP | Remote Streamable HTTP endpoint with OAuth | `https://orbiads.com/mcp` |
+| Glama | Indexed MCP registry page | [glama.ai](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP) |
+| MCP.so | Indexed MCP directory page | [mcp.so](https://mcp.so/server/OrbiAds/Orbiads-GAM-MCP) |
+| Official MCP registry | `server.json` manifest ready for registry publication | [server.json](./server.json) |
+| Smithery | Submission target prepared for hosted/external MCP listing | [smithery.ai/new](https://smithery.ai/new) |
+| Safety model | Plan → confirm → execute on write actions | [Safety docs](./docs/safety/README.md) |
 
 ---
 
