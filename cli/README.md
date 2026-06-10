@@ -4,6 +4,18 @@ Google Ad Manager from the command line. Deploy campaigns, check inventory, run 
 
 ---
 
+## Version Status
+
+- PyPI stable: `orbiads-cli 1.0.1`
+- Source tree: `orbiads-cli 1.1.0` (unreleased)
+
+`1.1.0` is a real CLI change, not just a version bump: the local client no
+longer ships a baked-in Firebase API key and requires `ORBIADS_FIREBASE_KEY`
+for refresh-token exchange. Do not publish `1.1.0` to PyPI until the CLI release
+gate is green.
+
+---
+
 ## Install (30 seconds)
 
 ```bash
@@ -21,7 +33,8 @@ Verify:
 
 ```bash
 orbiads --version
-# orbiads 1.0.1
+# PyPI install: orbiads 1.0.1
+# Local source install: orbiads 1.1.0
 ```
 
 > **`command not found`?** See [Troubleshooting](#troubleshooting) below.
@@ -150,6 +163,18 @@ orbiads config set network_id 12345  # default GAM network
 orbiads config list                  # show all settings
 ```
 
+For source builds at `1.1.0` and later, token refresh also requires:
+
+```bash
+export ORBIADS_FIREBASE_KEY="<firebase-web-api-key>"
+```
+
+Windows PowerShell:
+
+```powershell
+$env:ORBIADS_FIREBASE_KEY="<firebase-web-api-key>"
+```
+
 ---
 
 ## Troubleshooting
@@ -192,6 +217,35 @@ orbiads auth login   # re-authenticate
 orbiads network list              # see available networks
 orbiads config set network_id ID  # set the correct one
 ```
+
+---
+
+## PyPI Release Policy
+
+Publish a new `orbiads-cli` package only when the CLI package itself changes:
+CLI source code, commands, local auth/config behavior, runtime or dev
+dependencies, packaging metadata, or documentation rendered on PyPI.
+
+Do not publish PyPI for backend-only, hosted MCP-only, or remote server behavior
+changes that remain compatible with the existing CLI client.
+
+Before publishing:
+
+1. Verify the latest PyPI version.
+2. Ensure `pyproject.toml`, `src/orbiads_cli/__init__.py`, and this README agree.
+3. Run the CLI tests: `uv run pytest -q`.
+4. Build the package: `uv build`.
+5. Check the distributions: `twine check dist/*`.
+6. Upload, then verify from a clean environment with `pip install orbiads-cli==<version>`.
+
+If the source version is ahead of PyPI but the release gate is not green, keep
+the source version marked as unreleased instead of publishing or pretending the
+version exists on PyPI.
+
+Current release gate for `1.1.0`: not green. On 2026-06-10, `uv run pytest -q`
+passes collection after adding `PyYAML` to the dev extra, but the suite still
+fails on public CLI catalogue drift and MCP parity drift (`server_info`
+unmapped). PyPI therefore remains at `1.0.1`.
 
 ---
 

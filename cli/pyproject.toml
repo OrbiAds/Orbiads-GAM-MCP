@@ -39,7 +39,12 @@ Documentation = "https://orbiads.com/docs/cli"
 Repository = "https://github.com/OrbiAds/Orbiads-GAM-MCP"
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pytest-cov", "respx>=0.21"]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov",
+    "pyyaml>=6.0",
+    "respx>=0.21",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/orbiads_cli"]
