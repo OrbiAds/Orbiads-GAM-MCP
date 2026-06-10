@@ -46,5 +46,13 @@ dev = [
     "respx>=0.21",
 ]
 
+[tool.hatch.build]
+exclude = [
+    "/.tmp-*",
+    "/.venv",
+    "/.pytest_cache",
+    "/dist",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/orbiads_cli"]
