@@ -12,6 +12,11 @@ import json
 import logging
 import sys
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger("orbiads-stub")
 
@@ -25,6 +30,16 @@ AUTH_MSG = (
     "using OAuth 2.0 (Google account linked to your GAM network). "
     "See https://orbiads.com/docs/quickstart for setup instructions."
 )
+
+SERVER_INFO = {
+    "name": "OrbiAds Google Ad Manager MCP",
+    "status": "ok",
+    "auth_required_for_gam": True,
+    "transport": "streamable-http",
+    "docs": "https://orbiads.com/docs/mcp",
+    "tools_total": 50,
+    "operations_total": 290,
+}
 
 # ── Schema helpers ─────────────────────────────────────────────────────────────
 
@@ -79,6 +94,11 @@ def _standalone(name: str, description: str, props: dict, required: list[str] | 
 # ── Tool catalogue ─────────────────────────────────────────────────────────────
 
 TOOLS: list[dict] = [
+    _standalone(
+        "server_info",
+        "Public health and catalogue summary. Real Google Ad Manager operations require OAuth.",
+        {},
+    ),
 
     # -- ad_review_center ------------------------------------------------------
     _t(
@@ -1719,6 +1739,17 @@ def _handle(req: dict) -> dict | None:
         }
 
     if method == "tools/call":
+        params = req.get("params", {}) or {}
+        if params.get("name") == "server_info":
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {
+                    "content": [{"type": "text", "text": json.dumps(SERVER_INFO)}],
+                    "structuredContent": SERVER_INFO,
+                    "isError": False,
+                },
+            }
         return {
             "jsonrpc": "2.0",
             "id": req_id,
