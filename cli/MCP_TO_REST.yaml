@@ -16,6 +16,8 @@ meta:
     Tier B (Epic 62) builds routes for MCP-ONLY, then Epic 63 adds their CLI.
 
 tools:
+  server_info:               {area: server_info, rest: "NO-REST", cli: null, exempt: "Public MCP server metadata tool for transport health/catalogue info; not a GAM/REST/CLI operation."}
+
   # ── advertisers / agencies / contacts (10 + 1 parent: companies) ───
   companies:                 {area: advertisers, rest: "NO-REST", cli: null, exempt: "Story 68.7a parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under area=advertisers/agencies/contacts keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7a
   list_advertisers:          {area: advertisers, rest: "GET /api/gam/advertisers", cli: "advertisers list"}

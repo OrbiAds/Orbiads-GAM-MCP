@@ -24,8 +24,8 @@ VALID_STATUSES = {"FULL", "REST-ONLY", "MCP-ONLY", "EXEMPT", "UNMAPPED"}
 
 def _expected_total(has_68_7g_deals: bool, has_68_7h_campaign: bool = True) -> int:
     # Base bumped through Epics 87-100: report/live-stream/catalogue additions,
-    # Epic 98 B-series parents, and Story 100.8 media plan/deploy wrappers.
-    return 286 + int(has_68_7g_deals) + int(has_68_7h_campaign)
+    # Epic 98 B-series parents, Story 100.8 media wrappers, create_line_item, and server_info.
+    return 288 + int(has_68_7g_deals) + int(has_68_7h_campaign)
 
 
 @pytest.fixture(scope="module")

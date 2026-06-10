@@ -1,8 +1,8 @@
 {
-  "total_tools": 288,
+  "total_tools": 290,
   "counts": {
     "FULL": 206,
-    "EXEMPT": 82
+    "EXEMPT": 84
   },
   "per_area": {
     "ad_review": {
@@ -74,7 +74,7 @@
     },
     "line_items": {
       "FULL": 14,
-      "EXEMPT": 3
+      "EXEMPT": 4
     },
     "live_stream": {
       "EXEMPT": 1
@@ -114,6 +114,9 @@
     },
     "reporting": {
       "FULL": 32,
+      "EXEMPT": 1
+    },
+    "server_info": {
       "EXEMPT": 1
     },
     "settings": {
@@ -2337,6 +2340,17 @@
       "cli_present": true
     },
     {
+      "tool": "create_line_item",
+      "module": "line_items",
+      "area": "line_items",
+      "rest": "NO-REST",
+      "cli": "campaigns add-line-items",
+      "sub_actions": null,
+      "exempt": "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up.",
+      "status": "EXEMPT",
+      "cli_present": true
+    },
+    {
       "tool": "create_line_items",
       "module": "line_items",
       "area": "line_items",
@@ -3411,6 +3425,17 @@
       "exempt": null,
       "status": "FULL",
       "cli_present": true
+    },
+    {
+      "tool": "server_info",
+      "module": "server_info",
+      "area": "server_info",
+      "rest": "NO-REST",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "Public MCP server metadata tool for transport health/catalogue info; not a GAM/REST/CLI operation.",
+      "status": "EXEMPT",
+      "cli_present": null
     },
     {
       "tool": "create_preset",
