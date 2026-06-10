@@ -83,7 +83,7 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 _Parent inventory tool for Story 68.6._
 
 - **Mode:** mixed · **Actions:** 14 (3 writes, 11 reads)
-- **Source:** [`backend/src/mcp/tools/inventory.py:464`](backend/src/mcp/tools/inventory.py#L464)
+- **Source:** [`backend/src/mcp/tools/inventory.py:491`](backend/src/mcp/tools/inventory.py#L491)
 
 > **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -127,7 +127,7 @@ _Parent placements tool for Story 68.6._
 _Parent targeting tool for Story 68.6._
 
 - **Mode:** mixed · **Actions:** 27 (13 writes, 14 reads)
-- **Source:** [`backend/src/mcp/tools/targeting.py:775`](backend/src/mcp/tools/targeting.py#L775)
+- **Source:** [`backend/src/mcp/tools/targeting.py:778`](backend/src/mcp/tools/targeting.py#L778)
 
 > **Legacy wrappers:** 21 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

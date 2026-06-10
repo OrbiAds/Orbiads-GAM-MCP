@@ -72,7 +72,7 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 32 (7 writes, 25 reads)
-- **Source:** [`backend/src/mcp/tools/reporting.py:1402`](backend/src/mcp/tools/reporting.py#L1402)
+- **Source:** [`backend/src/mcp/tools/reporting.py:1408`](backend/src/mcp/tools/reporting.py#L1408)
 
 > **Legacy wrappers:** 31 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

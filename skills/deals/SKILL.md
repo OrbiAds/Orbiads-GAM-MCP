@@ -10,7 +10,7 @@ metadata:
     - prebid_skill
     - products
     - yield_skill
-  action_count: 74
+  action_count: 75
   read_only: false
 user-invokable: false
 ---
@@ -24,7 +24,7 @@ user-invokable: false
 
 _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/agency company profiles, and ADCP product catalogs._
 
-**Mode:** mixed (read + write) · **Tools Included:** 6 · **Total Actions:** 74
+**Mode:** mixed (read + write) · **Tools Included:** 6 · **Total Actions:** 75
 
 ## Tools Reference
 
@@ -32,13 +32,14 @@ _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-- **Mode:** mixed · **Actions:** 14 (6 writes, 8 reads)
-- **Source:** [`backend/src/mcp/tools/advertisers.py:288`](backend/src/mcp/tools/advertisers.py#L288)
+- **Mode:** mixed · **Actions:** 15 (7 writes, 8 reads)
+- **Source:** [`backend/src/mcp/tools/advertisers.py:303`](backend/src/mcp/tools/advertisers.py#L303)
 
 > **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token |
 |---|---|---|---|
+| `advertisers.archive_advertiser` | 0.5 | yes | required |
 | `advertisers.create` | 0 | yes | — |
 | `advertisers.update` | 0 | yes | — |
 | `agencies.create` | 0 | yes | — |
@@ -83,7 +84,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
 - **Mode:** mixed · **Actions:** 28 (15 writes, 13 reads)
-- **Source:** [`backend/src/mcp/tools/deals.py:553`](backend/src/mcp/tools/deals.py#L553)
+- **Source:** [`backend/src/mcp/tools/deals.py:588`](backend/src/mcp/tools/deals.py#L588)
 
 > **Legacy wrappers:** 29 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -139,7 +140,7 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 7 (3 writes, 4 reads)
-- **Source:** [`backend/src/mcp/tools/products.py:486`](backend/src/mcp/tools/products.py#L486)
+- **Source:** [`backend/src/mcp/tools/products.py:504`](backend/src/mcp/tools/products.py#L504)
 
 > **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`../../_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
