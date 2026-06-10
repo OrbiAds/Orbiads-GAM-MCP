@@ -93,7 +93,7 @@ If you (Claude) are editing this repo to add/change a feature:
 2. **Is the change to a hand-authored file?** ✅ proceed.
    - Markdown content (AGENTS.md, CLAUDE.md, README.md, skills/orbiads/SKILL.md): just edit.
    - Plugin manifest (`plugin.json`, `marketplace.json`): bump `version` if shipping a new release.
-   - CLI source (`cli/src/...`): standard Python changes + tests.
+   - CLI source (`cli/src/...`): standard Python changes + tests. **After merging, publish to PyPI** (see step 6 below).
 
 3. **Branch / commit / PR**
    - Branch: `story/81.X` (or `feature/<name>`) from `master`.
@@ -115,6 +115,24 @@ If you (Claude) are editing this repo to add/change a feature:
    - After the double-push to `orbiads-mcp/main`, trigger a new **Build** on
      [glama.ai](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP) so the registry re-indexes
      the updated tool definitions and recalculates the TDQS score.
+
+6. **CLI release to PyPI** — required whenever `cli/src/` or `cli/pyproject.toml` changes:
+
+   ```powershell
+   # 1. Bump version in cli/pyproject.toml (e.g. 1.1.0 → 1.2.0)
+   # 2. Build
+   cd orbiads/cli
+   uv build
+   # 3. Verify sdist is clean (no .codex-tmp, .venv, .pytest_cache, dist)
+   python -c "import tarfile; t=tarfile.open('dist/orbiads_cli-X.Y.Z.tar.gz','r:gz'); bad=[m for m in t.getnames() if any(x in m for x in ['.codex-tmp','.venv','.pytest_cache','/dist/'])]; print('CLEAN' if not bad else f'FAIL: {bad[:3]}')"
+   # 4. Run tests
+   uv run pytest -q --tb=short
+   # 5. Publish (token in backend/.env as PYPI_API_PASSWORD)
+   $env:UV_PUBLISH_TOKEN = (Get-Content ../../../backend/.env | Where-Object { $_ -match "^PYPI_API_PASSWORD=" }) -replace "^PYPI_API_PASSWORD=",""
+   uv publish dist/orbiads_cli-X.Y.Z-py3-none-any.whl dist/orbiads_cli-X.Y.Z.tar.gz
+   # 6. Verify live
+   Invoke-WebRequest "https://pypi.org/pypi/orbiads-cli/X.Y.Z/json" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty info | Select-Object name,version
+   ```
 
 ---
 
