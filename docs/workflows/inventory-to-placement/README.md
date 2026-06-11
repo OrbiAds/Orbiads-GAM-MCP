@@ -8,10 +8,10 @@
 
 ## Skill Composition
 
-- `bootstrap`
-- `inventory-ad-units`
-- `placements-targeting`
-- `availability-forecast` when targeting pressure must be checked before trafficking.
+- `orbiads` (orchestrator — auth context and tenant confirmation)
+- `inventory` (ad unit discovery, audit, fluid validation)
+- `orbiads` → `inventory` (placement and targeting reads and writes)
+- `reporting` (availability forecast when targeting pressure must be checked before trafficking)
 
 ## Entry Conditions
 

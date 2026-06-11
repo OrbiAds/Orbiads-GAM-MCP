@@ -21,7 +21,8 @@ Source of truth = `gam-native` (private). This repo is **read-mostly** — most 
 | `CHANGELOG.md` | ✅ generated (idempotent prepend) | same | DO NOT EDIT existing entries; new entries are prepended by the generator |
 | `docs/tool-matrix/README.md` | ✅ generated | `backend/src/mcp/tools/*.py` via AST | DO NOT EDIT |
 | `_docs/legacy-tool-mapping.md` | ✅ generated | `@deprecated_tool` decorators in `backend/src/mcp/tools/*.py` | DO NOT EDIT |
-| `skills/<parent>/SKILL.md` | ✅ generated (Story 81.2+) | parent metadata from catalogue | DO NOT EDIT |
+| `skills/<group>/SKILL.md` | ✅ generated (Story 81.2+) | group metadata from catalogue | DO NOT EDIT |
+| `skills/<group>/references/actions.md` | ✅ generated (Story 81.2+) | per-action catalogue + CLI column from `cli/parity-matrix.json` | DO NOT EDIT |
 | `skills/orbiads/SKILL.md` | ❌ hand-authored | this file | EDIT — it's the orchestrator narrative |
 | `AGENTS.md` | ❌ hand-authored | this file | EDIT — cross-LLM contract, careful with breaking changes |
 | `CLAUDE.md` | ❌ hand-authored | this file | EDIT — Claude-internal guidance |
@@ -42,7 +43,7 @@ python ../scripts/generate_skills/generate.py --check
 
 See [`AGENTS.md`](./AGENTS.md) section "Project structure" for the full tree. Highlights:
 
-- `skills/` — Agent Skills (orchestrator + 27 sub-skills, one per MCP parent tool)
+- `skills/` — Agent Skills (orchestrator + 6 consolidated dual-surface domain skills: campaigns, inventory, reporting, deals, audit, admin — each with a thin `SKILL.md` and a full `references/actions.md` generated from the catalogue)
 - `cli/` — Python CLI source (`orbiads-cli` publishable to PyPI)
 - `docs/` — install guides, tool matrix, safety
 - `_docs/` — internal docs (legacy mapping, anti-collision rules)
@@ -150,7 +151,7 @@ If you (Claude) are editing this repo to add/change a feature:
 
 ## Where to look
 
-- **What can the MCP do?** → [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) (27 parents + actions)
+- **What can the MCP do?** → [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) (generated — parent tools + action counts)
 - **Legacy → parent migration** → [`_docs/legacy-tool-mapping.md`](./_docs/legacy-tool-mapping.md)
 - **CLI commands** → [`cli/PARITY.md`](./cli/PARITY.md)
 - **Cross-LLM contract** → [`AGENTS.md`](./AGENTS.md)

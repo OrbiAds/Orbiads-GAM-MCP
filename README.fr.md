@@ -209,7 +209,7 @@ Toutes les plateformes se connectent au même point de terminaison MCP hébergé
 
 ---
 
-## 5 Commandes Slash (Claude Code)
+## 7 Commandes Slash (Claude Code)
 
 Après avoir installé le plugin, ces commandes `/adops` sont disponibles directement dans Claude Code.
 
@@ -220,12 +220,14 @@ Après avoir installé le plugin, ces commandes `/adops` sont disponibles direct
 | `/adops report` | Rapports personnalisés, requêtes de diffusion, export CSV, synthèses de facturation, prévisions |
 | `/adops deal` | Deals PMP, enchères privées, propositions de marché (PG/PD) |
 | `/adops creative` | Téléverser des créations, QA de conformité, validation SSL, URL de prévisualisation, association aux éléments |
+| `/adops inventory` | Parcourir les blocs d'annonces, gérer les placements et le ciblage, déployer des blueprints |
+| `/adops admin` | Équipes, sites, libellés, champs personnalisés, paramètres réseau (surface MCP uniquement) |
 
 ---
 
 ## Que contient ce dépôt ? (MCP Tools & Skills)
 
-L'API d'OrbiAds expose **28 outils parents** et plus de **270 actions**, consolidés dans **6 compétences d'Agent (Agent Skills)** pour optimiser l'usage du contexte de l'IA.
+L'API d'OrbiAds expose des outils parents et des centaines d'actions, organisés dans **6 compétences d'Agent (Agent Skills)** de domaine plus un orchestrateur, pour optimiser l'usage du contexte de l'IA. Voir [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) pour les comptages générés à jour.
 
 Cliquez sur un domaine pour déplier la liste des outils inclus :
 

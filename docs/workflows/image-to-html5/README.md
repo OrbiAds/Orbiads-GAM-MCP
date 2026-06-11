@@ -8,13 +8,10 @@
 
 ## Skill Composition
 
-- `bootstrap`
-- `inventory-ad-units`
-- `availability-forecast`
-- `advertiser-order-line-items`
-- low-level creative packaging via `create_html5_creative_from_files`
-- `qa-preview`
-- `deploy-reporting`
+- `orbiads` (orchestrator — auth context and tenant confirmation)
+- `inventory` (delivery scope confirmation and size validation)
+- `reporting` (availability forecast when needed)
+- `campaigns` (advertiser/order/line-item resolution, HTML5 creative upload, association, QA, and deploy gate)
 
 ## Entry Conditions
 

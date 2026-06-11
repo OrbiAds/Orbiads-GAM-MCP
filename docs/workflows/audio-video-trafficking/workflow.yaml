@@ -9,37 +9,66 @@ inputs:
   - advertiserOrderLineItemContext
   - targetingAndPlacementScope
 skills:
-  - bootstrap
-  - inventory-ad-units
-  - placements-targeting
-  - availability-forecast
-  - advertiser-order-line-items
-  - qa-preview
-  - deploy-reporting
-lowLevelTools:
-  - create_audio_creative
-  - create_video_creative
-  - associate_creative
+  - orbiads
+  - inventory
+  - reporting
+  - campaigns
 outputs:
   - richMediaCreativeIds
   - traffickingPacket
   - previewPacket
 steps:
-  - id: qualify-scope
-    skill: placements-targeting
-    mode: read_or_approved_write
-  - id: validate-supply
-    skill: availability-forecast
-    mode: optional_read
-  - id: resolve-delivery-context
-    skill: advertiser-order-line-items
-    mode: read_or_approved_write
-  - id: build-rich-media
-    toolBundle: audio-video-creative-build
-    mode: approved_write
-  - id: qa-preview-gate
-    skill: qa-preview
+  - id: auth-context-intake
+    skill: orbiads
     mode: read
+    notes: >
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
+      Confirm tenantId and active GAM network before any further step.
+
+  - id: qualify-scope
+    skill: inventory
+    mode: preview_then_write
+    notes: >
+      Call targeting(action="list_ad_units") for ad unit tree.
+      Call placements(action="list_placements") for placement coverage.
+      Call targeting(action="list_custom_targeting_keys") for taxonomy context.
+      Targeting writes (if needed) require dry_run preview + confirmation_token.
+      Read-only path: skip the write sub-steps if no taxonomy changes are required.
+
+  - id: validate-supply
+    skill: reporting
+    mode: read
+    notes: >
+      Optional step — only execute when the audio or video scope is highly constrained.
+      Call reporting(action="get_standalone_forecast") and present results to the user.
+
+  - id: resolve-delivery-context
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call companies(action="advertisers.find_or_create") to resolve the advertiser.
+      Call orders(action="find_or_create") or orders(action="get") for the order.
+      Create line items via line_items(action="create_batch", dry_run=true) → confirm → execute.
+
+  - id: build-rich-media
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      For audio: creative_assets(action="create_audio", params={name, audio_url, duration}).
+      For video (VAST): creative_assets(action="create_vast_redirect", params={vast_url, duration}).
+      For direct video: creative_assets(action="create_video") then poll
+      creatives(action="get_video_transcode_status") until COMPLETE.
+      Associate via creatives(action="associate_creative").
+      Surface manual companion or packaging dependencies explicitly instead of hiding them.
+
+  - id: qa-and-deploy-gate
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Run creative_qa(action="scan_creative_compliance") and check preview URLs.
+      Gate: no unresolved companion or coverage issue before deploy.
+      Call campaign(action="dry_run") → show ExecutionPlan → wait for user confirmation.
+      Execute with confirmation_token. Monitor with reporting(action="check_delivery_status").
 validationGates:
   - approve creative destinations and naming
   - surface manual companion handling when needed

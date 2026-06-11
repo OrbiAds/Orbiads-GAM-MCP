@@ -5,23 +5,23 @@
 
 OrbiAds is a **Google Ad Manager (GAM) copilot for AI agents**. It exposes the entire GAM operations surface (campaigns, inventory, creatives, reporting, audits, deals, billing) through two equivalent transports — a hosted MCP server (`https://orbiads.com/mcp`) and a Python CLI (`pip install orbiads-cli`) — both protected by the same per-tenant billing guard, confirmation tokens, and audit log.
 
-The catalogue is organized **parent>child** (28 parent tools dispatching ~270 operations via an `action` discriminator). New integrations should call the parent tools; the 219 pre-refactor child names remain available as soft-deprecated wrappers.
+The catalogue is organized **parent>child** (parent tools dispatching hundreds of operations via an `action` discriminator — see [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for current counts). New integrations should call the parent tools; the legacy child names remain available as soft-deprecated wrappers.
 
 ---
 
 ## Quick Reference
 
-| Slash command (future) | What it does | Parent MCP tools involved |
+| Slash command | What it does | Parent MCP tools involved |
 | --- | --- | --- |
 | `/adops campaign` | Read live state, plan deployment, dry-run (ExecutionPlan), deploy, pause, status, rollback — plan→confirm→execute gate | `campaign`, `line_items`, `creatives`, `creative_qa`, `orders`, `reporting` |
 | `/adops audit` | Multi-dimensional GAM account audit via parallel subagents | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` |
 | `/adops report` | Reporting queries — delivery, custom reports, CSV export, templates, billing, forecast | `reporting` |
 | `/adops deal` | Programmatic deal lifecycle — PMP, private auction, Marketplace PG/PD | `deals`, `companies`, `settings` |
 | `/adops creative` | Creative upload, QA, SSL validation, preview URLs, association | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill`, `settings` |
-| `/adops inventory` | Ad units + placements + targeting + blueprint | `inventory`, `placements`, `targeting`, `blueprint` |
-| `/adops admin` | Multi-user / team / label / site (Epic 65) | `gam_admin` |
+| `/adops inventory` | Ad units, placements, targeting taxonomy, blueprint — read-heavy with write gates | `inventory`, `placements`, `targeting`, `blueprint` |
+| `/adops admin` | Teams, sites, labels, custom fields — GAM network admin (MCP surface only) | `gam_admin` |
 
-Slash commands are defined in `commands/adops-*.md` (shipped in Story 81.3, Epic 81). Claude Code discovers them automatically after `claude plugin install orbiads`.
+Slash commands are defined in `commands/adops-*.md`. Claude Code discovers them automatically after `claude plugin install orbiads`.
 
 > **plan-before-mutate**: all write operations (campaign deploy, deal ADCP create, product publish) require an explicit `ExecutionPlan` preview step (`dry_run: true`) before execution. The plan is signed with a `confirmationToken` (TTL 300 s). Executing without a valid token returns `CONFIRMATION_REQUIRED`.
 
@@ -142,7 +142,7 @@ Ad units, placements, custom targeting, blueprint preferences, multi-site networ
 | Server runtime | FastAPI + FastMCP, Cloud Run europe-west1, scale-to-zero (cold start ~3 s) |
 | Storage | Firestore Native Mode (`projects/orbiads`) |
 | CLI runtime | Python 3.10+, `httpx` for HTTP, `typer` for CLI |
-| Catalogue | 28 parent tools, 219 deprecated wrappers (still functional), 24 standalones — **271 tools total**. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md). |
+| Catalogue | Parent tools + actions — current counts in [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) (generated, source of truth). Legacy child names available as deprecated wrappers. |
 
 ---
 
@@ -174,17 +174,49 @@ orbiads-gam-mcp/                       # this repo (public mirror of orbiads/ su
 ├── README.md                          # human-facing GitHub README
 ├── CHANGELOG.md                       # version history (generated)
 ├── version.json                       # semver + layer versions + GAM/MCP compatibility (generated)
-├── skills/                            # Claude Code Agent Skills
-│   ├── orbiads/                       # orchestrator skill (user-invokable: true)
-│   │   ├── SKILL.md                   # Quick Reference + routing logic + hard rules
+├── skills/                            # Claude Code Agent Skills (7 skills total)
+│   ├── orbiads/                       # orchestrator skill — user-invocable, routes by intent + surface
+│   │   ├── SKILL.md                   # routing logic, surface selection (MCP vs CLI), hard rules
 │   │   └── references/                # reference files loaded on demand
-│   └── <group>/SKILL.md               # 6 sub-skills, grouping all parent tools (user-invokable: false)
-├── docs:
-│   ├── tool-matrix/README.md          # the 28 parents + their actions (generated)
+│   ├── campaigns/                     # campaigns, orders, line items, creatives, creative QA
+│   │   ├── SKILL.md                   # thin skill body (generated)
+│   │   └── references/actions.md      # full action catalogue with CLI column (generated)
+│   ├── inventory/                     # inventory, placements, targeting, audiences, blueprint
+│   │   ├── SKILL.md
+│   │   └── references/actions.md
+│   ├── reporting/                     # reporting, preview, pql, forecasting
+│   │   ├── SKILL.md
+│   │   └── references/actions.md
+│   ├── deals/                         # deals, companies, programmatic
+│   │   ├── SKILL.md
+│   │   └── references/actions.md
+│   ├── audit/                         # audit_skill, billing, audit logs
+│   │   ├── SKILL.md
+│   │   └── references/actions.md
+│   └── admin/                         # gam_admin, network, settings, tenant_catalog
+│       ├── SKILL.md
+│       └── references/actions.md
+│
+│   Each domain skill documents MCP actions AND CLI equivalents; CLI coverage is partial
+│   and marked per action (`MCP-only`) in references/actions.md.
+│   See docs/tool-matrix/README.md for generated counts and parity details.
+│   Tenant-authored skills: see docs/custom-skills/README.md.
+│
+├── commands/                          # /adops slash commands for Claude Code
+│   ├── adops-campaign.md
+│   ├── adops-audit.md
+│   ├── adops-report.md
+│   ├── adops-deal.md
+│   ├── adops-creative.md
+│   ├── adops-inventory.md
+│   └── adops-admin.md
+├── docs/
+│   ├── tool-matrix/README.md          # parent tools + actions + costs (generated, source of truth)
+│   ├── custom-skills/README.md        # guide for tenant-authored skills
 │   ├── install/                       # per-tool install guides (claude.md, cursor.md, ...)
 │   └── safety/                        # boundaries, error codes, rollback recipes
 ├── _docs/
-│   └── legacy-tool-mapping.md         # the 219 deprecated wrappers → parents (generated)
+│   └── legacy-tool-mapping.md         # deprecated wrappers → parents (generated)
 ├── cli/                               # Python CLI source (publishable as orbiads-cli)
 │   ├── src/orbiads_cli/               # implementation
 │   ├── parity-matrix.json             # MCP↔CLI coverage matrix (semi-generated)
@@ -209,7 +241,7 @@ orbiads-gam-mcp/                       # this repo (public mirror of orbiads/ su
 ## Where to look for more
 
 - **Tool catalogue + costs** — [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) (generated, source of truth)
-- **Legacy migration** — [`_docs/legacy-tool-mapping.md`](./_docs/legacy-tool-mapping.md) (the 219 deprecated wrappers)
+- **Legacy migration** — [`_docs/legacy-tool-mapping.md`](./_docs/legacy-tool-mapping.md) (deprecated wrappers → parent tools)
 - **CLI commands** — [`cli/PARITY.md`](./cli/PARITY.md)
 - **Install guides per tool** — [`docs/install/`](./docs/install/) (Claude, Cursor, Codex, Gemini)
 - **MCP server details** — [`mcp/`](./mcp/) (config samples, auth flow)

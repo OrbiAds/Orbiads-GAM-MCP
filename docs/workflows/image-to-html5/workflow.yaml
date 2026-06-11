@@ -9,35 +9,64 @@ inputs:
   - targetSizes
   - advertiserOrderLineItemContext
 skills:
-  - bootstrap
-  - inventory-ad-units
-  - availability-forecast
-  - advertiser-order-line-items
-  - qa-preview
-  - deploy-reporting
-lowLevelTools:
-  - create_html5_creative_from_files
-  - associate_creative
+  - orbiads
+  - inventory
+  - reporting
+  - campaigns
 outputs:
   - html5CreativeIds
   - previewPacket
   - deploymentPacket
 steps:
+  - id: auth-context-intake
+    skill: orbiads
+    mode: read
+    notes: >
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
+      Confirm tenantId and active GAM network before any further step.
+
   - id: qualify-delivery-scope
-    skill: inventory-ad-units
+    skill: inventory
     mode: read
+    notes: >
+      Call targeting(action="list_ad_units") and inventory(action="list_ad_unit_sizes")
+      to confirm target sizes and delivery scope.
+      Freeze the asset bundle version before upload.
+
   - id: optional-forecast
-    skill: availability-forecast
-    mode: optional_read
-  - id: resolve-delivery-context
-    skill: advertiser-order-line-items
-    mode: read_or_approved_write
-  - id: build-upload-associate
-    toolBundle: html5-creative-upload
-    mode: approved_write
-  - id: qa-preview-gate
-    skill: qa-preview
+    skill: reporting
     mode: read
+    notes: >
+      Optional step — only execute when supply sizing is needed.
+      Call reporting(action="get_standalone_forecast") and present
+      available_units vs. units_bought to the user before proceeding.
+
+  - id: resolve-delivery-context
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call companies(action="advertisers.find_or_create") to resolve the advertiser.
+      Call orders(action="find_or_create") or orders(action="get") for the order.
+      Create line items via line_items(action="create_batch", dry_run=true) → confirm → execute.
+
+  - id: build-upload-associate
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Upload the approved bundle via creative_assets(action="create_html5_from_files") or
+      creative_assets(action="upload_html5_zip").
+      Associate the creative to line items via creatives(action="associate_creative").
+      Validate naming against settings(action="get_naming_conventions") before creation.
+
+  - id: qa-and-deploy-gate
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Run creative_qa(action="scan_creative_compliance") and
+      creative_qa(action="validate_creative_ssl").
+      Gate: both checks must pass with no blockers before deploy.
+      Call campaign(action="dry_run") → show ExecutionPlan → wait for user confirmation.
+      Execute with confirmation_token. Then call reporting(action="check_delivery_status").
 validationGates:
   - approve the exact uploaded asset bundle
   - approve preview URLs before activation

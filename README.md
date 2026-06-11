@@ -209,7 +209,7 @@ All platforms connect to the same hosted MCP endpoint at `https://orbiads.com/mc
 
 ---
 
-## 5 Slash Commands
+## 7 Slash Commands
 
 After installing the plugin, these `/adops` commands are available directly in Claude Code.
 
@@ -220,10 +220,12 @@ After installing the plugin, these `/adops` commands are available directly in C
 | `/adops report` | Custom reports, delivery queries, CSV export, billing summaries, forecasts |
 | `/adops deal` | PMP deals, private auctions, Marketplace PG/PD proposals |
 | `/adops creative` | Upload creatives, QA compliance, SSL validation, preview URLs, line item association |
+| `/adops inventory` | Browse ad units, manage placements and targeting taxonomy, run blueprints |
+| `/adops admin` | Teams, sites, labels, custom fields, network settings (MCP surface only) |
 
 ## What's Inside (MCP Tools & Skills)
 
-The OrbiAds surface maps the Google Ad Manager API into **28 parent tools** and **270+ actions**, consolidated into **6 core Agent Skills** to keep context usage clean.
+The OrbiAds surface maps the Google Ad Manager API into parent tools and hundreds of actions, organized into **6 core domain Agent Skills** plus an orchestrator, to keep context usage clean. See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the live generated tool and action counts.
 
 Click on any domain below to see which tools and capabilities are included:
 
@@ -340,12 +342,13 @@ Then start with:
 ## Repository Structure
 
 ```text
-skills/           ← 27 parent-tool sub-skills + orchestrator (generated from backend)
-commands/         ← 5 /adops slash commands for Claude Code
+skills/           ← orchestrator skill + 6 consolidated dual-surface domain skills (generated)
+                     Each domain skill has SKILL.md (thin) + references/actions.md (full catalogue)
+commands/         ← 7 /adops slash commands for Claude Code
 agents/           ← Parallel audit subagents (audit-delivery, audit-inventory, …)
 hooks/            ← Claude Code hooks (hooks.json)
 cli/              ← OrbiAds CLI package (pip install orbiads-cli)
-docs/             ← Installation guides, tool matrix, query library
+docs/             ← Installation guides, tool matrix, custom-skill authoring guide
 _docs/            ← Internal: legacy tool mapping, anti-collision rules
 .claude-plugin/   ← Claude plugin manifest (plugin.json, marketplace.json)
 AGENTS.md         ← Cross-LLM contract for Cursor, Codex, Gemini, Warp, etc.

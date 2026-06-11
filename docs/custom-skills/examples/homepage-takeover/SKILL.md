@@ -41,8 +41,8 @@ Derive tenant and network from auth tools — never hardcode them.
 
 | Step | MCP | CLI |
 |---|---|---|
-| Confirm connected user | `auth(action="check_credentials")` | `orbiads auth status` |
-| Get tenant ID | `auth(action="get_my_tenant_id")` | `orbiads auth status` |
+| Confirm connected user | `check_credentials` (standalone auth tool) | `orbiads auth status` |
+| Get tenant ID | `get_my_tenant_id` (standalone auth tool) | `orbiads auth status` |
 
 **Gate:** refuse to proceed if credentials are missing or GAM connection is not active.
 
@@ -174,7 +174,7 @@ Confirm GAM has accepted the line items and delivery is starting.
 
 ## Safety Contract
 
-- **Derive tenant and network from auth tools.** Call `auth(action="check_credentials")` or `auth(action="get_my_tenant_id")` before any action. Never hardcode a `tenantId` or `networkCode`.
+- **Derive tenant and network from auth tools.** Call the standalone `check_credentials` or `get_my_tenant_id` auth tools before any action. Never hardcode a `tenantId` or `networkCode`.
 - **Reads are free.** Call `list_ad_units`, `list_ad_unit_sizes`, `list_placements`, `get_prospective_delivery_forecast`, and `scan_creative_compliance` liberally — they cost 0 credits.
 - **Every write requires preview → confirmation_token → execute.** Call with `dry_run=true` first, show the `ExecutionPlan`, get explicit user confirmation, then re-call with the same payload + `confirmation_token`. Token TTL is 5 minutes.
 - **Never bypass `billing_guard`.** The server enforces this; client-side bypasses are not possible. Quote the credit cost before every write: "This will consume N credits. You have M remaining. Proceed?"

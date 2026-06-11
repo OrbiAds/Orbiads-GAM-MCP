@@ -10,10 +10,9 @@ inputs:
   - placementNamingRules
   - targetingRules
 skills:
-  - bootstrap
-  - inventory-ad-units
-  - placements-targeting
-  - availability-forecast
+  - orbiads
+  - inventory
+  - reporting
 outputs:
   - selectedAdUnitIds
   - placementSummary
@@ -21,18 +20,41 @@ outputs:
   - optionalForecastSummary
   - nextRecommendedSkill
 steps:
-  - id: bootstrap-context
-    skill: bootstrap
+  - id: auth-context-intake
+    skill: orbiads
     mode: read
+    notes: >
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
+      Confirm tenantId and active GAM network. Refuse to proceed if credentials are missing.
+
   - id: qualify-inventory
-    skill: inventory-ad-units
-    mode: read_or_preview
-  - id: align-placements-targeting
-    skill: placements-targeting
-    mode: read_then_approved_write
+    skill: inventory
+    mode: read
+    notes: >
+      Call targeting(action="list_ad_units") to enumerate the network tree.
+      Call targeting(action="search_ad_units") to scope by name/parent if needed.
+      Call inventory(action="audit_inventory") for structural health.
+      Output: approved ad unit subset with any anomalies documented.
+
+  - id: align-placements-and-targeting
+    skill: inventory
+    mode: preview_then_write
+    notes: >
+      Call placements(action="list_placements") to read current placement state.
+      Call targeting(action="list_custom_targeting_keys") and
+      targeting(action="get_custom_targeting_values") for taxonomy.
+      Perform device/geo/language lookups as needed.
+      For Native/Fluid: call targeting(action="validate_fluid", params={ad_unit_id}).
+      Any placement or targeting write requires dry_run preview + confirmation_token.
+
   - id: validate-supply
-    skill: availability-forecast
-    mode: optional_read
+    skill: reporting
+    mode: read
+    notes: >
+      Optional step — only execute when the new placement or targeting plan could
+      materially change available supply.
+      Call reporting(action="get_standalone_forecast") and present forecast
+      results to the user before approving writes.
 validationGates:
   - approve placement naming and grouping rules
   - approve custom targeting creation or deletion

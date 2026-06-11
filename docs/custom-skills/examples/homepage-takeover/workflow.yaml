@@ -27,7 +27,7 @@ steps:
     skill: orbiads
     mode: read
     notes: >
-      Call auth(action="check_credentials") and auth(action="get_my_tenant_id").
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
       Confirm tenantId and active GAM network before any further step.
       Refuse to proceed if credentials are missing or GAM OAuth is not active.
 

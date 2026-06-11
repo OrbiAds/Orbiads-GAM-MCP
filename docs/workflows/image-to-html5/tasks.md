@@ -15,4 +15,4 @@
 ## Handoff
 
 - return the creative IDs, association result, preview packet, and unresolved issues;
-- move next to `deploy-reporting` for approval and activation.
+- move next to the deploy gate in the `campaigns` skill for approval and activation, followed by delivery verification via `reporting`.

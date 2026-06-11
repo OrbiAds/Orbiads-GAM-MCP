@@ -8,10 +8,10 @@
 
 ## Skill Composition
 
-- `bootstrap`
-- `qa-preview`
-- `deploy-reporting`
-- `advertiser-order-line-items` when order or line-item remediation is needed before activation.
+- `orbiads` (orchestrator — auth context and tenant confirmation)
+- `campaigns` (QA, deploy, pause, archive, rollback — creative compliance and preview gates)
+- `reporting` (delivery status, underdelivery alerts, custom reporting, forecasts)
+- `campaigns` (order/line-item remediation when needed before activation)
 
 ## Entry Conditions
 

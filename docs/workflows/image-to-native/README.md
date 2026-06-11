@@ -8,14 +8,11 @@
 
 ## Skill Composition
 
-- `bootstrap`
-- `inventory-ad-units`
-- `placements-targeting`
-- `availability-forecast`
-- `advertiser-order-line-items`
-- `native-image`
-- `qa-preview`
-- `deploy-reporting`
+- `orbiads` (orchestrator — auth context and tenant confirmation)
+- `inventory` (ad unit validation, fluid compatibility check)
+- `reporting` (availability forecast when supply risk is unknown)
+- `campaigns` (advertiser/order/line-item resolution, Native creative creation, creative association, QA)
+- `campaigns` → reporting steps (deploy gate and post-deploy delivery check)
 
 ## Entry Conditions
 
@@ -27,4 +24,4 @@
 
 - Native template and creative created;
 - creative associated to the intended line items;
-- QA and preview packet ready for activation through `deploy-reporting`.
+- QA and preview packet ready for the deploy gate (`campaign` deploy via the `campaigns` skill) and post-deploy delivery monitoring via `reporting`.

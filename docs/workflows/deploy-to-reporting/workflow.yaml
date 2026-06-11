@@ -10,10 +10,9 @@ inputs:
   - optionalCreativeIds
   - requestedAction
 skills:
-  - bootstrap
-  - qa-preview
-  - deploy-reporting
-  - advertiser-order-line-items
+  - orbiads
+  - campaigns
+  - reporting
 outputs:
   - previewPacket
   - actionResult
@@ -21,18 +20,50 @@ outputs:
   - reportingSummary
   - auditSummary
 steps:
-  - id: bootstrap-context
-    skill: bootstrap
+  - id: auth-context-intake
+    skill: orbiads
     mode: read
-  - id: qa-preview-gate
-    skill: qa-preview
+    notes: >
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
+      Confirm tenantId and active GAM network before any further step.
+
+  - id: creative-qa-gate
+    skill: campaigns
     mode: read
+    notes: >
+      Run creative_qa(action="scan_creative_compliance") to check coverage.
+      Run creative_qa(action="validate_creative_ssl") for SSL hygiene.
+      Call creatives(action="get_creative_preview_url") or
+      creatives(action="get_campaign_preview_links") for preview URLs.
+      Gate: SSL and compliance must pass with no blockers before proceeding.
+
   - id: campaign-action
-    skill: deploy-reporting
+    skill: campaigns
     mode: preview_then_write
+    notes: >
+      Call campaign(action="dry_run") to produce a signed ExecutionPlan.
+      Show mutations, risks, estimatedCost, and confirmationToken to the user.
+      Wait for explicit human approval before any real write.
+      Execute with confirmation_token (<=5 min TTL).
+      For pause: campaign(action="pause"). For rollback: campaign(action="rollback").
+      Never retry a failed write more than twice.
+
+  - id: delivery-check-and-reporting
+    skill: reporting
+    mode: read
+    notes: >
+      Call reporting(action="check_delivery_status") immediately after the action.
+      Call reporting(action="check_underdelivery_alerts") for network-wide anomalies.
+      Run additional reporting (custom, template, billing) at the depth needed.
+      Return a delivery + reporting + audit packet with the recommended next action.
+
   - id: remediation
-    skill: advertiser-order-line-items
+    skill: campaigns
     mode: optional_write
+    notes: >
+      If order or line-item issues block activation, resolve them here:
+      orders(action="approve") or line_items(action="activate_batch").
+      All remediation writes require dry_run preview + confirmation_token.
 validationGates:
   - approve preview URLs and coverage
   - approve every real campaign write

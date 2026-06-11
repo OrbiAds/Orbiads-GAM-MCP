@@ -1,7 +1,7 @@
 {
   "name": "orbiads",
-  "version": "1.6.0",
-  "description": "Google Ad Manager copilot for AI agents — MCP server (orbiads.com/mcp) + Python CLI. Operate campaigns, audit accounts, run reports, and manage GAM inventory from Claude, Cursor, Codex CLI, Gemini CLI, and other LLM tools.",
+  "version": "1.7.0",
+  "description": "Google Ad Manager copilot for AI agents — MCP server (orbiads.com/mcp) + Python CLI. Operate campaigns, audit accounts, run reports, manage inventory, and administer GAM networks from Claude, Cursor, Codex CLI, Gemini CLI, and other LLM tools.",
   "author": {
     "name": "OrbiAds",
     "url": "https://orbiads.com"

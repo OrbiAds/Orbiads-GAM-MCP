@@ -11,35 +11,68 @@ inputs:
   - adUnitIdsOrPlacementScope
   - advertiserOrderLineItemContext
 skills:
-  - bootstrap
-  - inventory-ad-units
-  - placements-targeting
-  - availability-forecast
-  - advertiser-order-line-items
-  - native-image
-  - qa-preview
-  - deploy-reporting
+  - orbiads
+  - inventory
+  - reporting
+  - campaigns
 outputs:
   - nativeCreativeIds
   - associationSummary
   - qaSummary
   - previewPacket
 steps:
+  - id: auth-context-intake
+    skill: orbiads
+    mode: read
+    notes: >
+      Call the standalone `check_credentials` auth tool and `get_my_tenant_id`.
+      Confirm tenantId and active GAM network before any further step.
+
   - id: qualify-inventory
-    skill: inventory-ad-units
+    skill: inventory
     mode: read
-  - id: validate-targeting
-    skill: placements-targeting
-    mode: read_or_approved_write
+    notes: >
+      Call targeting(action="list_ad_units") to enumerate target ad units.
+      Call targeting(action="validate_fluid", params={ad_unit_id}) for each unit
+      targeted by the Native delivery to confirm Fluid compatibility.
+      Call placements(action="list_placements") for placement context.
+
+  - id: optional-forecast
+    skill: reporting
+    mode: read
+    notes: >
+      Optional step — only execute if supply risk is unknown or targeting is highly
+      constrained. Call reporting(action="get_standalone_forecast") and present
+      results to the user before proceeding.
+
   - id: resolve-delivery-context
-    skill: advertiser-order-line-items
-    mode: read_or_approved_write
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call companies(action="advertisers.find_or_create") to resolve the advertiser.
+      Call orders(action="find_or_create") or orders(action="get") to resolve the order.
+      Verify order status is DRAFT or APPROVED before line item creation.
+      Create line items via line_items(action="create_batch", dry_run=true) → confirm → execute.
+
   - id: build-native-creative
-    skill: native-image
-    mode: approved_write
-  - id: qa-preview-gate
-    skill: qa-preview
-    mode: read
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Ensure the Classic Native template exists via creatives(action="list_native_styles").
+      Create the Native creative via creative_assets(action="create_classic_native", dry_run=true)
+      → confirm → execute.
+      Associate to approved line items via creatives(action="associate_creative").
+      Validate naming against settings(action="get_naming_conventions") before creation.
+
+  - id: qa-and-deploy-gate
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Run creative_qa(action="scan_creative_compliance") and
+      creative_qa(action="validate_creative_ssl") on every creative.
+      Gate: both checks must pass with no blockers before deploy.
+      Call campaign(action="dry_run") to produce ExecutionPlan → show to user → confirm.
+      Execute with confirmation_token. Then call reporting(action="check_delivery_status").
 validationGates:
   - confirm Native or Fluid compatibility
   - approve creative copy and destination URLs

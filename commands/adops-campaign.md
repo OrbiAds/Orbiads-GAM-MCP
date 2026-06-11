@@ -66,7 +66,7 @@ Non-regression: `campaign(action="deploy")` remains the entry point for campaign
 
 ### 1 — Advertiser and order setup (free)
 
-Resolve the advertiser with `companies(action="find_or_create_advertiser", params={name, type: "ADVERTISER"})`. Then resolve or create the order with `orders(action="find_or_create", params={name, advertiser_id, traffic_amount, start_date, end_date})`.
+Resolve the advertiser with `companies(action="advertisers.find_or_create", params={name, type: "ADVERTISER"})`. Then resolve or create the order with `orders(action="find_or_create", params={name, advertiser_id, traffic_amount, start_date, end_date})`.
 
 If the order already exists, fetch it with `orders(action="get")` and verify it is in `DRAFT` or `APPROVED` status before continuing.
 
@@ -126,7 +126,7 @@ After deploy, approve the order: `orders(action="approve", params={order_id})`. 
 
 ## status
 
-`campaign(action="get", params={campaign_id})` + `orders(action="get")` + `reporting(action="check_delivery_status")`. Show name, GAM status, pacing %, impressions vs. goal, and any active alerts from `reporting(action="check_underdelivery_alerts")`.
+`campaign(action="read", params={campaign_id})` + `orders(action="get")` + `reporting(action="check_delivery_status")`. Show name, GAM status, pacing %, impressions vs. goal, and any active alerts from `reporting(action="check_underdelivery_alerts")`.
 
 ## pause
 

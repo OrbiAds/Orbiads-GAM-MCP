@@ -8,14 +8,10 @@
 
 ## Skill Composition
 
-- `bootstrap`
-- `inventory-ad-units`
-- `placements-targeting`
-- `availability-forecast`
-- `advertiser-order-line-items`
-- low-level creative creation via `create_audio_creative` or `create_video_creative`
-- `qa-preview`
-- `deploy-reporting`
+- `orbiads` (orchestrator — auth context and tenant confirmation)
+- `inventory` (inventory, placement, and targeting scope validation)
+- `reporting` (availability forecast when audio/video scope is highly constrained)
+- `campaigns` (advertiser/order/line-item resolution, audio/video creative creation, QA, deploy gate, and delivery monitoring)
 
 ## Entry Conditions
 
