@@ -1,0 +1,108 @@
+id: homepage-takeover
+name: Homepage Takeover
+version: 1
+status: ready
+objective: Deploy a fixed-flight 100% SOV sponsorship campaign on homepage ad units, with roadblock creatives, approval gates at every write step, and a post-deploy delivery check.
+inputs:
+  - tenantId
+  - networkCode
+  - brand
+  - flightStartDate
+  - flightEndDate
+  - homepageAdUnitIds
+  - creativeAssets
+outputs:
+  - forecastSummary
+  - orderId
+  - lineItemIds
+  - creativeIds
+  - deliveryStatusSummary
+skills:
+  - orbiads
+  - campaigns
+  - inventory
+  - reporting
+steps:
+  - id: auth-context-intake
+    skill: orbiads
+    mode: read
+    notes: >
+      Call auth(action="check_credentials") and auth(action="get_my_tenant_id").
+      Confirm tenantId and active GAM network before any further step.
+      Refuse to proceed if credentials are missing or GAM OAuth is not active.
+
+  - id: inventory-discovery
+    skill: inventory
+    mode: read
+    notes: >
+      Call targeting(action="list_ad_units") to enumerate homepage ad units.
+      Call inventory(action="list_ad_unit_sizes") to collect valid creative sizes.
+      Call placements(action="list_placements") to check for existing homepage placements.
+      Output: confirmed adUnitIds list + size map.
+
+  - id: availability-forecast
+    skill: reporting
+    mode: read
+    notes: >
+      Call reporting(action="get_prospective_delivery_forecast") for the target flight window
+      and ad units. Optionally call reporting(action="get_standalone_forecast") per size.
+      Present forecast results to the user.
+      Gate: if available impressions < 95% of 100% SOV goal, halt and advise date adjustment.
+
+  - id: advertiser-and-order
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call find_or_create_advertiser to resolve or create the advertiser record.
+      Call orders(action="create", dry_run=true) to generate the ExecutionPlan.
+      Show mutations + estimatedCost + currentBalance. Require explicit user confirmation.
+      Execute with confirmation_token (<=5 min). Name pattern: "{Brand} — HPTO — {StartDate}".
+
+  - id: line-items
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call campaign(action="create_line_items_batch", dry_run=true) or
+      line_items(action="create", dry_run=true) per line item.
+      Payload must include lineItemType=SPONSORSHIP, priority=4,
+      goal.goalType=PERCENTAGE, goal.percentage=100, fixed startDateTime/endDateTime.
+      Show preview per line item. Confirm individually. Execute with confirmation_token.
+      After creation call line_items(action="verify") to confirm targeting setup.
+
+  - id: creative-upload-and-qa
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Upload creatives via creative_assets(action="create_image") per size
+      (or create_html5 for HTML5 assets).
+      Associate each creative to its line item via creatives(action="associate_creative").
+      Run creative_qa(action="scan_creative_compliance") and
+      creative_qa(action="validate_creative_ssl") on every creative.
+      Gate: both QA checks must pass (no blockers) before proceeding to deploy.
+
+  - id: deploy
+    skill: campaigns
+    mode: preview_then_write
+    notes: >
+      Call campaign(action="plan_deployment") to produce the full ExecutionPlan
+      (all mutations, credit cost, risks). Present to user.
+      Gate: require explicit confirmation before deploy.
+      Call campaign(action="deploy", dry_run=true) then with confirmation_token.
+      Surface returned order/line item IDs and audit_log_id.
+
+  - id: post-deploy-delivery-check
+    skill: reporting
+    mode: read
+    notes: >
+      Call reporting(action="check_delivery_status") to confirm GAM accepted line items.
+      Call reporting(action="get_delivery_forecast_by_line_item") per line item.
+      Call reporting(action="check_underdelivery_alerts") to verify no delivery anomalies.
+      Surface a delivery summary to the user.
+
+validationGates:
+  - availability forecast reviewed and approved by user before any write
+  - order creation preview (ExecutionPlan) approved by user before execute
+  - each line item creation preview approved individually before execute
+  - creative QA (scan_creative_compliance + validate_creative_ssl) must pass with no blockers before deploy
+  - deploy ExecutionPlan from plan_deployment approved by user before campaign.deploy
+  - delivery anomalies reviewed before any redeployment
