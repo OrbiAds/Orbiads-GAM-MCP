@@ -51,3 +51,12 @@ exemptions:
       Inventory import endpoint for bulk ingestion. Covered via the inventory
       parent>child MCP tool; CLI parity deferred to the Epic 71 async-job
       CLI story.
+  - path: GET /api/gam/reports/history
+    reason: >
+      Epic 102 server-side branded-report history list. Web/UI-only feature
+      (in-app report history panel); no CLI use case planned. Report generation
+      and catalogue stay on the reporting parent + `reporting` CLI verbs.
+  - path: POST /api/gam/reporting/preview-kpis
+    reason: >
+      Epic 102 non-blocking branded-report KPI preview shown in the web report
+      builder before generation. Web/UI-only feature; no CLI use case planned.

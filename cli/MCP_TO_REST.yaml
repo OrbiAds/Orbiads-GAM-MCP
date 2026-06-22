@@ -88,6 +88,7 @@ tools:
   ensure_template:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
+  archive_eligible_campaigns: {area: campaign_ops, rest: "POST /api/campaigns/archive-run", cli: null, exempt: "On-demand network-scoped archival (decision 2026-06-12): UI button + MCP campaign.archive_eligible only; no CLI surface planned. REST shipped (POST /api/campaigns/archive-run)."}
   campaign:
     area: campaign_ops
     rest: "NO-REST"
@@ -105,6 +106,7 @@ tools:
       deploy_media: {rest: "POST /mcp tools/call campaign.deploy_media", cli: "campaigns deploy-media"}
       pause: {rest: "NO-REST", cli: "campaigns pause", exempt: "Story 100.14 — campaign pause is MCP-only (campaign.pause); no REST route on the READ-only campaigns router."}
       archive: {rest: "NO-REST", cli: "campaigns archive", exempt: "Story 100.14 — campaign archive is MCP-only (campaign.archive); no REST route on the READ-only campaigns router."}
+      archive_eligible: {rest: "POST /api/campaigns/archive-run", cli: null, exempt: "On-demand network-scoped archival (decision 2026-06-12) — UI button + MCP only, CLI deferred by design. REST shipped on the campaigns router."}
       update: {rest: "NO-REST", cli: "campaigns update", exempt: "Story 100.14 — campaign update is MCP-only (campaign.update); no REST route on the READ-only campaigns router."}
       rollback: {rest: "NO-REST", cli: "campaigns recover", exempt: "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback); no REST route on the READ-only campaigns router."}
       create_native_style: {rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C)."}

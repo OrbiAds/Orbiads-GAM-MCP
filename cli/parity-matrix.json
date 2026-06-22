@@ -1,8 +1,8 @@
 {
-  "total_tools": 290,
+  "total_tools": 291,
   "counts": {
     "FULL": 206,
-    "EXEMPT": 84
+    "EXEMPT": 85
   },
   "per_area": {
     "ad_review": {
@@ -34,7 +34,7 @@
       "EXEMPT": 1
     },
     "campaign_ops": {
-      "EXEMPT": 11,
+      "EXEMPT": 12,
       "FULL": 2
     },
     "creative_qa": {
@@ -852,6 +852,17 @@
       "cli_present": true
     },
     {
+      "tool": "archive_eligible_campaigns",
+      "module": "campaign_ops",
+      "area": "campaign_ops",
+      "rest": "POST /api/campaigns/archive-run",
+      "cli": null,
+      "sub_actions": null,
+      "exempt": "On-demand network-scoped archival (decision 2026-06-12): UI button + MCP campaign.archive_eligible only; no CLI surface planned. REST shipped (POST /api/campaigns/archive-run).",
+      "status": "EXEMPT",
+      "cli_present": null
+    },
+    {
       "tool": "campaign",
       "module": "campaign_ops",
       "area": "campaign_ops",
@@ -888,6 +899,11 @@
           "rest": "NO-REST",
           "cli": "campaigns archive",
           "exempt": "Story 100.14 — campaign archive is MCP-only (campaign.archive); no REST route on the READ-only campaigns router."
+        },
+        "archive_eligible": {
+          "rest": "POST /api/campaigns/archive-run",
+          "cli": null,
+          "exempt": "On-demand network-scoped archival (decision 2026-06-12) — UI button + MCP only, CLI deferred by design. REST shipped on the campaigns router."
         },
         "update": {
           "rest": "NO-REST",
