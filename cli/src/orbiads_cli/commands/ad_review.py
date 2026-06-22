@@ -10,26 +10,47 @@ from orbiads_cli.output import render, render_detail
 
 app = typer.Typer(help="Search, allow, and block Ad Review Center ads", no_args_is_help=True)
 
-_COLUMNS = ["adId", "displayUrl", "advertiserName", "category", "state", "impressions7d"]
+_COLUMNS = ["adReviewCenterAdId", "productType", "status", "manualReviewStatuses", "previewUrl"]
 
 
 @app.command("search")
 def search_ads(
     ctx: typer.Context,
     web_property: str = typer.Option(..., "--web-property", help="GAM web property ID"),
-    filter: str | None = typer.Option(None, "--filter", help="GAM filter expression"),
-    page_size: int = typer.Option(50, "--page-size", min=1, max=200),
+    search_text: list[str] = typer.Option(
+        None, "--search-text", help="Free-text term (repeatable)"
+    ),
+    status: str | None = typer.Option(
+        None, "--status", help="AdReviewCenterAdStatus enum, e.g. ELIGIBLE"
+    ),
+    manual_review_status: str | None = typer.Option(
+        None, "--manual-review-status", help="ManualAdReviewCenterAdStatus enum"
+    ),
+    ad_id: list[str] = typer.Option(
+        None, "--ad-id", help="Restrict to these Ad Review Center ad IDs (repeatable)"
+    ),
+    buyer_account_id: list[str] = typer.Option(
+        None, "--buyer-account-id", help="RTB buyer account ID (repeatable)"
+    ),
+    start_time: str | None = typer.Option(None, "--start-time", help="RFC3339 range start"),
+    end_time: str | None = typer.Option(None, "--end-time", help="RFC3339 range end"),
+    page_size: int = typer.Option(50, "--page-size", min=1, max=1000),
     page_token: str | None = typer.Option(None, "--page-token"),
-    order_by: str | None = typer.Option(None, "--order-by"),
 ):
     """Search Ad Review Center ads."""
     payload = {
         "webPropertyId": web_property,
-        "filter": filter,
+        "searchText": list(search_text) if search_text else None,
+        "status": status,
+        "manualReviewStatus": manual_review_status,
+        "adReviewCenterAdIds": list(ad_id) if ad_id else None,
+        "buyerAccountIds": list(buyer_account_id) if buyer_account_id else None,
+        "startTime": start_time,
+        "endTime": end_time,
         "pageSize": page_size,
         "pageToken": page_token,
-        "orderBy": order_by,
     }
+    payload = {k: v for k, v in payload.items() if v is not None}
     try:
         data = get_client().post("/api/gam/ad-review/search", json=payload)
         if ctx.obj and ctx.obj.format == "json":
@@ -64,18 +85,12 @@ def block_batch(
     ctx: typer.Context,
     ad_ids: list[str] = typer.Argument(..., help="Ad Review Center ad IDs"),
     web_property: str = typer.Option(..., "--web-property", help="GAM web property ID"),
-    reason: str = typer.Option(..., "--reason", help="Audit reason for the block"),
 ):
     """Block one or more Ad Review Center ads."""
     try:
         data = get_client().post(
             "/api/gam/ad-review/batch-block",
-            json={
-                "webPropertyId": web_property,
-                "adIds": ad_ids,
-                "reason": reason,
-                "dryRun": False,
-            },
+            json={"webPropertyId": web_property, "adIds": ad_ids, "dryRun": False},
         )
         render_detail(data, ctx.obj)
     except CliApiError as e:
