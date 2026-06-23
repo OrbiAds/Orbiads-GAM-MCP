@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Campaign Operations & Creative QA: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 148 actions across 12 parent tool(s); CLI coverage 106/148 actions.
+Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 149 actions across 12 parent tool(s); CLI coverage 106/149 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -33,15 +33,16 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-- **Mode:** mixed · **Actions:** 15 (11 writes, 4 reads)
-- **Surfaces:** MCP ✅ · CLI 11/15 actions
+- **Mode:** mixed · **Actions:** 16 (12 writes, 4 reads)
+- **Surfaces:** MCP ✅ · CLI 11/16 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
-> **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
+> **Legacy wrappers:** 13 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `archive` | 0 | yes | — | `orbiads campaigns archive` |
+| `archive_eligible` | 0 | yes | — | MCP-only |
 | `create_display` | 0 | yes | — | MCP-only |
 | `create_draft` | 0 | yes | — | MCP-only |
 | `create_licas` | 0 | yes | — | `orbiads campaigns attach-creatives` |
@@ -308,4 +309,3 @@ _Parent orders tool for non-lifecycle Order operations._
 | `list_roles` | 0 | — | — | `orbiads roles list` |
 | `list_users` | 0 | — | — | `orbiads users list` |
 | `verify_setup` | 0 | — | — | `orbiads line-items verify` |
-

@@ -21,7 +21,7 @@ metadata:
     - line_items
     - live_stream
     - orders
-  action_count: 148
+  action_count: 149
   cli_coverage: partial
   read_only: false
 user-invocable: false
@@ -36,13 +36,13 @@ user-invocable: false
 
 _Orchestrate end-to-end campaigns, orders, line items, creative uploads, creative QA compliance scans, and placement bindings._
 
-**Mode:** mixed (read + write) · **Tools included:** 12 · **Total actions:** 148 · **CLI coverage:** partial (106/148 actions)
+**Mode:** mixed (read + write) · **Tools included:** 12 · **Total actions:** 149 · **CLI coverage:** partial (106/149 actions)
 
 Parent MCP tools: `ad_review_center`, `campaign`, `creative_assets`, `creative_qa`, `creative_wrapper_skill`, `creatives`, `formats`, `gam_jobs`, `jobs`, `line_items`, `live_stream`, `orders`.
 
 ## Surfaces
 
-OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 106/148 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
+OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 106/149 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
 
 **Rule:** if an action is marked `MCP-only` in that table, fall back to the MCP surface (or the web app) for it — never improvise a raw REST call or shell around the CLI.
 

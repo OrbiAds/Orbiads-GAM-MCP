@@ -11,21 +11,21 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 ## Summary
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
-- **240 legacy child wrappers** (soft-deprecated, still routing to parents — see legacy mapping)
+- **241 legacy child wrappers** (soft-deprecated, still routing to parents — see legacy mapping)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **290 tools total** exposed via MCP
+- **291 tools total** exposed via MCP
 
 ## Parent tools — overview
 
 | Parent | Epic | # Actions | Mode | Source |
 |---|---|---|---|---|
-| `ad_review_center` | — | 3 | 📖 read | `ad_review.py:126` |
+| `ad_review_center` | — | 3 | 📖 read | `ad_review.py:124` |
 | `audiences` | 68.2 | 8 | ✍️ mixed/write | `audiences.py:341` |
 | `audit` | 68.5 | 1 | 📖 read | `audit.py:81` |
 | `audit_skill` | 65.0a | 8 | 📖 read | `audit_skill.py:267` |
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:364` |
-| `campaign` | 20.1 | 15 | ✍️ mixed/write | `campaign_ops.py:562` |
+| `campaign` | 20.1 | 16 | ✍️ mixed/write | `campaign_ops.py:564` |
 | `companies` | — | 15 | ✍️ mixed/write | `advertisers.py:303` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:934` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:159` |
@@ -50,7 +50,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:665` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:504` |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:1518` |
-| `settings` | 68.1 | 16 | ✍️ mixed/write | `settings.py:545` |
+| `settings` | 68.1 | 20 | ✍️ mixed/write | `settings.py:618` |
 | `targeting` | 68.6 | 27 | ✍️ mixed/write | `targeting.py:870` |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | `tenant_catalog.py:134` |
 | `video_ops` | 98 | 10 | ✍️ mixed/write | `video_ops.py:141` |
@@ -62,7 +62,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
-**Source (private monorepo):** `backend/src/mcp/tools/ad_review.py:126` · **Actions:** 3 · **Mode:** read-only
+**Source (private monorepo):** `backend/src/mcp/tools/ad_review.py:124` · **Actions:** 3 · **Mode:** read-only
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -166,9 +166,9 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:562` · **Actions:** 15 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:564` · **Actions:** 16 · **Mode:** mixed (read + write)
 
-**Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
+**Legacy wrappers:** 13 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -187,6 +187,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 | `rollback` | 0 | ✅ | — |
 | `pause` | 0 | ✅ | — |
 | `archive` | 0 | ✅ | — |
+| `archive_eligible` | 0 | ✅ | — |
 
 ### `companies`
 
@@ -766,7 +767,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-**Source (private monorepo):** `backend/src/mcp/tools/settings.py:545` · **Actions:** 16 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/settings.py:618` · **Actions:** 20 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 9 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -787,6 +788,10 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `get_delivery_defaults` | 0 | — | — |
 | `update_delivery_defaults` | 0 | ✅ | — |
 | `get_multilang_matrix` | 0 | — | — |
+| `get_global_multilang_matrix` | 0 | — | — |
+| `save_global_multilang_matrix` | 0 | ✅ | — |
+| `apply_multilang_to_networks` | 0 | — | — |
+| `resolve_multilang_matrix` | 0 | — | — |
 | `list_preview_matrices` | 0 | — | — |
 
 ### `targeting` — Epic 68.6
@@ -896,6 +901,6 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 
 ## See also
 
-- [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md) — the 240 legacy wrappers and their parent dispatch targets
+- [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md) — the 241 legacy wrappers and their parent dispatch targets
 - [`cli/parity-matrix.json`](../../cli/parity-matrix.json) — CLI command coverage per MCP tool
 - [`.claude-plugin/plugin.json`](../../.claude-plugin/plugin.json) — Claude Code plugin manifest
