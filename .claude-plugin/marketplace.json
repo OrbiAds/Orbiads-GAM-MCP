@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "orbiads",
-      "source": ".",
+      "source": "./",
       "description": "Google Ad Manager copilot — campaigns, audits, reports, inventory via MCP + CLI.",
       "category": "ad-operations",
       "tags": ["gam", "adops", "mcp", "google-ad-manager"]
