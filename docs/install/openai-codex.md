@@ -1,43 +1,56 @@
 # Install on OpenAI Codex
 
-OrbiAds is a **skill for OpenAI Codex** — it gives Codex access to your Google Ad Manager account via `AGENTS.md` and a remote MCP config.
+OrbiAds gives Codex (CLI, IDE extension and the Codex app) access to your Google Ad
+Manager account through **Agent Skills** (the working method) + a **remote MCP server**
+(the tools). Both use Codex-native mechanisms — no `.mcp.json`, no repo clone.
 
 ## Prerequisites
 
 - An OrbiAds account — [sign up free at orbiads.com](https://orbiads.com) (5 credits, no card required)
 - Your GAM account connected in the OrbiAds dashboard
-- OpenAI Codex with MCP support
+- Codex with MCP support
 
 ---
 
-## Step 1 — Copy files to your workspace root
+## Step 1 — Add the Skills
 
-From this repository, copy two files into the **root of your Codex workspace**:
+Codex discovers skills from `.agents/skills/` (current folder / repo root) and
+`~/.agents/skills/` (user-wide). Download the Skills from the release and unzip them there:
 
+```bash
+mkdir -p ~/.agents/skills
+# Download the .zip files from:
+# https://github.com/OrbiAds/Orbiads-GAM-MCP/releases/tag/skills-latest
+unzip orbiads.zip            -d ~/.agents/skills/   # router — required
+unzip orbiads-reporting.zip  -d ~/.agents/skills/   # add the domains you want
 ```
-openai-codex/AGENTS.md                →  AGENTS.md    (workspace root)
-openai-codex/mcp/config.remote.json   →  .mcp.json    (workspace root)
-```
 
-`AGENTS.md` tells Codex what OrbiAds can do and how to use the skills.
-`.mcp.json` points Codex to the hosted OrbiAds MCP server.
+Each `.zip` extracts to `<skill-name>/SKILL.md`. No restart needed — Codex picks them up.
+Official reference: <https://developers.openai.com/codex/skills>
+
+> Optional: drop the repo-root `AGENTS.md` into your workspace for the cross-LLM
+> operating contract.
 
 ---
 
-## Step 2 — Verify .mcp.json
+## Step 2 — Add the MCP server (the tools)
 
-```json
-{
-  "mcpServers": {
-    "orbiads": {
-      "type": "http",
-      "url": "https://orbiads.com/mcp"
-    }
-  }
-}
+Codex stores MCP servers in `~/.codex/config.toml` (or `.codex/config.toml` per project),
+in **TOML** — not a `.mcp.json`:
+
+```toml
+[mcp_servers.orbiads]
+url = "https://orbiads.com/mcp"
 ```
 
-No changes needed. Codex handles OAuth on first use.
+Then authenticate (Codex supports OAuth for remote MCP servers):
+
+```bash
+codex mcp login orbiads
+```
+
+> Note: on some Codex versions, remote streamable-HTTP MCP requires enabling
+> `experimental_use_rmcp_client`. See <https://developers.openai.com/codex/mcp>.
 
 ---
 
@@ -46,14 +59,6 @@ No changes needed. Codex handles OAuth on first use.
 Open a Codex session in your workspace:
 
 > *"Connect to my GAM account"*
-
-Codex reads `AGENTS.md`, connects to `https://orbiads.com/mcp`, and runs the bootstrap skill.
-
----
-
-## Optional — Per-skill files
-
-Copy `openai-codex/skills/` to your workspace root for richer per-skill instructions.
 
 ---
 

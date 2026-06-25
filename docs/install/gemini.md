@@ -1,48 +1,67 @@
-# Install on Gemini
+# Install on Gemini CLI
 
-OrbiAds is a **skill for Gemini** — it connects Gemini to your Google Ad Manager account via MCP.
+OrbiAds gives the Gemini CLI access to your Google Ad Manager account through
+**Agent Skills** (the working method) + a **remote MCP server** (the tools).
 
 ## Prerequisites
 
 - An OrbiAds account — [sign up free at orbiads.com](https://orbiads.com) (5 credits, no card required)
 - Your GAM account connected in the OrbiAds dashboard
-- Gemini Advanced **or** Google AI Studio with MCP tool support
+- Gemini CLI with MCP support
 
 ---
 
-## Option A — Google AI Studio
+## Step 1 — Add the Skills
 
-1. In your AI Studio project, open **Tools → MCP configuration**
-2. Add:
+Gemini CLI discovers skills from `~/.gemini/skills/` or `~/.agents/skills/` (user) and
+`.gemini/skills/` or `.agents/skills/` (workspace). Download from the release and install:
+
+```bash
+mkdir -p ~/.agents/skills
+# Download the .zip files from:
+# https://github.com/OrbiAds/Orbiads-GAM-MCP/releases/tag/skills-latest
+unzip orbiads.zip           -d ~/.agents/skills/    # router — required
+unzip orbiads-reporting.zip -d ~/.agents/skills/    # add the domains you want
+```
+
+Or install a skill folder directly:
+
+```bash
+gemini skills install ./orbiads --consent
+```
+
+Official reference: <https://geminicli.com/docs>
+
+---
+
+## Step 2 — Add the MCP server (the tools)
+
+Add OrbiAds to `~/.gemini/settings.json` (user) or `.gemini/settings.json` (project),
+using the **`httpUrl`** key for a remote HTTP server (⚠ `url` means SSE in Gemini CLI):
 
 ```json
 {
   "mcpServers": {
     "orbiads": {
-      "type": "http",
-      "url": "https://orbiads.com/mcp"
+      "httpUrl": "https://orbiads.com/mcp"
     }
   }
 }
 ```
 
-3. Save and reload the project
-4. Complete the OAuth flow
-5. Test: *"Connect to my GAM account"*
+Or via the command:
+
+```bash
+gemini mcp add --transport http orbiads https://orbiads.com/mcp
+```
+
+Gemini CLI supports OAuth 2.0 for remote MCP; authenticate with `/mcp auth orbiads`.
 
 ---
 
-## Option B — Gemini extension
+## Step 3 — Test
 
-Load the ready-to-use extension files from this repository:
-
-| File | Purpose |
-| --- | --- |
-| `gemini-extension/extension/manifest.json` | Extension descriptor |
-| `gemini-extension/extension/function-declarations.yaml` | Callable tool surface |
-| `gemini-extension/extension/system-instruction.md` | AdOps operating rules |
-
-Follow the standard Gemini extension install process for your environment.
+> *"Connect to my GAM account"*
 
 ---
 
@@ -53,4 +72,5 @@ Follow the standard Gemini extension install process for your environment.
 | *"What is my tenant ID?"* | Your OrbiAds tenant |
 | *"List my GAM networks"* | Your GAM networks |
 
-> **Note:** Gemini MCP support is evolving. If your version doesn't yet support remote MCP, use Claude or ChatGPT in the meantime.
+> Google AI Studio is a separate product; its MCP/tool support differs from the
+> Gemini CLI and is not covered here.
