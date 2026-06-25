@@ -895,7 +895,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:938` | 0 | ✅ |
 | `poll_auth_status` | `auth.py:349` | 0 | — |
-| `reporting_skill` | `reporting.py:3481` | 0 | — |
+| `reporting_skill` | `reporting.py:3493` | 0 | — |
 | `select_gam_network` | `auth.py:475` | 0 | ✅ |
 | `server_info` | `server_info.py:16` | 0 | — |
 
