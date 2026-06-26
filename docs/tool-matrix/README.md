@@ -22,11 +22,11 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `ad_review_center` | — | 3 | 📖 read | `ad_review.py:124` |
 | `audiences` | 68.2 | 8 | ✍️ mixed/write | `audiences.py:342` |
 | `audit` | 68.5 | 1 | 📖 read | `audit.py:88` |
-| `audit_skill` | 65.0a | 8 | 📖 read | `audit_skill.py:267` |
+| `audit_skill` | 65.0a | 8 | 📖 read | `audit_skill.py:269` |
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:379` |
-| `campaign` | 20.1 | 16 | ✍️ mixed/write | `campaign_ops.py:567` |
-| `companies` | — | 15 | ✍️ mixed/write | `advertisers.py:364` |
+| `campaign` | 20.1 | 16 | ✍️ mixed/write | `campaign_ops.py:568` |
+| `companies` | — | 15 | ✍️ mixed/write | `advertisers.py:366` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1019` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:190` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
@@ -34,10 +34,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
 | `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:594` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
-| `gam_admin` | 65 | 58 | ✍️ mixed/write | `gam_admin.py:186` |
+| `gam_admin` | 65 | 58 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | 📖 read | `jobs_async.py:268` |
-| `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:674` |
+| `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:675` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:146` |
 | `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:362` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
@@ -46,7 +46,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:159` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | `placements.py:248` |
 | `pql` | 68.2 | 3 | 📖 read | `pql.py:353` |
-| `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:448` |
+| `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:674` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2266` |
@@ -105,7 +105,7 @@ _Parent audit tool for the Epic 68.5 catalogue refactor batch._
 
 _OrbiAds audit suite — single entry point for audit sub-actions._
 
-**Source (private monorepo):** `backend/src/mcp/tools/audit_skill.py:267` · **Actions:** 8 · **Mode:** read-only
+**Source (private monorepo):** `backend/src/mcp/tools/audit_skill.py:269` · **Actions:** 8 · **Mode:** read-only
 
 **Legacy wrappers:** 2 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -166,7 +166,7 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:567` · **Actions:** 16 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:568` · **Actions:** 16 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 13 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -193,7 +193,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Source (private monorepo):** `backend/src/mcp/tools/advertisers.py:364` · **Actions:** 15 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/advertisers.py:366` · **Actions:** 15 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -413,7 +413,7 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-**Source (private monorepo):** `backend/src/mcp/tools/gam_admin.py:186` · **Actions:** 58 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/gam_admin.py:188` · **Actions:** 58 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -507,7 +507,7 @@ _Async job dispatcher (parent>child pattern, Epic 82)._
 
 _Parent inventory tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/inventory.py:674` · **Actions:** 14 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/inventory.py:675` · **Actions:** 14 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 10 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -677,7 +677,7 @@ _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
 _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 
-**Source (private monorepo):** `backend/src/mcp/tools/prebid_skill.py:448` · **Actions:** 6 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/prebid_skill.py:449` · **Actions:** 6 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -886,7 +886,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 |---|---|---|---|
 | `check_credentials` | `auth.py:549` | 0 | — |
 | `disconnect_gam` | `auth.py:609` | 0 | ✅ |
-| `gam_audit` | `gam_audit.py:114` | 0 | — |
+| `gam_audit` | `gam_audit.py:116` | 0 | — |
 | `get_my_tenant_id` | `auth.py:166` | 0 | — |
 | `get_premium_rate` | `pricing.py:71` | 0 | — |
 | `initiate_gam_auth` | `auth.py:265` | 0 | ✅ |
