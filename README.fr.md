@@ -1,4 +1,4 @@
-# OrbiAds — Google Ad Manager MCP
+# OrbiAds — Serveur MCP Google Ad Manager
 
 [English](README.md) · [Français](README.fr.md)
 
@@ -23,7 +23,7 @@
 [![MCP.so](https://img.shields.io/badge/MCP.so-indexed-111827)](https://mcp.so/server/OrbiAds/Orbiads-GAM-MCP)
 [![Smithery](https://img.shields.io/badge/Smithery-submission_ready-f59e0b)](https://smithery.ai/new)
 
-**Une compétence pour Claude, ChatGPT, Gemini et OpenAI Codex qui donne à votre assistant IA un accès direct à Google Ad Manager (GAM).**
+**OrbiAds est un serveur MCP Google Ad Manager hébergé** qui donne aux assistants IA — Claude, ChatGPT, Gemini, Cursor et OpenAI Codex — un accès direct à Google Ad Manager en langage naturel. Il couvre **270+ opérations** sur les campagnes, ordres, line items, créatifs, inventaire, ciblage et reporting, sur l'**API GAM actuelle (v202605)**, avec OAuth et confirmation avant chaque écriture.
 
 [**→ Commencer gratuitement sur orbiads.com**](https://orbiads.com) · [**★ Star ce dépôt**](https://github.com/OrbiAds/Orbiads-GAM-MCP)
 
