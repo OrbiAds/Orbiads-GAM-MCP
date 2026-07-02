@@ -25,7 +25,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `audit_skill` | 65.0a | 8 | 📖 read | `audit_skill.py:269` |
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
-| `campaign` | 20.1 | 16 | ✍️ mixed/write | `campaign_ops.py:568` |
+| `campaign` | 107 | 16 | ✍️ mixed/write | `campaign_ops.py:624` |
 | `companies` | — | 15 | ✍️ mixed/write | `advertisers.py:366` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1019` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:190` |
@@ -38,7 +38,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | 📖 read | `jobs_async.py:268` |
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:683` |
-| `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:146` |
+| `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:151` |
 | `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:362` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
 | `mcm` | — | 1 | 📖 read | `mcm.py:42` |
@@ -162,11 +162,11 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 | `list_packages` | 0 | — | — |
 | `get_preview_url` | 0 | — | — |
 
-### `campaign` — Epic 20.1
+### `campaign` — Epic 107
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:568` · **Actions:** 16 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:624` · **Actions:** 16 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 13 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -532,7 +532,7 @@ _Parent inventory tool for Story 68.6._
 
 _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/jobs.py:146` · **Actions:** 3 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/jobs.py:151` · **Actions:** 3 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 3 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 

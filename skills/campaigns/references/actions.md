@@ -29,7 +29,7 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 | `block_batch` | 0 | — | — | `orbiads ad-review block` |
 | `search` | 0 | — | — | `orbiads ad-review search` |
 
-### `orbiads:campaign` (Epic 20.1)
+### `orbiads:campaign` (Epic 107)
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
