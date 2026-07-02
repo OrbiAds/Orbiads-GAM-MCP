@@ -51,7 +51,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2266` |
 | `settings` | 68.1 | 20 | ✍️ mixed/write | `settings.py:618` |
-| `targeting` | 68.6 | 27 | ✍️ mixed/write | `targeting.py:883` |
+| `targeting` | 68.6 | 28 | ✍️ mixed/write | `targeting.py:937` |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | `tenant_catalog.py:131` |
 | `video_ops` | 98 | 10 | ✍️ mixed/write | `video_ops.py:145` |
 | `yield_skill` | 98 | 5 | ✍️ mixed/write | `yield_skill.py:119` |
@@ -798,7 +798,7 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
 _Parent targeting tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/targeting.py:883` · **Actions:** 27 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/targeting.py:937` · **Actions:** 28 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 21 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -812,6 +812,7 @@ _Parent targeting tool for Story 68.6._
 | `create_custom_targeting_values` | 0.5 | ✅ | ✅ required |
 | `update_custom_targeting_key` | 0 | ✅ | — |
 | `delete_custom_targeting_key` | 0 | ✅ | — |
+| `activate_custom_targeting_keys` | 0 | ✅ | — |
 | `update_custom_targeting_value` | 0 | ✅ | — |
 | `perform_custom_targeting_value_action` | 0 | ✅ | — |
 | `search_ad_units` | 0 | — | — |

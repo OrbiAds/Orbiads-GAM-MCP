@@ -15,7 +15,7 @@ metadata:
     - placements
     - targeting
     - video_ops
-  action_count: 85
+  action_count: 86
   cli_coverage: partial
   read_only: false
 user-invocable: false
@@ -30,13 +30,13 @@ user-invocable: false
 
 _Manage ad units, placements, custom targeting keys/values, audiences, and network inventory blueprints._
 
-**Mode:** mixed (read + write) · **Tools included:** 6 · **Total actions:** 85 · **CLI coverage:** partial (37/85 actions)
+**Mode:** mixed (read + write) · **Tools included:** 6 · **Total actions:** 86 · **CLI coverage:** partial (37/86 actions)
 
 Parent MCP tools: `audiences`, `blueprint`, `inventory`, `placements`, `targeting`, `video_ops`.
 
 ## Surfaces
 
-OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 37/85 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
+OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 37/86 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
 
 **Rule:** if an action is marked `MCP-only` in that table, fall back to the MCP surface (or the web app) for it — never improvise a raw REST call or shell around the CLI.
 

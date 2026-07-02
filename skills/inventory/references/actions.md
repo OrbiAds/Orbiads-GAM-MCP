@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Inventory & Targeting Management: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-inventory`](../SKILL.md) skill. 85 actions across 6 parent tool(s); CLI coverage 37/85 actions.
+Full per-tool action reference for the [`orbiads-inventory`](../SKILL.md) skill. 86 actions across 6 parent tool(s); CLI coverage 37/86 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -117,8 +117,8 @@ _Parent placements tool for Story 68.6._
 
 _Parent targeting tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 27 (13 writes, 14 reads)
-- **Surfaces:** MCP ✅ · CLI 18/27 actions
+- **Mode:** mixed · **Actions:** 28 (14 writes, 14 reads)
+- **Surfaces:** MCP ✅ · CLI 18/28 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 21 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -126,6 +126,7 @@ _Parent targeting tool for Story 68.6._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `activate_ad_unit` | 0 | yes | — | MCP-only |
+| `activate_custom_targeting_keys` | 0 | yes | — | MCP-only |
 | `archive_ad_unit` | 0 | yes | — | `orbiads inventory archive-ad-unit` |
 | `create_custom_targeting_key` | 0.5 | yes | required | `orbiads inventory create-key` |
 | `create_custom_targeting_values` | 0.5 | yes | required | `orbiads custom-targeting-values create` |
@@ -173,4 +174,3 @@ _Video monetization: ad rule management, content metadata, and content bundle op
 | `list_ad_rules` | 0 | — | — | MCP-only |
 | `list_content` | 0 | — | — | MCP-only |
 | `list_content_bundles` | 0 | — | — | MCP-only |
-
