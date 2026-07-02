@@ -885,19 +885,19 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 
 | Tool | Module | Cost | Write? |
 |---|---|---|---|
-| `check_credentials` | `auth.py:549` | 0 | — |
-| `disconnect_gam` | `auth.py:609` | 0 | ✅ |
+| `check_credentials` | `auth.py:612` | 0 | — |
+| `disconnect_gam` | `auth.py:672` | 0 | ✅ |
 | `gam_audit` | `gam_audit.py:116` | 0 | — |
-| `get_my_tenant_id` | `auth.py:166` | 0 | — |
+| `get_my_tenant_id` | `auth.py:229` | 0 | — |
 | `get_premium_rate` | `pricing.py:71` | 0 | — |
-| `initiate_gam_auth` | `auth.py:265` | 0 | ✅ |
+| `initiate_gam_auth` | `auth.py:328` | 0 | ✅ |
 | `line_item_lifecycle` | `line_items.py:1586` | 0 | ✅ |
 | `list_premium_rates` | `pricing.py:50` | 0 | — |
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:938` | 0 | ✅ |
-| `poll_auth_status` | `auth.py:349` | 0 | — |
+| `poll_auth_status` | `auth.py:412` | 0 | — |
 | `reporting_skill` | `reporting.py:3493` | 0 | — |
-| `select_gam_network` | `auth.py:475` | 0 | ✅ |
+| `select_gam_network` | `auth.py:538` | 0 | ✅ |
 | `server_info` | `server_info.py:16` | 0 | — |
 
 ## See also
