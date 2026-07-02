@@ -37,7 +37,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_admin` | 65 | 58 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | 📖 read | `jobs_async.py:268` |
-| `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:675` |
+| `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:683` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:146` |
 | `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:362` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
@@ -507,7 +507,7 @@ _Async job dispatcher (parent>child pattern, Epic 82)._
 
 _Parent inventory tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/inventory.py:675` · **Actions:** 14 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/inventory.py:683` · **Actions:** 14 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 10 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
