@@ -11,9 +11,9 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 ## Summary
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
-- **241 legacy child wrappers** (soft-deprecated, still routing to parents — see legacy mapping)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **291 tools total** exposed via MCP
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **468 GAM operations**
+- _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
 
