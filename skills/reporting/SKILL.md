@@ -59,6 +59,25 @@ orbiads network info --json    # confirm the active tenant / network
 - **Never leak raw SOAP/REST traces** to the user — surface the structured `error` object instead.
 - These rules apply identically on the MCP and CLI surfaces — a CLI write (`orbiads ... create/deploy`) needs the same preview + explicit user confirmation as an MCP write.
 
+## Reporting grammar — get it right on the first try
+
+### Date ranges
+
+- Relative window: pass `dateRangeType` (aliases accepted: `date_range_type`, `dateRange`, `date_range`) with one of: `LAST_MONTH` (default), `LAST_WEEK`, `LAST_7_DAYS`, `LAST_30_DAYS`, `YESTERDAY`, `TODAY`, `CURRENT_MONTH`, `CURRENT_QUARTER`, `LAST_3_MONTHS`, `LAST_YEAR`.
+- Custom window: `dateRangeType: "FIXED"` + `startDate` + `endDate` (YYYY-MM-DD).
+- Exception: `fetch_inventory_report` has no relative-range param — pass `startDate`/`endDate` only (omit both for LAST_MONTH).
+- `get_report_date_ranges`, `get_report_dimensions`, `get_report_metrics` are free (0 credit) — call them for the exact catalogue before composing a report.
+
+### Dimension × metric compatibility (GAM-side)
+
+GAM rejects some dimension/metric combinations at submission with `REPORT_ERROR_CONSTRAINTS_INCOMPATIBILITY` ("The report is invalid as specified and needs to be modified") **without naming the offending pair**. Live-observed examples: `VIDEO_AD_BREAK_TYPE_NAME` combined with `OPERATING_SYSTEM_CATEGORY_NAME` or `DEVICE_CATEGORY_NAME`; `INVENTORY_FORMAT_NAME` with fill-rate metrics.
+
+When a report is rejected:
+
+1. Credits are refunded automatically — a rejected submission never bills.
+2. Retry with `expandedCompatibility: true` to relax GAM's field-pairing checks.
+3. Still rejected → split into single-dimension reports and join the rows client-side (dimension values are stable join keys).
+
 ## Full action catalogue
 
 Full action catalogue (costs, write flags, confirmation tokens, CLI equivalents): read [`references/actions.md`](references/actions.md).
