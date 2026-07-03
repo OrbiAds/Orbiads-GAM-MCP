@@ -8,7 +8,14 @@ from pathlib import Path
 CONFIG_DIR = Path.home() / ".orbiads"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
-DEFAULT_API_URL = "https://gam-native-backend-754225819371.europe-west1.run.app"
+# The OrbiAds backend is served directly via Cloud Run (no custom API subdomain
+# exists). This URL is the canonical public endpoint — already disclosed in the
+# frontend bundle (PUBLIC_API_URL env var). It is not a secret.
+# Override at runtime with ORBIADS_API_URL (env var) or `orbiads config set --api-url`.
+DEFAULT_API_URL = os.environ.get(
+    "ORBIADS_API_URL",
+    "https://gam-native-backend-754225819371.europe-west1.run.app",
+)
 DEFAULT_FIREBASE_API_KEY = "AIzaSyAr2J5-a6GjIStBSOoIKB48DzSr0K-wHiQ"
 DEFAULT_FIREBASE_REFERER = "https://orbiads.com/"
 DEFAULT_OUTPUT = "table"

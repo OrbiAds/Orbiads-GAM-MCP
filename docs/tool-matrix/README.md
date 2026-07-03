@@ -62,7 +62,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
-**Source (private monorepo):** `backend/src/mcp/tools/ad_review.py:124` · **Actions:** 3 · **Mode:** read-only
+**Server-side implementation:** `ad_review.py` · **Actions:** 3 · **Mode:** read-only
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -74,7 +74,7 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
 _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/audiences.py:342` · **Actions:** 8 · **Mode:** mixed (read + write)
+**Server-side implementation:** `audiences.py` · **Actions:** 8 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 5 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -93,7 +93,7 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent audit tool for the Epic 68.5 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/audit.py:88` · **Actions:** 1 · **Mode:** read-only
+**Server-side implementation:** `audit.py` · **Actions:** 1 · **Mode:** read-only
 
 **Legacy wrappers:** 1 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -105,7 +105,7 @@ _Parent audit tool for the Epic 68.5 catalogue refactor batch._
 
 _OrbiAds audit suite — single entry point for audit sub-actions._
 
-**Source (private monorepo):** `backend/src/mcp/tools/audit_skill.py:269` · **Actions:** 8 · **Mode:** read-only
+**Server-side implementation:** `audit_skill.py` · **Actions:** 8 · **Mode:** read-only
 
 **Legacy wrappers:** 2 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -124,7 +124,7 @@ _OrbiAds audit suite — single entry point for audit sub-actions._
 
 _Parent billing tool for the Epic 68.5 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/billing.py:77` · **Actions:** 2 · **Mode:** read-only
+**Server-side implementation:** `billing.py` · **Actions:** 2 · **Mode:** read-only
 
 **Legacy wrappers:** 2 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -137,7 +137,7 @@ _Parent billing tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13)._
 
-**Source (private monorepo):** `backend/src/mcp/tools/blueprint.py:387` · **Actions:** 20 · **Mode:** mixed (read + write)
+**Server-side implementation:** `blueprint.py` · **Actions:** 20 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -166,7 +166,7 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-**Source (private monorepo):** `backend/src/mcp/tools/campaign_ops.py:624` · **Actions:** 16 · **Mode:** mixed (read + write)
+**Server-side implementation:** `campaign_ops.py` · **Actions:** 16 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 13 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -193,7 +193,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Source (private monorepo):** `backend/src/mcp/tools/advertisers.py:366` · **Actions:** 15 · **Mode:** mixed (read + write)
+**Server-side implementation:** `advertisers.py` · **Actions:** 15 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -219,7 +219,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 
 _Parent creative asset tool for upload/create/compress/transcode actions._
 
-**Source (private monorepo):** `backend/src/mcp/tools/creatives.py:1019` · **Actions:** 22 · **Mode:** mixed (read + write)
+**Server-side implementation:** `creatives.py` · **Actions:** 22 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 18 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -252,7 +252,7 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 
 _Parent creative QA tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/creative_qa.py:190` · **Actions:** 7 · **Mode:** read-only
+**Server-side implementation:** `creative_qa.py` · **Actions:** 7 · **Mode:** read-only
 
 **Legacy wrappers:** 7 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -270,7 +270,7 @@ _Parent creative QA tool for Story 68.6._
 
 _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through one parent tool._
 
-**Source (private monorepo):** `backend/src/mcp/tools/creative_wrappers.py:346` · **Actions:** 13 · **Mode:** mixed (read + write)
+**Server-side implementation:** `creative_wrappers.py` · **Actions:** 13 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -292,7 +292,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/creatives.py:985` · **Actions:** 30 · **Mode:** mixed (read + write)
+**Server-side implementation:** `creatives.py` · **Actions:** 30 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 27 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -333,7 +333,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
 _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
-**Source (private monorepo):** `backend/src/mcp/tools/dai_skill.py:190` · **Actions:** 14 · **Mode:** mixed (read + write)
+**Server-side implementation:** `dai_skill.py` · **Actions:** 14 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -356,7 +356,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-**Source (private monorepo):** `backend/src/mcp/tools/deals.py:594` · **Actions:** 28 · **Mode:** mixed (read + write)
+**Server-side implementation:** `deals.py` · **Actions:** 28 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 29 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -395,7 +395,7 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
 _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story 78.2)._
 
-**Source (private monorepo):** `backend/src/mcp/tools/formats.py:150` · **Actions:** 9 · **Mode:** mixed (read + write)
+**Server-side implementation:** `formats.py` · **Actions:** 9 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -413,7 +413,7 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-**Source (private monorepo):** `backend/src/mcp/tools/gam_admin.py:188` · **Actions:** 61 · **Mode:** mixed (read + write)
+**Server-side implementation:** `gam_admin.py` · **Actions:** 61 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -483,7 +483,7 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
 _Parent gam_features tool for the Epic 68.5 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/gam_features.py:121` · **Actions:** 3 · **Mode:** read-only
+**Server-side implementation:** `gam_features.py` · **Actions:** 3 · **Mode:** read-only
 
 **Legacy wrappers:** 3 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -497,7 +497,7 @@ _Parent gam_features tool for the Epic 68.5 catalogue refactor batch._
 
 _Async job dispatcher (parent>child pattern, Epic 82)._
 
-**Source (private monorepo):** `backend/src/mcp/tools/jobs_async.py:268` · **Actions:** 4 · **Mode:** read-only
+**Server-side implementation:** `jobs_async.py` · **Actions:** 4 · **Mode:** read-only
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -510,7 +510,7 @@ _Async job dispatcher (parent>child pattern, Epic 82)._
 
 _Parent inventory tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/inventory.py:683` · **Actions:** 14 · **Mode:** mixed (read + write)
+**Server-side implementation:** `inventory.py` · **Actions:** 14 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 10 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -535,7 +535,7 @@ _Parent inventory tool for Story 68.6._
 
 _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/jobs.py:151` · **Actions:** 3 · **Mode:** mixed (read + write)
+**Server-side implementation:** `jobs.py` · **Actions:** 3 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 3 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -549,7 +549,7 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-**Source (private monorepo):** `backend/src/mcp/tools/line_items.py:362` · **Actions:** 18 · **Mode:** mixed (read + write)
+**Server-side implementation:** `line_items.py` · **Actions:** 18 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 16 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -578,7 +578,7 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 
 _Live stream ad breaks + event/slate management._
 
-**Source (private monorepo):** `backend/src/mcp/tools/live_stream.py:95` · **Actions:** 13 · **Mode:** mixed (read + write)
+**Server-side implementation:** `live_stream.py` · **Actions:** 13 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -600,7 +600,7 @@ _Live stream ad breaks + event/slate management._
 
 _MCM read-only operations._
 
-**Source (private monorepo):** `backend/src/mcp/tools/mcm.py:42` · **Actions:** 1 · **Mode:** read-only
+**Server-side implementation:** `mcm.py` · **Actions:** 1 · **Mode:** read-only
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -610,7 +610,7 @@ _MCM read-only operations._
 
 _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/network.py:252` · **Actions:** 6 · **Mode:** mixed (read + write)
+**Server-side implementation:** `network.py` · **Actions:** 6 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 4 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -627,7 +627,7 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent orders tool for non-lifecycle Order operations._
 
-**Source (private monorepo):** `backend/src/mcp/tools/orders.py:159` · **Actions:** 11 · **Mode:** mixed (read + write)
+**Server-side implementation:** `orders.py` · **Actions:** 11 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 11 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -649,7 +649,7 @@ _Parent orders tool for non-lifecycle Order operations._
 
 _Parent placements tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/placements.py:248` · **Actions:** 6 · **Mode:** mixed (read + write)
+**Server-side implementation:** `placements.py` · **Actions:** 6 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 4 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -666,7 +666,7 @@ _Parent placements tool for Story 68.6._
 
 _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/pql.py:353` · **Actions:** 3 · **Mode:** read-only
+**Server-side implementation:** `pql.py` · **Actions:** 3 · **Mode:** read-only
 
 **Legacy wrappers:** 1 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -680,7 +680,7 @@ _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
 _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 
-**Source (private monorepo):** `backend/src/mcp/tools/prebid_skill.py:449` · **Actions:** 6 · **Mode:** mixed (read + write)
+**Server-side implementation:** `prebid_skill.py` · **Actions:** 6 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -695,7 +695,7 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 
 _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/preview.py:754` · **Actions:** 3 · **Mode:** mixed (read + write)
+**Server-side implementation:** `preview.py` · **Actions:** 3 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 3 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -709,7 +709,7 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/products.py:516` · **Actions:** 7 · **Mode:** mixed (read + write)
+**Server-side implementation:** `products.py` · **Actions:** 7 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 9 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -727,7 +727,7 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
-**Source (private monorepo):** `backend/src/mcp/tools/reporting.py:2266` · **Actions:** 32 · **Mode:** mixed (read + write)
+**Server-side implementation:** `reporting.py` · **Actions:** 32 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 31 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -770,7 +770,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-**Source (private monorepo):** `backend/src/mcp/tools/settings.py:618` · **Actions:** 20 · **Mode:** mixed (read + write)
+**Server-side implementation:** `settings.py` · **Actions:** 20 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 9 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -801,7 +801,7 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
 _Parent targeting tool for Story 68.6._
 
-**Source (private monorepo):** `backend/src/mcp/tools/targeting.py:937` · **Actions:** 28 · **Mode:** mixed (read + write)
+**Server-side implementation:** `targeting.py` · **Actions:** 28 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 21 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -840,7 +840,7 @@ _Parent targeting tool for Story 68.6._
 
 _Parent tenant_catalog MCP tool — scan + read tenant inventory catalog (Story 78.1)._
 
-**Source (private monorepo):** `backend/src/mcp/tools/tenant_catalog.py:131` · **Actions:** 4 · **Mode:** mixed (read + write)
+**Server-side implementation:** `tenant_catalog.py` · **Actions:** 4 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -853,7 +853,7 @@ _Parent tenant_catalog MCP tool — scan + read tenant inventory catalog (Story 
 
 _Video monetization: ad rule management, content metadata, and content bundle operations._
 
-**Source (private monorepo):** `backend/src/mcp/tools/video_ops.py:145` · **Actions:** 10 · **Mode:** mixed (read + write)
+**Server-side implementation:** `video_ops.py` · **Actions:** 10 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -872,7 +872,7 @@ _Video monetization: ad rule management, content metadata, and content bundle op
 
 _Yield optimization group management and forecast governance._
 
-**Source (private monorepo):** `backend/src/mcp/tools/yield_skill.py:119` · **Actions:** 5 · **Mode:** mixed (read + write)
+**Server-side implementation:** `yield_skill.py` · **Actions:** 5 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
