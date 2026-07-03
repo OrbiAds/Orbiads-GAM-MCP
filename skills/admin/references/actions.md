@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Network Administration & Settings: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 91 actions across 5 parent tool(s); CLI coverage 13/91 actions.
+Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 94 actions across 5 parent tool(s); CLI coverage 13/94 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -19,8 +19,8 @@ Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 91 
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-- **Mode:** mixed · **Actions:** 58 (19 writes, 39 reads)
-- **Surfaces:** MCP ✅ · CLI 0/58 actions
+- **Mode:** mixed · **Actions:** 61 (21 writes, 40 reads)
+- **Surfaces:** MCP ✅ · CLI 0/61 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
@@ -28,7 +28,9 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `applications.create` | 0 | yes | — | MCP-only |
 | `applications.patch` | 0 | yes | — | MCP-only |
 | `custom_fields.create` | 0 | yes | — | MCP-only |
+| `custom_fields.create_dropdown_options` | 0 | yes | — | MCP-only |
 | `custom_fields.patch` | 0 | yes | — | MCP-only |
+| `custom_fields.update_dropdown_options` | 0 | yes | — | MCP-only |
 | `entity_signals.create` | 0 | yes | — | MCP-only |
 | `entity_signals.patch` | 0 | yes | — | MCP-only |
 | `labels.create` | 0 | yes | — | MCP-only |
@@ -55,6 +57,7 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `custom_fields.batch_deactivate` | 0 | — | — | MCP-only |
 | `custom_fields.batch_update` | 0 | — | — | MCP-only |
 | `custom_fields.get` | 0 | — | — | MCP-only |
+| `custom_fields.get_dropdown_option` | 0 | — | — | MCP-only |
 | `custom_fields.list` | 0 | — | — | MCP-only |
 | `entity_signals.batch_create` | 0 | — | — | MCP-only |
 | `entity_signals.batch_update` | 0 | — | — | MCP-only |

@@ -34,7 +34,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
 | `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:594` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
-| `gam_admin` | 65 | 58 | ✍️ mixed/write | `gam_admin.py:188` |
+| `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | 📖 read | `jobs_async.py:268` |
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:683` |
@@ -413,7 +413,7 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-**Source (private monorepo):** `backend/src/mcp/tools/gam_admin.py:188` · **Actions:** 58 · **Mode:** mixed (read + write)
+**Source (private monorepo):** `backend/src/mcp/tools/gam_admin.py:188` · **Actions:** 61 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Write? | Confirmation token? |
 |---|---|---|---|
@@ -449,6 +449,9 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `custom_fields.batch_update` | 0 | — | — |
 | `custom_fields.batch_activate` | 0 | — | — |
 | `custom_fields.batch_deactivate` | 0 | — | — |
+| `custom_fields.create_dropdown_options` | 0 | ✅ | — |
+| `custom_fields.update_dropdown_options` | 0 | ✅ | — |
+| `custom_fields.get_dropdown_option` | 0 | — | — |
 | `labels.list` | 0 | — | — |
 | `labels.get` | 0 | — | — |
 | `labels.create` | 0 | ✅ | — |

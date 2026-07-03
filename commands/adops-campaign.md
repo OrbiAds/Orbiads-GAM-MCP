@@ -66,7 +66,7 @@ Non-regression: `campaign(action="deploy")` remains the entry point for campaign
 
 ### 1 — Advertiser and order setup (free)
 
-Resolve the advertiser with `companies(action="advertisers.find_or_create", params={name, type: "ADVERTISER"})`. Then resolve or create the order with `orders(action="find_or_create", params={name, advertiser_id, traffic_amount, start_date, end_date})`.
+Resolve the advertiser with `companies(area="advertisers", action="find_or_create", params={name, type: "ADVERTISER"})` — `companies` takes `area` + `action`, not a dotted `action="advertisers.find_or_create"`. Then resolve or create the order with `orders(action="find_or_create", params={name, advertiser_id, traffic_amount, start_date, end_date})`.
 
 If the order already exists, fetch it with `orders(action="get")` and verify it is in `DRAFT` or `APPROVED` status before continuing.
 

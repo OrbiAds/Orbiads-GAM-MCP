@@ -1,7 +1,7 @@
 ---
 name: adops-audit
 description: Multi-dimensional GAM audit: delivery health, inventory hygiene, security baseline, creative compliance, billing alignment. Read-only and free.
-argument-hint: "[delivery|inventory|security|creative|billing|all] [--framework=iso27001|nist|iab|orbiads_baseline]"
+argument-hint: "[delivery|inventory|security|creative|billing|all] [--framework=orbiads_baseline|iso27001_adops|nist_csf_subset]"
 allowed-tools: Task,mcp__orbiads__audit_skill,mcp__orbiads__reporting,mcp__orbiads__inventory,mcp__orbiads__creative_qa,mcp__orbiads__billing,Read,Write
 model: sonnet
 ---
@@ -24,7 +24,14 @@ Parse `$ARGUMENTS` to decide which dimensions to run.
 
 Default (no argument): run all dimensions.
 
-For `--framework`, pass to `audit_skill(action="standards_baseline", params={framework})`. Supported values: `iso27001`, `nist`, `iab`, `orbiads_baseline` (default).
+For `--framework`, pass to `audit_skill(action="standards_baseline", params={framework})`. The accepted framework identifiers are **exactly** (any other value → `VALIDATION_ERROR`):
+
+- `orbiads_baseline` (default) — 12 checks. ✅ Implemented.
+- `iso27001_adops` — ISO 27001 ad-ops subset, 8 controls. ✅ Implemented.
+- `nist_csf_subset` — NIST CSF subset, 8 controls. ✅ Implemented.
+- `iab_anti_tampering` — declared but **not implemented**: it returns `NOT_IMPLEMENTED` (advertiser-side anti-tampering, inapplicable to a publisher-side GAM audit). Do **not** offer it as a working option.
+
+Use the full identifier (`iso27001_adops`, not `iso27001`) — the short names are rejected at validation.
 
 ## Running the audit
 

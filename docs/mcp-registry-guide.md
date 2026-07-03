@@ -114,7 +114,7 @@ mcp-publisher publish
 {
   "name": "com.orbiads/gam",
   "title": "OrbiAds — Google Ad Manager",
-  "description": "The most complete MCP server for Google Ad Manager: campaigns, line items, creatives, inventory, targeting, reporting, yield and ad-ops audits — 50 tools covering 290+ GAM operations.",
+  "description": "The most complete MCP server for Google Ad Manager: campaigns, line items, creatives, inventory, targeting, reporting, yield and ad-ops audits — 50 tools covering 460+ GAM operations.",
   "version": "1.9.0",
   "transport": "streamable-http",
   "url": "https://orbiads.com/mcp"

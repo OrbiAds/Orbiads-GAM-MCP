@@ -1,6 +1,6 @@
 ---
 name: audit-security-baseline
-description: Security baseline subagent — runs a standards-based audit (ISO 27001, NIST, IAB, or orbiads_baseline) against the GAM account. Spawned by /adops audit. Write results to audit-security-<network_code>.md.
+description: Security baseline subagent — runs a standards-based audit (orbiads_baseline, iso27001_adops, or nist_csf_subset) against the GAM account. Spawned by /adops audit. Write results to audit-security-<network_code>.md.
 allowed-tools: mcp__orbiads__audit_skill,Write
 model: sonnet
 ---
@@ -17,7 +17,9 @@ Write all findings to `audit-security-<network_code>.md`. Never share a file wit
 
 **Standards baseline:**
 
-Call `audit_skill(action="standards_baseline", params={framework})` where `framework` is one of: `iso27001`, `nist`, `iab`, `orbiads_baseline` (default). This runs the full checklist for the selected standard and returns a structured markdown report with pass/fail per control.
+Call `audit_skill(action="standards_baseline", params={framework})` where `framework` is one of the **exact** identifiers (any other value → `VALIDATION_ERROR`): `orbiads_baseline` (default, 12 checks), `iso27001_adops` (8 controls), `nist_csf_subset` (8 controls). This runs the full checklist for the selected standard and returns a structured markdown report with pass/fail per control.
+
+> `iab_anti_tampering` is declared in the enum but returns `NOT_IMPLEMENTED` (advertiser-side, inapplicable to a publisher-side GAM audit). Do not use it.
 
 **MCP surface coverage:**
 
@@ -36,7 +38,7 @@ Score the security dimension out of 10 based on the `standards_baseline` output:
 
 ```
 ## Security Baseline — Score: X/10
-Framework: <iso27001|nist|iab|orbiads_baseline>
+Framework: <orbiads_baseline|iso27001_adops|nist_csf_subset>
 
 ### Standards Baseline Results
 (Paste structured output from audit_skill(standards_baseline))
