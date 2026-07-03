@@ -1,7 +1,7 @@
 """Manage GAM NativeStyles — Story 62.1.
 
 Wraps the 5 NativeStyle Tier B routes added in
-``backend/src/api/routes/gam/creatives_native_styles.py``.
+the server-side NativeStyle API.
 """
 
 from __future__ import annotations

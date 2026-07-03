@@ -2,7 +2,7 @@
 
 ## Shared Prerequisites
 
-- the real MCP server lives in `backend/src/mcp/server.py` and is mounted at `/mcp` in `backend/main.py` for `streamable-http` mode;
+- the real MCP server is hosted at `https://orbiads.com/mcp` (streamable-http mode) — server-side implementation;
 - supported transports are `streamable-http` (default), `sse`, and `stdio` (local development only);
 - ChatGPT connector mode requires a public HTTPS `/mcp` endpoint and does not use `stdio`;
 - remote mode expects Google OAuth environment variables such as `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `MCP_BASE_URL`;

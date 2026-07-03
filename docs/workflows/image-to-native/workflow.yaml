@@ -49,7 +49,7 @@ steps:
     skill: campaigns
     mode: preview_then_write
     notes: >
-      Call companies(action="advertisers.find_or_create") to resolve the advertiser.
+      Call companies(area="advertisers", action="find_or_create") to resolve the advertiser.
       Call orders(action="find_or_create") or orders(action="get") to resolve the order.
       Verify order status is DRAFT or APPROVED before line item creation.
       Create line items via line_items(action="create_batch", dry_run=true) → confirm → execute.

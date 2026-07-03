@@ -7,9 +7,9 @@
 
 ## What this repo is
 
-The **public mirror** of the `orbiads/` subtree of the private monorepo `gam-native`. Published as a Claude Code plugin (`@orbiads`) + Python CLI (`orbiads-cli`) + MCP server (`https://orbiads.com/mcp`).
+The **public mirror** of the OrbiAds client-facing surface. Published as a Claude Code plugin (`@orbiads`) + Python CLI (`orbiads-cli`) + MCP server (`https://orbiads.com/mcp`).
 
-Source of truth = `gam-native` (private). This repo is **read-mostly** — most of its files are **generated** from the backend code by `scripts/generate_skills/generate.py` and protected by a CI drift gate. Hand-edit a generated file → CI fails. Edits go to the backend source instead, then re-run the generator.
+The private server-side repository is the source of truth. This repo is **read-mostly** — most of its files are **generated** from the server-side code by `scripts/generate_skills/generate.py` and protected by a CI drift gate. Hand-edit a generated file → CI fails. Edits go to the server-side source instead, then re-run the generator.
 
 ---
 
@@ -19,8 +19,8 @@ Source of truth = `gam-native` (private). This repo is **read-mostly** — most 
 | --- | --- | --- | --- |
 | `version.json` | ✅ generated | `scripts/generate_skills/lib/generators/version_bump.py` + catalogue state | DO NOT EDIT — re-run generator |
 | `CHANGELOG.md` | ✅ generated (idempotent prepend) | same | DO NOT EDIT existing entries; new entries are prepended by the generator |
-| `docs/tool-matrix/README.md` | ✅ generated | `backend/src/mcp/tools/*.py` via AST | DO NOT EDIT |
-| `_docs/legacy-tool-mapping.md` | ✅ generated | `@deprecated_tool` decorators in `backend/src/mcp/tools/*.py` | DO NOT EDIT |
+| `docs/tool-matrix/README.md` | ✅ generated | server-side MCP tool definitions via AST | DO NOT EDIT |
+| `_docs/legacy-tool-mapping.md` | ✅ generated | `@deprecated_tool` decorators in server-side MCP tool definitions | DO NOT EDIT |
 | `skills/<group>/SKILL.md` | ✅ generated (Story 81.2+) | group metadata from catalogue | DO NOT EDIT |
 | `skills/<group>/references/actions.md` | ✅ generated (Story 81.2+) | per-action catalogue + CLI column from `cli/parity-matrix.json` | DO NOT EDIT |
 | `skills/orbiads/SKILL.md` | ❌ hand-authored | this file | EDIT — it's the orchestrator narrative |
@@ -75,8 +75,8 @@ Will live in `commands/adops-*.md` with frontmatter `description`, `argument-hin
 
 | Layer | Detail |
 | --- | --- |
-| **Backend** (gam-native private monorepo) | Python 3.11+, FastAPI, Pydantic V2, FastMCP, Firestore, Cloud Run |
-| **Frontend** (gam-native private) | SvelteKit 5, TypeScript, Tailwind 4 |
+| **Backend** (server-side, private) | Python 3.11+, FastAPI, Pydantic V2, FastMCP, Firestore, Cloud Run |
+| **Frontend** (server-side, private) | SvelteKit 5, TypeScript, Tailwind 4 |
 | **Public repo (this)** | Markdown + JSON + Python CLI |
 | **GAM API target** | `v202605` |
 | **MCP protocol** | `2025-03-26` (streamable-http) |
@@ -128,8 +128,8 @@ If you (Claude) are editing this repo to add/change a feature:
    python -c "import tarfile; t=tarfile.open('dist/orbiads_cli-X.Y.Z.tar.gz','r:gz'); bad=[m for m in t.getnames() if any(x in m for x in ['.codex-tmp','.venv','.pytest_cache','/dist/'])]; print('CLEAN' if not bad else f'FAIL: {bad[:3]}')"
    # 4. Run tests
    uv run pytest -q --tb=short
-   # 5. Publish (token in backend/.env as PYPI_API_PASSWORD)
-   $env:UV_PUBLISH_TOKEN = (Get-Content ../../../backend/.env | Where-Object { $_ -match "^PYPI_API_PASSWORD=" }) -replace "^PYPI_API_PASSWORD=",""
+   # 5. Publish (set UV_PUBLISH_TOKEN to your PyPI API token)
+   $env:UV_PUBLISH_TOKEN = "<your-pypi-api-token>"
    uv publish dist/orbiads_cli-X.Y.Z-py3-none-any.whl dist/orbiads_cli-X.Y.Z.tar.gz
    # 6. Verify live
    Invoke-WebRequest "https://pypi.org/pypi/orbiads-cli/X.Y.Z/json" -UseBasicParsing | ConvertFrom-Json | Select-Object -ExpandProperty info | Select-Object name,version

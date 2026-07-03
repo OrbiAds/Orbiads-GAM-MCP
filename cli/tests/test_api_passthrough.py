@@ -37,7 +37,7 @@ def test_api_request_get_with_query(authenticated_config):
 
 def test_api_request_post_with_file(authenticated_config, tmp_path):
     client = _client()
-    payload = {"networkCode": "66235823"}
+    payload = {"networkCode": "12345678"}
     file_path = tmp_path / "payload.json"
     file_path.write_text(json.dumps(payload), encoding="utf-8")
 

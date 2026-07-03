@@ -9,7 +9,7 @@
 # Do not hardcode counts anywhere — parity-matrix.json is the single source of truth.
 meta:
   curated: "2026-05-19"
-  source: "Phase 0 tri-state audit + live route grep (backend/src/api/routes/**)"
+  source: "Phase 0 tri-state audit + live route grep (server-side api/routes/**)"
   note: >
     capability-parity allowed: one CLI command may satisfy several convenience
     MCP tools (mapping recorded). Tier A (Epic 61) clears REST-ONLY -> cli.
@@ -450,8 +450,8 @@ tools:
       archive: {rest: "POST /api/products/{product_id}:archive", cli: "products archive"}
       get_adcp: {rest: "NO-REST", cli: null, exempt: "ADCP buy-agent discovery remains MCP-only by design."}
       pricing_suggestion: {rest: "GET /api/products/{product_id}/pricing-suggestion", cli: null, exempt: "Epic 67 CLI deferred."}
-  # REST surface lives under /api/products (Story 64.23 follow-up, see
-  # backend/src/api/routes/products.py). Legacy tools remain FULL through their
+  # REST surface lives under /api/products (Story 64.23 follow-up; server-side
+  # implementation). Legacy tools remain FULL through their
   # existing REST mappings during coexistence; parent REST/CLI is deferred above.
   create_product:                 {area: products, rest: "POST /api/products", cli: "products create"}
   list_products:                  {area: products, rest: "GET /api/products", cli: "products list"}

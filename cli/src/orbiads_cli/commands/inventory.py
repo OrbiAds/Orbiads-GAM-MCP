@@ -108,7 +108,7 @@ def keys(
             data = client.get("/api/gam/custom-targeting-keys", params=params)
             if isinstance(data, dict):
                 # CustomTargetingKeysResult.model_dump(by_alias=True) -> {"keys": [...]}
-                # see backend/src/domain/gam_targeting.py:291-296.
+                # see server-side CustomTargetingKeysResult (gam_targeting domain).
                 items = data.get("keys", data.get("results", []))
             else:
                 items = data if isinstance(data, list) else []

@@ -9,9 +9,13 @@ Google Ad Manager from the command line. Deploy campaigns, check inventory, run 
 - PyPI stable: `orbiads-cli 1.0.1`
 - Source tree: `orbiads-cli 1.1.0` (unreleased)
 
-`1.1.0` is a real CLI change, not just a version bump: the local client no
-longer ships a baked-in Firebase API key and requires `ORBIADS_FIREBASE_KEY`
-for refresh-token exchange. Do not publish `1.1.0` to PyPI until the CLI release
+`1.1.0` is a real CLI change, not just a version bump: the source tree still
+ships a default Firebase Web API key (`DEFAULT_FIREBASE_API_KEY` in `config.py`)
+for refresh-token exchange out of the box, while also accepting an override via
+`ORBIADS_FIREBASE_KEY`. The key is a **Firebase Web API key** — a public
+client-side credential by design, already served in the browser bundle. It is
+protected by HTTP referrer restrictions on the GCP side (only `orbiads.com/*`
+and localhost are allowed). Do not publish `1.1.0` to PyPI until the CLI release
 gate is green.
 
 ---

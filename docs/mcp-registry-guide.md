@@ -80,7 +80,7 @@ Résultat attendu : `✓ Authenticated as com.orbiads`
 ## Étape 4 — Publier depuis le repo public
 
 ```bash
-cd path/to/OrbiAds-GAM-MCP   # ou depuis gam-native/orbiads/
+cd path/to/OrbiAds-GAM-MCP
 mcp-publisher publish
 ```
 

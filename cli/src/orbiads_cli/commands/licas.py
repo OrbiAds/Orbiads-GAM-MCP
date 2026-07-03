@@ -1,7 +1,7 @@
 """Manage LICAs (line-item creative associations) — Story 62.1.
 
 Wraps the 5 LICA Tier B routes added in
-``backend/src/api/routes/gam/creatives_lica.py``.
+the server-side LICA API.
 """
 
 from __future__ import annotations

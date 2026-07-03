@@ -200,8 +200,7 @@ def update(
     file: str = typer.Option(..., "--file", "-f", help="JSON file with the patch body"),
 ):
     """Update an order (PATCH). Read-only fields (start/end dates, totals,
-    currency) are rejected by the backend with 422 VALIDATION_ERROR — see
-    backend/src/api/routes/gam/orders.py.
+    currency) are rejected by the server with 422 VALIDATION_ERROR.
     """
     payload = _load_json_payload(file)
     try:

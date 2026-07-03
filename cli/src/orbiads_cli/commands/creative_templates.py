@@ -1,7 +1,7 @@
 """Manage GAM CreativeTemplates — Story 62.1.
 
 Wraps the 3 CreativeTemplate Tier B routes added in
-``backend/src/api/routes/gam/creative_templates.py``.
+the server-side CreativeTemplate API.
 """
 
 from __future__ import annotations

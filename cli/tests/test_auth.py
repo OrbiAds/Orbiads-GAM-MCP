@@ -276,7 +276,7 @@ class TestAuthStatus:
             "apiUrl": "https://test.example.com",
             "token": "valid-tok",
             "refreshToken": "ref-tok",
-            "networkCode": "66235823",
+            "networkCode": "12345678",
         })
 
         fake_client = MagicMock()
@@ -291,7 +291,7 @@ class TestAuthStatus:
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 0
-        assert "66235823" in result.output
+        assert "12345678" in result.output
         assert "not set" not in result.output
 
     def test_status_prefers_connection_state_over_stale_config(self, tmp_config):
@@ -300,13 +300,13 @@ class TestAuthStatus:
             "apiUrl": "https://test.example.com",
             "token": "valid-tok",
             "refreshToken": "ref-tok",
-            "networkCode": "66235823",
+            "networkCode": "12345678",
         })
 
         fake_client = MagicMock()
         fake_client.get.side_effect = [
             {"email": "user@example.com"},
-            {"networkCode": "33047445"},
+            {"networkCode": "87654321"},
         ]
 
         with patch(
@@ -315,8 +315,8 @@ class TestAuthStatus:
             result = runner.invoke(app, ["status"])
 
         assert result.exit_code == 0
-        assert "33047445" in result.output
-        assert "66235823" not in result.output
+        assert "87654321" in result.output
+        assert "12345678" not in result.output
         assert fake_client.get.call_args_list[1].args == (
             "/api/auth/gam/connection-state",
         )
@@ -332,7 +332,7 @@ class TestAuthStatus:
         fake_client = MagicMock()
         fake_client.get.side_effect = [
             {"email": "user@example.com"},
-            {"networkCode": "66235823"},
+            {"networkCode": "12345678"},
         ]
 
         with patch(
@@ -343,7 +343,7 @@ class TestAuthStatus:
         assert result.exit_code == 0
         data = json.loads(result.stdout)
         assert data["email"] == "user@example.com"
-        assert data["networkCode"] == "66235823"
+        assert data["networkCode"] == "12345678"
         # Both calls must go through OrbiAdsClient so the CLI analytics header
         # is attached — never raw httpx.
         assert fake_client.get.call_args_list[0].args == ("/api/me",)
@@ -507,7 +507,7 @@ class TestCliHeaderInjection:
         # First call: /api/me — no networkCode → triggers connection-state lookup
         fake_client.get.side_effect = [
             {"email": "user@example.com"},
-            {"networkCode": "66235823"},
+            {"networkCode": "12345678"},
         ]
 
         with patch(
