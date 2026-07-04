@@ -46,7 +46,8 @@ def ad_units(
             if isinstance(sizes, list):
                 item["sizes"] = ", ".join(
                     f"{s.get('width', '?')}x{s.get('height', '?')}"
-                    if isinstance(s, dict) else str(s)
+                    if isinstance(s, dict)
+                    else str(s)
                     for s in sizes
                 )
         render(items, _AD_UNIT_COLUMNS, out)
@@ -91,15 +92,17 @@ def keys(
         client = get_client()
 
         if key_id and values:
-            # Story 61.2 — `get_custom_targeting_values` is MCP-ONLY (no REST
-            # route yet); the previous `/api/gam/targeting-keys/{id}/values`
-            # path 404'd. Surfacing this honestly until Epic 62 adds the route.
-            typer.echo(
-                "orbiads inventory keys --values is not yet supported via REST "
-                "(pending Epic 62 — get_custom_targeting_values route).",
-                err=True,
+            params_vals: dict[str, str | int] = {"keyId": key_id, "limit": limit}
+            data_vals = client.get(
+                "/api/gam/custom-targeting-values", params=params_vals
             )
-            raise typer.Exit(code=1)
+            if isinstance(data_vals, dict):
+                items_vals = data_vals.get(
+                    "values", data_vals.get("results", data_vals.get("items", []))
+                )
+            else:
+                items_vals = data_vals if isinstance(data_vals, list) else []
+            render(items_vals, _VALUE_COLUMNS, out)
         else:
             # List all targeting keys.
             # Story 61.2 — backend serves `/api/gam/custom-targeting-keys`
@@ -123,6 +126,7 @@ def keys(
 def _load_json_payload(path: str) -> dict:
     import json as _json
     import os
+
     if not os.path.isfile(path):
         typer.echo(f"Error: file not found: {path}", err=True)
         raise typer.Exit(code=2)
@@ -143,7 +147,9 @@ def _compact_params(params: dict[str, object | None]) -> dict[str, object]:
 @app.command("save-adunits")
 def save_adunits(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file: selectedAdUnitIds array"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file: selectedAdUnitIds array"
+    ),
 ):
     """Save selected ad units (batch create/import)."""
     payload = _load_json_payload(file)
@@ -227,7 +233,9 @@ def archive_ad_unit(
 @app.command()
 def audit(
     ctx: typer.Context,
-    file: str = typer.Option(None, "--file", "-f", help="Optional JSON body for the audit request"),
+    file: str = typer.Option(
+        None, "--file", "-f", help="Optional JSON body for the audit request"
+    ),
 ):
     """Run an inventory audit."""
     payload = _load_json_payload(file) if file else {}
@@ -298,9 +306,7 @@ def understanding_latest(ctx: typer.Context):
     NO_LATEST_ANALYSIS if neither layer has a valid candidate.
     """
     try:
-        data = get_client().get(
-            "/api/gam/inventory/understanding/analyses/latest"
-        )
+        data = get_client().get("/api/gam/inventory/understanding/analyses/latest")
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -454,7 +460,9 @@ def blueprint_starter_type_a(
     and naming violations are derived from that scan; nothing is pushed
     to GAM — only a Blueprint V2 draft is persisted.
     """
-    payload = _compact_params({"blueprintId": blueprint_id, "networkCode": network_code})
+    payload = _compact_params(
+        {"blueprintId": blueprint_id, "networkCode": network_code}
+    )
     try:
         data = get_client().post(
             "/api/inventory/blueprints/starters/type-a", json=payload or {}
@@ -470,7 +478,9 @@ def blueprint_starter_type_b(
     template_id: str = typer.Argument(
         ..., help="Template ID: site-editorial | e-commerce | premium-publisher"
     ),
-    site_prefix: str = typer.Option(..., "--site-prefix", help="Site prefix slug (e.g. lemonde)"),
+    site_prefix: str = typer.Option(
+        ..., "--site-prefix", help="Site prefix slug (e.g. lemonde)"
+    ),
     blueprint_id: str = typer.Argument("active", help="Target Blueprint ID"),
     lang: str = typer.Option("fr", "--lang", help="Static lang Key-Value value"),
     structure: str = typer.Option(
@@ -526,13 +536,17 @@ def blueprint_get(
 def blueprint_list_drafts(
     ctx: typer.Context,
     blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """List scoped Blueprint V2 drafts."""
     try:
         params = _compact_params({"networkCode": network_code})
         kwargs = {"params": params} if params else {}
-        data = get_client().get(f"/api/inventory/blueprints/{blueprint_id}/drafts", **kwargs)
+        data = get_client().get(
+            f"/api/inventory/blueprints/{blueprint_id}/drafts", **kwargs
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -543,12 +557,16 @@ def blueprint_diff(
     ctx: typer.Context,
     blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
     draft_id: str = typer.Option(..., "--draft-id", help="Draft ID"),
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """Read the in-memory planning diff for a draft."""
     try:
         params = _compact_params({"draftId": draft_id, "networkCode": network_code})
-        data = get_client().get(f"/api/inventory/blueprints/{blueprint_id}/diff", params=params)
+        data = get_client().get(
+            f"/api/inventory/blueprints/{blueprint_id}/diff", params=params
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -557,7 +575,9 @@ def blueprint_diff(
 @catalog_app.command("get")
 def catalog_get(
     ctx: typer.Context,
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """Read the custom targeting catalog."""
     try:
@@ -573,13 +593,19 @@ def catalog_get(
 def blocks_list_versions(
     ctx: typer.Context,
     block_id: str = typer.Argument(..., help="Block ID"),
-    limit: int | None = typer.Option(None, "--limit", min=1, max=100, help="Max versions"),
+    limit: int | None = typer.Option(
+        None, "--limit", min=1, max=100, help="Max versions"
+    ),
     cursor: str | None = typer.Option(None, "--cursor", help="Pagination cursor"),
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """List released versions for a Blueprint V2 block."""
     try:
-        params = _compact_params({"limit": limit, "cursor": cursor, "networkCode": network_code})
+        params = _compact_params(
+            {"limit": limit, "cursor": cursor, "networkCode": network_code}
+        )
         kwargs = {"params": params} if params else {}
         data = get_client().get(f"/api/inventory/blocks/{block_id}/versions", **kwargs)
         render_detail(data, ctx.obj)
@@ -592,13 +618,17 @@ def blocks_get_version(
     ctx: typer.Context,
     block_id: str = typer.Argument(..., help="Block ID"),
     version: str = typer.Argument(..., help="Version, for example 1.0.0"),
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """Read one released block version."""
     try:
         params = _compact_params({"networkCode": network_code})
         kwargs = {"params": params} if params else {}
-        data = get_client().get(f"/api/inventory/blocks/{block_id}/versions/{version}", **kwargs)
+        data = get_client().get(
+            f"/api/inventory/blocks/{block_id}/versions/{version}", **kwargs
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -623,7 +653,9 @@ def preview_get_url(
     blueprint_id: str = typer.Argument("active", help="Blueprint ID"),
     site: str = typer.Argument(..., help="Site ID"),
     grouping_id: str = typer.Argument(..., help="Grouping ID"),
-    network_code: str | None = typer.Option(None, "--network-code", help="GAM network code"),
+    network_code: str | None = typer.Option(
+        None, "--network-code", help="GAM network code"
+    ),
 ):
     """Create and return a signed hosted preview URL."""
     try:
@@ -707,7 +739,9 @@ def bp_bundles_list(ctx: typer.Context):
     try:
         data = get_client().get("/api/gam/inventory/blueprint/size-bundles")
         if isinstance(data, dict):
-            items = data.get("sizeBundles", data.get("bundles", data.get("results", [])))
+            items = data.get(
+                "sizeBundles", data.get("bundles", data.get("results", []))
+            )
         else:
             items = data if isinstance(data, list) else []
         render(items, _BP_BUNDLE_COLUMNS, ctx.obj)
@@ -718,7 +752,9 @@ def bp_bundles_list(ctx: typer.Context):
 @bp_bundles_app.command("create")
 def bp_bundles_create(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the bundle body"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the bundle body"
+    ),
 ):
     """Create a size bundle."""
     payload = _load_json_payload(file)
@@ -804,7 +840,9 @@ def bp_positions_create(
 @app.command("blueprint-generate")
 def blueprint_generate(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the blueprint request"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the blueprint request"
+    ),
 ):
     """Generate an inventory blueprint (dry run)."""
     payload = _load_json_payload(file)
@@ -818,7 +856,9 @@ def blueprint_generate(
 @app.command("blueprint-push")
 def blueprint_push(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the blueprint to push"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the blueprint to push"
+    ),
 ):
     """Push an inventory blueprint to GAM."""
     payload = _load_json_payload(file)
@@ -835,7 +875,9 @@ def blueprint_push(
 @app.command("validate-fluid")
 def validate_fluid(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with adUnitIds[] + jobId"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with adUnitIds[] + jobId"
+    ),
 ):
     """Validate that the selected ad units support Fluid sizing."""
     payload = _load_json_payload(file)
@@ -849,7 +891,9 @@ def validate_fluid(
 @app.command("validate-fluid-batch")
 def validate_fluid_batch(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"
+    ),
 ):
     """Batch-validate Fluid ad-unit compatibility."""
     payload = _load_json_payload(file)
@@ -863,7 +907,9 @@ def validate_fluid_batch(
 @app.command()
 def forecast(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the forecast request"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the forecast request"
+    ),
 ):
     """Run an inventory forecast (line-item probabilistic delivery)."""
     payload = _load_json_payload(file)
@@ -900,11 +946,15 @@ def device_categories(ctx: typer.Context):
 @app.command("technology-targets")
 def technology_targets(
     ctx: typer.Context,
-    target_type: str = typer.Option(..., "--type", help="Target type: device, os, browser"),
+    target_type: str = typer.Option(
+        ..., "--type", help="Target type: device, os, browser"
+    ),
 ):
     """List available technology targets."""
     try:
-        data = get_client().get("/api/gam/technology-targets", params={"type": target_type})
+        data = get_client().get(
+            "/api/gam/technology-targets", params={"type": target_type}
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -991,7 +1041,9 @@ def placement_archive(
 @app.command("placement-create")
 def placement_create(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the placement body"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with the placement body"
+    ),
 ):
     """Create a placement."""
     payload = _load_json_payload(file)
@@ -1080,7 +1132,9 @@ def languages(
 @app.command("list-inactive")
 def list_inactive(
     ctx: typer.Context,
-    days: int = typer.Option(90, "--days", "-d", min=1, max=365, help="Look-back window in days"),
+    days: int = typer.Option(
+        90, "--days", "-d", min=1, max=365, help="Look-back window in days"
+    ),
 ):
     """List ad units with zero impressions in the last N days (Story 62.5a)."""
     try:
@@ -1093,7 +1147,9 @@ def list_inactive(
 @app.command("archive-inactive")
 def archive_inactive(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON file with {adUnitIds: [...]}"
+    ),
 ):
     """Archive a batch of inactive ad units (Story 62.5a)."""
     payload = _load_json_payload(file)
