@@ -163,6 +163,43 @@ The body is **thin procedure**, not a tool reference. Principles:
 - **Move catalogues out.** A 40-row naming table or line-item plan goes in
   `references/`, linked from the body.
 
+### Canonical `campaign(action="create_draft")` — Order-less authoring
+
+Author campaigns with the OrbiAds **domain shape** (`groups` / `delivery`) —
+**never** raw GAM-SOAP `lineItems` / `creativePlaceholders`. You do **not** call
+`orders(action="create")` first: describe the target Order by `orderName` +
+`advertiserId` in `meta` and OrbiAds creates the GAM Order for you at **deploy
+time** (one coherent intent → one coherent deployment). `create_draft` is a free
+Firestore write (no GAM write); `dry_run` previews an explicit `create_order`
+step; `deploy` runs `create order → line items → creatives → LICAs` as one atomic
+saga with one confirmation token and one rollback unit.
+
+```jsonc
+// MCP: campaign(action="create_draft", params={ … })  — no orderId
+{
+  "meta": {
+    "advertiserId": 123456789,           // GAM Advertiser company ID (resolve via a read — never guess)
+    "orderName": "Cavalor — July 2026"   // Order created lazily at deploy time
+  },
+  "delivery": {
+    "lineItemType": "STANDARD",
+    "cpmMicroAmount": 2500000,           // 2.50 € CPM (required for STANDARD / PRICE_PRIORITY)
+    "totalGoal": 500000,
+    "startDateTime": "2026-07-01T00:00:00",
+    "endDateTime":   "2026-07-31T23:59:59"
+  },
+  "groups": [{
+    "adUnitIds": ["21700000001", "21700000002"],
+    "geoTargeting": { "targetedLocations": [{ "id": 2250 }] },   // FR
+    "creatives": [{ "creativeType": "NATIVE_STYLE", "htmlSnippet": "<div>…</div>" }]
+  }]
+}
+```
+
+To reuse an **existing** Order instead, pass `meta.orderId` (a live GAM order id)
+rather than `meta.orderName` — that flow is unchanged. `create_draft` is
+**MCP-only** (no CLI equivalent).
+
 ### Dual-surface pattern
 
 Every operation may exist on the **MCP surface** (parent tools) and/or the
