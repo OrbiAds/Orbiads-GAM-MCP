@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Network Administration & Settings: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 94 actions across 5 parent tool(s); CLI coverage 13/94 actions.
+Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 100 actions across 5 parent tool(s); CLI coverage 13/100 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -126,8 +126,8 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-- **Mode:** mixed · **Actions:** 20 (8 writes, 12 reads)
-- **Surfaces:** MCP ✅ · CLI 9/20 actions
+- **Mode:** mixed · **Actions:** 26 (10 writes, 16 reads)
+- **Surfaces:** MCP ✅ · CLI 9/26 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 9 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -140,6 +140,8 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `save_global_multilang_matrix` | 0 | yes | — | MCP-only |
 | `update_delivery_defaults` | 0 | yes | — | `orbiads settings delivery-defaults set` |
 | `update_naming_conventions` | 0 | yes | — | `orbiads settings naming set` |
+| `update_network_delivery_defaults` | 0 | yes | — | MCP-only |
+| `update_network_naming_conventions` | 0 | yes | — | MCP-only |
 | `update_preset` | 0 | yes | — | MCP-only |
 | `update_tenant_settings` | 0 | yes | — | `orbiads settings general set` |
 | `apply_multilang_to_networks` | 0 | — | — | MCP-only |
@@ -148,11 +150,15 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `get_global_multilang_matrix` | 0 | — | — | MCP-only |
 | `get_multilang_matrix` | 0 | — | — | MCP-only |
 | `get_naming_conventions` | 0 | — | — | `orbiads settings naming get` |
+| `get_network_delivery_defaults` | 0 | — | — | MCP-only |
+| `get_network_naming_conventions` | 0 | — | — | MCP-only |
 | `get_tenant_settings` | 0 | — | — | `orbiads settings general get` |
 | `list_preset_suggestions` | 0 | — | — | MCP-only |
 | `list_presets` | 0 | — | — | `orbiads settings presets list` |
 | `list_preview_matrices` | 0 | — | — | MCP-only |
 | `recompute_preset_suggestions` | 0 | — | — | MCP-only |
+| `reset_network_delivery_defaults` | 0 | — | — | MCP-only |
+| `reset_network_naming_conventions` | 0 | — | — | MCP-only |
 | `resolve_multilang_matrix` | 0 | — | — | MCP-only |
 
 ### `orbiads:tenant_catalog` (Epic 78.1)

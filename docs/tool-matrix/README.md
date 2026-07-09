@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **468 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **474 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -50,7 +50,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:754` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2266` |
-| `settings` | 68.1 | 20 | ✍️ mixed/write | `settings.py:618` |
+| `settings` | 68.1 | 26 | ✍️ mixed/write | `settings.py:668` |
 | `targeting` | 68.6 | 28 | ✍️ mixed/write | `targeting.py:937` |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | `tenant_catalog.py:131` |
 | `video_ops` | 98 | 10 | ✍️ mixed/write | `video_ops.py:145` |
@@ -770,7 +770,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-**Server-side implementation:** `settings.py` · **Actions:** 20 · **Mode:** mixed (read + write)
+**Server-side implementation:** `settings.py` · **Actions:** 26 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 9 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -790,6 +790,12 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `update_naming_conventions` | 0 | ✅ | — |
 | `get_delivery_defaults` | 0 | — | — |
 | `update_delivery_defaults` | 0 | ✅ | — |
+| `get_network_delivery_defaults` | 0 | — | — |
+| `update_network_delivery_defaults` | 0 | ✅ | — |
+| `reset_network_delivery_defaults` | 0 | — | — |
+| `get_network_naming_conventions` | 0 | — | — |
+| `update_network_naming_conventions` | 0 | ✅ | — |
+| `reset_network_naming_conventions` | 0 | — | — |
 | `get_multilang_matrix` | 0 | — | — |
 | `get_global_multilang_matrix` | 0 | — | — |
 | `save_global_multilang_matrix` | 0 | ✅ | — |
