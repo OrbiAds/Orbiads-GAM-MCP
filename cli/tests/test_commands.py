@@ -361,16 +361,25 @@ class TestInventoryKeys_61_2:
         )
         assert "geo" in result.output
 
-    def test_keys_values_branch_fails_gracefully_until_epic_62(self, authenticated_config):
-        """--values has no REST route (get_custom_targeting_values is MCP-ONLY,
-        pending Epic 62). Must exit 1 with a clear message, NOT crash or 404."""
-        client = _mock_client()
+    def test_keys_values_branch_queries_the_rest_route(self, authenticated_config):
+        """--values now hits `GET /api/gam/custom-targeting-values`.
+
+        This test used to assert the opposite — exit 1 with "not yet supported /
+        Epic 62" — because the route did not exist when Story 61.2 was written.
+        Epic 62 shipped it (`api/routes/gam/targeting.py:347`) and the CLI branch
+        was wired up, but the assertion was never updated, so it had been failing
+        ever since. Asserting the real contract now.
+        """
+        client = _mock_client(
+            get_return={"values": [{"id": "v1", "name": "paris", "displayName": "Paris"}]}
+        )
         with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
             result = runner.invoke(app, ["inventory", "keys", "--key-id", "42", "--values"])
-        assert result.exit_code == 1
-        client.get.assert_not_called()  # never reach the dead path
-        assert "not yet supported" in result.output
-        assert "Epic 62" in result.output
+        assert result.exit_code == 0, result.output
+        client.get.assert_called_once_with(
+            "/api/gam/custom-targeting-values", params={"keyId": "42", "limit": 50}
+        )
+        assert "paris" in result.output
 
 
 # ===========================================================================

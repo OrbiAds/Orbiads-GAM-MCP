@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "orbiads-cli"
-version = "1.1.0"
+version = "1.2.0"
 description = "OrbiAds CLI — Google Ad Manager from the command line"
 readme = "README.md"
 license = "MIT"
