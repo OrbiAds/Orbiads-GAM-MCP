@@ -195,6 +195,47 @@ def rich_media_get(
         handle_error(e)
 
 
+# ── third-party companies (Story 111.3) ───────────────────────────────────
+# Distinct resource from rich-media above: ad networks, ad servers and video
+# technology partners. Read-only — every field but the identifier is output-only
+# in GAM REST v1, so there is no create/update counterpart.
+
+
+@app.command("third-party-list")
+def third_party_list(
+    ctx: typer.Context,
+    filter_expr: str = typer.Option(
+        None, "--filter", help='GAM filter, e.g. type="AD_SERVER" or status="ACTIVE"'
+    ),
+    page_size: int = typer.Option(
+        50, "--page-size", min=1, max=1000, help="Maximum companies to fetch"
+    ),
+):
+    """List GAM ThirdPartyCompany entries (ad networks, ad servers, VTPs)."""
+    try:
+        params: dict = {"pageSize": page_size}
+        if filter_expr:
+            params["filter"] = filter_expr
+        data = get_client().get("/api/gam/companies/third-party", params=params)
+        items = data.get("thirdPartyCompanies", data) if isinstance(data, dict) else data
+        render(items or [], ["id", "displayName", "type", "status"], ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("third-party-get")
+def third_party_get(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM ThirdPartyCompany ID"),
+):
+    """Get one GAM ThirdPartyCompany."""
+    try:
+        data = get_client().get(f"/api/gam/companies/third-party/{company_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 # ── agencies sub-noun ─────────────────────────────────────────────────────
 agencies_app = typer.Typer(help="Manage GAM agencies (Story 62.4)", no_args_is_help=True)
 app.add_typer(agencies_app, name="agencies")

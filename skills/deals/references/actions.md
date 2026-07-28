@@ -11,16 +11,16 @@ user-invocable: false
 
 # OrbiAds GAM — Programmatic Deals, Products & Companies: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 75 actions across 6 parent tool(s); CLI coverage 31/75 actions.
+Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 77 actions across 6 parent tool(s); CLI coverage 31/77 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
-### `orbiads:companies`
+### `orbiads:companies` (Epic 111.3)
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-- **Mode:** mixed · **Actions:** 15 (7 writes, 8 reads)
-- **Surfaces:** MCP ✅ · CLI 12/15 actions
+- **Mode:** mixed · **Actions:** 17 (7 writes, 10 reads)
+- **Surfaces:** MCP ✅ · CLI 12/17 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -42,6 +42,8 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `contacts.list` | 0 | — | — | `orbiads contacts list` |
 | `rich_media.get` | 0 | — | — | MCP-only |
 | `rich_media.list` | 0 | — | — | MCP-only |
+| `third_party.get` | 0 | — | — | MCP-only |
+| `third_party.list` | 0 | — | — | MCP-only |
 
 ### `orbiads:dai_skill` (Epic 98)
 
@@ -161,4 +163,3 @@ _Yield optimization group management and forecast governance._
 | `list_forecast_adjustments` | 0 | — | — | MCP-only |
 | `list_forecast_segments` | 0 | — | — | MCP-only |
 | `list_yield_groups` | 0 | — | — | MCP-only |
-

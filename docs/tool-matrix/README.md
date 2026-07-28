@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **474 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **476 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -26,13 +26,13 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:624` |
-| `companies` | — | 15 | ✍️ mixed/write | `advertisers.py:366` |
+| `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1029` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:190` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 30 | ✍️ mixed/write | `creatives.py:995` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:594` |
+| `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:603` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -189,11 +189,11 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 | `archive` | 0 | ✅ | — |
 | `archive_eligible` | 0 | ✅ | — |
 
-### `companies`
+### `companies` — Epic 111.3
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Server-side implementation:** `advertisers.py` · **Actions:** 15 · **Mode:** mixed (read + write)
+**Server-side implementation:** `advertisers.py` · **Actions:** 17 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -214,6 +214,8 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `contacts.update` | 0 | ✅ | — |
 | `rich_media.list` | 0 | — | — |
 | `rich_media.get` | 0 | — | — |
+| `third_party.list` | 0 | — | — |
+| `third_party.get` | 0 | — | — |
 
 ### `creative_assets` — Epic 68.7d
 

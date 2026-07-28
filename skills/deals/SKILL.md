@@ -15,7 +15,7 @@ metadata:
     - prebid_skill
     - products
     - yield_skill
-  action_count: 75
+  action_count: 77
   cli_coverage: partial
   read_only: false
 user-invocable: false
@@ -30,13 +30,13 @@ user-invocable: false
 
 _Configure PMP deals, private auctions, programmatic buyer accounts, advertiser/agency company profiles, and ADCP product catalogs._
 
-**Mode:** mixed (read + write) · **Tools included:** 6 · **Total actions:** 75 · **CLI coverage:** partial (31/75 actions)
+**Mode:** mixed (read + write) · **Tools included:** 6 · **Total actions:** 77 · **CLI coverage:** partial (31/77 actions)
 
 Parent MCP tools: `companies`, `dai_skill`, `deals`, `prebid_skill`, `products`, `yield_skill`.
 
 ## Surfaces
 
-OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 31/75 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
+OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 31/77 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
 
 **Rule:** if an action is marked `MCP-only` in that table, fall back to the MCP surface (or the web app) for it — never improvise a raw REST call or shell around the CLI.
 

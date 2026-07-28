@@ -155,6 +155,8 @@
     "advertisers list",
     "advertisers rich-media-get",
     "advertisers rich-media-list",
+    "advertisers third-party-get",
+    "advertisers third-party-list",
     "advertisers update",
     "api request",
     "audiences action",
