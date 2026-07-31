@@ -1,5 +1,7 @@
 # OrbiAds — Google Ad Manager MCP Server
 
+[![MCP Toplist](https://mcptoplist.com/badge/glama%2FOrbiAds%2FOrbiads-GAM-MCP.svg)](https://mcptoplist.com/server/glama%2FOrbiAds%2FOrbiads-GAM-MCP)
+
 [English](README.md) · [Français](README.fr.md)
 
 <p align="center">
