@@ -28,7 +28,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:624` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1029` |
-| `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:190` |
+| `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 30 | ✍️ mixed/write | `creatives.py:995` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
@@ -49,7 +49,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:754` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
-| `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2266` |
+| `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2268` |
 | `settings` | 68.1 | 26 | ✍️ mixed/write | `settings.py:668` |
 | `targeting` | 68.6 | 28 | ✍️ mixed/write | `targeting.py:937` |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | `tenant_catalog.py:131` |
@@ -907,7 +907,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:938` | 0 | ✅ |
 | `poll_auth_status` | `auth.py:492` | 0 | — |
-| `reporting_skill` | `reporting.py:3493` | 0 | — |
+| `reporting_skill` | `reporting.py:3495` | 0 | — |
 | `select_gam_network` | `auth.py:613` | 0 | ✅ |
 | `server_info` | `server_info.py:16` | 0 | — |
 
