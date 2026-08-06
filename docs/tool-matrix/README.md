@@ -49,7 +49,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:754` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
-| `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2268` |
+| `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2316` |
 | `settings` | 68.1 | 26 | ✍️ mixed/write | `settings.py:668` |
 | `targeting` | 68.6 | 28 | ✍️ mixed/write | `targeting.py:937` |
 | `tenant_catalog` | 78.1 | 4 | ✍️ mixed/write | `tenant_catalog.py:131` |
@@ -907,7 +907,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:938` | 0 | ✅ |
 | `poll_auth_status` | `auth.py:492` | 0 | — |
-| `reporting_skill` | `reporting.py:3495` | 0 | — |
+| `reporting_skill` | `reporting.py:3543` | 0 | — |
 | `select_gam_network` | `auth.py:613` | 0 | ✅ |
 | `server_info` | `server_info.py:16` | 0 | — |
 
