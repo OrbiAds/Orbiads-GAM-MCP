@@ -45,7 +45,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `network` | 68.5 | 6 | ✍️ mixed/write | `network.py:252` |
 | `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:159` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | `placements.py:248` |
-| `pql` | 68.2 | 3 | 📖 read | `pql.py:353` |
+| `pql` | 68.2 | 3 | 📖 read | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:754` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
