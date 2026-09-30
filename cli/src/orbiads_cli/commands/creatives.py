@@ -744,12 +744,18 @@ def upload_vast_redirect(
     vast_pricing_enabled: bool = typer.Option(
         None,
         "--vast-pricing-enabled/--no-vast-pricing-enabled",
-        help="Use pricing from the VAST response during ad selection (omit = GAM default)",
+        help=(
+            "Use pricing from the VAST response during ad selection (omit = GAM default; "
+            "needs the GAM network feature)"
+        ),
     ),
     is_programmatic_demand_source: bool = typer.Option(
         None,
         "--programmatic-demand-source/--no-programmatic-demand-source",
-        help="Redirect points to a programmatic demand source (omit = GAM default)",
+        help=(
+            "Redirect points to a programmatic demand source (omit = GAM default; "
+            "needs the GAM network feature)"
+        ),
     ),
     server_side_unwrapping_disabled: bool = typer.Option(
         None,
