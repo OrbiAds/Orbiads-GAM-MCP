@@ -167,7 +167,11 @@ def create_ad_units(
         ...,
         "--file",
         "-f",
-        help="JSON file containing a single ad-unit object OR a list of ad-unit objects.",
+        help=(
+            "JSON file containing a single ad-unit object OR a list of ad-unit objects "
+            "(name, adUnitCode, parentId, sizes, description, tempId, and — mobile apps "
+            "only — refreshRate 30-120 / refreshRateType DISABLED|OPTIMIZED|FIXED_INTERVAL)."
+        ),
     ),
 ):
     """Create one or more ad units."""
@@ -206,10 +210,42 @@ def import_ad_units(
 def update_ad_unit(
     ctx: typer.Context,
     ad_unit_id: str = typer.Argument(..., help="Ad unit ID"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with patch body"),
+    file: Optional[str] = typer.Option(
+        None,
+        "--file",
+        "-f",
+        help=(
+            "JSON file with patch body (name, description, adUnitSizes, refreshRate, "
+            "refreshRateType). Flags below override file values."
+        ),
+    ),
+    refresh_rate: Optional[int] = typer.Option(
+        None,
+        "--refresh-rate",
+        help="Mobile apps only: auto-refresh interval in seconds (30-120); implies FIXED_INTERVAL",
+    ),
+    refresh_rate_type: Optional[str] = typer.Option(
+        None,
+        "--refresh-rate-type",
+        help=(
+            "Mobile apps only: DISABLED | OPTIMIZED | FIXED_INTERVAL "
+            "(DISABLED/OPTIMIZED clear the stored refresh rate)"
+        ),
+    ),
 ):
     """Update an ad unit (PATCH)."""
-    payload = _load_json_payload(file)
+    payload = _load_json_payload(file) if file else {}
+    if not isinstance(payload, dict):
+        typer.echo("Error: the JSON file must contain an object.", err=True)
+        raise typer.Exit(code=2)
+    payload.update(
+        _compact_params(
+            {"refreshRate": refresh_rate, "refreshRateType": refresh_rate_type}
+        )
+    )
+    if not payload:
+        typer.echo("Error: nothing to update (pass --file and/or a flag).", err=True)
+        raise typer.Exit(code=2)
     try:
         data = get_client().patch(f"/api/gam/ad-units/{ad_unit_id}", json=payload)
         render_detail(data, ctx.obj)

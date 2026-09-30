@@ -30,12 +30,12 @@ def _write_json(tmp_path, payload):
 
 # GET / DELETE catalogue verbs (no body)
 GET_DELETE = [
-    (["inventory", "ads-json"],                  "get",    "/api/gam/inventory/manifest/ads.json"),
-    (["inventory", "countries"],                 "get",    "/api/gam/geo-targets"),
-    (["inventory", "device-categories"],         "get",    "/api/gam/device-categories"),
-    (["inventory", "archive-ad-unit", "au1"],    "delete", "/api/gam/ad-units/au1"),
-    (["inventory", "delete-key", "k1"],          "delete", "/api/gam/custom-targeting-keys/k1"),
-    (["inventory", "placement-archive", "p1"],   "delete", "/api/gam/placements/p1"),
+    (["inventory", "ads-json"], "get", "/api/gam/inventory/manifest/ads.json"),
+    (["inventory", "countries"], "get", "/api/gam/geo-targets"),
+    (["inventory", "device-categories"], "get", "/api/gam/device-categories"),
+    (["inventory", "archive-ad-unit", "au1"], "delete", "/api/gam/ad-units/au1"),
+    (["inventory", "delete-key", "k1"], "delete", "/api/gam/custom-targeting-keys/k1"),
+    (["inventory", "placement-archive", "p1"], "delete", "/api/gam/placements/p1"),
 ]
 
 
@@ -50,13 +50,13 @@ def test_inventory_get_delete_verbs(authenticated_config, argv, method, path):
 
 # POST verbs with --file body
 POST_WITH_FILE = [
-    (["inventory", "save-adunits"],              "/api/gam/ad-units/save-adunits"),
-    (["inventory", "audit"],                     "/api/gam/inventory/audit"),
-    (["inventory", "blueprint-generate"],        "/api/gam/inventory/blueprint/generate"),
-    (["inventory", "blueprint-push"],            "/api/gam/inventory/blueprint/push"),
-    (["inventory", "validate-fluid"],            "/api/gam/ad-units/validate-fluid"),
-    (["inventory", "forecast"],                  "/api/gam/inventory/forecast"),
-    (["inventory", "create-key"],                "/api/gam/custom-targeting-keys"),
+    (["inventory", "save-adunits"], "/api/gam/ad-units/save-adunits"),
+    (["inventory", "audit"], "/api/gam/inventory/audit"),
+    (["inventory", "blueprint-generate"], "/api/gam/inventory/blueprint/generate"),
+    (["inventory", "blueprint-push"], "/api/gam/inventory/blueprint/push"),
+    (["inventory", "validate-fluid"], "/api/gam/ad-units/validate-fluid"),
+    (["inventory", "forecast"], "/api/gam/inventory/forecast"),
+    (["inventory", "create-key"], "/api/gam/custom-targeting-keys"),
 ]
 
 
@@ -75,11 +75,67 @@ def test_update_ad_unit_patches(authenticated_config, tmp_path):
     client = _mock_client(patch={"updated": True})
     f = _write_json(tmp_path, {"name": "renamed"})
     with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
+        result = runner.invoke(app, ["inventory", "update-ad-unit", "au1", "--file", f])
+    assert result.exit_code == 0, result.output
+    client.patch.assert_called_once_with(
+        "/api/gam/ad-units/au1", json={"name": "renamed"}
+    )
+
+
+def test_update_ad_unit_refresh_flags(authenticated_config):
+    """Story 115.1 AC9 — CLI parity for AdUnit auto-refresh (mobile apps only):
+    wsdl_v202608/InventoryService.wsdl:627 refreshRate / :641 refreshRateType.
+    Flags alone are enough (no --file); values are forwarded as camelCase and
+    validated server-side (REST UpdateAdUnitPayload)."""
+    client = _mock_client(patch={"updated": True})
+    with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
         result = runner.invoke(
-            app, ["inventory", "update-ad-unit", "au1", "--file", f]
+            app,
+            [
+                "inventory",
+                "update-ad-unit",
+                "au1",
+                "--refresh-rate",
+                "60",
+                "--refresh-rate-type",
+                "FIXED_INTERVAL",
+            ],
         )
     assert result.exit_code == 0, result.output
-    client.patch.assert_called_once_with("/api/gam/ad-units/au1", json={"name": "renamed"})
+    client.patch.assert_called_once_with(
+        "/api/gam/ad-units/au1",
+        json={"refreshRate": 60, "refreshRateType": "FIXED_INTERVAL"},
+    )
+
+
+def test_update_ad_unit_refresh_flag_overrides_file(authenticated_config, tmp_path):
+    client = _mock_client(patch={"updated": True})
+    f = _write_json(tmp_path, {"name": "renamed", "refreshRateType": "OPTIMIZED"})
+    with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
+        result = runner.invoke(
+            app,
+            [
+                "inventory",
+                "update-ad-unit",
+                "au1",
+                "--file",
+                f,
+                "--refresh-rate-type",
+                "DISABLED",
+            ],
+        )
+    assert result.exit_code == 0, result.output
+    client.patch.assert_called_once_with(
+        "/api/gam/ad-units/au1", json={"name": "renamed", "refreshRateType": "DISABLED"}
+    )
+
+
+def test_update_ad_unit_without_file_or_flag_exit_2(authenticated_config):
+    client = _mock_client(patch={"updated": True})
+    with patch("orbiads_cli.commands.inventory.get_client", return_value=client):
+        result = runner.invoke(app, ["inventory", "update-ad-unit", "au1"])
+    assert result.exit_code == 2
+    client.patch.assert_not_called()
 
 
 def test_update_key_patches(authenticated_config, tmp_path):

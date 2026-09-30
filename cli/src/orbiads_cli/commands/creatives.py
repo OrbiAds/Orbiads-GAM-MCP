@@ -68,7 +68,9 @@ def _format_dry_run_fields(fields: dict[str, str]) -> str:
 def _compute_transcode_status(creative: dict[str, Any]) -> dict[str, Any]:
     creative_type = creative.get("creativeType") or creative.get("type") or ""
     status = creative.get("status")
-    vast_preview_url = creative.get("vastPreviewUrl") or creative.get("vast_preview_url")
+    vast_preview_url = creative.get("vastPreviewUrl") or creative.get(
+        "vast_preview_url"
+    )
     error = creative.get("lastError") or creative.get("error")
     if creative_type not in {"VideoCreative", "AudioCreative", "VIDEO", "AUDIO"}:
         return {
@@ -77,7 +79,11 @@ def _compute_transcode_status(creative: dict[str, Any]) -> dict[str, Any]:
             "vastPreviewUrl": None,
         }
     if error:
-        return {"status": "FAILED", "message": str(error), "vastPreviewUrl": vast_preview_url}
+        return {
+            "status": "FAILED",
+            "message": str(error),
+            "vastPreviewUrl": vast_preview_url,
+        }
     if vast_preview_url:
         return {
             "status": "READY",
@@ -103,7 +109,9 @@ def _check_file(p: str) -> None:
         raise typer.Exit(code=2)
 
 
-def _post_many_files(client, path: str, file_paths: list[str], field_name: str = "files"):
+def _post_many_files(
+    client, path: str, file_paths: list[str], field_name: str = "files"
+):
     """POST multipart with N files under the same field name."""
     items, handles = [], []
     try:
@@ -123,7 +131,10 @@ def _post_many_files(client, path: str, file_paths: list[str], field_name: str =
 def list_creatives(
     ctx: typer.Context,
     advertiser_id: str = typer.Option(
-        ..., "--advertiser-id", "-a", help="GAM advertiser (company) ID to list creatives for"
+        ...,
+        "--advertiser-id",
+        "-a",
+        help="GAM advertiser (company) ID to list creatives for",
     ),
     limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=200),
 ):
@@ -168,7 +179,9 @@ def get(
 @app.command()
 def upload(
     ctx: typer.Context,
-    file: str = typer.Argument(..., help="Path to the creative asset (PNG/JPG/GIF/ZIP/MP4/MP3)"),
+    file: str = typer.Argument(
+        ..., help="Path to the creative asset (PNG/JPG/GIF/ZIP/MP4/MP3)"
+    ),
     name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
     advertiser_id: int = typer.Option(
         ..., "--advertiser-id", "-a", help="GAM advertiser (company) ID"
@@ -274,7 +287,9 @@ def upload(
 
     if dry_run:
         typer.echo("[dry-run] POST /api/gam/creatives/upload", err=True)
-        typer.echo(f"[dry-run] file: {filename} ({size_bytes} bytes, {content_type})", err=True)
+        typer.echo(
+            f"[dry-run] file: {filename} ({size_bytes} bytes, {content_type})", err=True
+        )
         typer.echo(f"[dry-run] fields: {_format_dry_run_fields(fields)}", err=True)
         raise typer.Exit(code=0)
 
@@ -324,7 +339,9 @@ def transcode_status(
 def register(
     ctx: typer.Context,
     creative_type: str = typer.Option(..., "--type", help="VIDEO or AUDIO"),
-    advertiser_id: int = typer.Option(..., "--advertiser-id", "-a", help="GAM advertiser ID"),
+    advertiser_id: int = typer.Option(
+        ..., "--advertiser-id", "-a", help="GAM advertiser ID"
+    ),
     name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
     vast_url: str = typer.Option(..., "--vast-url", help="VAST 3/4 XML URL"),
     size: str | None = typer.Option(
@@ -339,7 +356,9 @@ def register(
     out: OutputContext = ctx.obj
     resolved_type = creative_type.upper()
     if resolved_type not in {"VIDEO", "AUDIO"}:
-        typer.echo(f"Error: --type must be VIDEO or AUDIO, got: {creative_type}", err=True)
+        typer.echo(
+            f"Error: --type must be VIDEO or AUDIO, got: {creative_type}", err=True
+        )
         raise typer.Exit(code=2)
 
     body: dict[str, Any] = {
@@ -352,7 +371,9 @@ def register(
     if size:
         match = _SIZE_RE.match(size.strip())
         if not match:
-            typer.echo(f"Error: --size must be WxH (e.g. 640x360), got: {size}", err=True)
+            typer.echo(
+                f"Error: --size must be WxH (e.g. 640x360), got: {size}", err=True
+            )
             raise typer.Exit(code=2)
         body["size"] = {"width": int(match.group(1)), "height": int(match.group(2))}
 
@@ -371,15 +392,21 @@ def register(
 @app.command("upload-url")
 def upload_url(
     ctx: typer.Context,
-    asset_url: str = typer.Argument(..., help="Public http(s) URL of the creative asset"),
+    asset_url: str = typer.Argument(
+        ..., help="Public http(s) URL of the creative asset"
+    ),
     name: str = typer.Option(..., "--name", "-n", help="Creative display name"),
-    advertiser_id: int = typer.Option(..., "--advertiser-id", "-a", help="GAM advertiser ID"),
+    advertiser_id: int = typer.Option(
+        ..., "--advertiser-id", "-a", help="GAM advertiser ID"
+    ),
     creative_type: str | None = typer.Option(
         None,
         "--type",
         help="image | html5 | native (auto-detected from Content-Type if omitted)",
     ),
-    size: str | None = typer.Option(None, "--size", help="Size WxH (required for IMAGE)"),
+    size: str | None = typer.Option(
+        None, "--size", help="Size WxH (required for IMAGE)"
+    ),
     destination_url: str | None = typer.Option(None, "--destination-url"),
     metadata: str | None = typer.Option(
         None,
@@ -391,7 +418,9 @@ def upload_url(
     """Fetch a remote asset URL server-side and create a GAM creative."""
     out: OutputContext = ctx.obj
     if not (asset_url.startswith("http://") or asset_url.startswith("https://")):
-        typer.echo(f"Error: --asset-url must be http(s):// URL (got: {asset_url})", err=True)
+        typer.echo(
+            f"Error: --asset-url must be http(s):// URL (got: {asset_url})", err=True
+        )
         raise typer.Exit(code=2)
 
     body: dict[str, Any] = {
@@ -412,7 +441,9 @@ def upload_url(
     if size:
         match = _SIZE_RE.match(size.strip())
         if not match:
-            typer.echo(f"Error: --size must be WxH (e.g. 300x250), got: {size}", err=True)
+            typer.echo(
+                f"Error: --size must be WxH (e.g. 300x250), got: {size}", err=True
+            )
             raise typer.Exit(code=2)
         body["size"] = {"width": int(match.group(1)), "height": int(match.group(2))}
     if destination_url:
@@ -520,14 +551,26 @@ def upload_native_classic(
         ct, _ = mimetypes.guess_type(main_image)
         fh = open(main_image, "rb")
         handles.append(fh)
-        files = [("main_image", (os.path.basename(main_image), fh, ct or "application/octet-stream"))]
+        files = [
+            (
+                "main_image",
+                (os.path.basename(main_image), fh, ct or "application/octet-stream"),
+            )
+        ]
         if logo:
             _check_file(logo)
             ctl, _ = mimetypes.guess_type(logo)
             fhl = open(logo, "rb")
             handles.append(fhl)
-            files.append(("logo", (os.path.basename(logo), fhl, ctl or "application/octet-stream")))
-        data = get_client()._request("POST", "/api/creatives/upload-native-classic", files=files)
+            files.append(
+                (
+                    "logo",
+                    (os.path.basename(logo), fhl, ctl or "application/octet-stream"),
+                )
+            )
+        data = get_client()._request(
+            "POST", "/api/creatives/upload-native-classic", files=files
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -668,12 +711,90 @@ def list_by_network(
 @app.command("upload-vast-redirect")
 def upload_vast_redirect(
     ctx: typer.Context,
-    file: str = typer.Argument(..., help="Path to the VAST redirect XML/JSON payload"),
+    file: str = typer.Argument(
+        None,
+        help=(
+            "Optional JSON file with the request body (camelCase keys: advertiserId, "
+            "name, vastXmlUrl, width, height, durationMs, vastRedirectType, "
+            "vastPricingEnabled, isProgrammaticDemandSource, "
+            "serverSideUnwrappingDisabled). Flags override file values."
+        ),
+    ),
+    advertiser_id: int = typer.Option(
+        None, "--advertiser-id", help="GAM advertiser ID"
+    ),
+    name: str = typer.Option(None, "--name", help="Creative name in GAM"),
+    vast_xml_url: str = typer.Option(
+        None, "--vast-xml-url", help="Single VAST 2.0/3.0/4.0 XML endpoint URL"
+    ),
+    width: int = typer.Option(
+        None, "--width", help="Width in pixels (server default 640)"
+    ),
+    height: int = typer.Option(
+        None, "--height", help="Height in pixels (server default 360)"
+    ),
+    duration_ms: int = typer.Option(
+        None, "--duration-ms", help="Duration in milliseconds (server default 30000)"
+    ),
+    vast_redirect_type: str = typer.Option(
+        None,
+        "--vast-redirect-type",
+        help="LINEAR (server default) | NON_LINEAR | LINEAR_AND_NON_LINEAR",
+    ),
+    vast_pricing_enabled: bool = typer.Option(
+        None,
+        "--vast-pricing-enabled/--no-vast-pricing-enabled",
+        help="Use pricing from the VAST response during ad selection (omit = GAM default)",
+    ),
+    is_programmatic_demand_source: bool = typer.Option(
+        None,
+        "--programmatic-demand-source/--no-programmatic-demand-source",
+        help="Redirect points to a programmatic demand source (omit = GAM default)",
+    ),
+    server_side_unwrapping_disabled: bool = typer.Option(
+        None,
+        "--server-side-unwrapping-disabled/--server-side-unwrapping-enabled",
+        help="Disable GAM server-side unwrapping of the VAST wrapper (omit = GAM default)",
+    ),
 ):
-    """Upload a VAST redirect creative (multipart)."""
-    _check_file(file)
+    """Create a VastRedirectCreative (single VAST XML URL) — JSON body.
+
+    Mirrors MCP creative_assets action=create_vast_redirect. The three GAM API
+    v202608 booleans are sent only when a flag (or file key) is given.
+    """
+    body: dict = {}
+    if file is not None:
+        loaded = _load_json_payload(file)
+        if not isinstance(loaded, dict):
+            typer.echo("Error: the JSON file must contain an object.", err=True)
+            raise typer.Exit(code=2)
+        body.update(loaded)
+    flags = {
+        "advertiserId": advertiser_id,
+        "name": name,
+        "vastXmlUrl": vast_xml_url,
+        "width": width,
+        "height": height,
+        "durationMs": duration_ms,
+        "vastRedirectType": vast_redirect_type,
+        "vastPricingEnabled": vast_pricing_enabled,
+        "isProgrammaticDemandSource": is_programmatic_demand_source,
+        "serverSideUnwrappingDisabled": server_side_unwrapping_disabled,
+    }
+    body.update({key: value for key, value in flags.items() if value is not None})
+    missing = [
+        key for key in ("advertiserId", "name", "vastXmlUrl") if not body.get(key)
+    ]
+    if missing:
+        typer.echo(
+            "Error: missing required field(s): "
+            + ", ".join(missing)
+            + " (use --advertiser-id / --name / --vast-xml-url or a JSON file).",
+            err=True,
+        )
+        raise typer.Exit(code=2)
     try:
-        data = get_client().post_multipart("/api/creatives/upload-vast-redirect", file)
+        data = get_client().post("/api/creatives/upload-vast-redirect", json=body)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -687,8 +808,12 @@ def upload_image_redirect(
     image_url: str = typer.Option(..., "--image-url", help="Remote image URL"),
     width: int = typer.Option(..., "--width", help="Creative width in pixels"),
     height: int = typer.Option(..., "--height", help="Creative height in pixels"),
-    destination_url: str = typer.Option(None, "--destination-url", help="Optional click-through URL"),
-    alt_text: str = typer.Option(None, "--alt-text", help="Optional accessibility alt text"),
+    destination_url: str = typer.Option(
+        None, "--destination-url", help="Optional click-through URL"
+    ),
+    alt_text: str = typer.Option(
+        None, "--alt-text", help="Optional accessibility alt text"
+    ),
 ):
     """Create an ImageRedirectCreative from a remote image URL."""
     body: dict = {
@@ -720,15 +845,21 @@ def upload_internal_redirect(
         help="CM360/DFA internal redirect URL (required, max 1024 chars)",
     ),
     override_size: bool = typer.Option(
-        False, "--override-size", help="Allow the creative size to differ from the redirect URL"
+        False,
+        "--override-size",
+        help="Allow the creative size to differ from the redirect URL",
     ),
     locked_orientation: str = typer.Option(
         None,
         "--locked-orientation",
         help="FREE_ORIENTATION | PORTRAIT_ONLY | LANDSCAPE_ONLY",
     ),
-    width: int = typer.Option(None, "--width", help="Override width (only with --height)"),
-    height: int = typer.Option(None, "--height", help="Override height (only with --width)"),
+    width: int = typer.Option(
+        None, "--width", help="Override width (only with --height)"
+    ),
+    height: int = typer.Option(
+        None, "--height", help="Override height (only with --width)"
+    ),
 ):
     """Create an InternalRedirectCreative (Campaign Manager 360 / DFA tag)."""
     body: dict = {
@@ -798,7 +929,9 @@ def upload_custom(
         ),
     ),
     destination_url: str = typer.Option(
-        None, "--destination-url", help="Optional click-through URL (no default forced)."
+        None,
+        "--destination-url",
+        help="Optional click-through URL (no default forced).",
     ),
     is_interstitial: bool = typer.Option(
         False, "--is-interstitial", help="Mark the creative as interstitial."
@@ -832,7 +965,9 @@ def upload_custom(
         path = path.strip()
         if not macro_name or not path:
             handle_error(
-                CliApiError("VALIDATION_ERROR", f"--asset has empty macroName or path: {spec}")
+                CliApiError(
+                    "VALIDATION_ERROR", f"--asset has empty macroName or path: {spec}"
+                )
             )
             return
         _check_file(path)

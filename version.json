@@ -8,7 +8,7 @@
     "cli": "1.1.0"
   },
   "compatibleWith": {
-    "gamApi": "v202605",
+    "gamApi": "v202608",
     "mcpProtocol": "2025-03-26"
   }
 }
