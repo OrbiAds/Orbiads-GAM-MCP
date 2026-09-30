@@ -32,7 +32,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 30 | ✍️ mixed/write | `creatives.py:995` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:603` |
+| `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:610` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
