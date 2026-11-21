@@ -25,14 +25,14 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `audit_skill` | 65.0a | 8 | 📖 read | `audit_skill.py:269` |
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
-| `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:692` |
+| `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:694` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1129` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1095` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1324` |
+| `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1333` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -48,7 +48,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `pql` | 68.2 | 3 | 📖 read | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | ✍️ mixed/write | `preview.py:754` |
-| `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:516` |
+| `products` | 68.8 | 7 | ✍️ mixed/write | `products.py:525` |
 | `reporting` | 68.7b | 32 | ✍️ mixed/write | `reporting.py:2627` |
 | `settings` | 68.1 | 26 | ✍️ mixed/write | `settings.py:668` |
 | `targeting` | 68.6 | 28 | ✍️ mixed/write | `targeting.py:937` |
