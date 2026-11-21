@@ -16,6 +16,18 @@ from orbiads_cli.main import app
 
 runner = CliRunner()
 
+def _two_step_client(result):
+    """MagicMock client: dryRun -> preview + token, confirmationToken -> ``result``."""
+    client = MagicMock()
+
+    def _post(path, json=None, **_):
+        if json.get("dryRun"):
+            return {"preview": [{"operation": "x", "irreversible": True}], "confirmationToken": "tok-1"}
+        return result
+
+    client.post.side_effect = _post
+    return client
+
 
 def _invoke(args: list[str], client: MagicMock):
     with patch("orbiads_cli.commands.orders.get_client", return_value=client):
@@ -58,15 +70,21 @@ def test_lifecycle_single_id_still_works(authenticated_config):
     ],
 )
 def test_lifecycle_forwards_the_new_actions_verbatim(authenticated_config, action):
-    client = MagicMock()
-    client.post.return_value = {"numChanges": 1}
+    client = _two_step_client({"numChanges": 1})
 
     result = _invoke([action, "5", "--acknowledge-overbook", "--yes"], client)
 
     assert result.exit_code == 0, result.output
-    body = client.post.call_args.kwargs["json"]
-    assert body["action"] == action
-    assert body["acknowledge_overbook"] is True
+    # Story 116-10: preview first (dryRun), then the token round trip, --yes or not.
+    last = client.post.call_args.kwargs["json"]
+    if action == "delete" or action.endswith("_and_overbook"):
+        first = client.post.call_args_list[0].kwargs["json"]
+        assert first["dryRun"] is True and "confirmationToken" not in first
+        assert last["confirmationToken"] == "tok-1" and "dryRun" not in last
+    else:  # reversible: one call, no token
+        assert client.post.call_count == 1 and "dryRun" not in last
+    assert last["action"] == action
+    assert last["acknowledge_overbook"] is True
 
 
 def test_lifecycle_omits_the_ack_unless_asked(authenticated_config):
@@ -79,13 +97,15 @@ def test_lifecycle_omits_the_ack_unless_asked(authenticated_config):
 
 
 def test_lifecycle_declined_confirmation_sends_nothing(authenticated_config):
-    client = MagicMock()
+    client = _two_step_client({})
 
     with patch("orbiads_cli.commands.orders.confirm", return_value=False):
         result = _invoke(["delete", "5"], client)
 
     assert result.exit_code == 0
-    client.post.assert_not_called()
+    # Only the preview was sent: nothing executed, no token consumed.
+    client.post.assert_called_once()
+    assert client.post.call_args.kwargs["json"]["dryRun"] is True
 
 
 def test_lifecycle_requires_at_least_one_order_id(authenticated_config):

@@ -27,10 +27,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:694` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
-| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1129` |
+| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1126` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
-| `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1095` |
+| `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1092` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
 | `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1333` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
@@ -43,7 +43,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
 | `mcm` | — | 1 | 📖 read | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | `network.py:268` |
-| `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:167` |
+| `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:168` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | `placements.py:248` |
 | `pql` | 68.2 | 3 | 📖 read | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
@@ -916,10 +916,10 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `get_my_tenant_id` | `auth.py:309` | 0 | — |
 | `get_premium_rate` | `pricing.py:71` | 0 | — |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✅ |
-| `line_item_lifecycle` | `line_items.py:1637` | 0 | ✅ |
+| `line_item_lifecycle` | `line_items.py:1625` | 0 | ✅ |
 | `list_premium_rates` | `pricing.py:50` | 0 | — |
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
-| `order_lifecycle` | `orders.py:988` | 0 | ✅ |
+| `order_lifecycle` | `orders.py:965` | 0 | ✅ |
 | `poll_auth_status` | `auth.py:492` | 0 | — |
 | `reporting_skill` | `reporting.py:3854` | 0 | — |
 | `select_gam_network` | `auth.py:613` | 0 | ✅ |

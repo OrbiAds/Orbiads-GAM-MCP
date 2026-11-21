@@ -6,6 +6,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
+from orbiads_cli.guarded import run_guarded_post
 from orbiads_cli.output import OutputContext, confirm, render, render_detail, success
 
 app = typer.Typer(help="Manage GAM orders", no_args_is_help=True)
@@ -197,15 +198,25 @@ def lifecycle(
     out: OutputContext = ctx.obj
     effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
     ids_label = ", ".join(order_ids)
-    if not confirm(
-        f"Run lifecycle action '{action}' on order(s) {ids_label}?", effective_ctx
-    ):
+    # Story 116-10: delete and *_and_overbook are two-step (preview -> token); the server
+    # refuses them otherwise. Reversible actions stay one call, confirmed up front.
+    two_step = action == "delete" or action.endswith("_and_overbook")
+    prompt = f"Run lifecycle action '{action}' on order(s) {ids_label}?"
+    if not two_step and not confirm(prompt, effective_ctx):
         raise typer.Exit(code=0)
     payload: dict = {"order_ids": order_ids, "action": action}
     if acknowledge_overbook:
         payload["acknowledge_overbook"] = True
     try:
-        data = get_client().post("/api/gam/orders/lifecycle", json=payload)
+        client = get_client()
+        data = run_guarded_post(
+            lambda body: client.post("/api/gam/orders/lifecycle", json=body),
+            payload,
+            ctx=effective_ctx,
+            prompt=prompt,
+            confirm_fn=confirm,
+            two_step=two_step,
+        )
         render_detail(data, out)
     except CliApiError as e:
         handle_error(e)

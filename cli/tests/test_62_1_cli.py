@@ -295,20 +295,35 @@ def test_licas_delete(authenticated_config, tmp_path):
     )
 
 
+def _two_step_licas_client(result):
+    from unittest.mock import MagicMock
+
+    client = MagicMock()
+
+    def _post(path, json=None, **_):
+        if json.get("dryRun"):
+            return {"preview": [{"operation": "x", "irreversible": True}], "confirmationToken": "tok-1"}
+        return result
+
+    client.post.side_effect = _post
+    return client
+
+
 def test_licas_delete_permanent(authenticated_config, tmp_path):
-    client = _mock_client(post={"deleted": 1, "numChanges": 1, "irreversible": True})
+    client = _two_step_licas_client({"deleted": 1, "numChanges": 1, "irreversible": True})
     f = _write_json(tmp_path, {"lineItemId": "li-1", "creativeIds": [11]})
     with patch("orbiads_cli.commands.licas.get_client", return_value=client):
         result = runner.invoke(app, ["licas", "delete-permanent", "--file", f, "--yes"])
     assert result.exit_code == 0, result.output
-    client.post.assert_called_once_with(
-        "/api/gam/licas/delete-permanent",
-        json={"lineItemId": "li-1", "creativeIds": [11]},
-    )
+    # Story 116-10: --yes skips only the human prompt, never the token round trip.
+    assert [c.kwargs["json"] for c in client.post.call_args_list] == [
+        {"lineItemId": "li-1", "creativeIds": [11], "dryRun": True},
+        {"lineItemId": "li-1", "creativeIds": [11], "confirmationToken": "tok-1"},
+    ]
 
 
-def test_licas_delete_permanent_declined_does_not_call_api(authenticated_config, tmp_path):
-    client = _mock_client(post={"deleted": 1})
+def test_licas_delete_permanent_declined_does_not_execute(authenticated_config, tmp_path):
+    client = _two_step_licas_client({"deleted": 1})
     f = _write_json(tmp_path, {"lineItemId": "li-1", "creativeIds": [11]})
     with (
         patch("orbiads_cli.commands.licas.get_client", return_value=client),
@@ -316,7 +331,8 @@ def test_licas_delete_permanent_declined_does_not_call_api(authenticated_config,
     ):
         result = runner.invoke(app, ["licas", "delete-permanent", "--file", f])
     assert result.exit_code == 0, result.output
-    client.post.assert_not_called()
+    client.post.assert_called_once()
+    assert client.post.call_args.kwargs["json"]["dryRun"] is True
 
 
 def test_licas_delete_help_no_longer_claims_no_hard_delete():

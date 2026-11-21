@@ -13,6 +13,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
+from orbiads_cli.guarded import run_guarded_post
 from orbiads_cli.output import OutputContext, confirm, render, render_detail, success
 
 app = typer.Typer(
@@ -149,14 +150,18 @@ def delete_permanent(
     """
     out: OutputContext = ctx.obj
     effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-    if not confirm(
-        "PERMANENTLY delete the LICAs in this payload? This cannot be undone.",
-        effective_ctx,
-    ):
-        raise typer.Exit(code=0)
     payload = _load_json_payload(file)
+    # Story 116-10: always two-step (preview -> token); --yes only skips the human prompt.
     try:
-        data = get_client().post("/api/gam/licas/delete-permanent", json=payload)
+        client = get_client()
+        data = run_guarded_post(
+            lambda body: client.post("/api/gam/licas/delete-permanent", json=body),
+            payload,
+            ctx=effective_ctx,
+            prompt="PERMANENTLY delete these LICAs? This cannot be undone.",
+            confirm_fn=confirm,
+            two_step=True,
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
