@@ -99,12 +99,20 @@ def lifecycle(
     ctx: typer.Context,
     action: str = typer.Argument(
         ...,
-        help="Lifecycle action: activate, pause, resume, approve, archive, unarchive, reserve, release, retire.",
+        help=(
+            "Lifecycle action: activate, pause, resume, archive, unarchive, reserve, release, "
+            "reserve_and_overbook, resume_and_overbook, delete."
+        ),
     ),
     ids: str = typer.Option(
         ...,
         "--ids",
-        help="Comma-separated GAM Line Item IDs (e.g. '12345,67890'). Direct GAM IDs — no Firestore job_id required.",
+        help="Comma-separated GAM Line Item IDs (1 to 50, e.g. '12345,67890'). Direct GAM IDs — no Firestore job_id required.",
+    ),
+    acknowledge_overbook: bool = typer.Option(
+        False,
+        "--acknowledge-overbook",
+        help="Required for reserve_and_overbook / resume_and_overbook: inventory is reserved beyond forecast availability.",
     ),
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
@@ -112,6 +120,8 @@ def lifecycle(
 
     Works on Line Items created directly in GAM, bypassing the
     Firestore job model. REST parity for MCP `line_item_lifecycle`.
+    `delete` is irreversible (GAM refuses it once the line item served; prefer
+    `archive`). GAM reports one aggregated numChanges, not a per-item outcome.
     """
     out: OutputContext = ctx.obj
     line_item_ids = [s.strip() for s in ids.split(",") if s.strip()]
@@ -125,11 +135,11 @@ def lifecycle(
         effective_ctx,
     ):
         raise typer.Exit(code=0)
+    payload: dict = {"line_item_ids": line_item_ids, "action": action}
+    if acknowledge_overbook:
+        payload["acknowledge_overbook"] = True
     try:
-        data = get_client().post(
-            "/api/gam/line-items/lifecycle",
-            json={"line_item_ids": line_item_ids, "action": action},
-        )
+        data = get_client().post("/api/gam/line-items/lifecycle", json=payload)
         render_detail(data, out)
     except CliApiError as e:
         handle_error(e)

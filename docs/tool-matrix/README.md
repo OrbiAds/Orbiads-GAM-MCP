@@ -39,7 +39,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_jobs` | 82 | 4 | 📖 read | `jobs_async.py:268` |
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:683` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:151` |
-| `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:362` |
+| `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:379` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
 | `mcm` | — | 1 | 📖 read | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | `network.py:268` |
@@ -909,7 +909,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `get_my_tenant_id` | `auth.py:309` | 0 | — |
 | `get_premium_rate` | `pricing.py:71` | 0 | — |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✅ |
-| `line_item_lifecycle` | `line_items.py:1586` | 0 | ✅ |
+| `line_item_lifecycle` | `line_items.py:1633` | 0 | ✅ |
 | `list_premium_rates` | `pricing.py:50` | 0 | — |
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:988` | 0 | ✅ |
