@@ -162,3 +162,82 @@ def test_pli_list_maps_the_filters():
             "lastModifiedAfter": "2026-11-01T00:00:00Z",
         },
     )
+
+
+# -- Story 116-11: warning + explicit timezone ---------------------------------------------
+
+
+def test_116_11_empty_filtered_page_with_has_more_prints_the_warning():
+    warning = "buyerId filtered on the returned page only: 0 of 200 kept; keep paginating"
+    client = _client(
+        {
+            **PAGE,
+            "proposals": [],
+            "hasMore": True,
+            "limit": 200,
+            "rawCount": 200,
+            "pageCount": 0,
+            "clientSideFilters": ["buyerId"],
+            "warning": warning,
+        }
+    )
+
+    result = _run(client, "proposals", "list", "--buyer", "42")
+
+    assert result.exit_code == 0, result.output
+    assert f"Warning: {warning}" in result.output
+    assert "--offset 200" in result.output
+    # the generic note is replaced by the (more precise) warning
+    assert "filtered on the returned page only (GAM has no such filter)" not in result.output
+
+
+def test_116_11_pli_list_prints_the_warning_too():
+    client = _client(
+        {
+            "lineItems": [],
+            "hasMore": True,
+            "offset": 0,
+            "limit": 200,
+            "clientSideFilters": ["reservationStatus"],
+            "warning": "reservationStatus filtered on the returned page only; keep paginating",
+        }
+    )
+
+    result = _run(client, "proposal-line-items", "list", "--status", "RESERVED")
+
+    assert "Warning: reservationStatus filtered" in result.output
+
+
+def test_116_11_since_date_only_prints_the_timezone_it_was_read_in():
+    client = _client(
+        {
+            **PAGE,
+            "filtersApplied": {
+                "lastModifiedAfter": {
+                    "input": "2026-11-01",
+                    "resolved": "2026-11-01T00:00:00 Europe/Paris",
+                    "assumedTimezone": True,
+                }
+            },
+        }
+    )
+
+    result = _run(client, "proposals", "list", "--since", "2026-11-01")
+
+    assert "2026-11-01T00:00:00 Europe/Paris" in result.output
+    assert client.get.call_args.kwargs["params"]["lastModifiedAfter"] == "2026-11-01"
+
+
+def test_116_11_explicit_offset_prints_no_timezone_note():
+    client = _client(
+        {
+            **PAGE,
+            "filtersApplied": {
+                "lastModifiedAfter": {"input": "2026-11-01T00:00:00Z", "assumedTimezone": False}
+            },
+        }
+    )
+
+    result = _run(client, "proposals", "list", "--since", "2026-11-01T00:00:00Z")
+
+    assert "was read as" not in result.output

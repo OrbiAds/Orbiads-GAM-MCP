@@ -555,11 +555,22 @@ def _paging_hint(data: object) -> None:
     if isinstance(data, dict) and data.get("hasMore"):
         next_offset = int(data.get("offset", 0)) + int(data.get("limit", 0))
         typer.echo(f"More results available: rerun with --offset {next_offset}", err=True)
-    if isinstance(data, dict) and data.get("clientSideFilters"):
+    if isinstance(data, dict) and data.get("warning"):
+        # Story 116-11: a client-side filter ran on a page AND more pages exist.
+        typer.echo(f"Warning: {data['warning']}", err=True)
+    elif isinstance(data, dict) and data.get("clientSideFilters"):
         typer.echo(
             "Note: "
             + ", ".join(data["clientSideFilters"])
             + " filtered on the returned page only (GAM has no such filter).",
+            err=True,
+        )
+    applied = data.get("filtersApplied") if isinstance(data, dict) else None
+    since = applied.get("lastModifiedAfter") if isinstance(applied, dict) else None
+    if isinstance(since, dict) and since.get("assumedTimezone"):
+        typer.echo(
+            f"Note: --since {since.get('input')!r} was read as {since.get('resolved')} "
+            "(pass an offset or Z to be explicit).",
             err=True,
         )
 
@@ -585,7 +596,10 @@ def proposals_list(
         None, "--archived/--not-archived", help="Filter on the archived flag"
     ),
     since: Optional[str] = typer.Option(
-        None, "--since", help="Only proposals modified after this ISO 8601 date-time"
+        None,
+        "--since",
+        help="Only proposals modified after this ISO 8601 date-time. A date or a time "
+        "without offset is read as Europe/Paris (date only = 00:00:00); pass Z or an offset",
     ),
     limit: int = typer.Option(200, "--limit", min=1, max=500),
     offset: int = typer.Option(0, "--offset", min=0),
@@ -627,7 +641,10 @@ def pli_list(
     ),
     include_archived: bool = typer.Option(False, "--include-archived"),
     since: Optional[str] = typer.Option(
-        None, "--since", help="Only items modified after this ISO 8601 date-time"
+        None,
+        "--since",
+        help="Only items modified after this ISO 8601 date-time. A date or a time "
+        "without offset is read as Europe/Paris (date only = 00:00:00); pass Z or an offset",
     ),
     limit: int = typer.Option(200, "--limit", min=1, max=500),
     offset: int = typer.Option(0, "--offset", min=0),
