@@ -1,4 +1,4 @@
-"""GAM programmatic commerce: PMP deals, private auctions, buyers, proposal lifecycle."""
+"""GAM programmatic commerce: PMP deals, private auctions, buyers, proposal and PLI lifecycle."""
 
 from __future__ import annotations
 
@@ -26,7 +26,13 @@ proposals_app = typer.Typer(
 app.add_typer(deals_app, name="deals")
 app.add_typer(auctions_app, name="auctions")
 app.add_typer(buyers_app, name="buyers")
+pli_app = typer.Typer(
+    help="Proposal line item lifecycle (pause, resume, reserve, release, unarchive, get)",
+    no_args_is_help=True,
+)
+
 app.add_typer(proposals_app, name="proposals")
+app.add_typer(pli_app, name="proposal-line-items")
 
 _DEAL_LIST_COLUMNS = ["dealId", "displayName", "status", "floorPrice"]
 _AUCTION_LIST_COLUMNS = ["privateAuctionId", "displayName", "description"]
@@ -111,7 +117,9 @@ def deals_get(
 @deals_app.command("create")
 def deals_create(
     ctx: typer.Context,
-    file: str = typer.Option(..., "--file", "-f", help="JSON body for the new PMP deal"),
+    file: str = typer.Option(
+        ..., "--file", "-f", help="JSON body for the new PMP deal"
+    ),
 ):
     """Create a PMP deal."""
     payload = _load_json_payload(file)
@@ -196,7 +204,9 @@ def auctions_update(
     """Update a private auction."""
     payload = _load_json_payload(file)
     try:
-        data = get_client().patch(f"/api/gam/private-auctions/{auction_id}", json=payload)
+        data = get_client().patch(
+            f"/api/gam/private-auctions/{auction_id}", json=payload
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -261,15 +271,37 @@ def _proposal_body(
     return body
 
 
+def _pli_body(
+    ctx: typer.Context,
+    ids: list[str],
+    yes: bool,
+    prompt: str,
+    extra: dict | None = None,
+) -> dict:
+    """Confirm with the user, then build the {pliIds, ...} body."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(prompt, effective_ctx):
+        raise typer.Exit(code=0)
+    body: dict = {"pliIds": ids}
+    if extra:
+        body.update(extra)
+    return body
+
+
 @proposals_app.command("pause")
 def proposals_pause(
     ctx: typer.Context,
     ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
-    reason: str = typer.Option(..., "--reason", help="Why the proposals are paused (min 3 chars)"),
+    reason: str = typer.Option(
+        ..., "--reason", help="Why the proposals are paused (min 3 chars)"
+    ),
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
     """Pause programmatic proposals."""
-    body = _proposal_body(ctx, ids, yes, f"Pause {len(ids)} proposal(s)?", {"reason": reason})
+    body = _proposal_body(
+        ctx, ids, yes, f"Pause {len(ids)} proposal(s)?", {"reason": reason}
+    )
     try:
         data = get_client().post("/api/gam/proposals/pause", json=body)
         render_detail(data, ctx.obj)
@@ -334,7 +366,9 @@ def proposals_request_buyer_review(
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
     """Request buyer review of proposals."""
-    body = _proposal_body(ctx, ids, yes, f"Request buyer review for {len(ids)} proposal(s)?")
+    body = _proposal_body(
+        ctx, ids, yes, f"Request buyer review for {len(ids)} proposal(s)?"
+    )
     try:
         data = get_client().post("/api/gam/proposals/request-buyer-review", json=body)
         render_detail(data, ctx.obj)
@@ -352,6 +386,122 @@ def proposals_push_to_order(
     body = _proposal_body(ctx, ids, yes, f"Push {len(ids)} proposal(s) to their Order?")
     try:
         data = get_client().post("/api/gam/proposals/push-to-order", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── Proposal line item lifecycle (Story 116-5) ───────────────────────────────
+# Wraps POST /api/gam/proposal-line-items/{pause,resume,reserve,release,unarchive}
+# and GET /api/gam/proposal-line-items/{id}. The five writes drive
+# ProposalLineItemService performProposalLineItemAction on 1-50 line item IDs and
+# are feature-gated (Marketplace/programmatic): a network without it answers
+# GAM_FEATURE_NOT_AVAILABLE.
+
+
+@pli_app.command("pause")
+def pli_pause(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal line item ID(s) (1-50)"),
+    reason: str = typer.Option(
+        ..., "--reason", help="Why the line items are paused (min 3 chars)"
+    ),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Pause proposal line items."""
+    body = _pli_body(
+        ctx, ids, yes, f"Pause {len(ids)} proposal line item(s)?", {"reason": reason}
+    )
+    try:
+        data = get_client().post("/api/gam/proposal-line-items/pause", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("resume")
+def pli_resume(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal line item ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Resume paused proposal line items."""
+    body = _pli_body(ctx, ids, yes, f"Resume {len(ids)} proposal line item(s)?")
+    try:
+        data = get_client().post("/api/gam/proposal-line-items/resume", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("reserve")
+def pli_reserve(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal line item ID(s) (1-50)"),
+    allow_overbook: bool = typer.Option(
+        False,
+        "--allow-overbook",
+        help="Reserve even beyond the forecast availability (may reduce other deliveries)",
+    ),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Reserve inventory for proposal line items."""
+    prompt = f"Reserve inventory for {len(ids)} proposal line item(s)?"
+    if allow_overbook:
+        prompt = (
+            f"Reserve inventory for {len(ids)} proposal line item(s) EVEN BEYOND availability "
+            "(overbook)?"
+        )
+    body = _pli_body(
+        ctx, ids, yes, prompt, {"allowOverbook": True} if allow_overbook else None
+    )
+    try:
+        data = get_client().post("/api/gam/proposal-line-items/reserve", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("release")
+def pli_release(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal line item ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Release the reserved inventory of proposal line items."""
+    body = _pli_body(
+        ctx, ids, yes, f"Release the inventory of {len(ids)} proposal line item(s)?"
+    )
+    try:
+        data = get_client().post("/api/gam/proposal-line-items/release", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("unarchive")
+def pli_unarchive(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal line item ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Unarchive proposal line items."""
+    body = _pli_body(ctx, ids, yes, f"Unarchive {len(ids)} proposal line item(s)?")
+    try:
+        data = get_client().post("/api/gam/proposal-line-items/unarchive", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("get")
+def pli_get(
+    ctx: typer.Context,
+    pli_id: str = typer.Argument(..., help="Proposal line item ID"),
+):
+    """Get one proposal line item (status, reservationStatus, pause state)."""
+    try:
+        data = get_client().get(f"/api/gam/proposal-line-items/{pli_id}")
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

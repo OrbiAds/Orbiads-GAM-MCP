@@ -238,6 +238,13 @@ tools:
       discard_proposal_drafts: {rest: "POST /api/gam/proposals/discard-drafts", cli: "programmatic proposals discard-drafts"}
       request_buyer_review: {rest: "POST /api/gam/proposals/request-buyer-review", cli: "programmatic proposals request-buyer-review"}
       push_proposal_to_order: {rest: "POST /api/gam/proposals/push-to-order", cli: "programmatic proposals push-to-order"}
+      # Story 116-5 — proposal line item lifecycle + unit read, added directly on the parent.
+      pause_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/pause", cli: "programmatic proposal-line-items pause"}
+      resume_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/resume", cli: "programmatic proposal-line-items resume"}
+      reserve_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/reserve", cli: "programmatic proposal-line-items reserve"}
+      release_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/release", cli: "programmatic proposal-line-items release"}
+      unarchive_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/unarchive", cli: "programmatic proposal-line-items unarchive"}
+      get_proposal_line_item: {rest: "GET /api/gam/proposal-line-items/{id}", cli: "programmatic proposal-line-items get"}
   line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
   create_line_item:         {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}

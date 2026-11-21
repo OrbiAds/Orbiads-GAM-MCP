@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **483 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **489 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -32,7 +32,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1095` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 34 | ✍️ mixed/write | `deals.py:887` |
+| `deals` | 64 | 40 | ✍️ mixed/write | `deals.py:1236` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -359,7 +359,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-**Server-side implementation:** `deals.py` · **Actions:** 34 · **Mode:** mixed (read + write)
+**Server-side implementation:** `deals.py` · **Actions:** 40 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 29 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -394,6 +394,12 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `create_proposal_line_items` | 3 | ✅ | ✅ required |
 | `update_proposal_line_items` | 1 | ✅ | ✅ required |
 | `archive_proposal_line_items` | 0 | ✅ | — |
+| `get_proposal_line_item` | 0 | — | — |
+| `pause_proposal_line_items` | 0 | ✅ | — |
+| `resume_proposal_line_items` | 0 | ✅ | — |
+| `reserve_proposal_line_items` | 0 | — | — |
+| `release_proposal_line_items` | 0 | — | — |
+| `unarchive_proposal_line_items` | 0 | — | — |
 | `create_makegoods` | 3 | ✅ | ✅ required |
 | `estimate_deal_cost` | 0 | — | — |
 | `adcp_validate` | 0 | — | — |

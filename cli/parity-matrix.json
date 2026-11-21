@@ -378,6 +378,12 @@
     "programmatic deals get",
     "programmatic deals list",
     "programmatic deals update",
+    "programmatic proposal-line-items get",
+    "programmatic proposal-line-items pause",
+    "programmatic proposal-line-items release",
+    "programmatic proposal-line-items reserve",
+    "programmatic proposal-line-items resume",
+    "programmatic proposal-line-items unarchive",
     "programmatic proposals discard-drafts",
     "programmatic proposals pause",
     "programmatic proposals push-to-order",
@@ -1881,6 +1887,30 @@
         "push_proposal_to_order": {
           "rest": "POST /api/gam/proposals/push-to-order",
           "cli": "programmatic proposals push-to-order"
+        },
+        "pause_proposal_line_items": {
+          "rest": "POST /api/gam/proposal-line-items/pause",
+          "cli": "programmatic proposal-line-items pause"
+        },
+        "resume_proposal_line_items": {
+          "rest": "POST /api/gam/proposal-line-items/resume",
+          "cli": "programmatic proposal-line-items resume"
+        },
+        "reserve_proposal_line_items": {
+          "rest": "POST /api/gam/proposal-line-items/reserve",
+          "cli": "programmatic proposal-line-items reserve"
+        },
+        "release_proposal_line_items": {
+          "rest": "POST /api/gam/proposal-line-items/release",
+          "cli": "programmatic proposal-line-items release"
+        },
+        "unarchive_proposal_line_items": {
+          "rest": "POST /api/gam/proposal-line-items/unarchive",
+          "cli": "programmatic proposal-line-items unarchive"
+        },
+        "get_proposal_line_item": {
+          "rest": "GET /api/gam/proposal-line-items/{id}",
+          "cli": "programmatic proposal-line-items get"
         }
       },
       "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 ADCP actions). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
