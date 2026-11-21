@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **477 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **483 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -32,7 +32,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1083` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:610` |
+| `deals` | 64 | 34 | ✍️ mixed/write | `deals.py:887` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -43,7 +43,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
 | `mcm` | — | 1 | 📖 read | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | `network.py:268` |
-| `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:159` |
+| `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:167` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | `placements.py:248` |
 | `pql` | 68.2 | 3 | 📖 read | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | `prebid_skill.py:449` |
@@ -359,7 +359,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-**Server-side implementation:** `deals.py` · **Actions:** 28 · **Mode:** mixed (read + write)
+**Server-side implementation:** `deals.py` · **Actions:** 34 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 29 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -383,6 +383,12 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `reserve_proposal` | 0 | ✅ | — |
 | `edit_proposal_for_negotiation` | 0 | ✅ | — |
 | `terminate_proposal_negotiations` | 0 | ✅ | — |
+| `pause_proposal` | 0 | ✅ | — |
+| `resume_proposal` | 0 | ✅ | — |
+| `unarchive_proposal` | 0 | — | — |
+| `discard_proposal_drafts` | 0 | — | — |
+| `request_buyer_review` | 0 | — | — |
+| `push_proposal_to_order` | 0 | ✅ | — |
 | `get_marketplace_comments` | 0 | — | — |
 | `list_proposal_line_items` | 0 | — | — |
 | `create_proposal_line_items` | 3 | ✅ | ✅ required |
@@ -906,7 +912,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `line_item_lifecycle` | `line_items.py:1586` | 0 | ✅ |
 | `list_premium_rates` | `pricing.py:50` | 0 | — |
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
-| `order_lifecycle` | `orders.py:938` | 0 | ✅ |
+| `order_lifecycle` | `orders.py:988` | 0 | ✅ |
 | `poll_auth_status` | `auth.py:492` | 0 | — |
 | `reporting_skill` | `reporting.py:3854` | 0 | — |
 | `select_gam_network` | `auth.py:613` | 0 | ✅ |

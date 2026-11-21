@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Programmatic Deals, Products & Companies: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 77 actions across 6 parent tool(s); CLI coverage 31/77 actions.
+Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 83 actions across 6 parent tool(s); CLI coverage 37/83 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -74,8 +74,8 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-- **Mode:** mixed · **Actions:** 28 (15 writes, 13 reads)
-- **Surfaces:** MCP ✅ · CLI 10/28 actions
+- **Mode:** mixed · **Actions:** 34 (18 writes, 16 reads)
+- **Surfaces:** MCP ✅ · CLI 16/34 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 29 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -90,8 +90,11 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `create_proposal` | 5 | yes | required | MCP-only |
 | `create_proposal_line_items` | 3 | yes | required | MCP-only |
 | `edit_proposal_for_negotiation` | 0 | yes | — | MCP-only |
+| `pause_proposal` | 0 | yes | — | `orbiads programmatic proposals pause` |
+| `push_proposal_to_order` | 0 | yes | — | `orbiads programmatic proposals push-to-order` |
 | `request_buyer_acceptance` | 0 | yes | — | MCP-only |
 | `reserve_proposal` | 0 | yes | — | MCP-only |
+| `resume_proposal` | 0 | yes | — | `orbiads programmatic proposals resume` |
 | `terminate_proposal_negotiations` | 0 | yes | — | MCP-only |
 | `update_auction` | 0 | yes | — | `orbiads programmatic auctions update` |
 | `update_deal` | 0 | yes | — | `orbiads programmatic deals update` |
@@ -100,6 +103,7 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `adcp_create` | 0 | — | — | MCP-only |
 | `adcp_preview` | 0 | — | — | MCP-only |
 | `adcp_validate` | 0 | — | — | MCP-only |
+| `discard_proposal_drafts` | 0 | — | — | `orbiads programmatic proposals discard-drafts` |
 | `estimate_deal_cost` | 0 | — | — | MCP-only |
 | `get_auction` | 0 | — | — | `orbiads programmatic auctions get` |
 | `get_buyer` | 0 | — | — | `orbiads programmatic buyers get` |
@@ -110,6 +114,8 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `list_buyers` | 0 | — | — | `orbiads programmatic buyers list` |
 | `list_deals` | 0 | — | — | `orbiads programmatic deals list` |
 | `list_proposal_line_items` | 0 | — | — | MCP-only |
+| `request_buyer_review` | 0 | — | — | `orbiads programmatic proposals request-buyer-review` |
+| `unarchive_proposal` | 0 | — | — | `orbiads programmatic proposals unarchive` |
 
 ### `orbiads:prebid_skill` (Epic 70)
 

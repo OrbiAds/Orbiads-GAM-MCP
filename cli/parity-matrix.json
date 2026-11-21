@@ -378,6 +378,12 @@
     "programmatic deals get",
     "programmatic deals list",
     "programmatic deals update",
+    "programmatic proposals discard-drafts",
+    "programmatic proposals pause",
+    "programmatic proposals push-to-order",
+    "programmatic proposals request-buyer-review",
+    "programmatic proposals resume",
+    "programmatic proposals unarchive",
     "reporting alerts-budget",
     "reporting alerts-underdelivery",
     "reporting billing-report",
@@ -1851,6 +1857,30 @@
           "rest": "NO-REST",
           "cli": null,
           "exempt": "ADCP preview is MCP-only by design; mirrors preview_media_buy_from_adcp policy."
+        },
+        "pause_proposal": {
+          "rest": "POST /api/gam/proposals/pause",
+          "cli": "programmatic proposals pause"
+        },
+        "resume_proposal": {
+          "rest": "POST /api/gam/proposals/resume",
+          "cli": "programmatic proposals resume"
+        },
+        "unarchive_proposal": {
+          "rest": "POST /api/gam/proposals/unarchive",
+          "cli": "programmatic proposals unarchive"
+        },
+        "discard_proposal_drafts": {
+          "rest": "POST /api/gam/proposals/discard-drafts",
+          "cli": "programmatic proposals discard-drafts"
+        },
+        "request_buyer_review": {
+          "rest": "POST /api/gam/proposals/request-buyer-review",
+          "cli": "programmatic proposals request-buyer-review"
+        },
+        "push_proposal_to_order": {
+          "rest": "POST /api/gam/proposals/push-to-order",
+          "cli": "programmatic proposals push-to-order"
         }
       },
       "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 ADCP actions). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",

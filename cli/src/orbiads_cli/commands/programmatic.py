@@ -1,4 +1,4 @@
-"""GAM programmatic commerce: PMP deals, private auctions, and buyers."""
+"""GAM programmatic commerce: PMP deals, private auctions, buyers, proposal lifecycle."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import render, render_detail
+from orbiads_cli.output import OutputContext, confirm, render, render_detail
 
 app = typer.Typer(
     help="GAM programmatic surface — PMP deals, private auctions, buyers",
@@ -18,10 +18,15 @@ app = typer.Typer(
 deals_app = typer.Typer(help="PMP deals", no_args_is_help=True)
 auctions_app = typer.Typer(help="Private auctions", no_args_is_help=True)
 buyers_app = typer.Typer(help="Programmatic buyers", no_args_is_help=True)
+proposals_app = typer.Typer(
+    help="Proposal lifecycle (pause, resume, unarchive, discard drafts, buyer review, push to order)",
+    no_args_is_help=True,
+)
 
 app.add_typer(deals_app, name="deals")
 app.add_typer(auctions_app, name="auctions")
 app.add_typer(buyers_app, name="buyers")
+app.add_typer(proposals_app, name="proposals")
 
 _DEAL_LIST_COLUMNS = ["dealId", "displayName", "status", "floorPrice"]
 _AUCTION_LIST_COLUMNS = ["privateAuctionId", "displayName", "description"]
@@ -226,6 +231,127 @@ def buyers_get(
     """Get a programmatic buyer."""
     try:
         data = get_client().get(f"/api/gam/programmatic-buyers/{buyer_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── Proposal lifecycle (Story 116-4) ─────────────────────────────────────────
+# Wraps POST /api/gam/proposals/{pause,resume,unarchive,discard-drafts,
+# request-buyer-review,push-to-order}. All six drive ProposalService
+# performProposalAction on one or more proposal IDs (1-50) and are feature-gated
+# (Marketplace/programmatic): a network without it answers GAM_FEATURE_NOT_AVAILABLE.
+
+
+def _proposal_body(
+    ctx: typer.Context,
+    ids: list[str],
+    yes: bool,
+    prompt: str,
+    extra: dict | None = None,
+) -> dict:
+    """Confirm with the user, then build the {proposalIds, ...} body."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(prompt, effective_ctx):
+        raise typer.Exit(code=0)
+    body: dict = {"proposalIds": ids}
+    if extra:
+        body.update(extra)
+    return body
+
+
+@proposals_app.command("pause")
+def proposals_pause(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    reason: str = typer.Option(..., "--reason", help="Why the proposals are paused (min 3 chars)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Pause programmatic proposals."""
+    body = _proposal_body(ctx, ids, yes, f"Pause {len(ids)} proposal(s)?", {"reason": reason})
+    try:
+        data = get_client().post("/api/gam/proposals/pause", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@proposals_app.command("resume")
+def proposals_resume(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Resume paused proposals."""
+    body = _proposal_body(ctx, ids, yes, f"Resume {len(ids)} proposal(s)?")
+    try:
+        data = get_client().post("/api/gam/proposals/resume", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@proposals_app.command("unarchive")
+def proposals_unarchive(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Unarchive proposals."""
+    body = _proposal_body(ctx, ids, yes, f"Unarchive {len(ids)} proposal(s)?")
+    try:
+        data = get_client().post("/api/gam/proposals/unarchive", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@proposals_app.command("discard-drafts")
+def proposals_discard_drafts(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Discard local edits: revert to the latest Marketplace terms."""
+    body = _proposal_body(
+        ctx,
+        ids,
+        yes,
+        f"Discard the local edits of {len(ids)} proposal(s)? They cannot be recovered.",
+    )
+    try:
+        data = get_client().post("/api/gam/proposals/discard-drafts", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@proposals_app.command("request-buyer-review")
+def proposals_request_buyer_review(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Request buyer review of proposals."""
+    body = _proposal_body(ctx, ids, yes, f"Request buyer review for {len(ids)} proposal(s)?")
+    try:
+        data = get_client().post("/api/gam/proposals/request-buyer-review", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@proposals_app.command("push-to-order")
+def proposals_push_to_order(
+    ctx: typer.Context,
+    ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Update the Order of finalized Marketplace proposals with the seller's data."""
+    body = _proposal_body(ctx, ids, yes, f"Push {len(ids)} proposal(s) to their Order?")
+    try:
+        data = get_client().post("/api/gam/proposals/push-to-order", json=body)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

@@ -168,26 +168,44 @@ def lifecycle(
     ctx: typer.Context,
     action: str = typer.Argument(
         ...,
-        help="Lifecycle action: approve, approve_without_reservation_changes, archive, unarchive, pause, resume, retire, disapprove, submit_for_approval.",
+        help=(
+            "Lifecycle action: approve, approve_without_reservation_changes, archive, "
+            "unarchive, pause, resume, retire, disapprove, submit_for_approval, "
+            "approve_and_overbook, resume_and_overbook, submit_for_approval_and_overbook, "
+            "disapprove_without_reservation_changes, retire_without_reservation_changes, "
+            "submit_for_approval_without_reservation_changes, delete."
+        ),
     ),
-    order_id: str = typer.Argument(..., help="GAM Order ID (direct ID — no job_id needed)"),
+    order_ids: list[str] = typer.Argument(
+        ..., help="One or more GAM Order IDs (max 50; direct IDs — no job_id needed)"
+    ),
+    acknowledge_overbook: bool = typer.Option(
+        False,
+        "--acknowledge-overbook",
+        help="Required for the *_and_overbook actions: inventory is reserved beyond forecast availability.",
+    ),
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
-    """Run a lifecycle action on an Order by direct GAM ID (Epic 68 §9).
+    """Run a lifecycle action on one or several Orders by direct GAM ID (Epic 68 §9).
 
-    REST parity for MCP `order_lifecycle`. Covers all 9 OrderAction WSDL
-    subtypes including pause/resume/retire/disapprove/submit_for_approval
-    that the legacy per-action endpoints didn't expose.
+    REST parity for MCP `order_lifecycle`. Covers all 16 OrderAction WSDL
+    subtypes: the 9 base transitions, the 3 *_and_overbook variants, the 3
+    *_without_reservation_changes variants and `delete` (irreversible: removes
+    the order and its line items; GAM refuses if a line item ever served).
+    GAM reports one aggregated numChanges, not a per-order outcome.
     """
     out: OutputContext = ctx.obj
     effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-    if not confirm(f"Run lifecycle action '{action}' on order {order_id}?", effective_ctx):
+    ids_label = ", ".join(order_ids)
+    if not confirm(
+        f"Run lifecycle action '{action}' on order(s) {ids_label}?", effective_ctx
+    ):
         raise typer.Exit(code=0)
+    payload: dict = {"order_ids": order_ids, "action": action}
+    if acknowledge_overbook:
+        payload["acknowledge_overbook"] = True
     try:
-        data = get_client().post(
-            "/api/gam/orders/lifecycle",
-            json={"order_id": order_id, "action": action},
-        )
+        data = get_client().post("/api/gam/orders/lifecycle", json=payload)
         render_detail(data, out)
     except CliApiError as e:
         handle_error(e)
