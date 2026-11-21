@@ -1,7 +1,7 @@
 """Manage LICAs (line-item creative associations) — Story 62.1.
 
 Wraps the 5 LICA Tier B routes added in
-the server-side LICA API.
+the server-side LICA API, plus the irreversible `delete-permanent` (Story 116-1).
 """
 
 from __future__ import annotations
@@ -115,7 +115,8 @@ def delete(
 ):
     """Detach multiple creatives from a line item in one call (REVERSIBLE).
 
-    The association is set to INACTIVE; GAM exposes no hard-delete for a LICA.
+    Each association is set to INACTIVE (it is NOT deleted) and can be
+    reactivated. For an irreversible removal use `licas delete-permanent`.
     """
     out: OutputContext = ctx.obj
     effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
@@ -124,6 +125,38 @@ def delete(
     payload = _load_json_payload(file)
     try:
         data = get_client().post("/api/gam/licas/delete", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("delete-permanent")
+def delete_permanent(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file with {lineItemId, creativeIds: [...]} (max 100 creatives)",
+    ),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+):
+    """Permanently delete LICAs from a line item (IRREVERSIBLE).
+
+    Unlike `licas delete` (which deactivates), the associations are removed
+    from GAM and cannot be restored. Only existing associations are deleted;
+    the command fails if none of the creatives is associated.
+    """
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+    if not confirm(
+        "PERMANENTLY delete the LICAs in this payload? This cannot be undone.",
+        effective_ctx,
+    ):
+        raise typer.Exit(code=0)
+    payload = _load_json_payload(file)
+    try:
+        data = get_client().post("/api/gam/licas/delete-permanent", json=payload)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

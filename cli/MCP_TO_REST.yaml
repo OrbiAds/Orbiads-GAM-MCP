@@ -130,7 +130,14 @@ tools:
 
   # ── creatives (39 + 2 parents) ────────────────────────────────────
   creative_assets:             {area: creatives, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under action=upload_*/create_*/compress_image/get_video_transcode_status keep their existing FULL/EXEMPT CLI parity. Story 75 unified upload REST surface remains the canonical CLI/REST entrypoint and is unaffected by this MCP refactor."}  # 68.7c
-  creatives:                   {area: creatives, rest: "NO-REST", cli: null, exempt: "Story 68.7d parent>child MCP dispatcher (Epic 68 Phase B). Legacy creative metadata, preview, NativeStyle, CreativeTemplate, and LICA wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7d
+  creatives:
+    area: creatives
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.7d parent>child MCP dispatcher (Epic 68 Phase B). Legacy creative metadata, preview, NativeStyle, CreativeTemplate, and LICA wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      # Story 116-1 — action added directly on the parent (no legacy wrapper).
+      delete_lica_permanently: {rest: "POST /api/gam/licas/delete-permanent", cli: "licas delete-permanent"}
   creative_wrapper_skill:
     area: creative_wrappers
     rest: "POST /api/gam/creative-wrappers"
@@ -182,7 +189,7 @@ tools:
   get_licas_batch:              {area: creatives, rest: "POST /api/gam/licas/batch", cli: "licas batch"}  # 62.1
   deactivate_lica:              {area: creatives, rest: "POST /api/gam/licas/{line_item_id}/{creative_id}/deactivate", cli: "licas deactivate"}  # 62.1
   update_lica:                  {area: creatives, rest: "PATCH /api/gam/licas/{line_item_id}/{creative_id}", cli: "licas update"}  # 62.1
-  delete_licas:                 {area: creatives, rest: "POST /api/gam/licas/delete", cli: "licas delete"}  # 62.1
+  delete_licas:                 {area: creatives, rest: "POST /api/gam/licas/delete", cli: "licas delete"}  # 62.1 — deactivates (reversible); hard delete = creatives.delete_lica_permanently (116-1)
   list_creatives_by_network:    {area: creatives, rest: "GET /api/gam/creatives", cli: "creatives list-by-network"}  # 62.1
   archive_creative:             {area: creatives, rest: "POST /api/gam/creatives/{creative_id}/archive", cli: "creatives archive"}  # 62.1
   duplicate_creative:           {area: creatives, rest: "POST /api/gam/creatives/{creative_id}/duplicate", cli: "creatives duplicate"}  # 62.1

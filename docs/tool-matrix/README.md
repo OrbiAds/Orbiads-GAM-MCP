@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **476 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **477 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -27,10 +27,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:692` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
-| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:972` |
+| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1117` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
-| `creatives` | 68.7d | 30 | ✍️ mixed/write | `creatives.py:938` |
+| `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1083` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
 | `deals` | 64 | 28 | ✍️ mixed/write | `deals.py:610` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
@@ -294,7 +294,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-**Server-side implementation:** `creatives.py` · **Actions:** 30 · **Mode:** mixed (read + write)
+**Server-side implementation:** `creatives.py` · **Actions:** 31 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 27 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -327,6 +327,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `deactivate_lica` | 0 | ✅ | — |
 | `update_lica` | 0 | ✅ | — |
 | `delete_licas` | 0 | ✅ | — |
+| `delete_lica_permanently` | 0 | ✅ | — |
 | `list_creative_sets` | 0 | — | — |
 | `create_creative_set` | 0 | ✅ | — |
 | `update_creative_set` | 0 | ✅ | — |

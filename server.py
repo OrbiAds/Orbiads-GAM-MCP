@@ -531,7 +531,8 @@ NOTE: A Creative entity in GAM wraps one or more creative_assets. A LICA (LineIt
             ("get_licas_batch", "Retrieve multiple LICAs by ID. Read-only."),
             ("deactivate_lica", "Deactivate a LICA without deleting it. Write."),
             ("update_lica", "Update a LICA's weight or start/end date. Write."),
-            ("delete_licas", "Delete LICAs permanently. Destructive write."),
+            ("delete_licas", "Detach creatives from a line item by deactivating their LICAs (reversible, not a hard delete). Write."),
+            ("delete_lica_permanently", "Permanently delete LICAs (irreversible hard delete via DeleteLineItemCreativeAssociations). Destructive write."),
         ],
     ),
 

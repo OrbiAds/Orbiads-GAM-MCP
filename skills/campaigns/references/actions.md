@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Campaign Operations & Creative QA: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 149 actions across 12 parent tool(s); CLI coverage 106/149 actions.
+Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 150 actions across 12 parent tool(s); CLI coverage 107/150 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -141,8 +141,8 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 30 (13 writes, 17 reads)
-- **Surfaces:** MCP ✅ · CLI 27/30 actions
+- **Mode:** mixed · **Actions:** 31 (14 writes, 17 reads)
+- **Surfaces:** MCP ✅ · CLI 28/31 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -155,6 +155,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `bulk_associate_creatives` | 0 | yes | — | `orbiads campaigns attach-creatives` |
 | `create_creative_set` | 0 | yes | — | MCP-only |
 | `deactivate_lica` | 0 | yes | — | `orbiads licas deactivate` |
+| `delete_lica_permanently` | 0 | yes | — | `orbiads licas delete-permanent` |
 | `delete_licas` | 0 | yes | — | `orbiads licas delete` |
 | `duplicate_creative` | 0.5 | yes | required | `orbiads creatives duplicate` |
 | `duplicate_native_style` | 0.5 | yes | required | `orbiads native-styles duplicate` |
