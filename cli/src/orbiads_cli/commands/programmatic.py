@@ -37,6 +37,16 @@ app.add_typer(pli_app, name="proposal-line-items")
 _DEAL_LIST_COLUMNS = ["dealId", "displayName", "status", "floorPrice"]
 _AUCTION_LIST_COLUMNS = ["privateAuctionId", "displayName", "description"]
 _BUYER_LIST_COLUMNS = ["accountId", "displayName", "buyerStatus"]
+_PROPOSAL_LIST_COLUMNS = [
+    "id",
+    "name",
+    "status",
+    "isProgrammatic",
+    "negotiationStatus",
+    "buyerAccountId",
+    "lastModifiedDateTime",
+]
+_PLI_LIST_COLUMNS = ["id", "proposalId", "name", "reservationStatus", "isArchived"]
 
 
 def _load_json_payload(path: str) -> dict:
@@ -503,5 +513,112 @@ def pli_get(
     try:
         data = get_client().get(f"/api/gam/proposal-line-items/{pli_id}")
         render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ---------------------------------------------------------------------------
+# Story 116-6 — filtered listing. Wraps GET /api/gam/proposals and
+# GET /api/gam/proposal-line-items (typed query parameters, validated server side).
+# ---------------------------------------------------------------------------
+
+
+def _paging_hint(data: object) -> None:
+    if isinstance(data, dict) and data.get("hasMore"):
+        next_offset = int(data.get("offset", 0)) + int(data.get("limit", 0))
+        typer.echo(f"More results available: rerun with --offset {next_offset}", err=True)
+    if isinstance(data, dict) and data.get("clientSideFilters"):
+        typer.echo(
+            "Note: "
+            + ", ".join(data["clientSideFilters"])
+            + " filtered on the returned page only (GAM has no such filter).",
+            err=True,
+        )
+
+
+@proposals_app.command("list")
+def proposals_list(
+    ctx: typer.Context,
+    status: Optional[str] = typer.Option(
+        None, "--status", help="DRAFT, PENDING_APPROVAL, APPROVED or REJECTED"
+    ),
+    negotiation_status: Optional[str] = typer.Option(
+        None, "--negotiation-status", help="e.g. AWAITING_SELLER_REVIEW, FINALIZED"
+    ),
+    buyer: Optional[str] = typer.Option(
+        None, "--buyer", help="Buyer account ID (filters the returned page only)"
+    ),
+    programmatic: Optional[bool] = typer.Option(
+        None,
+        "--programmatic/--non-programmatic",
+        help="Only programmatic / only non-programmatic proposals (default: both)",
+    ),
+    archived: Optional[bool] = typer.Option(
+        None, "--archived/--not-archived", help="Filter on the archived flag"
+    ),
+    since: Optional[str] = typer.Option(
+        None, "--since", help="Only proposals modified after this ISO 8601 date-time"
+    ),
+    limit: int = typer.Option(200, "--limit", min=1, max=500),
+    offset: int = typer.Option(0, "--offset", min=0),
+):
+    """List proposals (programmatic or not) with typed filters."""
+    params: dict = {"limit": limit, "offset": offset}
+    for key, value in (
+        ("status", status),
+        ("negotiationStatus", negotiation_status),
+        ("buyerId", buyer),
+        ("isProgrammatic", programmatic),
+        ("isArchived", archived),
+        ("lastModifiedAfter", since),
+    ):
+        if value is not None:
+            params[key] = str(value).lower() if isinstance(value, bool) else value
+    try:
+        data = get_client().get("/api/gam/proposals", params=params)
+        render(_items(data, "proposals"), _PROPOSAL_LIST_COLUMNS, ctx.obj)
+        _paging_hint(data)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@pli_app.command("list")
+def pli_list(
+    ctx: typer.Context,
+    proposal_id: Optional[str] = typer.Option(
+        None, "--proposal-id", help="Restrict to one proposal (default: whole network)"
+    ),
+    reservation_status: Optional[str] = typer.Option(
+        None,
+        "--status",
+        help="RESERVED, NOT_RESERVED, RELEASED or CHECK_LINE_ITEM_RESERVATION_STATUS "
+        "(filters the returned page only)",
+    ),
+    programmatic: Optional[bool] = typer.Option(
+        None, "--programmatic/--non-programmatic", help="Default: both"
+    ),
+    include_archived: bool = typer.Option(False, "--include-archived"),
+    since: Optional[str] = typer.Option(
+        None, "--since", help="Only items modified after this ISO 8601 date-time"
+    ),
+    limit: int = typer.Option(200, "--limit", min=1, max=500),
+    offset: int = typer.Option(0, "--offset", min=0),
+):
+    """List proposal line items, optionally for a single proposal."""
+    params: dict = {"limit": limit, "offset": offset}
+    if include_archived:
+        params["includeArchived"] = "true"
+    for key, value in (
+        ("proposalId", proposal_id),
+        ("reservationStatus", reservation_status),
+        ("isProgrammatic", programmatic),
+        ("lastModifiedAfter", since),
+    ):
+        if value is not None:
+            params[key] = str(value).lower() if isinstance(value, bool) else value
+    try:
+        data = get_client().get("/api/gam/proposal-line-items", params=params)
+        render(_items(data, "lineItems"), _PLI_LIST_COLUMNS, ctx.obj)
+        _paging_hint(data)
     except CliApiError as e:
         handle_error(e)

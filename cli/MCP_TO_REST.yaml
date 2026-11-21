@@ -245,6 +245,9 @@ tools:
       release_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/release", cli: "programmatic proposal-line-items release"}
       unarchive_proposal_line_items: {rest: "POST /api/gam/proposal-line-items/unarchive", cli: "programmatic proposal-line-items unarchive"}
       get_proposal_line_item: {rest: "GET /api/gam/proposal-line-items/{id}", cli: "programmatic proposal-line-items get"}
+      # Story 116-6 — filtered listing (list_proposals is a new parent action; list_proposal_line_items gains filters).
+      list_proposals: {rest: "GET /api/gam/proposals", cli: "programmatic proposals list"}
+      list_proposal_line_items: {rest: "GET /api/gam/proposal-line-items", cli: "programmatic proposal-line-items list"}
   line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
   create_line_items:        {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
   create_line_item:         {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}
@@ -436,7 +439,7 @@ tools:
   edit_proposal_for_negotiation:  {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
   terminate_proposal_negotiations: {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
   get_marketplace_comments:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
-  list_proposal_line_items:       {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
+  list_proposal_line_items:       {area: deals, rest: "GET /api/gam/proposal-line-items", cli: "programmatic proposal-line-items list"}  # Story 116-6
   create_proposal_line_items:     {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
   update_proposal_line_items:     {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}
   archive_proposal_line_items:    {area: deals, rest: "NO-REST", cli: null, exempt: "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend)."}

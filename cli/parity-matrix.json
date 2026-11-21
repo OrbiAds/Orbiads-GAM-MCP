@@ -1,8 +1,8 @@
 {
   "total_tools": 291,
   "counts": {
-    "FULL": 206,
-    "EXEMPT": 85
+    "FULL": 207,
+    "EXEMPT": 84
   },
   "per_area": {
     "ad_review": {
@@ -52,8 +52,8 @@
       "EXEMPT": 1
     },
     "deals": {
-      "EXEMPT": 17,
-      "FULL": 10
+      "EXEMPT": 16,
+      "FULL": 11
     },
     "formats": {
       "EXEMPT": 1
@@ -379,12 +379,14 @@
     "programmatic deals list",
     "programmatic deals update",
     "programmatic proposal-line-items get",
+    "programmatic proposal-line-items list",
     "programmatic proposal-line-items pause",
     "programmatic proposal-line-items release",
     "programmatic proposal-line-items reserve",
     "programmatic proposal-line-items resume",
     "programmatic proposal-line-items unarchive",
     "programmatic proposals discard-drafts",
+    "programmatic proposals list",
     "programmatic proposals pause",
     "programmatic proposals push-to-order",
     "programmatic proposals request-buyer-review",
@@ -1911,6 +1913,14 @@
         "get_proposal_line_item": {
           "rest": "GET /api/gam/proposal-line-items/{id}",
           "cli": "programmatic proposal-line-items get"
+        },
+        "list_proposals": {
+          "rest": "GET /api/gam/proposals",
+          "cli": "programmatic proposals list"
+        },
+        "list_proposal_line_items": {
+          "rest": "GET /api/gam/proposal-line-items",
+          "cli": "programmatic proposal-line-items list"
         }
       },
       "exempt": "Story 68.7g parent>child MCP dispatcher (Epic 68 Phase B + Epic 100 ADCP actions). Legacy PMP, PG/PD proposal, unified deal, and ADCP wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
@@ -2031,12 +2041,12 @@
       "tool": "list_proposal_line_items",
       "module": "deals",
       "area": "deals",
-      "rest": "NO-REST",
-      "cli": null,
+      "rest": "GET /api/gam/proposal-line-items",
+      "cli": "programmatic proposal-line-items list",
       "sub_actions": null,
-      "exempt": "Epic 64 Programmatic Deals — CLI parity deferred until dedicated CLI extension story (post 64-frontend).",
-      "status": "EXEMPT",
-      "cli_present": null
+      "exempt": null,
+      "status": "FULL",
+      "cli_present": true
     },
     {
       "tool": "request_buyer_acceptance",

@@ -12,7 +12,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **489 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **490 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -32,7 +32,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1095` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 40 | ✍️ mixed/write | `deals.py:1236` |
+| `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1324` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -359,7 +359,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-**Server-side implementation:** `deals.py` · **Actions:** 40 · **Mode:** mixed (read + write)
+**Server-side implementation:** `deals.py` · **Actions:** 41 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 29 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -376,6 +376,7 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `list_buyers` | 0 | — | — |
 | `get_buyer` | 0 | — | — |
 | `get_proposal` | 0 | — | — |
+| `list_proposals` | 0 | — | — |
 | `create_proposal` | 5 | ✅ | ✅ required |
 | `update_proposal` | 2 | ✅ | ✅ required |
 | `archive_proposal` | 0 | ✅ | — |
@@ -915,7 +916,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `get_my_tenant_id` | `auth.py:309` | 0 | — |
 | `get_premium_rate` | `pricing.py:71` | 0 | — |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✅ |
-| `line_item_lifecycle` | `line_items.py:1633` | 0 | ✅ |
+| `line_item_lifecycle` | `line_items.py:1637` | 0 | ✅ |
 | `list_premium_rates` | `pricing.py:50` | 0 | — |
 | `list_rate_cards` | `pricing.py:30` | 0 | — |
 | `order_lifecycle` | `orders.py:988` | 0 | ✅ |

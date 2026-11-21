@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Programmatic Deals, Products & Companies: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 89 actions across 6 parent tool(s); CLI coverage 43/89 actions.
+Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 90 actions across 6 parent tool(s); CLI coverage 45/90 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -74,8 +74,8 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
-- **Mode:** mixed · **Actions:** 40 (20 writes, 20 reads)
-- **Surfaces:** MCP ✅ · CLI 22/40 actions
+- **Mode:** mixed · **Actions:** 41 (20 writes, 21 reads)
+- **Surfaces:** MCP ✅ · CLI 24/41 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 29 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -116,7 +116,8 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `list_auctions` | 0 | — | — | `orbiads programmatic auctions list` |
 | `list_buyers` | 0 | — | — | `orbiads programmatic buyers list` |
 | `list_deals` | 0 | — | — | `orbiads programmatic deals list` |
-| `list_proposal_line_items` | 0 | — | — | MCP-only |
+| `list_proposal_line_items` | 0 | — | — | `orbiads programmatic proposal-line-items list` |
+| `list_proposals` | 0 | — | — | `orbiads programmatic proposals list` |
 | `release_proposal_line_items` | 0 | — | — | `orbiads programmatic proposal-line-items release` |
 | `request_buyer_review` | 0 | — | — | `orbiads programmatic proposals request-buyer-review` |
 | `reserve_proposal_line_items` | 0 | — | — | `orbiads programmatic proposal-line-items reserve` |
