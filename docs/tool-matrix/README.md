@@ -26,7 +26,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `billing` | 68.5 | 2 | 📖 read | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:694` |
-| `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
+| `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:545` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1126` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
