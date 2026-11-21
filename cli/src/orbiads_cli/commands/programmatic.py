@@ -8,6 +8,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
+from orbiads_cli.guarded import run_guarded_post
 from orbiads_cli.output import OutputContext, confirm, render, render_detail
 
 app = typer.Typer(
@@ -355,15 +356,23 @@ def proposals_discard_drafts(
     ids: list[str] = typer.Argument(..., help="Proposal ID(s) (1-50)"),
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
-    """Discard local edits: revert to the latest Marketplace terms."""
-    body = _proposal_body(
-        ctx,
-        ids,
-        yes,
-        f"Discard the local edits of {len(ids)} proposal(s)? They cannot be recovered.",
-    )
+    """Discard local edits: revert to the latest Marketplace terms (IRREVERSIBLE).
+
+    Always two-step (story 116-10b): the server previews the proposals, then ``--yes`` or
+    the prompt confirms and the single-use token executes.
+    """
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
     try:
-        data = get_client().post("/api/gam/proposals/discard-drafts", json=body)
+        client = get_client()
+        data = run_guarded_post(
+            lambda body: client.post("/api/gam/proposals/discard-drafts", json=body),
+            {"proposalIds": ids},
+            ctx=effective_ctx,
+            prompt=f"Discard the local edits of {len(ids)} proposal(s)? They cannot be recovered.",
+            confirm_fn=confirm,
+            two_step=True,
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)
@@ -456,17 +465,36 @@ def pli_reserve(
     yes: bool = typer.Option(False, "--yes", "-y"),
 ):
     """Reserve inventory for proposal line items."""
-    prompt = f"Reserve inventory for {len(ids)} proposal line item(s)?"
-    if allow_overbook:
-        prompt = (
-            f"Reserve inventory for {len(ids)} proposal line item(s) EVEN BEYOND availability "
-            "(overbook)?"
-        )
-    body = _pli_body(
-        ctx, ids, yes, prompt, {"allowOverbook": True} if allow_overbook else None
-    )
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
     try:
-        data = get_client().post("/api/gam/proposal-line-items/reserve", json=body)
+        client = get_client()
+        if allow_overbook:
+            # Story 116-10b: overbook is always two-step (preview -> token); --yes only
+            # skips the human prompt.
+            data = run_guarded_post(
+                lambda body: client.post("/api/gam/proposal-line-items/reserve", json=body),
+                {"pliIds": ids, "allowOverbook": True},
+                ctx=effective_ctx,
+                prompt=(
+                    f"Reserve inventory for {len(ids)} proposal line item(s) EVEN BEYOND "
+                    "availability (overbook)?"
+                ),
+                confirm_fn=confirm,
+                two_step=True,
+            )
+        else:
+            body = _pli_body(
+                ctx, ids, yes, f"Reserve inventory for {len(ids)} proposal line item(s)?"
+            )
+            data = run_guarded_post(
+                lambda b: client.post("/api/gam/proposal-line-items/reserve", json=b),
+                body,
+                ctx=effective_ctx,
+                prompt="",
+                confirm_fn=confirm,
+                two_step=False,
+            )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

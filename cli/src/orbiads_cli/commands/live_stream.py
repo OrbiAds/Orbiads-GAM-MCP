@@ -6,7 +6,8 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import render_detail
+from orbiads_cli.guarded import run_guarded_post
+from orbiads_cli.output import OutputContext, confirm, render_detail
 
 app = typer.Typer(help="Live stream ad breaks", no_args_is_help=True)
 
@@ -104,12 +105,22 @@ def delete_break(
     ctx: typer.Context,
     ad_break_id: str = typer.Argument(..., help="GAM ad break ID"),
     asset_key: str = typer.Option(..., "--asset-key", help="GAM Studio asset key"),
+    yes: bool = typer.Option(False, "--yes", "-y", help="Skip the confirmation prompt"),
 ) -> None:
-    """Delete an asset-key-scoped ad break."""
+    """Delete an asset-key-scoped ad break (IRREVERSIBLE, two-step preview -> token)."""
+    out: OutputContext = ctx.obj
+    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
     try:
-        data = get_client().delete(
-            f"/api/gam/live-stream/ad-breaks/{ad_break_id}",
-            params={"area": "asset_key", "asset_key": asset_key},
+        client = get_client()
+        data = run_guarded_post(
+            lambda body: client.post(
+                f"/api/gam/live-stream/ad-breaks/{ad_break_id}/delete", json=body
+            ),
+            {"assetKey": asset_key, "area": "asset_key"},
+            ctx=effective_ctx,
+            prompt=f"PERMANENTLY delete ad break {ad_break_id}? This cannot be undone.",
+            confirm_fn=confirm,
+            two_step=True,
         )
         render_detail(data, ctx.obj)
     except CliApiError as exc:

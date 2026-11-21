@@ -73,16 +73,18 @@ def test_reserve_defaults_to_no_overbook_flag():
     )
 
 
-def test_reserve_allow_overbook_is_sent_explicitly():
-    client = _mock_client()
+def test_reserve_allow_overbook_is_sent_explicitly_and_two_step():
+    """Story 116-10b: overbook is previewed (dryRun) then confirmed with the token."""
+    client = _mock_client({"dryRun": True, "confirmationToken": "t", "numChanges": 1})
 
     result = _run(client, "reserve", "10", "--allow-overbook", "--yes")
 
     assert result.exit_code == 0, result.output
-    client.post.assert_called_once_with(
-        "/api/gam/proposal-line-items/reserve",
-        json={"pliIds": ["10"], "allowOverbook": True},
-    )
+    bodies = [c.kwargs["json"] for c in client.post.call_args_list]
+    assert bodies == [
+        {"pliIds": ["10"], "allowOverbook": True, "dryRun": True},
+        {"pliIds": ["10"], "allowOverbook": True, "confirmationToken": "t"},
+    ]
 
 
 def test_get_reads_the_line_item():

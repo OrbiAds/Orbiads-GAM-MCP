@@ -69,6 +69,24 @@ def _summary(item: dict[str, Any]) -> str:
     return " ".join(parts)
 
 
+def _rejects_two_step_fields(err: CliApiError) -> bool:
+    """True when a 422 ``extra=forbid`` error names ``dryRun`` / ``confirmationToken``.
+
+    A backend that predates story 116-10 declares the route's body ``extra=forbid`` and
+    answers a dry-run with ``VALIDATION_ERROR`` + ``fields: [{field: dryRun, type:
+    extra_forbidden}]``; the generic "Request validation failed" hides the real cause.
+    """
+    if err.error_code != "VALIDATION_ERROR":
+        return False
+    fields = err.details.get("fields")
+    return any(
+        isinstance(f, dict)
+        and f.get("type") == "extra_forbidden"
+        and f.get("field") in ("dryRun", "confirmationToken")
+        for f in (fields if isinstance(fields, list) else [])
+    )
+
+
 def run_guarded_post(
     post: Callable[[dict[str, Any]], Any],
     payload: dict[str, Any],
@@ -94,7 +112,18 @@ def run_guarded_post(
             if err.error_code != "CONFIRMATION_REQUIRED":
                 raise
 
-    preview = post({**payload, "dryRun": True})
+    try:
+        preview = post({**payload, "dryRun": True})
+    except CliApiError as err:
+        if _rejects_two_step_fields(err):
+            raise CliApiError(
+                1,
+                "The OrbiAds server is older than this CLI: it does not know the "
+                "two-step confirmation fields (dryRun / confirmationToken), so nothing was "
+                "executed. Redeploy / upgrade the backend before using this command.",
+                "SERVER_OLDER_THAN_CLI",
+            ) from err
+        raise
     token = preview.get("confirmationToken") if isinstance(preview, dict) else None
     if not token:
         raise CliApiError(

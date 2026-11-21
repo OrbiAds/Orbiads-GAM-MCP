@@ -27,7 +27,6 @@ def _mock_client(ret=None):
     [
         ("resume", "/api/gam/proposals/resume"),
         ("unarchive", "/api/gam/proposals/unarchive"),
-        ("discard-drafts", "/api/gam/proposals/discard-drafts"),
         ("request-buyer-review", "/api/gam/proposals/request-buyer-review"),
         ("push-to-order", "/api/gam/proposals/push-to-order"),
     ],
@@ -39,6 +38,21 @@ def test_verb_posts_the_proposal_ids_to_its_route(verb, path):
 
     assert result.exit_code == 0, result.output
     client.post.assert_called_once_with(path, json={"proposalIds": ["10", "11"]})
+
+
+def test_discard_drafts_is_two_step_see_116_10b():
+    """discard-drafts is irreversible: it never posts the bare ids (story 116-10b)."""
+    client = MagicMock()
+    client.post.return_value = {"dryRun": True, "confirmationToken": "t", "numChanges": 1}
+    with patch("orbiads_cli.commands.programmatic.get_client", return_value=client):
+        result = runner.invoke(app, ["programmatic", "proposals", "discard-drafts", "10", "--yes"])
+
+    assert result.exit_code == 0, result.output
+    bodies = [c.kwargs["json"] for c in client.post.call_args_list]
+    assert bodies == [
+        {"proposalIds": ["10"], "dryRun": True},
+        {"proposalIds": ["10"], "confirmationToken": "t"},
+    ]
 
 
 def test_pause_sends_the_reason():

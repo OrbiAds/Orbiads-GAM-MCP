@@ -2,6 +2,11 @@
 # Each entry must include a `reason`. The migration-gate test reads this file.
 
 exemptions:
+  - path: DELETE /api/gam/live-stream/ad-breaks/{ad_break_id}
+    reason: >
+      Story 116-10b: a bodiless DELETE cannot carry the two-step confirmation, so the route
+      only answers 428 CONFIRMATION_REQUIRED (nothing deleted) to tell an old CLI to upgrade.
+      The CLI deletes through POST /api/gam/live-stream/ad-breaks/{ad_break_id}/delete.
   - path: POST /api/gam/inventory/understanding/jobs
     reason: >
       Story 71.1 backend-only dark async endpoint. CLI continues to use the

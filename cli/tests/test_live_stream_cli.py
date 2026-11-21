@@ -12,7 +12,14 @@ runner = CliRunner()
 def test_live_stream_cli_five_verbs(authenticated_config) -> None:
     client = MagicMock()
     client.get.return_value = {"data": {"adBreaks": []}, "error": None}
-    client.post.return_value = {"data": {"id": "ab-1"}, "error": None}
+
+    def _post(path, json=None, **_):
+        # Story 116-10b: the ad break delete is two-step (dryRun -> confirmationToken).
+        if json and json.get("dryRun"):
+            return {"dryRun": True, "confirmationToken": "tok", "preview": []}
+        return {"data": {"id": "ab-1"}, "error": None}
+
+    client.post.side_effect = _post
     client.patch.return_value = {"data": {"id": "ab-1"}, "error": None}
     client.delete.return_value = {"data": {"deleted": True}, "error": None}
 
@@ -50,6 +57,11 @@ def test_live_stream_cli_five_verbs(authenticated_config) -> None:
         ).exit_code == 0
 
     assert client.get.call_count == 2
-    client.post.assert_called_once()
+    paths = [c.args[0] for c in client.post.call_args_list]
+    assert paths == [
+        "/api/gam/live-stream/ad-breaks",
+        "/api/gam/live-stream/ad-breaks/ab-1/delete",
+        "/api/gam/live-stream/ad-breaks/ab-1/delete",
+    ]
     client.patch.assert_called_once()
-    client.delete.assert_called_once()
+    client.delete.assert_not_called()  # the bodiless DELETE is refused (428) by the server

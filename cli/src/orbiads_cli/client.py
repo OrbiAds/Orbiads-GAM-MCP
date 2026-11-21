@@ -342,6 +342,11 @@ class OrbiAdsClient:
             # Extract structured details from the error payload.
             if isinstance(err.get("details"), dict):
                 details = err["details"]
+            # FastAPI validation errors (422 VALIDATION_ERROR) list the offending fields
+            # at the top of the error object; keep them so callers can tell an
+            # ``extra_forbidden`` field (server older than this CLI) from a bad value.
+            if isinstance(err.get("fields"), list) and "fields" not in details:
+                details = {**details, "fields": err["fields"]}
 
             # Map INSUFFICIENT_CREDITS (HTTP 412) to exit code 6 with
             # balance/required details parsed from the message or payload.

@@ -32,7 +32,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
 | `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1092` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
-| `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1333` |
+| `deals` | 64 | 41 | ✍️ mixed/write | `deals.py:1196` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | `gam_features.py:121` |
@@ -40,7 +40,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | `inventory.py:683` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | `jobs.py:151` |
 | `line_items` | 68 | 18 | ✍️ mixed/write | `line_items.py:379` |
-| `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:95` |
+| `live_stream` | 98 | 13 | ✍️ mixed/write | `live_stream.py:98` |
 | `mcm` | — | 1 | 📖 read | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | `network.py:268` |
 | `orders` | 68 | 11 | ✍️ mixed/write | `orders.py:168` |
