@@ -27,10 +27,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | `campaign_ops.py:692` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | `advertisers.py:387` |
-| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1117` |
+| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | `creatives.py:1129` |
 | `creative_qa` | 68.6 | 7 | 📖 read | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | `creative_wrappers.py:346` |
-| `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1083` |
+| `creatives` | 68.7d | 31 | ✍️ mixed/write | `creatives.py:1095` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | `dai_skill.py:190` |
 | `deals` | 64 | 34 | ✍️ mixed/write | `deals.py:887` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | `formats.py:150` |
