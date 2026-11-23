@@ -31,6 +31,16 @@ from orbiads_cli.output import OutputContext, confirm, render_detail, success
 app = typer.Typer(help="Manage GAM line items (Epic 61.4)", no_args_is_help=True)
 
 
+def _with_type_column(items):
+    """The API returns ``lineItemType``; the table shows it as ``type`` (audit 117-2, avert. 5)."""
+    if not isinstance(items, list):
+        return items
+    return [
+        {**it, "type": it.get("type") or it.get("lineItemType")} if isinstance(it, dict) else it
+        for it in items
+    ]
+
+
 def _load_json_payload(path: str) -> dict:
     if not os.path.isfile(path):
         typer.echo(f"Error: file not found: {path}", err=True)
@@ -297,7 +307,7 @@ def list_by_order(
             items = data.get("lineItems", data.get("results", []))
         else:
             items = data if isinstance(data, list) else []
-        render(items, ["id", "name", "status", "type"], ctx.obj)
+        render(_with_type_column(items), ["id", "name", "status", "type"], ctx.obj)
     except CliApiError as e:
         handle_error(e)
 
@@ -344,7 +354,7 @@ def list_line_items(
     try:
         data = get_client().get("/api/gam/line-items", params=params)
         items = data.get("lineItems", []) if isinstance(data, dict) else data
-        render(items, ["id", "name", "status", "type"], ctx.obj)
+        render(_with_type_column(items), ["id", "name", "status", "type"], ctx.obj)
         if isinstance(data, dict) and data.get("hasMore") and ctx.obj.format != "json":
             typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
     except CliApiError as e:

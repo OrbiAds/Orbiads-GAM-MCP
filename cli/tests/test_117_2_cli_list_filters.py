@@ -129,6 +129,18 @@ def test_line_items_list_without_option_sends_only_the_limit():
     assert json.loads(result.stdout)[0]["id"] == "5"
 
 
+def test_line_items_list_shows_line_item_type_in_the_type_column():
+    """Audit 117-2 avert. 5: the API returns ``lineItemType``; the ``type`` column was empty."""
+    page = {**LI_PAGE, "lineItems": [{"id": "5", "name": "x", "status": "READY",
+                                       "lineItemType": "SPONSORSHIP"}]}
+    client = _client(page)
+
+    result = _run("line_items", client, "line-items", "list")
+
+    assert result.exit_code == 0, result.output
+    assert json.loads(result.stdout)[0]["type"] == "SPONSORSHIP"
+
+
 def test_line_items_list_maps_every_option_to_its_query_param():
     client = _client(LI_PAGE)
 
