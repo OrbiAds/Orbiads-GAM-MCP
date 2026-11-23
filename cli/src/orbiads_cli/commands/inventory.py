@@ -14,6 +14,8 @@ app = typer.Typer(help="Explore GAM inventory", no_args_is_help=True)
 
 _AD_UNIT_COLUMNS = ["id", "name", "sizes", "parentPath"]
 _PLACEMENT_COLUMNS = ["id", "name", "adUnitCount"]
+_AD_UNIT_TYPED_COLUMNS = ["id", "name", "adUnitCode", "parentId", "status", "sizes"]
+_PLACEMENT_TYPED_COLUMNS = ["id", "name", "status", "placementCode", "adUnitIds"]
 _KEY_COLUMNS = ["id", "name", "type", "valuesCount"]
 _VALUE_COLUMNS = ["id", "name"]
 _BP_TEMPLATE_COLUMNS = ["id", "name", "description", "icon"]
@@ -21,23 +23,120 @@ _BP_BUNDLE_COLUMNS = ["id", "name", "createdAt"]
 _BP_POSITION_COLUMNS = ["id", "name", "label", "usageCount"]
 
 
+def _typed_params(limit: int, **options: Optional[str]) -> dict:
+    """Query string of a typed listing: only the options that were passed."""
+    params: dict = {"limit": limit}
+    params.update({key: value for key, value in options.items() if value is not None})
+    return params
+
+
+def _echo_page_notes(data: object, out: OutputContext, client_side_note: str) -> None:
+    """Footer of a typed listing (stderr, table output only): client-side note + next page."""
+    if not isinstance(data, dict) or out.format == "json":
+        return
+    if data.get("clientSideFilters"):
+        typer.echo(client_side_note, err=True)
+    if data.get("hasMore"):
+        typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+
+
 @app.command("ad-units")
 def ad_units(
     ctx: typer.Context,
     search: Optional[str] = typer.Option(None, "--search", "-s", help="Search by name"),
+    parent_id: Optional[str] = typer.Option(
+        None, "--parent-id", help="Only the direct children of this ad unit"
+    ),
+    status: Optional[str] = typer.Option(
+        None,
+        "--status",
+        help="ACTIVE, INACTIVE or ARCHIVED (filtered listing: omitted = every status)",
+    ),
+    code: Optional[str] = typer.Option(None, "--code", help="Exact adUnitCode"),
+    name_contains: Optional[str] = typer.Option(
+        None, "--name-contains", help="Ad unit name substring"
+    ),
+    size: Optional[str] = typer.Option(
+        None,
+        "--size",
+        help="Keep units carrying this size, e.g. 300x250 (applied client-side to each page)",
+    ),
+    since: Optional[str] = typer.Option(
+        None,
+        "--since",
+        help="Modified on/after this ISO 8601 date or date-time (a date alone = 00:00 UTC)",
+    ),
+    order_by: Optional[str] = typer.Option(
+        None, "--order-by", help="Sort: '<field> [asc|desc]' (id, name, lastModifiedDateTime)"
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
     limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=500),
 ):
-    """List ad units."""
+    """List ad units (any status, with typed filters, sort and pagination).
+
+    With only --search/--limit the historical listing is used. Any of --parent-id, --status,
+    --code, --name-contains, --since, --order-by or --page-token switches to the filtered
+    listing (``GET /api/gam/ad-units``, Story 117-4); --size is then applied client-side.
+    """
     out: OutputContext = ctx.obj
+    typed = any(
+        v is not None
+        for v in (parent_id, status, code, name_contains, since, order_by, page_token)
+    )
+    if typed and search is not None:
+        typer.echo("Error: --search cannot be combined with the filter options.", err=True)
+        raise typer.Exit(code=2)
     try:
         client = get_client()
+        if typed:
+            data = client.get(
+                "/api/gam/ad-units",
+                params=_typed_params(
+                    limit,
+                    parent_id=parent_id,
+                    status=status,
+                    code=code,
+                    name_contains=name_contains,
+                    size=size,
+                    since=since,
+                    order_by=order_by,
+                    page_token=page_token,
+                ),
+            )
+            items = data.get("items", []) if isinstance(data, dict) else data
+            rows = []
+            for item in items:
+                sizes = item.get("adUnitSizes")
+                if isinstance(sizes, list):
+                    item = {
+                        **item,
+                        "sizes": ", ".join(
+                            f"{s.get('width', '?')}x{s.get('height', '?')}"
+                            for s in sizes
+                            if isinstance(s, dict)
+                        ),
+                    }
+                rows.append(item)
+            render(rows, _AD_UNIT_TYPED_COLUMNS, out)
+            _echo_page_notes(
+                data,
+                out,
+                "Note: --size is applied to each page after the read; a page may hold fewer "
+                "than --limit items.",
+            )
+            return
         params: dict[str, str | int] = {"limit": limit}
         if search is not None:
-            params["search"] = search
+            # B5 (repair): the route reads `q`, it ignores `search`.
+            params["q"] = search
+        if size is not None:
+            params["size"] = size
         data = client.get("/api/gam/ad-units", params=params)
-        # Response may be a list or a dict with an "adUnits" / "results" key
+        # Response may be a list or a dict; the route returns `data.items`.
         if isinstance(data, dict):
-            items = data.get("adUnits", data.get("results", []))
+            items = data.get("items", data.get("adUnits", data.get("results", [])))
         else:
             items = data if isinstance(data, list) else []
         # Sizes may be a list of objects — join them as strings for display
@@ -58,12 +157,65 @@ def ad_units(
 @app.command()
 def placements(
     ctx: typer.Context,
+    status: Optional[str] = typer.Option(None, "--status", help="ACTIVE, INACTIVE or ARCHIVED"),
+    name_contains: Optional[str] = typer.Option(
+        None, "--name-contains", help="Placement name substring"
+    ),
+    code: Optional[str] = typer.Option(None, "--code", help="Exact placementCode"),
+    ad_unit_id: Optional[str] = typer.Option(
+        None,
+        "--ad-unit-id",
+        help="Keep placements targeting this ad unit (applied client-side to each page)",
+    ),
+    since: Optional[str] = typer.Option(
+        None,
+        "--since",
+        help="Modified on/after this ISO 8601 date or date-time (a date alone = 00:00 UTC)",
+    ),
+    order_by: Optional[str] = typer.Option(
+        None, "--order-by", help="Sort: '<field> [asc|desc]' (id, name, lastModifiedDateTime)"
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
     limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=500),
 ):
-    """List placements."""
+    """List placements (any status, with typed filters, sort and pagination).
+
+    Without filter options the historical listing is used. Any of --status, --name-contains,
+    --code, --ad-unit-id, --since, --order-by or --page-token switches to the filtered listing
+    (``GET /api/gam/placements``, Story 117-4); --ad-unit-id is then applied client-side.
+    """
     out: OutputContext = ctx.obj
+    typed = any(
+        v is not None
+        for v in (status, name_contains, code, ad_unit_id, since, order_by, page_token)
+    )
     try:
         client = get_client()
+        if typed:
+            data = client.get(
+                "/api/gam/placements",
+                params=_typed_params(
+                    limit,
+                    status=status,
+                    name_contains=name_contains,
+                    code=code,
+                    ad_unit_id=ad_unit_id,
+                    since=since,
+                    order_by=order_by,
+                    page_token=page_token,
+                ),
+            )
+            items = data.get("items", []) if isinstance(data, dict) else data
+            render(items, _PLACEMENT_TYPED_COLUMNS, out)
+            _echo_page_notes(
+                data,
+                out,
+                "Note: --ad-unit-id is applied to each page after the read; a page may hold "
+                "fewer than --limit items.",
+            )
+            return
         params: dict[str, str | int] = {"limit": limit}
         data = client.get("/api/gam/placements", params=params)
         if isinstance(data, dict):

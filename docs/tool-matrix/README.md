@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **497 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **500 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -28,7 +28,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | 3 / 10 / 3 | `campaign_ops.py:694` |
-| `companies` | 111.3 | 17 | ✍️ mixed/write | 9 / 7 / 1 | `advertisers.py:545` |
+| `companies` | 111.3 | 19 | ✍️ mixed/write | 11 / 7 / 1 | `advertisers.py:591` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1247` |
 | `creative_qa` | 68.6 | 7 | 📖 read | 7 / 0 / 0 | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | 5 / 7 / 1 | `creative_wrappers.py:346` |
@@ -39,14 +39,14 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | 18 / 41 / 2 | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | 3 / 0 / 0 | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | ✍️ mixed/write | 2 / 2 / 0 | `jobs_async.py:268` |
-| `inventory` | 68.6 | 14 | ✍️ mixed/write | 10 / 3 / 1 | `inventory.py:683` |
+| `inventory` | 68.6 | 15 | ✍️ mixed/write | 11 / 3 / 1 | `inventory.py:713` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
 | `mcm` | — | 1 | 📖 read | 1 / 0 / 0 | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | 3 / 3 / 0 | `network.py:268` |
 | `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
-| `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:248` |
+| `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:276` |
 | `pql` | 68.2 | 3 | 📖 read | 3 / 0 / 0 | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | 2 / 3 / 1 | `prebid_skill.py:449` |
 | `preview` | 68.2 | 3 | 📖 read | 3 / 0 / 0 | `preview.py:754` |
@@ -197,7 +197,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Server-side implementation:** `advertisers.py` · **Actions:** 17 · **Mode:** mixed (read + write)
+**Server-side implementation:** `advertisers.py` · **Actions:** 19 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -220,6 +220,8 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `rich_media.get` | 0 | 📖 read | — |
 | `third_party.list` | 0 | 📖 read | — |
 | `third_party.get` | 0 | 📖 read | — |
+| `all.list` | 0 | 📖 read | — |
+| `all.get` | 0 | 📖 read | — |
 
 ### `creative_assets` — Epic 68.7d
 
@@ -533,7 +535,7 @@ _Async job dispatcher (parent>child pattern, Epic 82)._
 
 _Parent inventory tool for Story 68.6._
 
-**Server-side implementation:** `inventory.py` · **Actions:** 14 · **Mode:** mixed (read + write)
+**Server-side implementation:** `inventory.py` · **Actions:** 15 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 10 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -553,6 +555,7 @@ _Parent inventory tool for Story 68.6._
 | `get_catalog` | 0 | 📖 read | — |
 | `list_line_item_templates` | 0 | 📖 read | — |
 | `list_suggested_ad_units` | 0 | 📖 read | — |
+| `list_ad_units` | 0 | 📖 read | — |
 
 ### `jobs` — Epic 68.2
 

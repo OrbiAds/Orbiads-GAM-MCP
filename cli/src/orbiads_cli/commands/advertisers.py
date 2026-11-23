@@ -1,5 +1,7 @@
 """Manage GAM advertisers."""
 
+from typing import Optional
+
 import typer
 
 from orbiads_cli.client import CliApiError, get_client
@@ -231,6 +233,91 @@ def third_party_get(
     """Get one GAM ThirdPartyCompany."""
     try:
         data = get_client().get(f"/api/gam/companies/third-party/{company_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+# ── companies sub-noun (Story 117-4) ─────────────────────────────────────
+# Read-only view of EVERY Company.Type (HOUSE_*, AD_NETWORK, PARTNER, CHILD_PUBLISHER,
+# VIEWABILITY_PROVIDER included). Writes stay under `advertisers` / `agencies`.
+companies_app = typer.Typer(
+    help="List and read companies of any type (read-only, Story 117-4)", no_args_is_help=True
+)
+app.add_typer(companies_app, name="companies")
+
+_COMPANY_COLUMNS = ["id", "name", "type", "creditStatus"]
+
+
+@companies_app.command("list")
+def companies_list(
+    ctx: typer.Context,
+    type_: Optional[str] = typer.Option(
+        None,
+        "--type",
+        help="Company.Type: ADVERTISER, AGENCY, HOUSE_ADVERTISER, HOUSE_AGENCY, AD_NETWORK, "
+        "PARTNER, CHILD_PUBLISHER, VIEWABILITY_PROVIDER",
+    ),
+    name_contains: Optional[str] = typer.Option(
+        None, "--name-contains", help="Company name substring"
+    ),
+    credit_status: Optional[str] = typer.Option(
+        None,
+        "--credit-status",
+        help="ACTIVE, ON_HOLD, CREDIT_STOP, INACTIVE or BLOCKED (applied client-side to each "
+        "page; Company has no status filter)",
+    ),
+    since: Optional[str] = typer.Option(
+        None,
+        "--since",
+        help="Modified on/after this ISO 8601 date or date-time (a date alone = 00:00 UTC)",
+    ),
+    order_by: Optional[str] = typer.Option(
+        None, "--order-by", help="Sort: '<field> [asc|desc]' (id, name, lastModifiedDateTime)"
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=500),
+):
+    """List companies of any type (typed filters, sort, pagination)."""
+    out: OutputContext = ctx.obj
+    params: dict = {"limit": limit}
+    for key, value in (
+        ("type", type_),
+        ("name_contains", name_contains),
+        ("credit_status", credit_status),
+        ("since", since),
+        ("order_by", order_by),
+        ("page_token", page_token),
+    ):
+        if value is not None:
+            params[key] = value
+    try:
+        data = get_client().get("/api/gam/companies", params=params)
+        items = data.get("items", []) if isinstance(data, dict) else data
+        render(items, _COMPANY_COLUMNS, out)
+        if isinstance(data, dict) and out.format != "json":
+            if data.get("clientSideFilters"):
+                typer.echo(
+                    "Note: --credit-status is applied to each page after the read; a page may "
+                    "hold fewer than --limit items.",
+                    err=True,
+                )
+            if data.get("hasMore"):
+                typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@companies_app.command("get")
+def companies_get(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM Company ID (any type)"),
+):
+    """Get one company of any type (childPublisher / viewabilityProvider included)."""
+    try:
+        data = get_client().get(f"/api/gam/companies/{company_id}")
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

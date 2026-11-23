@@ -19,7 +19,15 @@ tools:
   server_info:               {area: server_info, rest: "NO-REST", cli: null, exempt: "Public MCP server metadata tool for transport health/catalogue info; not a GAM/REST/CLI operation."}
 
   # ── advertisers / agencies / contacts (10 + 1 parent: companies) ───
-  companies:                 {area: advertisers, rest: "NO-REST", cli: null, exempt: "Story 68.7a parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under area=advertisers/agencies/contacts keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.7a
+  companies:  # 68.7a
+    area: advertisers
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.7a parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under area=advertisers/agencies/contacts keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      # Story 117-4 — read-only area `all` (every Company.Type), added directly on the parent.
+      "all.list": {rest: "GET /api/gam/companies", cli: "advertisers companies list"}
+      "all.get": {rest: "GET /api/gam/companies/{company_id}", cli: "advertisers companies get"}
   list_advertisers:          {area: advertisers, rest: "GET /api/gam/advertisers", cli: "advertisers list"}
   create_advertiser:         {area: advertisers, rest: "POST /api/gam/advertisers", cli: "advertisers create"}
   find_or_create_advertiser: {area: advertisers, rest: "POST /api/gam/advertisers/find-or-create", cli: "advertisers find-or-create"}  # 61.7
@@ -216,7 +224,15 @@ tools:
   discover_native_formats:      {area: creatives, rest: "GET /api/gam/creative-templates", cli: "creative-templates list"}  # 78.4 capability parity: list plus native eligibility filter
 
   # ── inventory (10 + 1 parent) ────────────────────────────────────────────────
-  inventory:                   {area: inventory, rest: "NO-REST", cli: null, exempt: "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.6
+  inventory:  # 68.6
+    area: inventory
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.6 parent>child migration batch 3. Legacy inventory tools remain FULL through existing REST + CLI mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      # Story 117-4 — filtered listing (every status), added directly on the parent. The
+      # same REST route / CLI command also serves the legacy `list_ad_units` wrapper.
+      list_ad_units: {rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   get_ad_unit_tree:            {area: inventory, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   audit_inventory:             {area: inventory, rest: "POST /api/gam/inventory/audit", cli: "inventory audit"}  # 61.6
   create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory save-adunits"}  # 61.6 / 73.4
