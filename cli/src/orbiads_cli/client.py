@@ -127,17 +127,24 @@ class CliApiError(Exception):
 # Helpers
 # ---------------------------------------------------------------------------
 
+# Story 117-19: the backend message is the MCP one, "Insufficient credits (available: 0.2,
+# required: 0.5). Top up your balance." - credits are fractional (0.25 / 0.5 steps).
 _CREDITS_RE = re.compile(
-    r"[Bb]alance[:\s]+(\d+).*[Rr]equired[:\s]+(\d+)"
+    r"(?:[Bb]alance|[Aa]vailable)[:\s]+(\d+(?:\.\d+)?).*?[Rr]equired[:\s]+(\d+(?:\.\d+)?)"
 )
+
+
+def _credit_number(raw: str) -> int | float:
+    value = float(raw)
+    return int(value) if value.is_integer() else value
 
 
 def _parse_credits_message(message: str, details: dict[str, Any]) -> None:
     """Best-effort extraction of balance/required from an error message."""
     m = _CREDITS_RE.search(message)
     if m:
-        details["balance"] = int(m.group(1))
-        details["required"] = int(m.group(2))
+        details["balance"] = _credit_number(m.group(1))
+        details["required"] = _credit_number(m.group(2))
 
 
 # ---------------------------------------------------------------------------

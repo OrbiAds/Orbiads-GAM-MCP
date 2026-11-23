@@ -120,7 +120,7 @@ Multi-dimensional audit (delivery health, security baseline, inventory hygiene, 
 
 ### C. Reporting (analytics)
 
-REST Interactive Reports API (`POST /networks/{nc}/reports`). Build query → run → poll → fetch CSV. Free (reads).
+REST Interactive Reports API (`POST /networks/{nc}/reports`). Build query → run → poll → fetch CSV. Listing and reading results is free; each report run or CSV export costs 0.5 credit, identically on the MCP, the CLI and the REST API.
 
 ### D. Deal management (programmatic)
 

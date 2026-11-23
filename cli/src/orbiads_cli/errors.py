@@ -77,7 +77,8 @@ def _format_message(err: CliApiError) -> str:
         balance = details.get("balance", "?")
         required = details.get("required", "?")
         return (
-            f"Insufficient credits. Balance: {balance}, required: {required}"
+            f"Insufficient credits. Balance: {balance}, required: {required}. "
+            "Top up your balance (orbiads billing)."
         )
 
     # Generic fallback (exit code 1 and anything else).

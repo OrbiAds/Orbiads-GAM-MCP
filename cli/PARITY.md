@@ -283,7 +283,7 @@
 | `inventory` | EXEMPT | NO-REST | — | `list_ad_units`: GET /api/gam/ad-units / `inventory ad-units` |
 | `archive_inactive_ad_units` | FULL | POST /api/gam/ad-units/archive-inactive | `inventory archive-inactive` | — |
 | `audit_inventory` | FULL | POST /api/gam/inventory/audit | `inventory audit` | — |
-| `create_ad_units_batch` | FULL | POST /api/gam/ad-units/save-adunits | `inventory save-adunits` | — |
+| `create_ad_units_batch` | FULL | POST /api/gam/ad-units | `inventory create-ad-units` | — |
 | `find_inactive_ad_units` | FULL | GET /api/gam/ad-units/inactive | `inventory list-inactive` | — |
 | `generate_ads_json` | FULL | GET /api/gam/inventory/manifest/ads.json | `inventory ads-json` | — |
 | `generate_inventory_blueprint` | FULL | POST /api/gam/blueprint/generate | `inventory blueprint-generate` | — |

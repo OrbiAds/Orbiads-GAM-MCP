@@ -235,7 +235,7 @@ tools:
       list_ad_units: {rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   get_ad_unit_tree:            {area: inventory, rest: "GET /api/gam/ad-units", cli: "inventory ad-units"}
   audit_inventory:             {area: inventory, rest: "POST /api/gam/inventory/audit", cli: "inventory audit"}  # 61.6
-  create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units/save-adunits", cli: "inventory save-adunits"}  # 61.6 / 73.4
+  create_ad_units_batch:       {area: inventory, rest: "POST /api/gam/ad-units", cli: "inventory create-ad-units"}  # 61.6 / 73.4 ; 117-19: save-adunits only stores the selection (no GAM write)
   generate_ads_json:           {area: inventory, rest: "GET /api/gam/inventory/manifest/ads.json", cli: "inventory ads-json"}  # 61.6
   generate_inventory_blueprint: {area: inventory, rest: "POST /api/gam/blueprint/generate", cli: "inventory blueprint-generate"}  # 61.6
   push_inventory_blueprint:    {area: inventory, rest: "POST /api/gam/blueprint/push", cli: "inventory blueprint-push"}  # 61.6
