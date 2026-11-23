@@ -52,7 +52,7 @@ orbiads network info --json    # confirm the active tenant / network
 
 ## Safety Contract
 
-- **Reads are free; writes cost credits.** Call reads liberally for state discovery before any mutation.
+- **Most reads are free; writes and heavy reads cost credits** (e.g. a report run or export costs 0.5 credit). Call free reads liberally for state discovery before any mutation.
 - **preview → confirm → execute.** Every write runs once with `dry_run=true` (or no `confirmation_token`) to return a preview + token + cost, then again with the same payload + `confirmation_token`. Get explicit user consent between the two calls.
 - **Never bypass `billing_guard`** and never reuse a stale token — payload drift returns `IDEMPOTENCY_KEY_MISMATCH`; refresh the preview.
 - **Never invent identifiers.** Do not guess a `tenantId` / `networkCode` / advertiser / order id — resolve them from the session or a read first.

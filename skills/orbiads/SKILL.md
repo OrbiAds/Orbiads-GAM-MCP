@@ -18,7 +18,7 @@ dispatch operations across the entire GAM surface: campaigns, inventory, creativ
 audits, deals, billing.
 
 Every write costs credits. Every write requires explicit user confirmation through a
-preview→token→execute pattern. **Reads are free** (cost = 0) — use them liberally to ground
+preview→token→execute pattern. **Reads are free** (cost = 0), except report runs and exports (0.5 credit) — use them liberally to ground
 every recommendation in real network state.
 
 ---
@@ -29,7 +29,7 @@ every recommendation in real network state.
 | --- | --- | --- | --- |
 | "Deploy a campaign" / "launch a campaign" | **campaign** | `campaign`, `orders`, `line_items`, `creatives`, `creative_qa` | Cycle: read → intent → dry_run (signed `ExecutionPlan`) → confirm → deploy. |
 | "Audit my account" / "what's wrong with my GAM setup" | **audit** | `audit_skill`, `inventory`, `reporting`, `creative_qa`, `billing` | Multi-dimensional. Parallel subagents via Task tool — see `agents/` directory. |
-| "Show me delivery" / "fetch a report" | **report** | `reporting` | REST Interactive Reports API. Free. Build query → run → poll → CSV. |
+| "Show me delivery" / "fetch a report" | **report** | `reporting` | REST Interactive Reports API. 0.5 credit per run/export. Build query → run → poll → CSV. |
 | "Create a deal" / "programmatic activation" | **deal** | `deals`, `companies` | ADCP: `adcp_create` with `dry_run=true` → `ExecutionPlan` → `confirmation_token` → execute. |
 | "Upload a creative" / "QA my creatives" | **creative** | `creatives`, `creative_qa`, `creative_assets`, `creative_wrapper_skill` | Compliance scan, SSL validation, preview URLs. |
 | "Show me my ad units" / "manage inventory" | **inventory** | `inventory`, `placements`, `targeting`, `blueprint` | Audit + blueprint pattern. Some writes 0.5 credits. |
@@ -115,9 +115,9 @@ blueprint push, gam_admin batch_create), follow the **preview→confirm→execut
 - ❌ Never call `action="deploy"` (or any write) without a `confirmation_token` ≤ 5 min old.
 - ❌ Never call `deals(action="adcp_create")` without a dry-run preview and matching `confirmation_token`.
 - ❌ Never retry a failed write more than 2 times in a row. GAM SOAP is not idempotent — surface the error.
-- ❌ Never bypass `billing_guard`. Reads are free, writes cost credits, period.
+- ❌ Never bypass `billing_guard`. Reads are free (except report runs and exports, 0.5 credit); writes cost credits.
 - ❌ Never invent a `tenantId` / `networkCode`. Always derive from `auth` tools.
-- ❌ Never propose actions on the test network 45515589 for reporting (REST Reports API doesn't work there).
+- ❌ Never propose reporting actions on your test network (REST Reports API doesn't work there).
 - ❌ These rules apply identically on the MCP and CLI surfaces — a CLI write (`orbiads ... create/deploy`) needs the same preview + explicit user confirmation as an MCP write.
 - ✅ Reads are always OK without confirmation. Use them to ground recommendations.
 
@@ -199,11 +199,6 @@ These live under `./references/` and load only when needed. Do NOT load all at s
 - `references/cli-workflow.md` — CLI bootstrap sequence, fallback naming table, per-phase
   command sequences, deploy polling loop, abort conditions, tenant-settings interplay,
   CLI coverage gaps and known gotchas.
-- `references/campaign-workflow.md` — 7-step deploy state machine in detail (placeholder)
-- `references/billing-model.md` — cost map per action, trial / starter / pack distinction (placeholder)
-- `references/error-codes.md` — `CONFIRMATION_REQUIRED`, `IDEMPOTENCY_KEY_MISMATCH`, `SERVICE_UNAVAILABLE`, etc. (placeholder)
-- `references/gam-api-boundaries.md` — what GAM v202605 does NOT support (RateCardService removed, REST Reports test-network limitation, CreativeAssetService gone) (placeholder)
-- `references/taxonomy.md` — line item types, creative formats, targeting key conventions (placeholder)
 
 ---
 

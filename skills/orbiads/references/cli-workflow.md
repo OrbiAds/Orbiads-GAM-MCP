@@ -78,44 +78,45 @@ orbiads inventory ad-units --json
 orbiads inventory ad-units --search "<name>" --json
 orbiads inventory placements --json
 orbiads inventory keys --json
-orbiads inventory keys --key "<name>" --json
+orbiads inventory keys --key-id <keyId> --values --json   # values of one targeting key
 ```
 
-### Phase 2 — Forecast (free)
+### Phase 2 — Forecast
+Forecasts take a JSON request file (see the `reporting` skill for the payload shape):
 ```bash
-orbiads reporting run --type forecast \
-  --ad-units <id1>,<id2> \
-  --start <YYYY-MM-DD> --end <YYYY-MM-DD> \
-  --json
+orbiads reporting forecast standalone --file forecast-request.json --json   # standalone inventory forecast
+orbiads reporting forecast-availability <lineItemId> --json                 # availability of an existing line item
 ```
 
 ### Phase 3 — Advertiser & order
 ```bash
 # Search before creating (avoid duplicates)
-orbiads advertisers list --search "<brand>" --json
-orbiads advertisers create --name "<brand>" --json        # 1 credit
-orbiads orders list --advertiser <id> --json
-orbiads orders create --advertiser <id> --name "<name>" --json  # 1 credit
+orbiads advertisers find --name "<brand>" --json          # exact-name match, read-only
+orbiads advertisers create --name "<brand>" --json        # 0.5 credit
+orbiads orders list --advertiser-id <id> --json
+orbiads orders create --advertiser-id <id> --name "<name>" --json  # 0.5 credit
 ```
 
 ### Phase 4 — Line items
 Line items with complex targeting are created via MCP or GAM UI. CLI supports read:
 ```bash
-orbiads orders get --id <orderId> --json
+orbiads orders get <orderId> --json
+orbiads line-items list --order-id <orderId> --json
 ```
 
 ### Phase 5 — Creatives
 ```bash
-orbiads creatives upload --file <path> --name "<name>" --advertiser <id> --json  # 5 credits
-orbiads creatives get --id <id> --json                   # verify creation
-orbiads creatives list --search "<name>" --json
+orbiads creatives upload <path> --name "<name>" --advertiser-id <id> \
+  --type image --size 300x250 --destination-url "<url>" --json          # 0.5 credit
+orbiads creatives get <id> --json                        # verify creation
+orbiads creatives list --name-contains "<name>" --json
 ```
 
 ### Phase 6 — QA
 ```bash
 orbiads campaigns get <id> --json                        # inspect full config
-orbiads creatives get --id <id> --json                   # check compliance + SSL fields
-orbiads campaigns deploy <id> --dry-run --json           # simulate (free)
+orbiads creatives get <id> --json                        # check compliance + SSL fields
+orbiads campaigns deploy <id> --dry-run --json           # simulate (preview, free)
 ```
 
 ### Phase 7 — Deploy & poll
@@ -136,7 +137,9 @@ done
 
 Post-deploy monitoring:
 ```bash
-orbiads reporting run --type delivery --campaign <id> --json
+orbiads reporting delivery-report <jobId> --json
+orbiads reporting run --dimensions DATE,LINE_ITEM_NAME --metrics IMPRESSIONS,CLICKS \
+  --start <YYYY-MM-DD> --end <YYYY-MM-DD> --json    # 0.5 credit; optional --comparison to compare periods
 ```
 
 ---
@@ -196,7 +199,7 @@ showing which actions are mapped and which are `MCP-only`.
   only if not found — prevents duplicates.
 - Line item type defaults: if the brief does not specify, use the tenant's configured
   `deliveryDefaults.lineItemType`. Falling back to `STANDARD` without checking is wrong.
-- `CreativeAssetService` removed in GAM v202502 — image bytes are inlined in `createCreatives`.
+- The legacy `CreativeAssetService` no longer exists in the current GAM API — image bytes are inlined in `createCreatives`.
   Relevant for CLI creative upload: the `orbiads creatives upload` command handles this
   transparently, but raw API calls must not use the removed service.
 - A line item stuck in `NEEDS_CREATIVES` means a creative size is missing or the assignment
@@ -204,7 +207,7 @@ showing which actions are mapped and which are `MCP-only`.
 - GAM rule: `advertiserId` on an Order must point to a Company with `type=ADVERTISER`. Using
   an agency ID causes an API error.
 - GAM rule: Order names must be unique across the **entire network** (not just per advertiser).
-- Test network 45515589: available for writes, but the REST Reporting API does not work there.
+- Test networks: available for writes, but the REST Reporting API does not work there.
   Use `orbiads reporting run` only against production networks.
 - Dry-run (`--dry-run`) is free and must be shown to the user before executing a real deploy.
   The `--yes` flag bypasses the interactive prompt but still requires explicit user confirmation

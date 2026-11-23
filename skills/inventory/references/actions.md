@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Inventory & Targeting Management: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-inventory`](../SKILL.md) skill. 87 actions across 6 parent tool(s); CLI coverage 37/87 actions.
+Full per-tool action reference for the [`orbiads-inventory`](../SKILL.md) skill. 87 actions across 6 parent tool(s); CLI coverage 38/87 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -72,7 +72,7 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 _Parent inventory tool for Story 68.6._
 
 - **Mode:** mixed · **Actions:** 15 (4 writes, 11 reads)
-- **Surfaces:** MCP ✅ · CLI 10/15 actions
+- **Surfaces:** MCP ✅ · CLI 11/15 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 10 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -91,7 +91,7 @@ _Parent inventory tool for Story 68.6._
 | `get_ad_units_by_ids` | 0 | — | — | `orbiads inventory ad-units-by-ids` |
 | `get_catalog` | 0 | — | — | MCP-only |
 | `list_ad_unit_sizes` | 0 | — | — | `orbiads inventory sizes` |
-| `list_ad_units` | 0 | — | — | MCP-only |
+| `list_ad_units` | 0 | — | — | `orbiads inventory ad-units` |
 | `list_line_item_templates` | 0 | — | — | MCP-only |
 | `list_suggested_ad_units` | 0 | — | — | MCP-only |
 

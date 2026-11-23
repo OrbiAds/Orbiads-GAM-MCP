@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Programmatic Deals, Products & Companies: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 92 actions across 6 parent tool(s); CLI coverage 45/92 actions.
+Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 92 actions across 6 parent tool(s); CLI coverage 47/92 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -20,7 +20,7 @@ Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 92 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
 - **Mode:** mixed · **Actions:** 19 (8 writes, 11 reads)
-- **Surfaces:** MCP ✅ · CLI 12/19 actions
+- **Surfaces:** MCP ✅ · CLI 14/19 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -39,8 +39,8 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `advertisers.get` | 0 | — | — | `orbiads advertisers get` |
 | `advertisers.list` | 0 | — | — | `orbiads advertisers list` |
 | `agencies.list` | 0 | — | — | `orbiads advertisers agencies list` |
-| `all.get` | 0 | — | — | MCP-only |
-| `all.list` | 0 | — | — | MCP-only |
+| `all.get` | 0 | — | — | `orbiads advertisers companies get` |
+| `all.list` | 0 | — | — | `orbiads advertisers companies list` |
 | `contacts.list` | 0 | — | — | `orbiads contacts list` |
 | `rich_media.get` | 0 | — | — | MCP-only |
 | `rich_media.list` | 0 | — | — | MCP-only |

@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Campaign Operations & Creative QA: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 154 actions across 12 parent tool(s); CLI coverage 111/154 actions.
+Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 154 actions across 12 parent tool(s); CLI coverage 99/154 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -34,28 +34,28 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
 - **Mode:** mixed · **Actions:** 16 (13 writes, 3 reads)
-- **Surfaces:** MCP ✅ · CLI 11/16 actions
+- **Surfaces:** MCP ✅ · CLI 3/16 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 13 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `archive` | 0 | yes | — | `orbiads campaigns archive` |
+| `archive` | 0 | yes | — | MCP-only |
 | `archive_eligible` | 0 | yes | — | MCP-only |
 | `create_display` | 0 | yes | — | MCP-only |
 | `create_draft` | 0 | yes | — | MCP-only |
-| `create_licas` | 0 | yes | — | `orbiads campaigns attach-creatives` |
-| `create_line_items_batch` | 1 | yes | required | `orbiads campaigns add-line-items` |
+| `create_licas` | 0 | yes | — | MCP-only |
+| `create_line_items_batch` | 1 | yes | required | MCP-only |
 | `create_native_style` | 0.5 | yes | required | MCP-only |
 | `deploy` | 0 | yes | — | `orbiads campaigns deploy` |
-| `deploy_media` | 1 | yes | required | `orbiads campaigns deploy-media` |
+| `deploy_media` | 1 | yes | required | MCP-only |
 | `ensure_template` | 0 | yes | — | MCP-only |
-| `pause` | 0 | yes | — | `orbiads campaigns pause` |
-| `rollback` | 0 | yes | — | `orbiads campaigns recover` |
-| `update` | 0 | yes | — | `orbiads campaigns update` |
+| `pause` | 0 | yes | — | MCP-only |
+| `rollback` | 0 | yes | — | MCP-only |
+| `update` | 0 | yes | — | MCP-only |
 | `dry_run` | 0 | — | — | `orbiads campaigns dry-run` |
-| `plan_deployment` | 0 | — | — | `orbiads campaigns plan-deployment` |
+| `plan_deployment` | 0 | — | — | MCP-only |
 | `read` | 0 | — | — | `orbiads campaigns read` |
 
 ### `orbiads:creative_assets` (Epic 68.7d)
@@ -142,7 +142,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
 - **Mode:** mixed · **Actions:** 34 (15 writes, 19 reads)
-- **Surfaces:** MCP ✅ · CLI 31/34 actions
+- **Surfaces:** MCP ✅ · CLI 29/34 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -151,8 +151,8 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 |---|---|---|---|---|
 | `archive_creative` | 0 | yes | — | `orbiads creatives archive` |
 | `archive_native_style` | 0 | yes | — | `orbiads native-styles archive` |
-| `associate_creative` | 0 | yes | — | `orbiads campaigns attach-creatives` |
-| `bulk_associate_creatives` | 0 | yes | — | `orbiads campaigns attach-creatives` |
+| `associate_creative` | 0 | yes | — | MCP-only |
+| `bulk_associate_creatives` | 0 | yes | — | MCP-only |
 | `create_creative_set` | 0 | yes | — | MCP-only |
 | `deactivate_lica` | 0 | yes | — | `orbiads licas deactivate` |
 | `delete_lica_permanently` | 0 | yes | — | `orbiads licas delete-permanent` |
@@ -240,7 +240,7 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 _Parent line_items tool for non-lifecycle Line Item operations._
 
 - **Mode:** mixed · **Actions:** 19 (13 writes, 6 reads)
-- **Surfaces:** MCP ✅ · CLI 17/19 actions
+- **Surfaces:** MCP ✅ · CLI 15/19 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 16 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -250,9 +250,9 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `activate_batch` | 0 | yes | — | `orbiads line-items activate` |
 | `approve` | 0 | yes | — | `orbiads line-items approve` |
 | `archive` | 0 | yes | — | `orbiads line-items archive` |
-| `create` | 0 | yes | — | `orbiads campaigns add-line-items` |
+| `create` | 0 | yes | — | MCP-only |
 | `create_adexchange` | 0 | yes | — | `orbiads line-items create-adexchange` |
-| `create_batch` | 0 | yes | — | `orbiads campaigns add-line-items` |
+| `create_batch` | 0 | yes | — | MCP-only |
 | `create_open_bidding` | 0 | yes | — | `orbiads line-items create-open-bidding` |
 | `create_preferred_deal` | 0 | yes | — | `orbiads line-items create-preferred-deal` |
 | `duplicate` | 0 | yes | — | `orbiads line-items duplicate` |

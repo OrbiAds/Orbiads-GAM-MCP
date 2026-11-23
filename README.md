@@ -9,8 +9,8 @@
 </p>
 
 [![MCP Protocol](https://img.shields.io/badge/MCP-2025--03--26-blue)](https://modelcontextprotocol.io)
-[![GAM API](https://img.shields.io/badge/GAM_API-v202605-orange)](https://developers.google.com/ad-manager/api/rel_notes)
-[![Version](https://img.shields.io/badge/version-1.9.0-green)](./version.json)
+[![GAM API](https://img.shields.io/badge/GAM_API-v202608-orange)](https://developers.google.com/ad-manager/api/rel_notes)
+[![Version](https://img.shields.io/badge/version-1.11.0-green)](./version.json)
 [![PyPI](https://img.shields.io/pypi/v/orbiads-cli?label=PyPI)](https://pypi.org/project/orbiads-cli/)
 [![Python](https://img.shields.io/pypi/pyversions/orbiads-cli)](./docs/install/cli.md)
 [![License](https://img.shields.io/github/license/OrbiAds/Orbiads-GAM-MCP)](./LICENSE)
@@ -23,7 +23,7 @@
 [![MCP.so](https://img.shields.io/badge/MCP.so-indexed-111827)](https://mcp.so/server/OrbiAds/Orbiads-GAM-MCP)
 [![Smithery](https://img.shields.io/badge/Smithery-submission_ready-f59e0b)](https://smithery.ai/new)
 
-**OrbiAds is a hosted Google Ad Manager MCP server** that gives AI assistants — Claude, ChatGPT, Gemini, Cursor, and OpenAI Codex — direct, natural-language access to Google Ad Manager. It covers **270+ operations** across campaigns, orders, line items, creatives, inventory, targeting, and reporting, on the **current GAM API (v202605)**, with OAuth and confirm-before-write guardrails.
+**OrbiAds is a hosted Google Ad Manager MCP server** that gives AI assistants — Claude, ChatGPT, Gemini, Cursor, and OpenAI Codex — direct, natural-language access to Google Ad Manager. It covers **496 operations** across campaigns, orders, line items, creatives, inventory, targeting, and reporting, on the **current GAM API (v202608)**, with OAuth and confirm-before-write guardrails.
 
 [**→ Get started free at orbiads.com**](https://orbiads.com) · [**★ Star this repo**](https://github.com/OrbiAds/Orbiads-GAM-MCP)
 
@@ -64,8 +64,8 @@ Want a deeper setup path? Start with the [CLI guide](./docs/install/cli.md) or t
 | Hosted MCP | Remote Streamable HTTP endpoint with OAuth | `https://orbiads.com/mcp` |
 | Glama | Indexed MCP registry page | [glama.ai](https://glama.ai/mcp/servers/OrbiAds/Orbiads-GAM-MCP) |
 | MCP.so | Indexed MCP directory page | [mcp.so](https://mcp.so/server/OrbiAds/Orbiads-GAM-MCP) |
-| Official MCP registry | `server.json` manifest ready for registry publication | [server.json](./server.json) |
-| Smithery | Submission target prepared for hosted/external MCP listing | [smithery.ai/new](https://smithery.ai/new) |
+| Official MCP registry | Published as `io.github.OrbiAds/gam` | [server.json](./server.json) |
+| Smithery | Listing target for hosted MCP servers | [smithery.ai/new](https://smithery.ai/new) |
 | Safety model | Plan → confirm → execute on write actions | [Safety docs](./docs/safety/README.md) |
 
 ---
@@ -119,11 +119,11 @@ orbiads network info
 | `orbiads network info` | Show current GAM network details |
 | `orbiads network list` | List accessible GAM networks |
 | `orbiads orders list` | List orders in the network |
-| `orbiads line-items list --order ID` | List line items for an order |
+| `orbiads line-items list --order-id ID` | List line items for an order |
 | `orbiads creatives list` | List creatives |
 | `orbiads inventory ad-units` | List ad units |
-| `orbiads forecast check --ad-unit ID` | Check inventory availability |
-| `orbiads report run --template ID` | Run a delivery report |
+| `orbiads reporting forecast standalone --file FILE` | Run a standalone inventory forecast |
+| `orbiads reporting templates run ID` | Run a report from a template |
 
 > Full command reference: [orbiads.com/docs/cli/commands](https://orbiads.com/docs/cli/commands)
 
@@ -175,7 +175,7 @@ This copies our 6 consolidated skill files to your `~/.claude/skills/` directory
 OrbiAds is a hosted **MCP server** that connects your AI assistant directly to Google Ad Manager (GAM). Instead of clicking through the GAM interface or writing API scripts, you describe what you want in plain language — OrbiAds handles the API calls, guardrails, and audit trail.
 
 ```text
-You: "Check inventory availability on the homepage banner for a 300x250 in France next week"
+You: "Run a standalone inventory forecast on the homepage banner for a 300x250 in France next week"
 OrbiAds: [runs forecast] → Available: 1.2M impressions. Pressure: low. Safe to traffic.
 
 You: "Create the line item for Renault, €15 CPM, Monday to Friday"
@@ -283,22 +283,22 @@ Click on any domain below to see which tools and capabilities are included:
 
 *   `audit_skill` — Run automated security, hygiene, and wrapper coverage audits.
 *   `billing` — Fetch credit balances and transaction histories.
-*   `audit` — Search network audit logs.
+*   `audit` — Search network audit logs and read GAM change history (`list_change_events` / `get_change_event`: GAM's own change events on the active network, read-only).
 </details>
 
-> See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the complete parity matrix detailing exact costs, writes, and parameters for all 270+ actions.
+> See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md) for the complete parity matrix detailing exact costs, writes, and parameters for all 496 actions.
 
 ---
 
 ## Safety by Design
 
-Every write action requires an explicit `ExecutionPlan` preview and confirmation token. No campaign goes live by accident.
+Writes on campaigns, orders, line items, deals, products and guarded `companies` operations require a preview (dry-run) and a single-use confirmation token. No campaign goes live by accident.
 
 - **Plan-before-mutate** on campaign, deal, and product writes — preview the signed `ExecutionPlan` before you push
 - **Dry-run mode** on all deployment actions — `confirmationToken` TTL 300 seconds
 - **Forecast gate** before inventory commits — availability verified upfront
 - **Audit trail** on every action — who did what, when, with what result
-- **Credit guard** — read operations are always free, writes deduct credits transparently
+- **Credit guard** — reads are free (except report runs and exports, 0.5 credit), writes deduct credits transparently
 
 ---
 
@@ -334,7 +334,7 @@ Then start with:
 | Endpoint | `https://orbiads.com/mcp` |
 | Transport | `streamable-http` (default) · `sse` |
 | Auth | OAuth 2.0 — Google account via OrbiAds |
-| GAM API version | `v202605` |
+| GAM API version | `v202608` |
 | MCP Protocol | `2025-03-26` |
 
 ---
@@ -369,7 +369,7 @@ CLAUDE.md         ← Claude Code project guidance
 | Pack S | €29 one-time | +50 credits |
 | Pack L | €45 one-time | +100 credits |
 
-Reads are always free. Credits are only consumed on write and deploy operations.
+Reads are free, except report runs and exports (0.5 credit). Other credits are consumed on write and deploy operations.
 
 [**Start free →**](https://orbiads.com)
 

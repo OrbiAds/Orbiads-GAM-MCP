@@ -1,6 +1,6 @@
 ---
 name: orbiads-audit
-description: Use for GAM account audits — delivery, inventory, security-baseline, and billing checks plus credit-transaction and log history — through OrbiAds MCP actions or their orbiads CLI equivalents. Examples: "audit my account security", "check my credit balance", "run an inventory audit". Audits and reads are free.
+description: Use for GAM account audits — delivery, inventory, security-baseline, and billing checks plus credit-transaction history, OrbiAds log history and GAM change history (`list_change_events` / `get_change_event`, read-only, active network) — through OrbiAds MCP actions or their orbiads CLI equivalents. Examples: "audit my account security", "check my credit balance", "run an inventory audit". Log and history reads are free; audit scans cost credits (0.5 to 5).
 version: 1.0.0
 author: OrbiAds
 license: MIT
@@ -50,7 +50,7 @@ orbiads network info --json    # confirm the active tenant / network
 
 ## Safety Contract
 
-- **Reads are free.** Every action in this skill is read-only (0 credits, no GAM mutation). Call them liberally for state discovery.
+- **No GAM mutation, but not always free.** Every action in this skill is read-only. Log, history and billing reads cost 0 credits; audit scans are billed (e.g. `hygiene_check` 0.5, `standards_baseline` 4 to 5). Check the cost before running a scan.
 - **Never invent identifiers.** Do not guess a `tenantId` or `networkCode` — resolve them from the authenticated session first.
 - **Never leak raw SOAP/REST traces** to the user — surface the structured `error` object instead.
 - These rules apply identically on the MCP and CLI surfaces — a CLI write (`orbiads ... create/deploy`) needs the same preview + explicit user confirmation as an MCP write.
