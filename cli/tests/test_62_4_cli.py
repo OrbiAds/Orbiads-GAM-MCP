@@ -60,14 +60,19 @@ def test_advertisers_update(authenticated_config, tmp_path):
 def test_advertisers_rich_media_list(authenticated_config):
     client = _mock_client(get={"richMediaCompanies": [{"id": "1", "displayName": "Celtra"}]})
     with patch("orbiads_cli.commands.advertisers.get_client", return_value=client):
-        result = runner.invoke(
-            app, ["advertisers", "rich-media-list", "--verified", "--page-size", "25"]
-        )
+        result = runner.invoke(app, ["advertisers", "rich-media-list", "--page-size", "25"])
     assert result.exit_code == 0
-    client.get.assert_called_once_with(
-        "/api/gam/companies/rich-media",
-        params={"verifiedOnly": True, "pageSize": 25},
-    )
+    client.get.assert_called_once_with("/api/gam/companies/rich-media", params={"pageSize": 25})
+
+
+def test_advertisers_rich_media_list_verified_fails_clearly(authenticated_config):
+    """Story 117-18: GAM exposes no verification status (discovery rev 20261118)."""
+    client = _mock_client(get={"richMediaCompanies": []})
+    with patch("orbiads_cli.commands.advertisers.get_client", return_value=client):
+        result = runner.invoke(app, ["advertisers", "rich-media-list", "--verified"])
+    assert result.exit_code == 2
+    assert "not supported" in result.output
+    client.get.assert_not_called()
 
 
 def test_advertisers_rich_media_get(authenticated_config):

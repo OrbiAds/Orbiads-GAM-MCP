@@ -169,17 +169,33 @@ def activate(
 @app.command("rich-media-list")
 def rich_media_list(
     ctx: typer.Context,
-    verified_only: bool = typer.Option(False, "--verified", help="Only verified partners"),
+    verified_only: bool = typer.Option(
+        False,
+        "--verified",
+        hidden=True,
+        help="Unsupported: GAM exposes no verification status for these partners",
+    ),
     page_size: int = typer.Option(50, "--page-size", min=1, max=200, help="Maximum partners to fetch"),
 ):
     """List GAM RichMediaAdsCompany partners."""
-    try:
-        data = get_client().get(
-            "/api/gam/companies/rich-media",
-            params={"verifiedOnly": verified_only, "pageSize": page_size},
+    # Story 117-18: GAM's RichMediaAdsCompany has no verification status (discovery rev
+    # 20261118: displayName, policyUrl, gdprStatus, companyGvlId), so --verified never filtered
+    # anything. It now fails clearly instead of being silently ignored.
+    if verified_only:
+        typer.echo(
+            "Error: --verified is not supported: GAM exposes no verification status for "
+            "rich media ads companies.",
+            err=True,
         )
+        raise typer.Exit(code=2)
+    try:
+        data = get_client().get("/api/gam/companies/rich-media", params={"pageSize": page_size})
         items = data.get("richMediaCompanies", data) if isinstance(data, dict) else data
-        render(items or [], ["id", "displayName", "richMediaPlatform", "verified"], ctx.obj)
+        render(
+            items or [],
+            ["id", "displayName", "gdprStatus", "companyGvlId", "policyUrl"],
+            ctx.obj,
+        )
     except CliApiError as e:
         handle_error(e)
 
