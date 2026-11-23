@@ -23,7 +23,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 |---|---|---|---|---|---|
 | `ad_review_center` | — | 3 | ✍️ mixed/write | 1 / 2 / 0 | `ad_review.py:124` |
 | `audiences` | 68.2 | 8 | ✍️ mixed/write | 3 / 5 / 0 | `audiences.py:342` |
-| `audit` | 117 | 3 | 📖 read | 3 / 0 / 0 | `audit.py:137` |
+| `audit` | 117 | 3 | 📖 read | 3 / 0 / 0 | `audit.py:141` |
 | `audit_skill` | 65.0a | 8 | 📖 read | 8 / 0 / 0 | `audit_skill.py:269` |
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |

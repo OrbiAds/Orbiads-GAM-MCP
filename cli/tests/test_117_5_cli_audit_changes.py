@@ -158,7 +158,7 @@ def test_legacy_audit_log_command_is_unchanged():
     client.get.assert_called_once_with("/api/settings/audit/", params={"limit": 5})
 
 
-# Story 117-17 - optional lower bound of the fallback lookup window of `get`.
+# Story 117-17b - optional window (`--since` / `--until`) searched by `get`.
 
 
 def test_changes_get_since_is_forwarded_as_a_query_param():
@@ -169,6 +169,39 @@ def test_changes_get_since_is_forwarded_as_a_query_param():
     assert result.exit_code == 0, result.output
     client.get.assert_called_once_with(
         "/api/gam/change-events/1001", params={"since": "2026-01-01"}
+    )
+
+
+def test_changes_get_since_and_until_are_forwarded_as_query_params():
+    client = _client(PAGE["events"][0])
+
+    result = _run(
+        client,
+        "audit",
+        "changes",
+        "get",
+        "1001",
+        "--since",
+        "2026-06-09",
+        "--until",
+        "2026-06-10",
+    )
+
+    assert result.exit_code == 0, result.output
+    client.get.assert_called_once_with(
+        "/api/gam/change-events/1001",
+        params={"since": "2026-06-09", "until": "2026-06-10"},
+    )
+
+
+def test_changes_get_until_alone_is_forwarded_without_since():
+    client = _client(PAGE["events"][0])
+
+    result = _run(client, "audit", "changes", "get", "1001", "--until", "2026-06-10")
+
+    assert result.exit_code == 0, result.output
+    client.get.assert_called_once_with(
+        "/api/gam/change-events/1001", params={"until": "2026-06-10"}
     )
 
 

@@ -5,8 +5,8 @@ Maps `query_audit_log` -> GET /api/settings/audit/ (OrbiAds journal) and
 history, including changes made in the GAM UI; read-only, active network only).
 
 Story 117-17: GAM needs a time window, so the list completes a missing ``--since`` / ``--until``
-(default: last 30 days) and pages with an OrbiAds time cursor; ``get`` takes an optional
-``--since`` (fallback lookup window).
+(default: last 30 days) and pages with an OrbiAds time cursor. Story 117-17b: ``get`` searches
+the event in a window (``--since`` / ``--until``, default: last 30 days).
 """
 
 from __future__ import annotations
@@ -123,15 +123,16 @@ def get_change(
     since: str | None = typer.Option(
         None,
         "--since",
-        help=(
-            "Lower bound (ISO 8601) of the fallback lookup window used if GAM refuses the "
-            "native get (default: 365 days back)"
-        ),
+        help="Start (ISO 8601) of the window searched for the event (default: last 30 days)",
+    ),
+    until: str | None = typer.Option(
+        None, "--until", help="End (ISO 8601) of the window searched for the event"
     ),
 ):
     """Show one GAM change event."""
     try:
-        kwargs = {"params": {"since": since}} if since else {}
+        params = {k: v for k, v in (("since", since), ("until", until)) if v}
+        kwargs = {"params": params} if params else {}
         data = get_client().get(
             f"/api/gam/change-events/{quote(change_event_id, safe='')}", **kwargs
         )
