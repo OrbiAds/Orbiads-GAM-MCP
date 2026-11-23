@@ -47,7 +47,7 @@ _Parent pql tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 3 (2 writes, 1 reads)
+- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
 - **Surfaces:** MCP ✅ · CLI 3/3 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -55,9 +55,9 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `get_campaign_preview_urls` | 0.25 | yes | required | `orbiads preview campaign` |
-| `get_preview_urls` | 0.25 | yes | required | `orbiads preview share` |
 | `check_creative_coverage` | 0 | — | — | `orbiads preview coverage` |
+| `get_campaign_preview_urls` | 0.25 | — | — | `orbiads preview campaign` |
+| `get_preview_urls` | 0.25 | — | — | `orbiads preview share` |
 
 ### `orbiads:reporting` (Epic 68.7b)
 
@@ -103,4 +103,3 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `run_ga_report` | 0.5 | — | — | `orbiads reporting ga4 run` |
 | `run_gam_report` | 0 | — | — | `orbiads reporting export` |
 | `run_report_from_template` | 0.5 | — | — | `orbiads reporting templates run` |
-

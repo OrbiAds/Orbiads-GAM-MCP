@@ -19,21 +19,21 @@ Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill.
 
 _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
-- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
+- **Mode:** mixed · **Actions:** 3 (2 writes, 1 reads)
 - **Surfaces:** MCP ✅ · CLI 3/3 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `allow_batch` | 0 | — | — | `orbiads ad-review allow` |
-| `block_batch` | 0 | — | — | `orbiads ad-review block` |
+| `allow_batch` | 0 | yes | — | `orbiads ad-review allow` |
+| `block_batch` | 0 | yes | — | `orbiads ad-review block` |
 | `search` | 0 | — | — | `orbiads ad-review search` |
 
 ### `orbiads:campaign` (Epic 110.1)
 
 _Parent campaign tool for deployment, update, rollback, and lifecycle orchestration._
 
-- **Mode:** mixed · **Actions:** 16 (12 writes, 4 reads)
+- **Mode:** mixed · **Actions:** 16 (13 writes, 3 reads)
 - **Surfaces:** MCP ✅ · CLI 11/16 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -50,11 +50,11 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 | `create_native_style` | 0.5 | yes | required | MCP-only |
 | `deploy` | 0 | yes | — | `orbiads campaigns deploy` |
 | `deploy_media` | 1 | yes | required | `orbiads campaigns deploy-media` |
+| `ensure_template` | 0 | yes | — | MCP-only |
 | `pause` | 0 | yes | — | `orbiads campaigns pause` |
 | `rollback` | 0 | yes | — | `orbiads campaigns recover` |
 | `update` | 0 | yes | — | `orbiads campaigns update` |
 | `dry_run` | 0 | — | — | `orbiads campaigns dry-run` |
-| `ensure_template` | 0 | — | — | MCP-only |
 | `plan_deployment` | 0 | — | — | `orbiads campaigns plan-deployment` |
 | `read` | 0 | — | — | `orbiads campaigns read` |
 
@@ -62,7 +62,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Parent creative asset tool for upload/create/compress/transcode actions._
 
-- **Mode:** mixed · **Actions:** 22 (19 writes, 3 reads)
+- **Mode:** mixed · **Actions:** 22 (21 writes, 1 reads)
 - **Surfaces:** MCP ✅ · CLI 18/22 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -70,6 +70,8 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
+| `bulk_upload` | 0 | yes | — | `orbiads creatives upload-images` |
+| `compress_image` | 0 | yes | — | `orbiads creatives compress-image` |
 | `create_aspect_ratio_image` | 0 | yes | — | MCP-only |
 | `create_audio` | 0 | yes | — | `orbiads creatives upload-audio` |
 | `create_classic_native` | 0 | yes | — | `orbiads creatives upload-native-classic` |
@@ -89,8 +91,6 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 | `upload_and_associate` | 0 | yes | — | `orbiads creatives upload` |
 | `upload_from_url` | 0 | yes | — | `orbiads creatives upload-url` |
 | `upload_html5_zip` | 0 | yes | — | `orbiads creatives upload-html5` |
-| `bulk_upload` | 0 | — | — | `orbiads creatives upload-images` |
-| `compress_image` | 0 | — | — | `orbiads creatives compress-image` |
 | `get_video_transcode_status` | 0 | — | — | MCP-only |
 
 ### `orbiads:creative_qa` (Epic 68.6)
@@ -117,7 +117,7 @@ _Parent creative QA tool for Story 68.6._
 
 _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through one parent tool._
 
-- **Mode:** mixed · **Actions:** 13 (7 writes, 6 reads)
+- **Mode:** mixed · **Actions:** 13 (8 writes, 5 reads)
 - **Surfaces:** MCP ✅ · CLI 10/13 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -128,6 +128,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 | `create` | 0 | yes | — | `orbiads creative-wrappers create` |
 | `create_preset` | 0 | yes | — | MCP-only |
 | `deactivate` | 0 | yes | — | `orbiads creative-wrappers deactivate` |
+| `provision` | 0 | yes | — | `orbiads creative-wrappers provision` |
 | `set_data_declaration` | 0 | yes | — | `orbiads creative-wrappers set-data-declaration` |
 | `update` | 0 | yes | — | `orbiads creative-wrappers update` |
 | `find_third_party_company` | 0 | — | — | `orbiads creative-wrappers find-company` |
@@ -135,13 +136,12 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 | `list` | 0 | — | — | `orbiads creative-wrappers list` |
 | `list_rich_media_ads_companies` | 0 | — | — | `orbiads creative-wrappers list-companies` |
 | `list_wrapper_presets` | 0 | — | — | MCP-only |
-| `provision` | 0 | — | — | `orbiads creative-wrappers provision` |
 
 ### `orbiads:creatives` (Epic 68.7d)
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 31 (14 writes, 17 reads)
+- **Mode:** mixed · **Actions:** 31 (15 writes, 16 reads)
 - **Surfaces:** MCP ✅ · CLI 28/31 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -159,12 +159,12 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `delete_licas` | 0 | yes | — | `orbiads licas delete` |
 | `duplicate_creative` | 0.5 | yes | required | `orbiads creatives duplicate` |
 | `duplicate_native_style` | 0.5 | yes | required | `orbiads native-styles duplicate` |
+| `ensure_classic_native_template` | 0 | yes | — | `orbiads creative-templates ensure-classic-native` |
 | `update_creative` | 0 | yes | — | `orbiads creatives update` |
 | `update_creative_set` | 0 | yes | — | MCP-only |
 | `update_lica` | 0 | yes | — | `orbiads licas update` |
 | `update_native_style` | 0 | yes | — | `orbiads native-styles update` |
 | `discover_native_formats` | 0.5 | — | — | `orbiads creative-templates list` |
-| `ensure_classic_native_template` | 0 | — | — | `orbiads creative-templates ensure-classic-native` |
 | `get_campaign_preview_links` | 0 | — | — | `orbiads preview campaign` |
 | `get_creative` | 0 | — | — | `orbiads creatives get` |
 | `get_creative_preview_url` | 0 | — | — | `orbiads creatives preview-url` |
@@ -205,14 +205,14 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 _Async job dispatcher (parent>child pattern, Epic 82)._
 
-- **Mode:** read-only · **Actions:** 4 (0 writes, 4 reads)
+- **Mode:** mixed · **Actions:** 4 (2 writes, 2 reads)
 - **Surfaces:** MCP ✅ · CLI 0/4 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `audit-export` | 0 | — | — | MCP-only |
-| `blueprint-generate` | 0 | — | — | MCP-only |
+| `audit-export` | 0 | yes | — | MCP-only |
+| `blueprint-generate` | 0 | yes | — | MCP-only |
 | `image-optimize` | 0 | — | — | MCP-only |
 | `poll` | 0 | — | — | MCP-only |
 
@@ -291,7 +291,7 @@ _Live stream ad breaks + event/slate management._
 
 _Parent orders tool for non-lifecycle Order operations._
 
-- **Mode:** mixed · **Actions:** 11 (4 writes, 7 reads)
+- **Mode:** mixed · **Actions:** 11 (5 writes, 6 reads)
 - **Surfaces:** MCP ✅ · CLI 11/11 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -302,8 +302,8 @@ _Parent orders tool for non-lifecycle Order operations._
 | `approve` | 0 | yes | — | `orbiads orders approve` |
 | `archive` | 0 | yes | — | `orbiads orders archive` |
 | `create` | 0 | yes | — | `orbiads orders create` |
+| `find_or_create` | 0 | yes | — | `orbiads orders create` |
 | `update` | 0 | yes | — | `orbiads orders update` |
-| `find_or_create` | 0 | — | — | `orbiads orders create` |
 | `get` | 0 | — | — | `orbiads orders get` |
 | `list` | 0 | — | — | `orbiads orders list` |
 | `list_delivering` | 0 | — | — | `orbiads orders list-delivering` |

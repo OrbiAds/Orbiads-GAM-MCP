@@ -40,12 +40,15 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13)._
 
-- **Mode:** mixed · **Actions:** 20 (7 writes, 13 reads)
+- **Mode:** mixed · **Actions:** 20 (10 writes, 10 reads)
 - **Surfaces:** MCP ✅ · CLI 0/20 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
+| `add_format` | 0.25 | yes | required | MCP-only |
+| `add_key_value` | 0.25 | yes | required | MCP-only |
+| `add_position` | 0.25 | yes | required | MCP-only |
 | `remove_format` | 0.25 | yes | required | MCP-only |
 | `remove_key_value` | 0.25 | yes | required | MCP-only |
 | `remove_position` | 0.25 | yes | required | MCP-only |
@@ -53,9 +56,6 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 | `save_preferences` | 0.25 | yes | required | MCP-only |
 | `update_brand` | 0.25 | yes | required | MCP-only |
 | `update_platforms` | 0.25 | yes | required | MCP-only |
-| `add_format` | 0.25 | — | — | MCP-only |
-| `add_key_value` | 0.25 | — | — | MCP-only |
-| `add_position` | 0.25 | — | — | MCP-only |
 | `get_active_blueprint` | 0 | — | — | MCP-only |
 | `get_active_preferences` | 0 | — | — | MCP-only |
 | `get_block_version` | 0 | — | — | MCP-only |

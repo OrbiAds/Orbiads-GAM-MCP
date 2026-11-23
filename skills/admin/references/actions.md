@@ -19,24 +19,46 @@ Full per-tool action reference for the [`orbiads-admin`](../SKILL.md) skill. 100
 
 _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 
-- **Mode:** mixed · **Actions:** 61 (21 writes, 40 reads)
+- **Mode:** mixed · **Actions:** 61 (43 writes, 18 reads)
 - **Surfaces:** MCP ✅ · CLI 0/61 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
+| `applications.batch_archive` | 0 | yes | — | MCP-only |
+| `applications.batch_create` | 0 | yes | — | MCP-only |
+| `applications.batch_unarchive` | 0 | yes | — | MCP-only |
+| `applications.batch_update` | 0 | yes | — | MCP-only |
 | `applications.create` | 0 | yes | — | MCP-only |
 | `applications.patch` | 0 | yes | — | MCP-only |
+| `custom_fields.batch_activate` | 0 | yes | — | MCP-only |
+| `custom_fields.batch_create` | 0 | yes | — | MCP-only |
+| `custom_fields.batch_deactivate` | 0 | yes | — | MCP-only |
+| `custom_fields.batch_update` | 0 | yes | — | MCP-only |
 | `custom_fields.create` | 0 | yes | — | MCP-only |
 | `custom_fields.create_dropdown_options` | 0 | yes | — | MCP-only |
 | `custom_fields.patch` | 0 | yes | — | MCP-only |
 | `custom_fields.update_dropdown_options` | 0 | yes | — | MCP-only |
+| `entity_signals.batch_create` | 0 | yes | — | MCP-only |
+| `entity_signals.batch_update` | 0 | yes | — | MCP-only |
 | `entity_signals.create` | 0 | yes | — | MCP-only |
 | `entity_signals.patch` | 0 | yes | — | MCP-only |
+| `labels.batch_activate` | 0 | yes | — | MCP-only |
+| `labels.batch_create` | 0 | yes | — | MCP-only |
+| `labels.batch_deactivate` | 0 | yes | — | MCP-only |
+| `labels.batch_update` | 0 | yes | — | MCP-only |
 | `labels.create` | 0 | yes | — | MCP-only |
 | `labels.patch` | 0 | yes | — | MCP-only |
+| `sites.batch_create` | 0 | yes | — | MCP-only |
+| `sites.batch_deactivate` | 0 | yes | — | MCP-only |
+| `sites.batch_submit_for_approval` | 0 | yes | — | MCP-only |
+| `sites.batch_update` | 0 | yes | — | MCP-only |
 | `sites.create` | 0 | yes | — | MCP-only |
 | `sites.patch` | 0 | yes | — | MCP-only |
+| `teams.batch_activate` | 0 | yes | — | MCP-only |
+| `teams.batch_create` | 0 | yes | — | MCP-only |
+| `teams.batch_deactivate` | 0 | yes | — | MCP-only |
+| `teams.batch_update` | 0 | yes | — | MCP-only |
 | `teams.create` | 0 | yes | — | MCP-only |
 | `teams.patch` | 0 | yes | — | MCP-only |
 | `user_team_associations.create` | 0 | yes | — | MCP-only |
@@ -46,39 +68,17 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | `users.create` | 0 | yes | — | MCP-only |
 | `users.deactivate` | 0 | yes | — | MCP-only |
 | `users.update` | 0 | yes | — | MCP-only |
-| `applications.batch_archive` | 0 | — | — | MCP-only |
-| `applications.batch_create` | 0 | — | — | MCP-only |
-| `applications.batch_unarchive` | 0 | — | — | MCP-only |
-| `applications.batch_update` | 0 | — | — | MCP-only |
 | `applications.get` | 0 | — | — | MCP-only |
 | `applications.list` | 0 | — | — | MCP-only |
-| `custom_fields.batch_activate` | 0 | — | — | MCP-only |
-| `custom_fields.batch_create` | 0 | — | — | MCP-only |
-| `custom_fields.batch_deactivate` | 0 | — | — | MCP-only |
-| `custom_fields.batch_update` | 0 | — | — | MCP-only |
 | `custom_fields.get` | 0 | — | — | MCP-only |
 | `custom_fields.get_dropdown_option` | 0 | — | — | MCP-only |
 | `custom_fields.list` | 0 | — | — | MCP-only |
-| `entity_signals.batch_create` | 0 | — | — | MCP-only |
-| `entity_signals.batch_update` | 0 | — | — | MCP-only |
 | `entity_signals.get` | 0 | — | — | MCP-only |
 | `entity_signals.list` | 0 | — | — | MCP-only |
-| `labels.batch_activate` | 0 | — | — | MCP-only |
-| `labels.batch_create` | 0 | — | — | MCP-only |
-| `labels.batch_deactivate` | 0 | — | — | MCP-only |
-| `labels.batch_update` | 0 | — | — | MCP-only |
 | `labels.get` | 0 | — | — | MCP-only |
 | `labels.list` | 0 | — | — | MCP-only |
-| `sites.batch_create` | 0 | — | — | MCP-only |
-| `sites.batch_deactivate` | 0 | — | — | MCP-only |
-| `sites.batch_submit_for_approval` | 0 | — | — | MCP-only |
-| `sites.batch_update` | 0 | — | — | MCP-only |
 | `sites.get` | 0 | — | — | MCP-only |
 | `sites.list` | 0 | — | — | MCP-only |
-| `teams.batch_activate` | 0 | — | — | MCP-only |
-| `teams.batch_create` | 0 | — | — | MCP-only |
-| `teams.batch_deactivate` | 0 | — | — | MCP-only |
-| `teams.batch_update` | 0 | — | — | MCP-only |
 | `teams.get` | 0 | — | — | MCP-only |
 | `teams.list` | 0 | — | — | MCP-only |
 | `user_team_associations.list` | 0 | — | — | MCP-only |
@@ -126,7 +126,7 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 
 _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
-- **Mode:** mixed · **Actions:** 26 (10 writes, 16 reads)
+- **Mode:** mixed · **Actions:** 26 (15 writes, 11 reads)
 - **Surfaces:** MCP ✅ · CLI 9/26 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -135,8 +135,13 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `accept_preset_suggestion` | 0 | yes | — | MCP-only |
+| `apply_multilang_to_networks` | 0 | yes | — | MCP-only |
 | `create_preset` | 0 | yes | — | `orbiads settings presets create` |
 | `delete_preset` | 0 | yes | — | `orbiads settings presets delete` |
+| `dismiss_preset_suggestion` | 0 | yes | — | MCP-only |
+| `recompute_preset_suggestions` | 0 | yes | — | MCP-only |
+| `reset_network_delivery_defaults` | 0 | yes | — | MCP-only |
+| `reset_network_naming_conventions` | 0 | yes | — | MCP-only |
 | `save_global_multilang_matrix` | 0 | yes | — | MCP-only |
 | `update_delivery_defaults` | 0 | yes | — | `orbiads settings delivery-defaults set` |
 | `update_naming_conventions` | 0 | yes | — | `orbiads settings naming set` |
@@ -144,8 +149,6 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `update_network_naming_conventions` | 0 | yes | — | MCP-only |
 | `update_preset` | 0 | yes | — | MCP-only |
 | `update_tenant_settings` | 0 | yes | — | `orbiads settings general set` |
-| `apply_multilang_to_networks` | 0 | — | — | MCP-only |
-| `dismiss_preset_suggestion` | 0 | — | — | MCP-only |
 | `get_delivery_defaults` | 0 | — | — | `orbiads settings delivery-defaults get` |
 | `get_global_multilang_matrix` | 0 | — | — | MCP-only |
 | `get_multilang_matrix` | 0 | — | — | MCP-only |
@@ -156,9 +159,6 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 | `list_preset_suggestions` | 0 | — | — | MCP-only |
 | `list_presets` | 0 | — | — | `orbiads settings presets list` |
 | `list_preview_matrices` | 0 | — | — | MCP-only |
-| `recompute_preset_suggestions` | 0 | — | — | MCP-only |
-| `reset_network_delivery_defaults` | 0 | — | — | MCP-only |
-| `reset_network_naming_conventions` | 0 | — | — | MCP-only |
 | `resolve_multilang_matrix` | 0 | — | — | MCP-only |
 
 ### `orbiads:tenant_catalog` (Epic 78.1)
