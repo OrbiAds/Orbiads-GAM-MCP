@@ -426,7 +426,7 @@
 
 | Tool | Status | REST | CLI | Sub-actions |
 |------|--------|------|-----|-------------|
-| `reporting` | EXEMPT | NO-REST | — | — |
+| `reporting` | EXEMPT | NO-REST | — | `get_availability_forecast_by_line_item`: GET /api/gam/reports/forecast/availability/{line_item_id} / `reporting forecast-availability` |
 | `check_budget_alerts` | FULL | GET /api/campaigns/{id}/health-alerts | `reporting alerts-budget` | — |
 | `check_delivery_status` | FULL | GET /api/gam/jobs/{job_id}/delivery-status | `reporting delivery-status` | — |
 | `check_underdelivery_alerts` | FULL | GET /api/campaigns/alerts | `reporting alerts-underdelivery` | — |

@@ -2,6 +2,7 @@
 
 import json
 import sys
+from urllib.parse import quote
 
 import typer
 
@@ -657,6 +658,33 @@ def forecast_standalone(
     payload = _load_json_payload(file)
     try:
         data = get_client().post("/api/gam/reports/forecast/standalone", json=payload)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("forecast-availability")
+def forecast_availability(
+    ctx: typer.Context,
+    line_item_id: str = typer.Argument(..., help="Existing GAM line item ID"),
+    include_contending: bool = typer.Option(
+        False, "--include-contending", help="Include contending line items"
+    ),
+    include_breakdown: bool = typer.Option(
+        False, "--include-breakdown", help="Include the per-targeting-criterion breakdown"
+    ),
+):
+    """Availability forecast for an existing line item (SPONSORSHIP / STANDARD only)."""
+    params: dict = {}
+    if include_contending:
+        params["includeContendingLineItems"] = "true"
+    if include_breakdown:
+        params["includeTargetingCriteriaBreakdown"] = "true"
+    try:
+        data = get_client().get(
+            f"/api/gam/reports/forecast/availability/{quote(line_item_id, safe='')}",
+            params=params or None,
+        )
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

@@ -410,6 +410,7 @@
     "reporting forecast prospective",
     "reporting forecast standalone",
     "reporting forecast traffic",
+    "reporting forecast-availability",
     "reporting forecast-line-item",
     "reporting ga4 dimensions",
     "reporting ga4 metrics",
@@ -3458,7 +3459,12 @@
       "area": "reporting",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
+      "sub_actions": {
+        "get_availability_forecast_by_line_item": {
+          "rest": "GET /api/gam/reports/forecast/availability/{line_item_id}",
+          "cli": "reporting forecast-availability"
+        }
+      },
       "exempt": "Story 68.7b parent>child MCP dispatcher (Epic 68 Phase B). Legacy reporting, forecast, GA4, template, billing-report, and alert wrappers keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null
