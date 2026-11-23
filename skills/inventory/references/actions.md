@@ -71,7 +71,7 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 _Parent inventory tool for Story 68.6._
 
-- **Mode:** mixed · **Actions:** 14 (3 writes, 11 reads)
+- **Mode:** mixed · **Actions:** 14 (4 writes, 10 reads)
 - **Surfaces:** MCP ✅ · CLI 10/14 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
@@ -80,10 +80,10 @@ _Parent inventory tool for Story 68.6._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `archive_inactive_ad_units` | 0 | yes | — | `orbiads inventory archive-inactive` |
+| `blueprint_starter` | 0 | yes | — | MCP-only |
 | `create_ad_units_batch` | 0.5 | yes | required | `orbiads inventory save-adunits` |
 | `push_inventory_blueprint` | 0.5 | yes | required | `orbiads inventory blueprint-push` |
 | `audit_inventory` | 0 | — | — | `orbiads inventory audit` |
-| `blueprint_starter` | 0 | — | — | MCP-only |
 | `find_inactive_ad_units` | 0.25 | — | — | `orbiads inventory list-inactive` |
 | `generate_ads_json` | 0 | — | — | `orbiads inventory ads-json` |
 | `generate_inventory_blueprint` | 0 | — | — | `orbiads inventory blueprint-generate` |

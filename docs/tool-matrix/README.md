@@ -39,7 +39,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_admin` | 65 | 61 | ✍️ mixed/write | 18 / 41 / 2 | `gam_admin.py:188` |
 | `gam_features` | 68.5 | 3 | 📖 read | 3 / 0 / 0 | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | ✍️ mixed/write | 2 / 2 / 0 | `jobs_async.py:268` |
-| `inventory` | 68.6 | 14 | ✍️ mixed/write | 11 / 2 / 1 | `inventory.py:683` |
+| `inventory` | 68.6 | 14 | ✍️ mixed/write | 10 / 3 / 1 | `inventory.py:683` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
@@ -544,7 +544,7 @@ _Parent inventory tool for Story 68.6._
 | `find_inactive_ad_units` | 0.25 | 📖 read | — |
 | `archive_inactive_ad_units` | 0 | ⚠️ destructive | — |
 | `list_ad_unit_sizes` | 0 | 📖 read | — |
-| `blueprint_starter` | 0 | 📖 read | — |
+| `blueprint_starter` | 0 | ✍️ write | — |
 | `get_catalog` | 0 | 📖 read | — |
 | `list_line_item_templates` | 0 | 📖 read | — |
 | `list_suggested_ad_units` | 0 | 📖 read | — |
