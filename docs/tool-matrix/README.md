@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **490 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **491 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -41,11 +41,11 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `gam_jobs` | 82 | 4 | ✍️ mixed/write | 2 / 2 / 0 | `jobs_async.py:268` |
 | `inventory` | 68.6 | 14 | ✍️ mixed/write | 11 / 2 / 1 | `inventory.py:683` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
-| `line_items` | 68 | 18 | ✍️ mixed/write | 5 / 12 / 1 | `line_items.py:379` |
+| `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
 | `mcm` | — | 1 | 📖 read | 1 / 0 / 0 | `mcm.py:42` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | 3 / 3 / 0 | `network.py:268` |
-| `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:168` |
+| `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:248` |
 | `pql` | 68.2 | 3 | 📖 read | 3 / 0 / 0 | `pql.py:369` |
 | `prebid_skill` | 70 | 6 | ✍️ mixed/write | 2 / 3 / 1 | `prebid_skill.py:449` |
@@ -567,7 +567,7 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-**Server-side implementation:** `line_items.py` · **Actions:** 18 · **Mode:** mixed (read + write)
+**Server-side implementation:** `line_items.py` · **Actions:** 19 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 16 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -576,6 +576,7 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `get` | 0 | 📖 read | — |
 | `get_full` | 0 | 📖 read | — |
 | `list_by_order` | 0 | 📖 read | — |
+| `list` | 0 | 📖 read | — |
 | `update` | 0 | ✍️ write | — |
 | `update_batch` | 0 | ✍️ write | — |
 | `update_targeting` | 0 | ✍️ write | — |
@@ -918,10 +919,10 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 | `get_my_tenant_id` | `auth.py:309` | 0 | 📖 read |
 | `get_premium_rate` | `pricing.py:71` | 0 | 📖 read |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✍️ write |
-| `line_item_lifecycle` | `line_items.py:1625` | 0 | ⚠️ destructive |
+| `line_item_lifecycle` | `line_items.py:1665` | 0 | ⚠️ destructive |
 | `list_premium_rates` | `pricing.py:50` | 0 | 📖 read |
 | `list_rate_cards` | `pricing.py:30` | 0 | 📖 read |
-| `order_lifecycle` | `orders.py:965` | 0 | ⚠️ destructive |
+| `order_lifecycle` | `orders.py:1028` | 0 | ⚠️ destructive |
 | `poll_auth_status` | `auth.py:492` | 0 | 📖 read |
 | `reporting_skill` | `reporting.py:3854` | 0 | ✍️ write |
 | `select_gam_network` | `auth.py:613` | 0 | ✍️ write |

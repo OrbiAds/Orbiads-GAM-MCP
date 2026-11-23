@@ -308,7 +308,7 @@
 |------|--------|------|-----|-------------|
 | `create_line_item` | EXEMPT | NO-REST | `campaigns add-line-items` | — |
 | `create_line_items` | EXEMPT | NO-REST | `campaigns add-line-items` | — |
-| `line_items` | EXEMPT | NO-REST | — | — |
+| `line_items` | EXEMPT | NO-REST | — | `list`: GET /api/gam/line-items / `line-items list` |
 | `update_line_item_targeting` | EXEMPT | NO-REST | `line-items update-targeting` | — |
 | `activate_line_items` | FULL | POST /api/gam/jobs/{job_id}/line-items/activate | `line-items activate` | — |
 | `approve_line_item` | FULL | POST /api/gam/line-items/{line_item_id}/approve | `line-items approve` | — |

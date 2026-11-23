@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Campaign Operations & Creative QA: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 150 actions across 12 parent tool(s); CLI coverage 107/150 actions.
+Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 151 actions across 12 parent tool(s); CLI coverage 108/151 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -236,8 +236,8 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 _Parent line_items tool for non-lifecycle Line Item operations._
 
-- **Mode:** mixed · **Actions:** 18 (13 writes, 5 reads)
-- **Surfaces:** MCP ✅ · CLI 16/18 actions
+- **Mode:** mixed · **Actions:** 19 (13 writes, 6 reads)
+- **Surfaces:** MCP ✅ · CLI 17/19 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 16 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -259,6 +259,7 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `update_targeting` | 0 | yes | — | `orbiads line-items update-targeting` |
 | `get` | 0 | — | — | `orbiads line-items get` |
 | `get_full` | 0 | — | — | MCP-only |
+| `list` | 0 | — | — | `orbiads line-items list` |
 | `list_by_order` | 0 | — | — | `orbiads line-items list-by-order` |
 | `list_private_deals` | 0 | — | — | `orbiads line-items private-deals` |
 | `verify` | 0 | — | — | `orbiads line-items verify` |

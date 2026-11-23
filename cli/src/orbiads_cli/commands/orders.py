@@ -19,13 +19,53 @@ def list_orders(
         None, "--advertiser-id", help="Filter by advertiser ID"
     ),
     query: Optional[str] = typer.Option(None, "--query", "-q", help="Search query"),
-    limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=200),
+    status: Optional[str] = typer.Option(
+        None,
+        "--status",
+        help="OrderStatus filter: DRAFT, PENDING_APPROVAL, APPROVED, DISAPPROVED, PAUSED, CANCELED, DELETED",
+    ),
+    start_after: Optional[str] = typer.Option(
+        None, "--start-after", help="Orders starting on/after this ISO 8601 date or date-time"
+    ),
+    end_before: Optional[str] = typer.Option(
+        None, "--end-before", help="Orders ending on/before this ISO 8601 date or date-time"
+    ),
+    order_by: Optional[str] = typer.Option(
+        None,
+        "--order-by",
+        help="Sort: '<field> [asc|desc]' (id, name, startDateTime, endDateTime, lastModifiedDateTime)",
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", help="Max results (500 with filters)", min=1, max=500),
     offset: int = typer.Option(0, "--offset", help="Pagination offset", min=0),
 ):
-    """List orders."""
+    """List orders (typed filters: status, dates, advertiser; sort and paginate)."""
     out: OutputContext = ctx.obj
     try:
         client = get_client()
+        typed = any(v is not None for v in (status, start_after, end_before, order_by, page_token))
+        if typed:
+            # Story 117-2 — typed filters, validated server side (INVALID_PARAMETERS lists the
+            # valid fields/values). Same route as the legacy list, extra query parameters.
+            params: dict = {"limit": limit, "offset": offset}
+            for key, value in (
+                ("advertiser_id", advertiser_id),
+                ("status", status),
+                ("start_after", start_after),
+                ("end_before", end_before),
+                ("order_by", order_by),
+                ("page_token", page_token),
+            ):
+                if value is not None:
+                    params[key] = value
+            data = client.get("/api/gam/orders", params=params)
+            items = data.get("orders", []) if isinstance(data, dict) else data
+            render(items, ["id", "name", "advertiserId", "status"], out)
+            if isinstance(data, dict) and data.get("hasMore") and out.format != "json":
+                typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+            return
         if advertiser_id:
             # Use the advertiser-scoped endpoint
             data = client.get(
@@ -35,7 +75,7 @@ def list_orders(
             items = data.get("orders", []) if isinstance(data, dict) else data
         else:
             # Use the paginated endpoint
-            params: dict = {"limit": limit, "offset": offset}
+            params = {"limit": limit, "offset": offset}
             if query:
                 params["q"] = query
             data = client.get("/api/gam/orders", params=params)

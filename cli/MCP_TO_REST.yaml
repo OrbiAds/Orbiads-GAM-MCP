@@ -248,7 +248,14 @@ tools:
       # Story 116-6 — filtered listing (list_proposals is a new parent action; list_proposal_line_items gains filters).
       list_proposals: {rest: "GET /api/gam/proposals", cli: "programmatic proposals list"}
       list_proposal_line_items: {rest: "GET /api/gam/proposal-line-items", cli: "programmatic proposal-line-items list"}
-  line_items:               {area: line_items, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7e
+  line_items:
+    area: line_items
+    rest: "NO-REST"
+    cli: null
+    exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."
+    sub_actions:
+      # Story 117-2 — filtered listing added directly on the parent (no legacy wrapper).
+      list: {rest: "GET /api/gam/line-items", cli: "line-items list"}
   create_line_items:        {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
   create_line_item:         {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
@@ -275,7 +282,7 @@ tools:
 
   # ── orders (13) ───────────────────────────────────────────────────
   orders:                {area: orders, rest: "NO-REST", cli: null, exempt: "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity."}  # 68.7f
-  list_orders:           {area: orders, rest: "GET /api/gam/orders", cli: "orders list"}
+  list_orders:           {area: orders, rest: "GET /api/gam/orders", cli: "orders list"}  # Story 117-2: + typed filters (status/dates/order-by/page-token)
   get_order:             {area: orders, rest: "GET /api/gam/orders/{order_id}", cli: "orders get"}
   create_order:          {area: orders, rest: "POST /api/gam/orders", cli: "orders create"}
   approve_order:         {area: orders, rest: "POST /api/gam/orders/{order_id}/approve", cli: "orders approve"}  # 61.7

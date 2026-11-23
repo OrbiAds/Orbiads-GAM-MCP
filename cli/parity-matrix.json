@@ -317,6 +317,7 @@
     "line-items duplicate",
     "line-items get",
     "line-items lifecycle",
+    "line-items list",
     "line-items list-by-order",
     "line-items pause",
     "line-items private-deals",
@@ -2516,7 +2517,12 @@
       "area": "line_items",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
+      "sub_actions": {
+        "list": {
+          "rest": "GET /api/gam/line-items",
+          "cli": "line-items list"
+        }
+      },
       "exempt": "Parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers keep their existing FULL/EXEMPT CLI parity.",
       "status": "EXEMPT",
       "cli_present": null

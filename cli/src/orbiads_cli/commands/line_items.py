@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json as _json
 import os
+from typing import Optional
 
 import typer
 
@@ -297,6 +298,55 @@ def list_by_order(
         else:
             items = data if isinstance(data, list) else []
         render(items, ["id", "name", "status", "type"], ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("list")
+def list_line_items(
+    ctx: typer.Context,
+    order_id: Optional[str] = typer.Option(None, "--order-id", help="Only this order's line items"),
+    status: Optional[str] = typer.Option(
+        None, "--status", help="Computed status: DELIVERING, READY, PAUSED, DRAFT, COMPLETED, ..."
+    ),
+    li_type: Optional[str] = typer.Option(
+        None, "--type", help="LineItemType: STANDARD, SPONSORSHIP, NETWORK, HOUSE, ..."
+    ),
+    start_after: Optional[str] = typer.Option(
+        None, "--start-after", help="Starting on/after this ISO 8601 date or date-time"
+    ),
+    end_before: Optional[str] = typer.Option(
+        None, "--end-before", help="Ending on/before this ISO 8601 date or date-time"
+    ),
+    order_by: Optional[str] = typer.Option(
+        None, "--order-by", help="Sort: '<field> [asc|desc]' (id, name, startDateTime, ...)"
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=500),
+):
+    """List line items with typed filters (status, type, order, dates), sort and pagination."""
+    from orbiads_cli.output import render
+
+    params: dict = {"limit": limit}
+    for key, value in (
+        ("order_id", order_id),
+        ("status", status),
+        ("type", li_type),
+        ("start_after", start_after),
+        ("end_before", end_before),
+        ("order_by", order_by),
+        ("page_token", page_token),
+    ):
+        if value is not None:
+            params[key] = value
+    try:
+        data = get_client().get("/api/gam/line-items", params=params)
+        items = data.get("lineItems", []) if isinstance(data, dict) else data
+        render(items, ["id", "name", "status", "type"], ctx.obj)
+        if isinstance(data, dict) and data.get("hasMore") and ctx.obj.format != "json":
+            typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
     except CliApiError as e:
         handle_error(e)
 
