@@ -19,22 +19,44 @@ def run(
     metrics: str = typer.Option(..., "--metrics", help="Comma-separated metrics (e.g. IMPRESSIONS,CLICKS)"),
     start: str = typer.Option(..., "--start", help="Start date YYYY-MM-DD"),
     end: str = typer.Option(..., "--end", help="End date YYYY-MM-DD"),
+    comparison: str | None = typer.Option(
+        None,
+        "--comparison",
+        help=(
+            "Comparison period (Story 117-6): PREVIOUS_PERIOD, SAME_PERIOD_PREVIOUS_YEAR, "
+            "a relative range (LAST_7_DAYS...) or FIXED (implied by --comparison-from/--comparison-to)"
+        ),
+    ),
+    comparison_from: str | None = typer.Option(
+        None, "--comparison-from", help="Comparison start date YYYY-MM-DD (FIXED comparison)"
+    ),
+    comparison_to: str | None = typer.Option(
+        None, "--comparison-to", help="Comparison end date YYYY-MM-DD (FIXED comparison)"
+    ),
 ):
-    """Run a custom report."""
+    """Run a custom report (optionally compared with another period)."""
     try:
         client = get_client()
         dim_list = [d.strip() for d in dimensions.split(",") if d.strip()]
         met_list = [m.strip() for m in metrics.split(",") if m.strip()]
 
-        data = client.post(
-            "/api/gam/reports/custom",
-            json={
-                "dimensions": dim_list,
-                "metrics": met_list,
-                "startDate": start,
-                "endDate": end,
-            },
-        )
+        payload: dict = {
+            "dimensions": dim_list,
+            "metrics": met_list,
+            # --start/--end are a fixed range: without dateRangeType the backend
+            # defaulted to LAST_MONTH and silently ignored the dates.
+            "dateRangeType": "FIXED",
+            "startDate": start,
+            "endDate": end,
+        }
+        if comparison_from or comparison_to:
+            payload["comparisonDateRangeType"] = (comparison or "FIXED").upper()
+            payload["comparisonStartDate"] = comparison_from
+            payload["comparisonEndDate"] = comparison_to
+        elif comparison:
+            payload["comparisonDateRangeType"] = comparison.upper()
+
+        data = client.post("/api/gam/reports/custom", json=payload)
 
         # The API returns a report result with headers and rows
         if isinstance(data, dict):

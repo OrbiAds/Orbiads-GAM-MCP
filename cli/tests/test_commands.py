@@ -297,6 +297,8 @@ class TestReportingRunCommand:
             json={
                 "dimensions": ["DATE"],
                 "metrics": ["IMPRESSIONS"],
+                # Story 117-6: --start/--end are a FIXED range (was silently LAST_MONTH).
+                "dateRangeType": "FIXED",
                 "startDate": "2026-03-01",
                 "endDate": "2026-03-31",
             },
