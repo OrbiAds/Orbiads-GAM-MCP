@@ -61,7 +61,7 @@ def list_orders(
                 if value is not None:
                     params[key] = value
             data = client.get("/api/gam/orders", params=params)
-            items = data.get("orders", []) if isinstance(data, dict) else data
+            items = data.get("orders", data.get("items", [])) if isinstance(data, dict) else data
             render(items, ["id", "name", "advertiserId", "status"], out)
             if isinstance(data, dict) and data.get("hasMore") and out.format != "json":
                 typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
@@ -81,7 +81,7 @@ def list_orders(
             data = client.get("/api/gam/orders", params=params)
             # Paginated response may have "orders" or "results" key
             if isinstance(data, dict):
-                items = data.get("orders", data.get("results", []))
+                items = data.get("items", data.get("orders", data.get("results", [])))
             else:
                 items = data if isinstance(data, list) else []
         render(items, ["id", "name", "advertiserName", "status"], out)

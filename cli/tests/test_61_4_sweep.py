@@ -36,13 +36,6 @@ def _write_json(tmp_path, payload):
 
 class TestCampaignsExtensions_61_4:
 
-    def test_update_calls_patch(self, authenticated_config, tmp_path):
-        client = _mock_client(patch_return={"id": "c1", "name": "renamed"})
-        f = _write_json(tmp_path, {"name": "renamed"})
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "update", "c1", "--file", f])
-        assert result.exit_code == 0, result.output
-        client.patch.assert_called_once_with("/api/campaigns/c1", json={"name": "renamed"})
 
     def test_read_by_campaign_id_calls_live_recap(self, authenticated_config):
         client = _mock_client(get_return={"orderId": 456, "source": "gam_live"})
@@ -69,54 +62,10 @@ class TestCampaignsExtensions_61_4:
         assert result.exit_code == 2
         assert "provide --campaign-id or --order-id" in result.output
 
-    def test_pause_uses_bulk_action(self, authenticated_config):
-        client = _mock_client(post_return={"succeeded": ["c1"], "failed": []})
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "pause", "c1", "--yes"])
-        assert result.exit_code == 0
-        client.post.assert_called_once_with(
-            "/api/campaigns/bulk-action",
-            json={"campaignIds": ["c1"], "action": "pause"},
-        )
 
-    def test_add_line_items_posts_batch(self, authenticated_config, tmp_path):
-        client = _mock_client(post_return={"created": 3})
-        f = _write_json(tmp_path, {"lineItems": [{"name": "li1"}]})
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "add-line-items", "c1", "--file", f])
-        assert result.exit_code == 0
-        client.post.assert_called_once_with(
-            "/api/campaigns/c1/line-items", json={"lineItems": [{"name": "li1"}]}
-        )
 
-    def test_attach_creatives_posts_licas(self, authenticated_config, tmp_path):
-        client = _mock_client(post_return={"attached": 2})
-        f = _write_json(tmp_path, {"creativeIds": ["cr1", "cr2"]})
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(
-                app, ["campaigns", "attach-creatives", "c1", "li1", "--file", f]
-            )
-        assert result.exit_code == 0
-        client.post.assert_called_once_with(
-            "/api/campaigns/c1/line-items/li1/creatives",
-            json={"creativeIds": ["cr1", "cr2"]},
-        )
 
-    def test_recover_posts_with_yes(self, authenticated_config):
-        client = _mock_client(post_return={"recovered": True})
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "recover", "c1", "--yes"])
-        assert result.exit_code == 0
-        client.post.assert_called_once_with("/api/campaigns/c1/recover")
 
-    def test_update_missing_file_exits_2(self, authenticated_config, tmp_path):
-        client = _mock_client()
-        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(
-                app, ["campaigns", "update", "c1", "--file", str(tmp_path / "missing.json")]
-            )
-        assert result.exit_code == 2
-        client.patch.assert_not_called()
 
 
 # ─── line-items (7 verbs) ──────────────────────────────────────────────────

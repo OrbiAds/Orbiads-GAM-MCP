@@ -92,15 +92,15 @@ tools:
   # archive/update/line-items/recover). Creation/écriture campagne = MCP parent
   # `campaign.*` (+ pipeline + the `jobs` router for the web deploy). Marked EXEMPT
   # (no REST surface) instead of asserting a dead route.
-  deploy_campaign:         {area: campaign_ops, rest: "NO-REST", cli: "campaigns deploy", exempt: "Story 100.14 — campaign deploy is MCP/jobs-only (web deploy = POST /api/jobs/{id}/deploy); REST route removed from campaigns.py."}
-  pause_campaign:          {area: campaign_ops, rest: "NO-REST", cli: "campaigns pause", exempt: "Story 100.14 — campaign pause is MCP-only (campaign.pause); no REST route on the READ-only campaigns router."}
-  archive_campaign:        {area: campaign_ops, rest: "NO-REST", cli: "campaigns archive", exempt: "Story 100.14 — campaign archive is MCP-only (campaign.archive); REST route removed from campaigns.py."}
-  update_campaign:         {area: campaign_ops, rest: "NO-REST", cli: "campaigns update", exempt: "Story 100.14 — campaign update is MCP-only (campaign.update); REST route removed from campaigns.py."}                    # 61.4
-  create_line_items_batch: {area: campaign_ops, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from campaigns.py."}          # 61.4
-  create_licas:            {area: campaign_ops, rest: "NO-REST", cli: "campaigns attach-creatives", exempt: "Story 100.14 — LICA creation is MCP-only (campaign.create_licas); REST route removed from campaigns.py."}  # 61.4
-  rollback_resources:      {area: campaign_ops, rest: "NO-REST", cli: "campaigns recover", exempt: "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback); REST route removed from campaigns.py."}                    # 61.4
-  plan_deployment_action:  {area: campaign_ops, rest: "POST /mcp tools/call campaign.plan_deployment", cli: "campaigns plan-deployment"} # 100.8 MCP parent passthrough
-  deploy_media_action:     {area: campaign_ops, rest: "POST /mcp tools/call campaign.deploy_media", cli: "campaigns deploy-media"}       # 100.8 MCP parent passthrough
+  deploy_campaign:         {area: campaign_ops, rest: "POST /api/jobs/{job_id}/deploy", cli: "campaigns deploy", exempt: "Repair 2026-11-23 — the CLI deploys a WEB JOB in two steps (`campaigns deploy <campaign> --job-id J` = POST /api/jobs/{id}/deployment-plan, then `--confirmation-token T` = POST /api/jobs/{id}/deploy); without --job-id it fails (exit 1) and points to MCP campaign.deploy. No REST campaign deploy (Story 100.14)."}
+  pause_campaign:          {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Audit repair 2026-11-23 — MCP campaign.pause/archive act on the campaign's OWN line items (job resourceManifest); no REST read exposes them (live-recap and GET /api/campaigns/{id} return every line item of the order, which may be shared). The CLI command is an honest-failure stub (exit 1), NOT coverage; use `line-items lifecycle --ids` on explicit IDs."}
+  archive_campaign:        {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Audit repair 2026-11-23 — MCP campaign.pause/archive act on the campaign's OWN line items (job resourceManifest); no REST read exposes them (live-recap and GET /api/campaigns/{id} return every line item of the order, which may be shared). The CLI command is an honest-failure stub (exit 1), NOT coverage; use `line-items lifecycle --ids` on explicit IDs."}
+  update_campaign:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 100.14 — campaign update is MCP-only (campaign.update). `campaigns update` exists only as an honest-failure stub (exit 1, points to MCP); it is NOT CLI coverage."}
+  create_line_items_batch: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch). `campaigns add-line-items` is an honest-failure stub (exit 1); NOT CLI coverage."}
+  create_licas:            {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 100.14 — LICA creation is MCP-only (campaign.create_licas). `campaigns attach-creatives` is an honest-failure stub (exit 1); NOT CLI coverage."}
+  rollback_resources:      {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback). `campaigns recover` is an honest-failure stub (exit 1); NOT CLI coverage."}
+  plan_deployment_action:  {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Repair 2026-11-23 — `/mcp/` only accepts FastMCP OAuth tokens (not the CLI Firebase token) and `/mcp` answers 307; the CLI command is an honest-failure stub (exit 1), NOT CLI coverage."} # 100.8 MCP parent only
+  deploy_media_action:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Repair 2026-11-23 — `/mcp/` only accepts FastMCP OAuth tokens (not the CLI Firebase token) and `/mcp` answers 307; the CLI command is an honest-failure stub (exit 1), NOT CLI coverage."}       # 100.8 MCP parent only
   ensure_template:         {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_native_style:     {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
   create_display_campaign: {area: campaign_ops, rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C): campaign pipeline owns compiled assets the CLI/web caller does not — by design, not a parity gap."}  # 62.C — by design
@@ -115,16 +115,16 @@ tools:
       # archive/update/rollback) have NO REST route; they dispatch through the MCP
       # parent (+ pipeline + the `jobs` router for the web deploy path). Only the
       # READ sub-actions (dry_run/read) map to live campaigns REST endpoints.
-      deploy: {rest: "POST /mcp tools/call campaign.deploy", cli: "campaigns deploy", exempt: "Story 100.14 — campaign deploy is MCP/jobs-only (web deploy = POST /api/jobs/{id}/deploy); no REST on campaigns.py."}
+      deploy: {rest: "POST /api/jobs/{job_id}/deploy", cli: "campaigns deploy", exempt: "Repair 2026-11-23 — web job two-step via `campaigns deploy --job-id` (deployment-plan then deploy with token); campaign-level deploy = MCP only."}
       dry_run: {rest: "POST /api/campaigns/{id}/dry-run", cli: "campaigns dry-run"}
       read: {rest: "GET /api/campaigns/live-recap", cli: "campaigns read"}
-      plan_deployment: {rest: "POST /mcp tools/call campaign.plan_deployment", cli: "campaigns plan-deployment"}
-      deploy_media: {rest: "POST /mcp tools/call campaign.deploy_media", cli: "campaigns deploy-media"}
-      pause: {rest: "NO-REST", cli: "campaigns pause", exempt: "Story 100.14 — campaign pause is MCP-only (campaign.pause); no REST route on the READ-only campaigns router."}
-      archive: {rest: "NO-REST", cli: "campaigns archive", exempt: "Story 100.14 — campaign archive is MCP-only (campaign.archive); no REST route on the READ-only campaigns router."}
+      plan_deployment: {rest: "NO-REST", cli: null, exempt: "Repair 2026-11-23 — `/mcp/` only accepts FastMCP OAuth tokens (not the CLI Firebase token) and `/mcp` answers 307; the CLI command is an honest-failure stub (exit 1), NOT CLI coverage."}
+      deploy_media: {rest: "NO-REST", cli: null, exempt: "Repair 2026-11-23 — `/mcp/` only accepts FastMCP OAuth tokens (not the CLI Firebase token) and `/mcp` answers 307; the CLI command is an honest-failure stub (exit 1), NOT CLI coverage."}
+      pause: {rest: "NO-REST", cli: null, exempt: "Audit repair 2026-11-23 — MCP campaign.pause/archive act on the campaign's OWN line items (job resourceManifest); no REST read exposes them (live-recap and GET /api/campaigns/{id} return every line item of the order, which may be shared). The CLI command is an honest-failure stub (exit 1), NOT coverage; use `line-items lifecycle --ids` on explicit IDs."}
+      archive: {rest: "NO-REST", cli: null, exempt: "Audit repair 2026-11-23 — MCP campaign.pause/archive act on the campaign's OWN line items (job resourceManifest); no REST read exposes them (live-recap and GET /api/campaigns/{id} return every line item of the order, which may be shared). The CLI command is an honest-failure stub (exit 1), NOT coverage; use `line-items lifecycle --ids` on explicit IDs."}
       archive_eligible: {rest: "POST /api/campaigns/archive-run", cli: null, exempt: "On-demand network-scoped archival (decision 2026-06-12) — UI button + MCP only, CLI deferred by design. REST shipped on the campaigns router."}
-      update: {rest: "NO-REST", cli: "campaigns update", exempt: "Story 100.14 — campaign update is MCP-only (campaign.update); no REST route on the READ-only campaigns router."}
-      rollback: {rest: "NO-REST", cli: "campaigns recover", exempt: "Story 100.14 — campaign rollback/recover is MCP-only (campaign.rollback); no REST route on the READ-only campaigns router."}
+      update: {rest: "NO-REST", cli: null, exempt: "Story 100.14 — MCP-only (campaign.update); CLI stub fails honestly, not coverage."}
+      rollback: {rest: "NO-REST", cli: null, exempt: "Story 100.14 — MCP-only (campaign.rollback); CLI stub fails honestly, not coverage."}
       create_native_style: {rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C)."}
       ensure_template: {rest: "NO-REST", cli: null, exempt: "Pipeline-internal orchestration (Story 62.C)."}
       create_draft: {rest: "NO-REST", cli: null, exempt: "Campaign staging draft creation remains parent-dispatched and REST revival is outside Story 100.11."}
@@ -192,8 +192,8 @@ tools:
   create_audio_creative:        {area: creatives, rest: "POST /api/creatives/upload-audio", cli: "creatives upload-audio"}  # 61.7
   create_image_creative:        {area: creatives, rest: "POST /api/creatives/upload-images", cli: "creatives upload-images"}  # 61.7
   create_classic_native_creative: {area: creatives, rest: "POST /api/creatives/upload-native-classic", cli: "creatives upload-native-classic"}  # 61.7
-  associate_creative:           {area: creatives, rest: "NO-REST", cli: "campaigns attach-creatives", exempt: "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router."}     # 61.4 capability parity
-  bulk_associate_creatives:     {area: creatives, rest: "NO-REST", cli: "campaigns attach-creatives", exempt: "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router."}     # 61.4 capability parity
+  associate_creative:           {area: creatives, rest: "NO-REST", cli: null, exempt: "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router."}     # 61.4 capability parity
+  bulk_associate_creatives:     {area: creatives, rest: "NO-REST", cli: null, exempt: "Story 100.14 — LICA association is MCP-only (campaign.create_licas); REST route removed from the READ-only campaigns router."}     # 61.4 capability parity
   get_campaign_preview_links:   {area: creatives, rest: "POST /api/creatives/{job_id}/gam-preview-link", cli: "preview campaign"}  # 61.7
   update_creative:              {area: creatives, rest: "PATCH /api/gam/creatives/{creative_id}", cli: "creatives update"}  # 62.1
   get_creative_preview_url:     {area: creatives, rest: "GET /api/gam/creatives/{creative_id}/preview-url", cli: "creatives preview-url"}  # 62.1
@@ -284,8 +284,8 @@ tools:
     sub_actions:
       # Story 117-2 — filtered listing added directly on the parent (no legacy wrapper).
       list: {rest: "GET /api/gam/line-items", cli: "line-items list"}
-  create_line_items:        {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
-  create_line_item:         {area: line_items, rest: "NO-REST", cli: "campaigns add-line-items", exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}
+  create_line_items:        {area: line_items, rest: "NO-REST", cli: null, exempt: "Story 100.14 — line-item creation is MCP-only (campaign.create_line_items_batch); REST route removed from the READ-only campaigns router."}                # 61.4 capability parity
+  create_line_item:         {area: line_items, rest: "NO-REST", cli: null, exempt: "LT-044 — single full-surface reservation line_items.create is MCP-only (mirrors create_line_items exemption per Story 100.14); a dedicated CLI command is a follow-up."}
   activate_line_items:      {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/activate", cli: "line-items activate"}         # 61.4
   pause_line_items:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/pause", cli: "line-items pause"}               # 61.4
   update_line_item:         {area: line_items, rest: "POST /api/gam/jobs/{job_id}/line-items/{line_item_id}/update", cli: "line-items update"}  # 61.4

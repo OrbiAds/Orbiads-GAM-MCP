@@ -125,7 +125,7 @@ class TestExitCode5:
         client = MagicMock()
         client.post.side_effect = CliApiError(5, "Campaign already deployed")
         with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "deploy", "c1", "--yes"])
+            result = runner.invoke(app, ["campaigns", "deploy", "c1", "--job-id", "j1", "--confirmation-token", "t", "--yes"])
         assert result.exit_code == 5
         assert "Conflict: Campaign already deployed" in result.output
 
@@ -146,7 +146,7 @@ class TestExitCode6:
             {"balance": 2, "required": 5},
         )
         with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
-            result = runner.invoke(app, ["campaigns", "deploy", "c1", "--yes"])
+            result = runner.invoke(app, ["campaigns", "deploy", "c1", "--job-id", "j1", "--confirmation-token", "t", "--yes"])
         assert result.exit_code == 6
         assert "Insufficient credits" in result.output
         assert "Balance: 2" in result.output

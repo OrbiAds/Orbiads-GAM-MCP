@@ -6,7 +6,7 @@ import typer
 
 from orbiads_cli.client import CliApiError, get_client
 from orbiads_cli.errors import handle_error
-from orbiads_cli.output import OutputContext, confirm, info, render, render_detail, success
+from orbiads_cli.output import OutputContext, confirm, render, render_detail, success
 
 app = typer.Typer(help="Manage GAM campaigns", no_args_is_help=True)
 
@@ -93,37 +93,81 @@ def dry_run(
         handle_error(e)
 
 
+def _mcp_only(command: str, mcp_call: str, alternative: str | None = None) -> None:
+    """Fail honestly: this write has no REST route (Story 100.14 PO decision).
+
+    Whole-campaign writes are MCP `campaign` parent + CampaignPipeline only. The CLI
+    cannot reach `/mcp/` either: that endpoint only accepts its own OAuth tokens
+    (FastMCP Google provider), not the CLI's Firebase ID token. Never print a success
+    message here, always exit non-zero.
+    """
+    typer.echo(
+        f"Error: `orbiads campaigns {command}` is not available from the CLI. "
+        "Campaign writes are not exposed over REST; run it from an MCP client "
+        f"(Claude, Cursor, ...) connected to https://orbiads.com/mcp: {mcp_call}.",
+        err=True,
+    )
+    if alternative:
+        typer.echo(f"REST alternative: {alternative}", err=True)
+    raise typer.Exit(code=1)
+
+
 @app.command()
 def deploy(
     ctx: typer.Context,
-    campaign_id: str = typer.Argument(..., help="Campaign ID"),
+    campaign_id: str = typer.Argument(..., help="Campaign ID (used by --dry-run; a real deploy runs on --job-id)"),
     yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Build an ExecutionPlan without deploying"),
-    confirmation_token: str = typer.Option(None, "--confirmation-token", help="Token from campaigns dry-run"),
+    job_id: str = typer.Option(
+        None, "--job-id", help="Web job to deploy (mounted jobs router: plan, then deploy with the token)"
+    ),
+    confirmation_token: str = typer.Option(
+        None, "--confirmation-token", help="Token returned by the plan step (omit it to get the plan)"
+    ),
 ):
-    """Deploy a draft campaign to GAM."""
+    """Preview (--dry-run) or deploy a web job in two steps (plan, then token).
+
+    A campaign cannot be deployed over REST. For a web job: run with `--job-id J` to get
+    the signed plan + confirmationToken (POST /api/jobs/J/deployment-plan), then again with
+    `--confirmation-token T` to enqueue it (POST /api/jobs/J/deploy). Without `--job-id`
+    the command fails: use the MCP `campaign(action="deploy")` tool.
+    """
+    out: OutputContext = ctx.obj
     try:
-        out: OutputContext = ctx.obj
         if dry_run:
             data = get_client().post(f"/api/campaigns/{campaign_id}/dry-run")
             render_detail(data, out)
             return
-
-        # Merge local --yes with global --yes
-        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-        if not confirm(f"Deploy campaign {campaign_id}?", effective_ctx):
-            raise typer.Exit(code=0)
-
-        info(f"Deploying campaign {campaign_id}...")
-        client = get_client()
-        if confirmation_token:
-            client.post(
-                f"/api/campaigns/{campaign_id}/deploy",
-                json={"confirmationToken": confirmation_token},
+        if not job_id:
+            _mcp_only(
+                "deploy",
+                'campaign(action="deploy", ...)',
+                "pass `--job-id <job_id>` to plan then deploy a web job through /api/jobs/{id}",
             )
-        else:
-            client.post(f"/api/campaigns/{campaign_id}/deploy")
-        success(f"Campaign {campaign_id} deployed successfully.")
+        if not confirmation_token:
+            data = get_client().post(f"/api/jobs/{job_id}/deployment-plan")
+            render_detail(data, out)
+            typer.echo(
+                f"Plan only, nothing deployed. Re-run with --job-id {job_id} "
+                "--confirmation-token <confirmationToken> to deploy.",
+                err=True,
+            )
+            return
+        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
+        if not confirm(f"Deploy job {job_id}?", effective_ctx):
+            raise typer.Exit(code=0)
+        data = get_client().post(
+            f"/api/jobs/{job_id}/deploy", json={"confirmationToken": confirmation_token}
+        )
+        if not isinstance(data, dict) or data.get("status") != "queued":
+            typer.echo(
+                f"Error: deploy response does not confirm job {job_id} is queued: {data!r}",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+        if out.format == "json":
+            render_detail(data, out)
+        success(f"Job {job_id} queued for deployment.")
     except CliApiError as e:
         handle_error(e)
 
@@ -132,100 +176,48 @@ def deploy(
 def pause(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
-    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+    yes: bool = typer.Option(False, "--yes", "-y", hidden=True),
 ):
-    """Pause a deployed campaign."""
-    try:
-        out: OutputContext = ctx.obj
-        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-        if not confirm(f"Pause campaign {campaign_id}?", effective_ctx):
-            raise typer.Exit(code=0)
-
-        client = get_client()
-        client.post(
-            "/api/campaigns/bulk-action",
-            json={"campaignIds": [campaign_id], "action": "pause"},
-        )
-        success(f"Campaign {campaign_id} paused successfully.")
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="pause")."""
+    _mcp_only(
+        "pause",
+        'campaign(action="pause", ...)',
+        "`orbiads line-items lifecycle pause --ids <line item ids>` on explicit GAM line item IDs",
+    )
 
 
 @app.command()
 def archive(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
-    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+    yes: bool = typer.Option(False, "--yes", "-y", hidden=True),
 ):
-    """Archive a campaign."""
-    try:
-        out: OutputContext = ctx.obj
-        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-        if not confirm(f"Archive campaign {campaign_id}?", effective_ctx):
-            raise typer.Exit(code=0)
-
-        client = get_client()
-        client.post(f"/api/campaigns/{campaign_id}/archive")
-        success(f"Campaign {campaign_id} archived successfully.")
-    except CliApiError as e:
-        handle_error(e)
-
-
-# === Story 61.4 — REST-ONLY sweep (campaigns) ===============================
-# update_campaign / create_line_items_batch / create_licas / rollback_resources
-
-
-def _load_json_payload(path: str) -> dict:
-    """Helper — read a JSON file from disk for mutative bodies."""
-    import json as _json
-    import os
-    if not os.path.isfile(path):
-        typer.echo(f"Error: file not found: {path}", err=True)
-        raise typer.Exit(code=2)
-    try:
-        return _json.loads(open(path, "r", encoding="utf-8").read())
-    except _json.JSONDecodeError as e:
-        typer.echo(f"Error: invalid JSON in {path}: {e}", err=True)
-        raise typer.Exit(code=2)
+    """Not available from the CLI (MCP-only): campaign(action="archive")."""
+    _mcp_only(
+        "archive",
+        'campaign(action="archive", ...)',
+        "`orbiads line-items lifecycle archive --ids <line item ids>` on explicit GAM line item IDs",
+    )
 
 
 @app.command()
 def update(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
-    file: str = typer.Option(..., "--file", "-f", help="Path to a JSON file with the patch body"),
+    file: str = typer.Option(None, "--file", "-f", hidden=True),
 ):
-    """Update a campaign (PATCH).
-
-    Story 61.4 — maps MCP `update_campaign` → PATCH /api/campaigns/{id}.
-    """
-    out: OutputContext = ctx.obj
-    payload = _load_json_payload(file)
-    try:
-        data = get_client().patch(f"/api/campaigns/{campaign_id}", json=payload)
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="update")."""
+    _mcp_only("update", 'campaign(action="update", ...)')
 
 
 @app.command("add-line-items")
 def add_line_items(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the line-items batch payload"),
+    file: str = typer.Option(None, "--file", "-f", hidden=True),
 ):
-    """Append line items to a campaign.
-
-    Story 61.4 — maps MCP `create_line_items_batch` /
-    `create_line_items` → POST /api/campaigns/{id}/line-items.
-    """
-    out: OutputContext = ctx.obj
-    payload = _load_json_payload(file)
-    try:
-        data = get_client().post(f"/api/campaigns/{campaign_id}/line-items", json=payload)
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="create_line_items_batch")."""
+    _mcp_only("add-line-items", 'campaign(action="create_line_items_batch", ...)')
 
 
 @app.command("attach-creatives")
@@ -233,104 +225,39 @@ def attach_creatives(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
     line_item_id: str = typer.Argument(..., help="Line Item ID"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the LICA batch payload"),
+    file: str = typer.Option(None, "--file", "-f", hidden=True),
 ):
-    """Attach creatives to a line item via LICAs.
-
-    Story 61.4 — maps MCP `create_licas` / `associate_creative` /
-    `bulk_associate_creatives` → POST /api/campaigns/{id}/line-items/{li}/creatives.
-    """
-    out: OutputContext = ctx.obj
-    payload = _load_json_payload(file)
-    try:
-        data = get_client().post(
-            f"/api/campaigns/{campaign_id}/line-items/{line_item_id}/creatives",
-            json=payload,
-        )
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="create_licas")."""
+    _mcp_only("attach-creatives", 'campaign(action="create_licas", ...)')
 
 
 @app.command()
 def recover(
     ctx: typer.Context,
     campaign_id: str = typer.Argument(..., help="Campaign ID"),
-    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+    yes: bool = typer.Option(False, "--yes", "-y", hidden=True),
 ):
-    """Recover a failed/orphaned campaign (rollback orphan resources).
-
-    Story 61.4 — maps MCP `rollback_resources` → POST /api/campaigns/{id}/recover.
-    """
-    try:
-        out: OutputContext = ctx.obj
-        effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-        if not confirm(f"Recover campaign {campaign_id}?", effective_ctx):
-            raise typer.Exit(code=0)
-        client = get_client()
-        data = client.post(f"/api/campaigns/{campaign_id}/recover")
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
-
-
-def _mcp_campaign_payload(action: str, payload: dict) -> dict:
-    """Build a Streamable HTTP MCP tools/call payload for the campaign parent."""
-    return {
-        "jsonrpc": "2.0",
-        "id": f"campaign-{action}",
-        "method": "tools/call",
-        "params": {
-            "name": "campaign",
-            "arguments": {
-                "action": action,
-                "params": payload,
-            },
-        },
-    }
+    """Not available from the CLI (MCP-only): campaign(action="rollback")."""
+    _mcp_only("recover", 'campaign(action="rollback", ...)')
 
 
 @app.command("plan-deployment")
 def plan_deployment(
     ctx: typer.Context,
-    preset: str = typer.Option(..., "--preset", help="Deployment preset, e.g. video_vast"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with preset params"),
+    preset: str = typer.Option(None, "--preset", hidden=True),
+    file: str = typer.Option(None, "--file", "-f", hidden=True),
 ):
-    """Create a media deployment execution plan through the campaign MCP parent."""
-    out: OutputContext = ctx.obj
-    preset_params = _load_json_payload(file)
-    payload = {
-        "preset": preset,
-        "params": preset_params,
-    }
-    try:
-        data = get_client().post_raw("/mcp", json=_mcp_campaign_payload("plan_deployment", payload))
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="plan_deployment")."""
+    _mcp_only("plan-deployment", 'campaign(action="plan_deployment", preset=..., params=...)')
 
 
 @app.command("deploy-media")
 def deploy_media(
     ctx: typer.Context,
-    confirmation_token: str = typer.Option(..., "--confirmation-token", help="Token from plan-deployment"),
-    preset: str = typer.Option(..., "--preset", help="Deployment preset used for the plan"),
-    file: str = typer.Option(..., "--file", "-f", help="JSON file with the same preset params"),
-    yes: bool = typer.Option(False, "--yes", "-y", help="Skip confirmation prompt"),
+    confirmation_token: str = typer.Option(None, "--confirmation-token", hidden=True),
+    preset: str = typer.Option(None, "--preset", hidden=True),
+    file: str = typer.Option(None, "--file", "-f", hidden=True),
+    yes: bool = typer.Option(False, "--yes", "-y", hidden=True),
 ):
-    """Execute a planned media deployment through the campaign MCP parent."""
-    out: OutputContext = ctx.obj
-    effective_ctx = OutputContext(format=out.format, yes=out.yes or yes)
-    if not confirm(f"Deploy media campaign with preset {preset}?", effective_ctx):
-        raise typer.Exit(code=0)
-    preset_params = _load_json_payload(file)
-    payload = {
-        "preset": preset,
-        "params": preset_params,
-        "confirmationToken": confirmation_token,
-    }
-    try:
-        data = get_client().post_raw("/mcp", json=_mcp_campaign_payload("deploy_media", payload))
-        render_detail(data, out)
-    except CliApiError as e:
-        handle_error(e)
+    """Not available from the CLI (MCP-only): campaign(action="deploy_media")."""
+    _mcp_only("deploy-media", 'campaign(action="deploy_media", ...)')
