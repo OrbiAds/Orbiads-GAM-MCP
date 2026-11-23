@@ -97,6 +97,28 @@ class TestExitCode3:
         assert result.exit_code == 3
         assert "Not found" in result.output
 
+    def test_404_with_a_server_code_shows_the_server_message(self, authenticated_config):
+        """Story 117-15: a translated 404 (e.g. GAM_NOT_FOUND from the change history ``get``)
+        says what is missing and how to search again; the CLI used to print only the path."""
+        msg = "Change event x was not found between A and B: pass `since` / `until`."
+        client = _mock_client_raising(
+            3, msg, "GAM_NOT_FOUND", details={"resource": "/api/gam/change-events/x"}
+        )
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["campaigns", "get", "x"])
+        assert result.exit_code == 3
+        assert f"Not found: {msg}" in result.output
+        assert "/api/gam/change-events/x" not in result.output
+
+    def test_404_of_an_unknown_route_keeps_the_path(self, authenticated_config):
+        client = _mock_client_raising(
+            3, "Not Found", "HTTP_ERROR", details={"resource": "/api/nope"}
+        )
+        with patch("orbiads_cli.commands.campaigns.get_client", return_value=client):
+            result = runner.invoke(app, ["campaigns", "get", "x"])
+        assert result.exit_code == 3
+        assert "Not found: /api/nope" in result.output
+
 
 # ===========================================================================
 # Exit code 4: 401 → permission denied

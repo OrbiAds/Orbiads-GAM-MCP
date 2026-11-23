@@ -25,7 +25,7 @@ Code   HTTP origin    stderr message
 0      2xx            *(none -- data goes to stdout)*
 1      400/500/other  ``Error: {message}``
 2      *(client)*     *(Typer auto-generates usage)*
-3      404            ``Not found: {resource}``
+3      404            ``Not found: {message}`` (server code) or ``Not found: {resource}``
 4      401/403        ``Permission denied. Run `orbiads auth login`.``
 5      409            ``Conflict: {message}``
 6      412 (credits)  ``Insufficient credits. Balance: X, required: Y``
@@ -64,6 +64,11 @@ def _format_message(err: CliApiError) -> str:
     details = err.details
 
     if code == 3:
+        # A JSend 404 carrying a server code (e.g. GAM_NOT_FOUND) explains WHAT is missing and
+        # how to search again: show it. A bare 404 (unknown route: generic ``HTTP_ERROR``) keeps
+        # the request path as the resource hint.
+        if err.error_code and err.error_code != "HTTP_ERROR" and err.message:
+            return f"Not found: {err.message}"
         resource = details.get("resource", err.message)
         return f"Not found: {resource}"
 
