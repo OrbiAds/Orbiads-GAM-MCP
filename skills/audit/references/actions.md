@@ -11,22 +11,24 @@ user-invocable: false
 
 # OrbiAds GAM — Account Audits & Billing: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-audit`](../SKILL.md) skill. 11 actions across 3 parent tool(s); CLI coverage 3/11 actions.
+Full per-tool action reference for the [`orbiads-audit`](../SKILL.md) skill. 13 actions across 3 parent tool(s); CLI coverage 5/13 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
-### `orbiads:audit` (Epic 68.5)
+### `orbiads:audit` (Epic 117)
 
-_Parent audit tool for the Epic 68.5 catalogue refactor batch._
+_Parent audit tool: OrbiAds audit journal + GAM change history (read-only)._
 
-- **Mode:** read-only · **Actions:** 1 (0 writes, 1 reads)
-- **Surfaces:** MCP ✅ · CLI 1/1 actions
+- **Mode:** read-only · **Actions:** 3 (0 writes, 3 reads)
+- **Surfaces:** MCP ✅ · CLI 3/3 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 1 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
+| `get_change_event` | 0 | — | — | `orbiads audit changes get` |
+| `list_change_events` | 0 | — | — | `orbiads audit changes list` |
 | `query_audit_log` | 0 | — | — | `orbiads audit log` |
 
 ### `orbiads:audit_skill` (Epic 65.0a)
@@ -64,4 +66,3 @@ _Parent billing tool for the Epic 68.5 catalogue refactor batch._
 |---|---|---|---|---|
 | `get_credit_balance` | 0 | — | — | `orbiads billing balance` |
 | `list_transactions` | 0 | — | — | `orbiads billing transactions` |
-

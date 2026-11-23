@@ -12,7 +12,7 @@ metadata:
     - audit
     - audit_skill
     - billing
-  action_count: 11
+  action_count: 13
   cli_coverage: partial
   read_only: true
 user-invocable: false
@@ -27,13 +27,13 @@ user-invocable: false
 
 _Perform delivery, inventory, security, and billing audits. Track credit transactions and system log histories._
 
-**Mode:** read-only · **Tools included:** 3 · **Total actions:** 11 · **CLI coverage:** partial (3/11 actions)
+**Mode:** read-only · **Tools included:** 3 · **Total actions:** 13 · **CLI coverage:** partial (5/13 actions)
 
 Parent MCP tools: `audit`, `audit_skill`, `billing`.
 
 ## Surfaces
 
-OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 3/11 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
+OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 5/13 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
 
 **Rule:** if an action is marked `MCP-only` in that table, fall back to the MCP surface (or the web app) for it — never improvise a raw REST call or shell around the CLI.
 

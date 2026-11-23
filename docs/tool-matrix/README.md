@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **491 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **493 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -23,7 +23,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 |---|---|---|---|---|---|
 | `ad_review_center` | — | 3 | ✍️ mixed/write | 1 / 2 / 0 | `ad_review.py:124` |
 | `audiences` | 68.2 | 8 | ✍️ mixed/write | 3 / 5 / 0 | `audiences.py:342` |
-| `audit` | 68.5 | 1 | 📖 read | 1 / 0 / 0 | `audit.py:88` |
+| `audit` | 117 | 3 | 📖 read | 3 / 0 / 0 | `audit.py:132` |
 | `audit_skill` | 65.0a | 8 | 📖 read | 8 / 0 / 0 | `audit_skill.py:269` |
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
@@ -91,17 +91,19 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 | `get_segment_population_results` | 0 | 📖 read | — |
 | `perform_segment_population_action` | 0 | ✍️ write | — |
 
-### `audit` — Epic 68.5
+### `audit` — Epic 117
 
-_Parent audit tool for the Epic 68.5 catalogue refactor batch._
+_Parent audit tool: OrbiAds audit journal + GAM change history (read-only)._
 
-**Server-side implementation:** `audit.py` · **Actions:** 1 · **Mode:** read-only
+**Server-side implementation:** `audit.py` · **Actions:** 3 · **Mode:** read-only
 
 **Legacy wrappers:** 1 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `query_audit_log` | 0 | 📖 read | — |
+| `list_change_events` | 0 | 📖 read | — |
+| `get_change_event` | 0 | 📖 read | — |
 
 ### `audit_skill` — Epic 65.0a
 

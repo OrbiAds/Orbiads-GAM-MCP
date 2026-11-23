@@ -40,7 +40,15 @@ tools:
   perform_audience_segment_action: {area: audiences, rest: "POST /api/gam/audience-segments/action", cli: "audiences action"}  # 62.5
 
   # ── audit (1 + 1 parent) ──────────────────────────────────────────
-  audit:           {area: audit, rest: "NO-REST", cli: null, exempt: "Story 68.5 parent>child migration batch 2. Legacy audit tools keep their existing parity mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."}  # 68.5
+  audit:
+    area: audit
+    rest: "NO-REST"
+    cli: null
+    exempt: "Story 68.5 parent>child migration batch 2. Legacy audit tools keep their existing parity mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story."
+    sub_actions:
+      # Story 117-5 — GAM change history (REST ChangeEvent), added directly on the parent (no legacy wrapper).
+      list_change_events: {rest: "GET /api/gam/change-events", cli: "audit changes list"}
+      get_change_event: {rest: "GET /api/gam/change-events/{change_event_id}", cli: "audit changes get"}
   query_audit_log: {area: audit, rest: "GET /api/settings/audit/", cli: "audit log"}  # 61.7
 
   # ── auth (6) — capability parity via auth/network commands ─────────

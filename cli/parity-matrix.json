@@ -164,6 +164,8 @@
     "audiences get",
     "audiences list",
     "audiences update",
+    "audit changes get",
+    "audit changes list",
     "audit log",
     "auth login",
     "auth logout",
@@ -710,7 +712,16 @@
       "area": "audit",
       "rest": "NO-REST",
       "cli": null,
-      "sub_actions": null,
+      "sub_actions": {
+        "list_change_events": {
+          "rest": "GET /api/gam/change-events",
+          "cli": "audit changes list"
+        },
+        "get_change_event": {
+          "rest": "GET /api/gam/change-events/{change_event_id}",
+          "cli": "audit changes get"
+        }
+      },
       "exempt": "Story 68.5 parent>child migration batch 2. Legacy audit tools keep their existing parity mappings during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",
       "status": "EXEMPT",
       "cli_present": null

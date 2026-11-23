@@ -101,7 +101,7 @@
 
 | Tool | Status | REST | CLI | Sub-actions |
 |------|--------|------|-----|-------------|
-| `audit` | EXEMPT | NO-REST | — | — |
+| `audit` | EXEMPT | NO-REST | — | `list_change_events`: GET /api/gam/change-events / `audit changes list`<br>`get_change_event`: GET /api/gam/change-events/{change_event_id} / `audit changes get` |
 | `audit_skill` | EXEMPT | NO-REST | — | — |
 | `audit_skill_estimate_cost` | EXEMPT | NO-REST | — | — |
 | `export_authoring_audit` | EXEMPT | POST /api/audit/export | — | — |
