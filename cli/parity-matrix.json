@@ -308,6 +308,8 @@
     "licas deactivate",
     "licas delete",
     "licas delete-permanent",
+    "licas list",
+    "licas list-by-creative",
     "licas list-by-line-item",
     "licas update",
     "line-items activate",
@@ -1470,6 +1472,18 @@
         "delete_lica_permanently": {
           "rest": "POST /api/gam/licas/delete-permanent",
           "cli": "licas delete-permanent"
+        },
+        "list_creatives": {
+          "rest": "GET /api/gam/creatives",
+          "cli": "creatives list"
+        },
+        "get_licas_by_creative": {
+          "rest": "GET /api/gam/creatives/{creative_id}/licas",
+          "cli": "licas list-by-creative"
+        },
+        "list_licas": {
+          "rest": "GET /api/gam/licas",
+          "cli": "licas list"
         }
       },
       "exempt": "Story 68.7d parent>child MCP dispatcher (Epic 68 Phase B). Legacy creative metadata, preview, NativeStyle, CreativeTemplate, and LICA wrappers keep their existing FULL/EXEMPT CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",

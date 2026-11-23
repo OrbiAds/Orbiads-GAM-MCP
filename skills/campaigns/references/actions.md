@@ -11,7 +11,7 @@ user-invocable: false
 
 # OrbiAds GAM — Campaign Operations & Creative QA: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 151 actions across 12 parent tool(s); CLI coverage 108/151 actions.
+Full per-tool action reference for the [`orbiads-campaigns`](../SKILL.md) skill. 154 actions across 12 parent tool(s); CLI coverage 111/154 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
@@ -141,8 +141,8 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-- **Mode:** mixed · **Actions:** 31 (15 writes, 16 reads)
-- **Surfaces:** MCP ✅ · CLI 28/31 actions
+- **Mode:** mixed · **Actions:** 34 (15 writes, 19 reads)
+- **Surfaces:** MCP ✅ · CLI 31/34 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 27 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -170,15 +170,18 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `get_creative_preview_url` | 0 | — | — | `orbiads creatives preview-url` |
 | `get_creative_template` | 0 | — | — | `orbiads creative-templates get` |
 | `get_licas_batch` | 0 | — | — | `orbiads licas batch` |
+| `get_licas_by_creative` | 0 | — | — | `orbiads licas list-by-creative` |
 | `get_licas_by_line_item` | 0 | — | — | `orbiads licas list-by-line-item` |
 | `get_native_style` | 0 | — | — | `orbiads native-styles get` |
 | `get_native_style_preview_urls` | 0 | — | — | `orbiads creatives native-style-previews` |
 | `get_video_transcode_status` | 0 | — | — | `orbiads creatives transcode-status` |
 | `list_creative_sets` | 0 | — | — | MCP-only |
 | `list_creative_templates` | 0 | — | — | `orbiads creative-templates list` |
+| `list_creatives` | 0 | — | — | `orbiads creatives list` |
 | `list_creatives_by_advertiser` | 0 | — | — | `orbiads creatives list` |
 | `list_creatives_by_line_item` | 0 | — | — | `orbiads creatives list-by-line-item` |
 | `list_creatives_by_network` | 0 | — | — | `orbiads creatives list-by-network` |
+| `list_licas` | 0 | — | — | `orbiads licas list` |
 | `list_native_styles` | 0 | — | — | `orbiads native-styles list` |
 
 ### `orbiads:formats` (Epic 78.2)

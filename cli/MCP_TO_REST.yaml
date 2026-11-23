@@ -146,6 +146,10 @@ tools:
     sub_actions:
       # Story 116-1 — action added directly on the parent (no legacy wrapper).
       delete_lica_permanently: {rest: "POST /api/gam/licas/delete-permanent", cli: "licas delete-permanent"}
+      # Story 117-3 — filtered reads added directly on the parent (no legacy wrapper).
+      list_creatives: {rest: "GET /api/gam/creatives", cli: "creatives list"}
+      get_licas_by_creative: {rest: "GET /api/gam/creatives/{creative_id}/licas", cli: "licas list-by-creative"}
+      list_licas: {rest: "GET /api/gam/licas", cli: "licas list"}
   creative_wrapper_skill:
     area: creative_wrappers
     rest: "POST /api/gam/creative-wrappers"

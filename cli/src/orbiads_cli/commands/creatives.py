@@ -6,7 +6,7 @@ import json as _json
 import mimetypes
 import os
 import re
-from typing import Any
+from typing import Any, Optional
 
 import typer
 
@@ -127,27 +127,99 @@ def _post_many_files(
             fh.close()
 
 
+def _with_creative_columns(items: Any) -> Any:
+    """Typed listing items carry ``creativeType`` and a ``{width,height}`` size: flatten for the table."""
+    if not isinstance(items, list):
+        return items
+    rows = []
+    for it in items:
+        if not isinstance(it, dict):
+            rows.append(it)
+            continue
+        size = it.get("size")
+        if isinstance(size, dict):
+            size = f"{size.get('width', '?')}x{size.get('height', '?')}"
+        rows.append({**it, "type": it.get("type") or it.get("creativeType"), "size": size})
+    return rows
+
+
 @app.command("list")
 def list_creatives(
     ctx: typer.Context,
-    advertiser_id: str = typer.Option(
-        ...,
+    advertiser_id: Optional[str] = typer.Option(
+        None,
         "--advertiser-id",
         "-a",
         help="GAM advertiser (company) ID to list creatives for",
     ),
-    limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=200),
+    creative_type: Optional[str] = typer.Option(
+        None,
+        "--type",
+        help="Creative subtype (ImageCreative, Html5Creative, ThirdPartyCreative, ...), applied "
+        "client-side to each page (not a GAM filter)",
+    ),
+    name_contains: Optional[str] = typer.Option(
+        None, "--name-contains", help="Creative name substring"
+    ),
+    since: Optional[str] = typer.Option(
+        None,
+        "--since",
+        help="Modified on/after this ISO 8601 date or date-time (a date alone = 00:00 UTC)",
+    ),
+    order_by: Optional[str] = typer.Option(
+        None,
+        "--order-by",
+        help="Sort: '<field> [asc|desc]' (id, name, lastModifiedDateTime)",
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=500),
 ):
-    """List creatives for an advertiser.
+    """List creatives (typed filters: advertiser, type, name, modification date; sort, paginate).
 
-    Audit F0-3: the previous implementation called the non-existent
-    ``/api/gam/creatives`` collection endpoint and always 404'd. The backend
-    only exposes creatives scoped to an advertiser, so ``--advertiser-id`` is
-    now required.
+    With ``--advertiser-id`` alone the historical advertiser-scoped listing is used (max 200).
+    Any other option switches to the filtered listing (``GET /api/gam/creatives``, Story 117-3).
+    At least one option is required; use ``list-by-network`` for the plain network-wide search.
     """
     out: OutputContext = ctx.obj
+    typed = any(
+        v is not None for v in (creative_type, name_contains, since, order_by, page_token)
+    )
+    if advertiser_id is None and not typed:
+        typer.echo(
+            "Error: pass --advertiser-id or at least one filter "
+            "(--type, --name-contains, --since, --order-by).",
+            err=True,
+        )
+        raise typer.Exit(code=2)
     try:
         client = get_client()
+        if typed:
+            params: dict = {"limit": limit}
+            for key, value in (
+                ("advertiser_id", advertiser_id),
+                ("type", creative_type),
+                ("name_contains", name_contains),
+                ("since", since),
+                ("order_by", order_by),
+                ("page_token", page_token),
+            ):
+                if value is not None:
+                    params[key] = value
+            data = client.get("/api/gam/creatives", params=params)
+            items = data.get("items", []) if isinstance(data, dict) else data
+            render(_with_creative_columns(items), _LIST_COLUMNS, out)
+            if isinstance(data, dict) and out.format != "json":
+                if data.get("clientSideFilters"):
+                    typer.echo(
+                        "Note: --type is applied to each page after the read; a page may hold "
+                        "fewer than --limit items.",
+                        err=True,
+                    )
+                if data.get("hasMore"):
+                    typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+            return
         data = client.get(
             f"/api/gam/advertisers/{advertiser_id}/creatives",
             params={"limit": limit},

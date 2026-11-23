@@ -178,7 +178,7 @@
 | `associate_creative` | EXEMPT | NO-REST | `campaigns attach-creatives` | — |
 | `bulk_associate_creatives` | EXEMPT | NO-REST | `campaigns attach-creatives` | — |
 | `creative_assets` | EXEMPT | NO-REST | — | — |
-| `creatives` | EXEMPT | NO-REST | — | `delete_lica_permanently`: POST /api/gam/licas/delete-permanent / `licas delete-permanent` |
+| `creatives` | EXEMPT | NO-REST | — | `delete_lica_permanently`: POST /api/gam/licas/delete-permanent / `licas delete-permanent`<br>`list_creatives`: GET /api/gam/creatives / `creatives list`<br>`get_licas_by_creative`: GET /api/gam/creatives/{creative_id}/licas / `licas list-by-creative`<br>`list_licas`: GET /api/gam/licas / `licas list` |
 | `archive_creative` | FULL | POST /api/gam/creatives/{creative_id}/archive | `creatives archive` | — |
 | `archive_native_style` | FULL | POST /api/gam/native-styles/{style_id}/archive | `native-styles archive` | — |
 | `bulk_upload_creatives` | FULL | POST /api/creatives/upload-multi | `creatives upload-images` | — |

@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **493 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **496 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -29,10 +29,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | 3 / 10 / 3 | `campaign_ops.py:694` |
 | `companies` | 111.3 | 17 | ✍️ mixed/write | 9 / 7 / 1 | `advertisers.py:545` |
-| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1126` |
+| `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1247` |
 | `creative_qa` | 68.6 | 7 | 📖 read | 7 / 0 / 0 | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | 5 / 7 / 1 | `creative_wrappers.py:346` |
-| `creatives` | 68.7d | 31 | ✍️ mixed/write | 16 / 11 / 4 | `creatives.py:1092` |
+| `creatives` | 68.7d | 34 | ✍️ mixed/write | 19 / 11 / 4 | `creatives.py:1213` |
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | 4 / 8 / 2 | `dai_skill.py:190` |
 | `deals` | 64 | 41 | ✍️ mixed/write | 14 / 23 / 4 | `deals.py:1202` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | 4 / 4 / 1 | `formats.py:150` |
@@ -298,7 +298,7 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
-**Server-side implementation:** `creatives.py` · **Actions:** 31 · **Mode:** mixed (read + write)
+**Server-side implementation:** `creatives.py` · **Actions:** 34 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 27 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -307,6 +307,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `list_creatives_by_advertiser` | 0 | 📖 read | — |
 | `list_creatives_by_line_item` | 0 | 📖 read | — |
 | `list_creatives_by_network` | 0 | 📖 read | — |
+| `list_creatives` | 0 | 📖 read | — |
 | `get_creative` | 0 | 📖 read | — |
 | `update_creative` | 0 | ✍️ write | — |
 | `archive_creative` | 0 | ⚠️ destructive | — |
@@ -327,6 +328,8 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `associate_creative` | 0 | ✍️ write | — |
 | `bulk_associate_creatives` | 0 | ✍️ write | — |
 | `get_licas_by_line_item` | 0 | 📖 read | — |
+| `get_licas_by_creative` | 0 | 📖 read | — |
+| `list_licas` | 0 | 📖 read | — |
 | `get_licas_batch` | 0 | 📖 read | — |
 | `deactivate_lica` | 0 | ✍️ write | — |
 | `update_lica` | 0 | ✍️ write | — |

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json as _json
 import os
+from typing import Optional
 
 import typer
 
@@ -21,6 +22,8 @@ app = typer.Typer(
 )
 
 _LICA_COLUMNS = ["id", "lineItemId", "creativeId", "status"]
+# A LICA has no scalar id (composite key lineItemId + creativeId): no `id` column.
+_LICA_KEY_COLUMNS = ["lineItemId", "creativeId", "status"]
 
 
 def _load_json_payload(path: str) -> dict:
@@ -47,6 +50,71 @@ def list_by_line_item(
         else:
             items = data if isinstance(data, list) else []
         render(items, _LICA_COLUMNS, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+def _render_lica_page(data, ctx: typer.Context) -> None:
+    items = data.get("licas", data.get("items", [])) if isinstance(data, dict) else data
+    render(items if isinstance(items, list) else [], _LICA_KEY_COLUMNS, ctx.obj)
+    if isinstance(data, dict) and data.get("hasMore") and ctx.obj.format != "json":
+        typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+
+
+@app.command("list-by-creative")
+def list_by_creative(
+    ctx: typer.Context,
+    creative_id: str = typer.Argument(..., help="Creative ID"),
+    status: Optional[str] = typer.Option(None, "--status", help="LICA status: ACTIVE, INACTIVE"),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=500),
+):
+    """List the LICAs of a creative: which line items does it run on?"""
+    params: dict = {"limit": limit}
+    if status is not None:
+        params["status"] = status
+    if page_token is not None:
+        params["page_token"] = page_token
+    try:
+        data = get_client().get(f"/api/gam/creatives/{creative_id}/licas", params=params)
+        _render_lica_page(data, ctx)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@app.command("list")
+def list_licas(
+    ctx: typer.Context,
+    line_item_id: Optional[str] = typer.Option(None, "--line-item-id", help="Line item ID"),
+    creative_id: Optional[str] = typer.Option(None, "--creative-id", help="Creative ID"),
+    status: Optional[str] = typer.Option(None, "--status", help="LICA status: ACTIVE, INACTIVE"),
+    since: Optional[str] = typer.Option(
+        None,
+        "--since",
+        help="Modified on/after this ISO 8601 date or date-time (a date alone = 00:00 UTC)",
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=500),
+):
+    """List LICAs with typed filters. One of --line-item-id / --creative-id / --since is required
+    (an unbounded scan is refused by the server)."""
+    params: dict = {"limit": limit}
+    for key, value in (
+        ("line_item_id", line_item_id),
+        ("creative_id", creative_id),
+        ("status", status),
+        ("since", since),
+        ("page_token", page_token),
+    ):
+        if value is not None:
+            params[key] = value
+    try:
+        data = get_client().get("/api/gam/licas", params=params)
+        _render_lica_page(data, ctx)
     except CliApiError as e:
         handle_error(e)
 
