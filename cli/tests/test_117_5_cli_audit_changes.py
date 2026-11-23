@@ -156,3 +156,29 @@ def test_legacy_audit_log_command_is_unchanged():
 
     assert result.exit_code == 0, result.output
     client.get.assert_called_once_with("/api/settings/audit/", params={"limit": 5})
+
+
+# Story 117-17 - optional lower bound of the fallback lookup window of `get`.
+
+
+def test_changes_get_since_is_forwarded_as_a_query_param():
+    client = _client(PAGE["events"][0])
+
+    result = _run(client, "audit", "changes", "get", "1001", "--since", "2026-01-01")
+
+    assert result.exit_code == 0, result.output
+    client.get.assert_called_once_with(
+        "/api/gam/change-events/1001", params={"since": "2026-01-01"}
+    )
+
+
+def test_changes_list_uses_the_server_cursor_and_does_not_invent_a_window():
+    client = _client(PAGE)
+
+    result = _run(client, "audit", "changes", "list", "--page-token", "CURSOR")
+
+    assert result.exit_code == 0, result.output
+    # the window (default: last 30 days) is completed server side, never by the CLI
+    client.get.assert_called_once_with(
+        "/api/gam/change-events", params={"limit": 50, "page_token": "CURSOR"}
+    )

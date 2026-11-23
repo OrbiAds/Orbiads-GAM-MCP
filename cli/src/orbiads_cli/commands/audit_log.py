@@ -3,6 +3,10 @@
 Maps `query_audit_log` -> GET /api/settings/audit/ (OrbiAds journal) and
 `list_change_events` / `get_change_event` -> GET /api/gam/change-events[/{id}] (GAM change
 history, including changes made in the GAM UI; read-only, active network only).
+
+Story 117-17: GAM needs a time window, so the list completes a missing ``--since`` / ``--until``
+(default: last 30 days) and pages with an OrbiAds time cursor; ``get`` takes an optional
+``--since`` (fallback lookup window).
 """
 
 from __future__ import annotations
@@ -67,7 +71,12 @@ def list_changes(
     ),
     user: str | None = typer.Option(None, "--user", help="Numeric id of the GAM user"),
     since: str | None = typer.Option(
-        None, "--since", help="Changed on/after this ISO 8601 date or date-time"
+        None,
+        "--since",
+        help=(
+            "Changed on/after this ISO 8601 date or date-time. GAM needs a window: a missing "
+            "bound is completed (default: last 30 days)"
+        ),
     ),
     until: str | None = typer.Option(
         None, "--until", help="Changed on/before this ISO 8601 date or date-time"
@@ -76,7 +85,9 @@ def list_changes(
         None, "--operation", help="CREATE, UPDATE or DELETE"
     ),
     page_token: str | None = typer.Option(
-        None, "--page-token", help="nextPageToken of the previous page"
+        None,
+        "--page-token",
+        help="nextPageToken of the previous page (repeat the same filters)",
     ),
     limit: int = typer.Option(50, "--limit", "-l", min=1, max=100),
 ):
@@ -109,11 +120,20 @@ def list_changes(
 def get_change(
     ctx: typer.Context,
     change_event_id: str = typer.Argument(..., help="Change event id"),
+    since: str | None = typer.Option(
+        None,
+        "--since",
+        help=(
+            "Lower bound (ISO 8601) of the fallback lookup window used if GAM refuses the "
+            "native get (default: 365 days back)"
+        ),
+    ),
 ):
     """Show one GAM change event."""
     try:
+        kwargs = {"params": {"since": since}} if since else {}
         data = get_client().get(
-            f"/api/gam/change-events/{quote(change_event_id, safe='')}"
+            f"/api/gam/change-events/{quote(change_event_id, safe='')}", **kwargs
         )
         render_detail(_flat_change(data) if isinstance(data, dict) else {}, ctx.obj)
     except CliApiError as e:
