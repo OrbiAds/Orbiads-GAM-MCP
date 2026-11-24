@@ -24,11 +24,11 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `ad_review_center` | — | 3 | ✍️ mixed/write | 1 / 2 / 0 | `ad_review.py:124` |
 | `audiences` | 68.2 | 8 | ✍️ mixed/write | 3 / 5 / 0 | `audiences.py:342` |
 | `audit` | 117 | 3 | 📖 read | 3 / 0 / 0 | `audit.py:141` |
-| `audit_skill` | 65.0a | 8 | 📖 read | 8 / 0 / 0 | `audit_skill.py:269` |
+| `audit_skill` | 65.0a | 8 | 📖 read | 8 / 0 / 0 | `audit_skill.py:272` |
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
-| `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
+| `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:389` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | 3 / 10 / 3 | `campaign_ops.py:694` |
-| `companies` | 118 | 23 | ✍️ mixed/write | 13 / 9 / 1 | `advertisers.py:724` |
+| `companies` | 118 | 23 | ✍️ mixed/write | 13 / 9 / 1 | `advertisers.py:727` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1247` |
 | `creative_qa` | 68.6 | 7 | 📖 read | 7 / 0 / 0 | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | 5 / 7 / 1 | `creative_wrappers.py:346` |
@@ -36,10 +36,10 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `dai_skill` | 98 | 14 | ✍️ mixed/write | 4 / 8 / 2 | `dai_skill.py:190` |
 | `deals` | 64 | 41 | ✍️ mixed/write | 14 / 23 / 4 | `deals.py:1202` |
 | `formats` | 78.2 | 9 | ✍️ mixed/write | 4 / 4 / 1 | `formats.py:150` |
-| `gam_admin` | 65 | 61 | ✍️ mixed/write | 18 / 41 / 2 | `gam_admin.py:188` |
+| `gam_admin` | 65 | 61 | ✍️ mixed/write | 18 / 41 / 2 | `gam_admin.py:191` |
 | `gam_features` | 68.5 | 3 | 📖 read | 3 / 0 / 0 | `gam_features.py:121` |
 | `gam_jobs` | 82 | 4 | ✍️ mixed/write | 2 / 2 / 0 | `jobs_async.py:268` |
-| `inventory` | 68.6 | 15 | ✍️ mixed/write | 11 / 3 / 1 | `inventory.py:713` |
+| `inventory` | 68.6 | 15 | ✍️ mixed/write | 11 / 3 / 1 | `inventory.py:716` |
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
@@ -48,7 +48,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:276` |
 | `pql` | 68.2 | 3 | 📖 read | 3 / 0 / 0 | `pql.py:369` |
-| `prebid_skill` | 70 | 6 | ✍️ mixed/write | 2 / 3 / 1 | `prebid_skill.py:449` |
+| `prebid_skill` | 70 | 6 | ✍️ mixed/write | 2 / 3 / 1 | `prebid_skill.py:452` |
 | `preview` | 68.2 | 3 | 📖 read | 3 / 0 / 0 | `preview.py:754` |
 | `products` | 68.8 | 7 | ✍️ mixed/write | 4 / 2 / 1 | `products.py:535` |
 | `reporting` | 68.7b | 33 | ✍️ mixed/write | 26 / 5 / 2 | `reporting.py:2802` |
@@ -935,7 +935,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 |---|---|---|---|
 | `check_credentials` | `auth.py:699` | 0 | 📖 read |
 | `disconnect_gam` | `auth.py:762` | 0 | ⚠️ destructive |
-| `gam_audit` | `gam_audit.py:116` | 0 | 📖 read |
+| `gam_audit` | `gam_audit.py:119` | 0 | 📖 read |
 | `get_my_tenant_id` | `auth.py:309` | 0 | 📖 read |
 | `get_premium_rate` | `pricing.py:71` | 0 | 📖 read |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✍️ write |
