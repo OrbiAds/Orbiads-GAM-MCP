@@ -25,7 +25,7 @@ _Multi-Customer Management: earnings, child publishers and their agreements._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `invite_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers invite` |
+| `invite_child_publisher` | 0.5 | yes | required | `orbiads mcm child-publishers invite` |
 | `renegotiate_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers renegotiate` |
 | `resend_child_publisher_invitation` | 0 | yes | — | `orbiads mcm child-publishers resend-invitation` |
 | `update_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers update` |

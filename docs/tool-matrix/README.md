@@ -69,8 +69,8 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `search` | 0 | 📖 read | — |
-| `allow_batch` | 0 | ✍️ write | — |
-| `block_batch` | 0 | ✍️ write | — |
+| `allow_batch` | 0.5 | ✍️ write | ✅ required |
+| `block_batch` | 0.5 | ✍️ write | ✅ required |
 
 ### `audiences` — Epic 68.2
 
@@ -115,14 +115,14 @@ _OrbiAds audit suite — single entry point for audit sub-actions._
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
-| `hygiene_check` | 0 | 📖 read | — |
-| `ops_diagnostic` | 0 | 📖 read | — |
+| `hygiene_check` | 0.5 | 📖 read | — |
+| `ops_diagnostic` | 1 | 📖 read | — |
 | `standards_baseline` | 0 | 📖 read | — |
-| `wrapper_coverage` | 0 | 📖 read | — |
+| `wrapper_coverage` | 1 | 📖 read | — |
 | `estimate_cost` | 0 | 📖 read | — |
 | `export_authoring` | 0 | 📖 read | — |
 | `export_xlsx` | 0 | 📖 read | — |
-| `inventory_extended` | 0 | 📖 read | — |
+| `inventory_extended` | 2 | 📖 read | — |
 
 ### `billing` — Epic 68.5
 
@@ -222,7 +222,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `third_party.get` | 0 | 📖 read | — |
 | `all.list` | 0 | 📖 read | — |
 | `all.get` | 0 | 📖 read | — |
-| `all.create` | 0 | ✍️ write | — |
+| `all.create` | 0.5 | ✍️ write | ✅ required |
 | `partners.list` | 0 | 📖 read | — |
 | `partners.get` | 0 | 📖 read | — |
 | `partners.update` | 0 | ✍️ write | — |
@@ -288,17 +288,17 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 |---|---|---|---|
 | `list` | 0 | 📖 read | — |
 | `get` | 0 | 📖 read | — |
-| `create` | 0 | ✍️ write | — |
-| `update` | 0 | ✍️ write | — |
-| `activate` | 0 | ✍️ write | — |
-| `deactivate` | 0 | ✍️ write | — |
+| `create` | 0.5 | ✍️ write | ✅ required |
+| `update` | 0.5 | ✍️ write | ✅ required |
+| `activate` | 0.25 | ✍️ write | ✅ required |
+| `deactivate` | 0.25 | ✍️ write | ✅ required |
 | `archive` | 0 | ⚠️ destructive | — |
-| `set_data_declaration` | 0 | ✍️ write | — |
+| `set_data_declaration` | 0.5 | ✍️ write | ✅ required |
 | `list_rich_media_ads_companies` | 0 | 📖 read | — |
 | `find_third_party_company` | 0 | 📖 read | — |
-| `create_preset` | 0 | ✍️ write | — |
+| `create_preset` | 0.5 | ✍️ write | ✅ required |
 | `list_wrapper_presets` | 0 | 📖 read | — |
-| `provision` | 0 | ✍️ write | — |
+| `provision` | 2 | ✍️ write | ✅ required |
 
 ### `creatives` — Epic 68.7d
 
@@ -342,7 +342,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `delete_licas` | 0 | ⚠️ destructive | — |
 | `delete_lica_permanently` | 0 | ⚠️ destructive | — |
 | `list_creative_sets` | 0 | 📖 read | — |
-| `create_creative_set` | 0 | ✍️ write | — |
+| `create_creative_set` | 0.5 | ✍️ write | ✅ required |
 | `update_creative_set` | 0 | ✍️ write | — |
 
 ### `dai_skill` — Epic 98
@@ -356,17 +356,17 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 | `get_stream_activity` | 0 | 📖 read | — |
 | `register_sessions` | 0 | ✍️ write | — |
 | `list_cdn_configurations` | 0 | 📖 read | — |
-| `create_cdn_configuration` | 0 | ✍️ write | — |
-| `update_cdn_configuration` | 0 | ✍️ write | — |
-| `delete_cdn_configuration` | 0 | ⚠️ destructive | — |
+| `create_cdn_configuration` | 0.5 | ✍️ write | ✅ required |
+| `update_cdn_configuration` | 0.5 | ✍️ write | ✅ required |
+| `delete_cdn_configuration` | 0.5 | ⚠️ destructive | ✅ required |
 | `list_dai_auth_keys` | 0 | 📖 read | — |
-| `create_dai_auth_key` | 0 | ✍️ write | — |
-| `update_dai_auth_key` | 0 | ✍️ write | — |
-| `perform_dai_auth_key_action` | 0 | ✍️ write | — |
+| `create_dai_auth_key` | 0.5 | ✍️ write | ✅ required |
+| `update_dai_auth_key` | 0.5 | ✍️ write | ✅ required |
+| `perform_dai_auth_key_action` | 0.5 | ✍️ write | ✅ required |
 | `list_dai_encoding_profiles` | 0 | 📖 read | — |
-| `create_dai_encoding_profile` | 0 | ✍️ write | — |
-| `update_dai_encoding_profile` | 0 | ✍️ write | — |
-| `delete_dai_encoding_profile` | 0 | ⚠️ destructive | — |
+| `create_dai_encoding_profile` | 0.5 | ✍️ write | ✅ required |
+| `update_dai_encoding_profile` | 0.5 | ✍️ write | ✅ required |
+| `delete_dai_encoding_profile` | 0.5 | ⚠️ destructive | ✅ required |
 
 ### `deals` — Epic 64
 
@@ -448,63 +448,63 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 |---|---|---|---|
 | `teams.list` | 0 | 📖 read | — |
 | `teams.get` | 0 | 📖 read | — |
-| `teams.create` | 0 | ✍️ write | — |
-| `teams.batch_create` | 0 | ✍️ write | — |
+| `teams.create` | 0.5 | ✍️ write | ✅ required |
+| `teams.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `teams.patch` | 0 | ✍️ write | — |
 | `teams.batch_update` | 0 | ✍️ write | — |
 | `teams.batch_activate` | 0 | ✍️ write | — |
 | `teams.batch_deactivate` | 0 | ✍️ write | — |
 | `sites.list` | 0 | 📖 read | — |
 | `sites.get` | 0 | 📖 read | — |
-| `sites.create` | 0 | ✍️ write | — |
-| `sites.batch_create` | 0 | ✍️ write | — |
+| `sites.create` | 0.5 | ✍️ write | ✅ required |
+| `sites.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `sites.patch` | 0 | ✍️ write | — |
 | `sites.batch_update` | 0 | ✍️ write | — |
 | `sites.batch_deactivate` | 0 | ✍️ write | — |
 | `sites.batch_submit_for_approval` | 0 | ✍️ write | — |
 | `applications.list` | 0 | 📖 read | — |
 | `applications.get` | 0 | 📖 read | — |
-| `applications.create` | 0 | ✍️ write | — |
-| `applications.batch_create` | 0 | ✍️ write | — |
+| `applications.create` | 0.5 | ✍️ write | ✅ required |
+| `applications.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `applications.patch` | 0 | ✍️ write | — |
 | `applications.batch_update` | 0 | ✍️ write | — |
 | `applications.batch_archive` | 0 | ⚠️ destructive | — |
 | `applications.batch_unarchive` | 0 | ✍️ write | — |
 | `custom_fields.list` | 0 | 📖 read | — |
 | `custom_fields.get` | 0 | 📖 read | — |
-| `custom_fields.create` | 0 | ✍️ write | — |
-| `custom_fields.batch_create` | 0 | ✍️ write | — |
+| `custom_fields.create` | 0.5 | ✍️ write | ✅ required |
+| `custom_fields.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `custom_fields.patch` | 0 | ✍️ write | — |
 | `custom_fields.batch_update` | 0 | ✍️ write | — |
 | `custom_fields.batch_activate` | 0 | ✍️ write | — |
 | `custom_fields.batch_deactivate` | 0 | ✍️ write | — |
-| `custom_fields.create_dropdown_options` | 0 | ✍️ write | — |
+| `custom_fields.create_dropdown_options` | 0.5 | ✍️ write | ✅ required |
 | `custom_fields.update_dropdown_options` | 0 | ✍️ write | — |
 | `custom_fields.get_dropdown_option` | 0 | 📖 read | — |
 | `labels.list` | 0 | 📖 read | — |
 | `labels.get` | 0 | 📖 read | — |
-| `labels.create` | 0 | ✍️ write | — |
-| `labels.batch_create` | 0 | ✍️ write | — |
+| `labels.create` | 0.5 | ✍️ write | ✅ required |
+| `labels.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `labels.patch` | 0 | ✍️ write | — |
 | `labels.batch_update` | 0 | ✍️ write | — |
 | `labels.batch_activate` | 0 | ✍️ write | — |
 | `labels.batch_deactivate` | 0 | ✍️ write | — |
 | `entity_signals.list` | 0 | 📖 read | — |
 | `entity_signals.get` | 0 | 📖 read | — |
-| `entity_signals.create` | 0 | ✍️ write | — |
-| `entity_signals.batch_create` | 0 | ✍️ write | — |
+| `entity_signals.create` | 0.5 | ✍️ write | ✅ required |
+| `entity_signals.batch_create` | 0.5 | ✍️ write | ✅ required |
 | `entity_signals.patch` | 0 | ✍️ write | — |
 | `entity_signals.batch_update` | 0 | ✍️ write | — |
 | `users.list` | 0 | 📖 read | — |
 | `users.get` | 0 | 📖 read | — |
 | `users.current` | 0 | 📖 read | — |
 | `users.get_roles` | 0 | 📖 read | — |
-| `users.create` | 0 | ✍️ write | — |
-| `users.update` | 0 | ✍️ write | — |
+| `users.create` | 0.5 | ✍️ write | ✅ required |
+| `users.update` | 0.5 | ✍️ write | ✅ required |
 | `users.activate` | 0 | ✍️ write | — |
 | `users.deactivate` | 0 | ✍️ write | — |
 | `user_team_associations.list` | 0 | 📖 read | — |
-| `user_team_associations.create` | 0 | ✍️ write | — |
+| `user_team_associations.create` | 0.5 | ✍️ write | ✅ required |
 | `user_team_associations.update` | 0 | ✍️ write | — |
 | `user_team_associations.delete` | 0 | ⚠️ destructive | — |
 
@@ -615,15 +615,15 @@ _Live stream ad breaks + event/slate management._
 |---|---|---|---|
 | `list` | 0 | 📖 read | — |
 | `get` | 0 | 📖 read | — |
-| `create` | 0 | ✍️ write | — |
-| `patch` | 0 | ✍️ write | — |
-| `delete` | 0 | ⚠️ destructive | — |
+| `create` | 0.5 | ✍️ write | ✅ required |
+| `patch` | 0.5 | ✍️ write | ✅ required |
+| `delete` | 0.5 | ⚠️ destructive | ✅ required |
 | `list_live_stream_events` | 0 | 📖 read | — |
-| `create_live_stream_event` | 0 | ✍️ write | — |
+| `create_live_stream_event` | 0.5 | ✍️ write | ✅ required |
 | `update_live_stream_event` | 0 | ✍️ write | — |
 | `delete_live_stream_event` | 0 | ⚠️ destructive | — |
 | `list_live_stream_slates` | 0 | 📖 read | — |
-| `create_live_stream_slate` | 0 | ✍️ write | — |
+| `create_live_stream_slate` | 0.5 | ✍️ write | ✅ required |
 | `update_live_stream_slate` | 0 | ✍️ write | — |
 | `delete_live_stream_slate` | 0 | ⚠️ destructive | — |
 
@@ -638,7 +638,7 @@ _Multi-Customer Management: earnings, child publishers and their agreements._
 | `earnings_fetch` | 0 | 📖 read | — |
 | `list_child_publishers` | 0 | 📖 read | — |
 | `get_child_publisher` | 0 | 📖 read | — |
-| `invite_child_publisher` | 0 | ✍️ write | — |
+| `invite_child_publisher` | 0.5 | ✍️ write | ✅ required |
 | `update_child_publisher` | 0 | ✍️ write | — |
 | `withdraw_child_publisher` | 0 | ⚠️ destructive | — |
 | `renegotiate_child_publisher` | 0 | ✍️ write | — |
@@ -722,9 +722,9 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
-| `generate_line_items` | 0 | ✍️ write | — |
-| `generate_targeting_keys` | 0 | ✍️ write | — |
-| `update_line_items` | 0 | ✍️ write | — |
+| `generate_line_items` | 10 | ✍️ write | ✅ required |
+| `generate_targeting_keys` | 1 | ✍️ write | ✅ required |
+| `update_line_items` | 5 | ✍️ write | ✅ required |
 | `inspect_existing_setup` | 0 | 📖 read | — |
 | `preview_batch` | 0 | 📖 read | — |
 | `cleanup` | 0 | ⚠️ destructive | — |
@@ -903,15 +903,15 @@ _Video monetization: ad rule management, content metadata, and content bundle op
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `list_ad_rules` | 0 | 📖 read | — |
-| `create_ad_rule` | 0 | ✍️ write | — |
-| `update_ad_rule` | 0 | ✍️ write | — |
-| `delete_ad_rule` | 0 | ⚠️ destructive | — |
+| `create_ad_rule` | 0.5 | ✍️ write | ✅ required |
+| `update_ad_rule` | 0.5 | ✍️ write | ✅ required |
+| `delete_ad_rule` | 0.5 | ⚠️ destructive | ✅ required |
 | `list_content` | 0 | 📖 read | — |
 | `list_content_bundles` | 0 | 📖 read | — |
-| `create_content_bundle` | 0 | ✍️ write | — |
-| `update_content_bundle` | 0 | ✍️ write | — |
-| `activate_content_bundle` | 0 | ✍️ write | — |
-| `deactivate_content_bundle` | 0 | ✍️ write | — |
+| `create_content_bundle` | 0.5 | ✍️ write | ✅ required |
+| `update_content_bundle` | 0.5 | ✍️ write | ✅ required |
+| `activate_content_bundle` | 0.5 | ✍️ write | ✅ required |
+| `deactivate_content_bundle` | 0.5 | ✍️ write | ✅ required |
 
 ### `yield_skill` — Epic 98
 
@@ -922,8 +922,8 @@ _Yield optimization group management and forecast governance._
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `list_yield_groups` | 0 | 📖 read | — |
-| `create_yield_group` | 0 | ✍️ write | — |
-| `update_yield_group` | 0 | ✍️ write | — |
+| `create_yield_group` | 0.5 | ✍️ write | ✅ required |
+| `update_yield_group` | 0.5 | ✍️ write | ✅ required |
 | `list_forecast_adjustments` | 0 | 📖 read | — |
 | `list_forecast_segments` | 0 | 📖 read | — |
 

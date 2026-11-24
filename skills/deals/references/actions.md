@@ -33,7 +33,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `advertisers.update` | 0 | yes | — | `orbiads advertisers update` |
 | `agencies.create` | 0 | yes | — | `orbiads advertisers agencies create` |
 | `agencies.update` | 0 | yes | — | `orbiads advertisers agencies update` |
-| `all.create` | 0 | yes | — | `orbiads advertisers companies create` |
+| `all.create` | 0.5 | yes | required | `orbiads advertisers companies create` |
 | `contacts.create` | 0 | yes | — | `orbiads contacts create` |
 | `contacts.update` | 0 | yes | — | `orbiads contacts update` |
 | `partners.update` | 0 | yes | — | `orbiads advertisers partners update` |
@@ -61,16 +61,16 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `create_cdn_configuration` | 0 | yes | — | MCP-only |
-| `create_dai_auth_key` | 0 | yes | — | MCP-only |
-| `create_dai_encoding_profile` | 0 | yes | — | MCP-only |
-| `delete_cdn_configuration` | 0 | yes | — | MCP-only |
-| `delete_dai_encoding_profile` | 0 | yes | — | MCP-only |
-| `perform_dai_auth_key_action` | 0 | yes | — | MCP-only |
+| `create_cdn_configuration` | 0.5 | yes | required | MCP-only |
+| `create_dai_auth_key` | 0.5 | yes | required | MCP-only |
+| `create_dai_encoding_profile` | 0.5 | yes | required | MCP-only |
+| `delete_cdn_configuration` | 0.5 | yes | required | MCP-only |
+| `delete_dai_encoding_profile` | 0.5 | yes | required | MCP-only |
+| `perform_dai_auth_key_action` | 0.5 | yes | required | MCP-only |
 | `register_sessions` | 0 | yes | — | MCP-only |
-| `update_cdn_configuration` | 0 | yes | — | MCP-only |
-| `update_dai_auth_key` | 0 | yes | — | MCP-only |
-| `update_dai_encoding_profile` | 0 | yes | — | MCP-only |
+| `update_cdn_configuration` | 0.5 | yes | required | MCP-only |
+| `update_dai_auth_key` | 0.5 | yes | required | MCP-only |
+| `update_dai_encoding_profile` | 0.5 | yes | required | MCP-only |
 | `get_stream_activity` | 0 | — | — | MCP-only |
 | `list_cdn_configurations` | 0 | — | — | MCP-only |
 | `list_dai_auth_keys` | 0 | — | — | MCP-only |
@@ -141,9 +141,9 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `cleanup` | 0 | yes | — | `orbiads prebid cleanup` |
-| `generate_line_items` | 0 | yes | — | `orbiads prebid generate-line-items` |
-| `generate_targeting_keys` | 0 | yes | — | `orbiads prebid generate-targeting-keys` |
-| `update_line_items` | 0 | yes | — | MCP-only |
+| `generate_line_items` | 10 | yes | required | `orbiads prebid generate-line-items` |
+| `generate_targeting_keys` | 1 | yes | required | `orbiads prebid generate-targeting-keys` |
+| `update_line_items` | 5 | yes | required | MCP-only |
 | `inspect_existing_setup` | 0 | — | — | MCP-only |
 | `preview_batch` | 0 | — | — | `orbiads prebid preview` |
 
@@ -177,8 +177,8 @@ _Yield optimization group management and forecast governance._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `create_yield_group` | 0 | yes | — | MCP-only |
-| `update_yield_group` | 0 | yes | — | MCP-only |
+| `create_yield_group` | 0.5 | yes | required | MCP-only |
+| `update_yield_group` | 0.5 | yes | required | MCP-only |
 | `list_forecast_adjustments` | 0 | — | — | MCP-only |
 | `list_forecast_segments` | 0 | — | — | MCP-only |
 | `list_yield_groups` | 0 | — | — | MCP-only |

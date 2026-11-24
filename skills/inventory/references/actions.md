@@ -165,13 +165,13 @@ _Video monetization: ad rule management, content metadata, and content bundle op
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `activate_content_bundle` | 0 | yes | — | MCP-only |
-| `create_ad_rule` | 0 | yes | — | MCP-only |
-| `create_content_bundle` | 0 | yes | — | MCP-only |
-| `deactivate_content_bundle` | 0 | yes | — | MCP-only |
-| `delete_ad_rule` | 0 | yes | — | MCP-only |
-| `update_ad_rule` | 0 | yes | — | MCP-only |
-| `update_content_bundle` | 0 | yes | — | MCP-only |
+| `activate_content_bundle` | 0.5 | yes | required | MCP-only |
+| `create_ad_rule` | 0.5 | yes | required | MCP-only |
+| `create_content_bundle` | 0.5 | yes | required | MCP-only |
+| `deactivate_content_bundle` | 0.5 | yes | required | MCP-only |
+| `delete_ad_rule` | 0.5 | yes | required | MCP-only |
+| `update_ad_rule` | 0.5 | yes | required | MCP-only |
+| `update_content_bundle` | 0.5 | yes | required | MCP-only |
 | `list_ad_rules` | 0 | — | — | MCP-only |
 | `list_content` | 0 | — | — | MCP-only |
 | `list_content_bundles` | 0 | — | — | MCP-only |

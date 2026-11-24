@@ -25,8 +25,8 @@ _Ad Review Center - search, allow, or block Ad Exchange creatives._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `allow_batch` | 0 | yes | — | `orbiads ad-review allow` |
-| `block_batch` | 0 | yes | — | `orbiads ad-review block` |
+| `allow_batch` | 0.5 | yes | required | `orbiads ad-review allow` |
+| `block_batch` | 0.5 | yes | required | `orbiads ad-review block` |
 | `search` | 0 | — | — | `orbiads ad-review search` |
 
 ### `orbiads:campaign` (Epic 110.1)
@@ -123,14 +123,14 @@ _Manage GAM CreativeWrapper entities (AdUnit/Placement level wrapping) through o
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `activate` | 0 | yes | — | `orbiads creative-wrappers activate` |
+| `activate` | 0.25 | yes | required | `orbiads creative-wrappers activate` |
 | `archive` | 0 | yes | — | MCP-only |
-| `create` | 0 | yes | — | `orbiads creative-wrappers create` |
-| `create_preset` | 0 | yes | — | MCP-only |
-| `deactivate` | 0 | yes | — | `orbiads creative-wrappers deactivate` |
-| `provision` | 0 | yes | — | `orbiads creative-wrappers provision` |
-| `set_data_declaration` | 0 | yes | — | `orbiads creative-wrappers set-data-declaration` |
-| `update` | 0 | yes | — | `orbiads creative-wrappers update` |
+| `create` | 0.5 | yes | required | `orbiads creative-wrappers create` |
+| `create_preset` | 0.5 | yes | required | MCP-only |
+| `deactivate` | 0.25 | yes | required | `orbiads creative-wrappers deactivate` |
+| `provision` | 2 | yes | required | `orbiads creative-wrappers provision` |
+| `set_data_declaration` | 0.5 | yes | required | `orbiads creative-wrappers set-data-declaration` |
+| `update` | 0.5 | yes | required | `orbiads creative-wrappers update` |
 | `find_third_party_company` | 0 | — | — | `orbiads creative-wrappers find-company` |
 | `get` | 0 | — | — | `orbiads creative-wrappers get` |
 | `list` | 0 | — | — | `orbiads creative-wrappers list` |
@@ -153,7 +153,7 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 | `archive_native_style` | 0 | yes | — | `orbiads native-styles archive` |
 | `associate_creative` | 0 | yes | — | MCP-only |
 | `bulk_associate_creatives` | 0 | yes | — | MCP-only |
-| `create_creative_set` | 0 | yes | — | MCP-only |
+| `create_creative_set` | 0.5 | yes | required | MCP-only |
 | `deactivate_lica` | 0 | yes | — | `orbiads licas deactivate` |
 | `delete_lica_permanently` | 0 | yes | — | `orbiads licas delete-permanent` |
 | `delete_licas` | 0 | yes | — | `orbiads licas delete` |
@@ -277,13 +277,13 @@ _Live stream ad breaks + event/slate management._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `create` | 0 | yes | — | MCP-only |
-| `create_live_stream_event` | 0 | yes | — | MCP-only |
-| `create_live_stream_slate` | 0 | yes | — | MCP-only |
-| `delete` | 0 | yes | — | MCP-only |
+| `create` | 0.5 | yes | required | MCP-only |
+| `create_live_stream_event` | 0.5 | yes | required | MCP-only |
+| `create_live_stream_slate` | 0.5 | yes | required | MCP-only |
+| `delete` | 0.5 | yes | required | MCP-only |
 | `delete_live_stream_event` | 0 | yes | — | MCP-only |
 | `delete_live_stream_slate` | 0 | yes | — | MCP-only |
-| `patch` | 0 | yes | — | MCP-only |
+| `patch` | 0.5 | yes | required | MCP-only |
 | `update_live_stream_event` | 0 | yes | — | MCP-only |
 | `update_live_stream_slate` | 0 | yes | — | MCP-only |
 | `get` | 0 | — | — | MCP-only |
