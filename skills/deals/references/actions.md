@@ -11,16 +11,16 @@ user-invocable: false
 
 # OrbiAds GAM — Programmatic Deals, Products & Companies: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 92 actions across 6 parent tool(s); CLI coverage 47/92 actions.
+Full per-tool action reference for the [`orbiads-deals`](../SKILL.md) skill. 95 actions across 6 parent tool(s); CLI coverage 50/95 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
-### `orbiads:companies` (Epic 111.3)
+### `orbiads:companies` (Epic 118)
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-- **Mode:** mixed · **Actions:** 19 (8 writes, 11 reads)
-- **Surfaces:** MCP ✅ · CLI 14/19 actions
+- **Mode:** mixed · **Actions:** 22 (9 writes, 13 reads)
+- **Surfaces:** MCP ✅ · CLI 17/22 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 > **Legacy wrappers:** 12 pre-refactor child tool(s) still route to this parent. See [`legacy-tool-mapping.md`](../../../_docs/legacy-tool-mapping.md).
@@ -35,6 +35,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `agencies.update` | 0 | yes | — | `orbiads advertisers agencies update` |
 | `contacts.create` | 0 | yes | — | `orbiads contacts create` |
 | `contacts.update` | 0 | yes | — | `orbiads contacts update` |
+| `partners.update` | 0 | yes | — | `orbiads advertisers partners update` |
 | `advertisers.find` | 0 | — | — | `orbiads advertisers find` |
 | `advertisers.get` | 0 | — | — | `orbiads advertisers get` |
 | `advertisers.list` | 0 | — | — | `orbiads advertisers list` |
@@ -42,6 +43,8 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `all.get` | 0 | — | — | `orbiads advertisers companies get` |
 | `all.list` | 0 | — | — | `orbiads advertisers companies list` |
 | `contacts.list` | 0 | — | — | `orbiads contacts list` |
+| `partners.get` | 0 | — | — | `orbiads advertisers partners get` |
+| `partners.list` | 0 | — | — | `orbiads advertisers partners list` |
 | `rich_media.get` | 0 | — | — | MCP-only |
 | `rich_media.list` | 0 | — | — | MCP-only |
 | `third_party.get` | 0 | — | — | MCP-only |

@@ -339,6 +339,112 @@ def companies_get(
         handle_error(e)
 
 
+# ── partners sub-noun (Story 118-4) ──────────────────────────────────────
+# GAM companies of type PARTNER (publishing partners; = REST v1 `Partner`).
+partners_app = typer.Typer(
+    help="List, read and update partners (companies of type PARTNER, Story 118-4)",
+    no_args_is_help=True,
+)
+app.add_typer(partners_app, name="partners")
+
+
+@partners_app.command("list")
+def partners_list(
+    ctx: typer.Context,
+    name_contains: Optional[str] = typer.Option(
+        None, "--name-contains", help="Partner name substring"
+    ),
+    credit_status: Optional[str] = typer.Option(
+        None,
+        "--credit-status",
+        help="ACTIVE, ON_HOLD, CREDIT_STOP, INACTIVE or BLOCKED (applied client-side to each "
+        "page)",
+    ),
+    since: Optional[str] = typer.Option(
+        None, "--since", help="Modified on/after this ISO 8601 date or date-time"
+    ),
+    order_by: Optional[str] = typer.Option(
+        None, "--order-by", help="Sort: '<field> [asc|desc]' (id, name, lastModifiedDateTime)"
+    ),
+    page_token: Optional[str] = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", help="Max results", min=1, max=500),
+):
+    """List partners (companies of type PARTNER)."""
+    out: OutputContext = ctx.obj
+    params: dict = {"limit": limit}
+    for key, value in (
+        ("name_contains", name_contains),
+        ("credit_status", credit_status),
+        ("since", since),
+        ("order_by", order_by),
+        ("page_token", page_token),
+    ):
+        if value is not None:
+            params[key] = value
+    try:
+        data = get_client().get("/api/gam/partners", params=params)
+        items = data.get("items", []) if isinstance(data, dict) else data
+        render(items, _COMPANY_COLUMNS, out)
+        if isinstance(data, dict) and out.format != "json" and data.get("hasMore"):
+            typer.echo(f"More results: --page-token {data.get('nextPageToken')}", err=True)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@partners_app.command("get")
+def partners_get(
+    ctx: typer.Context,
+    partner_id: str = typer.Argument(..., help="GAM company ID of the partner"),
+):
+    """Get one partner (a company of another type is refused)."""
+    try:
+        data = get_client().get(f"/api/gam/partners/{partner_id}")
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@partners_app.command("update")
+def partners_update(
+    ctx: typer.Context,
+    partner_id: str = typer.Argument(..., help="GAM company ID of the partner"),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file: the fields to change (name, address, email, phone, faxNumber, "
+        "externalId, comment, primaryContactId, appliedTeamIds, creditStatus), or "
+        '{"updates": {...}}',
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Preview the change (current vs new values) without writing"
+    ),
+    confirmation_token: Optional[str] = typer.Option(
+        None,
+        "--confirmation-token",
+        help="Execute exactly the previewed change (token of a --dry-run, same file)",
+    ),
+):
+    """Update a partner (read-modify-write; a company of another type is refused)."""
+    if dry_run and confirmation_token:
+        typer.echo("Error: use either --dry-run or --confirmation-token, not both.", err=True)
+        raise typer.Exit(code=2)
+    payload = _load_json_payload(file)
+    updates = payload.get("updates", payload) if isinstance(payload, dict) else payload
+    body: dict = {"updates": updates}
+    if dry_run:
+        body["dryRun"] = True
+    if confirmation_token:
+        body["confirmationToken"] = confirmation_token
+    try:
+        data = get_client().patch(f"/api/gam/partners/{partner_id}", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
 # ── agencies sub-noun ─────────────────────────────────────────────────────
 agencies_app = typer.Typer(help="Manage GAM agencies (Story 62.4)", no_args_is_help=True)
 app.add_typer(agencies_app, name="agencies")

@@ -154,6 +154,9 @@
     "advertisers find-or-create",
     "advertisers get",
     "advertisers list",
+    "advertisers partners get",
+    "advertisers partners list",
+    "advertisers partners update",
     "advertisers rich-media-get",
     "advertisers rich-media-list",
     "advertisers third-party-get",
@@ -542,6 +545,18 @@
         "all.get": {
           "rest": "GET /api/gam/companies/{company_id}",
           "cli": "advertisers companies get"
+        },
+        "partners.list": {
+          "rest": "GET /api/gam/partners",
+          "cli": "advertisers partners list"
+        },
+        "partners.get": {
+          "rest": "GET /api/gam/partners/{partner_id}",
+          "cli": "advertisers partners get"
+        },
+        "partners.update": {
+          "rest": "PATCH /api/gam/partners/{partner_id}",
+          "cli": "advertisers partners update"
         }
       },
       "exempt": "Story 68.7a parent>child MCP dispatcher (Epic 68 Phase B). Legacy wrappers under area=advertisers/agencies/contacts keep their existing FULL CLI parity during coexistence; symmetric parent REST/CLI is deferred to the Epic 68 migration close-out story.",

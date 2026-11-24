@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **505 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **508 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -28,7 +28,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | 3 / 10 / 3 | `campaign_ops.py:694` |
-| `companies` | 111.3 | 19 | ✍️ mixed/write | 11 / 7 / 1 | `advertisers.py:591` |
+| `companies` | 118 | 22 | ✍️ mixed/write | 13 / 8 / 1 | `advertisers.py:680` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1247` |
 | `creative_qa` | 68.6 | 7 | 📖 read | 7 / 0 / 0 | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | 5 / 7 / 1 | `creative_wrappers.py:346` |
@@ -193,11 +193,11 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 | `archive` | 0 | ⚠️ destructive | — |
 | `archive_eligible` | 0 | ⚠️ destructive | — |
 
-### `companies` — Epic 111.3
+### `companies` — Epic 118
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Server-side implementation:** `advertisers.py` · **Actions:** 19 · **Mode:** mixed (read + write)
+**Server-side implementation:** `advertisers.py` · **Actions:** 22 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -222,6 +222,9 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `third_party.get` | 0 | 📖 read | — |
 | `all.list` | 0 | 📖 read | — |
 | `all.get` | 0 | 📖 read | — |
+| `partners.list` | 0 | 📖 read | — |
+| `partners.get` | 0 | 📖 read | — |
+| `partners.update` | 0 | ✍️ write | — |
 
 ### `creative_assets` — Epic 68.7d
 

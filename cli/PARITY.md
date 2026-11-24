@@ -74,7 +74,7 @@
 
 | Tool | Status | REST | CLI | Sub-actions |
 |------|--------|------|-----|-------------|
-| `companies` | EXEMPT | NO-REST | — | `all.list`: GET /api/gam/companies / `advertisers companies list`<br>`all.get`: GET /api/gam/companies/{company_id} / `advertisers companies get` |
+| `companies` | EXEMPT | NO-REST | — | `all.list`: GET /api/gam/companies / `advertisers companies list`<br>`all.get`: GET /api/gam/companies/{company_id} / `advertisers companies get`<br>`partners.list`: GET /api/gam/partners / `advertisers partners list`<br>`partners.get`: GET /api/gam/partners/{partner_id} / `advertisers partners get`<br>`partners.update`: PATCH /api/gam/partners/{partner_id} / `advertisers partners update` |
 | `create_advertiser` | FULL | POST /api/gam/advertisers | `advertisers create` | — |
 | `create_agency` | FULL | POST /api/gam/agencies | `advertisers agencies create` | — |
 | `find_advertiser` | FULL | GET /api/gam/advertisers/search | `advertisers find` | — |
