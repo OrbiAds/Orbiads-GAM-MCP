@@ -1,4 +1,8 @@
-"""MCM commands: earnings (Story 88.1) and child publishers (Story 118-1).
+"""MCM commands: earnings (Story 88.1) and child publishers (Stories 118-1, 118-2).
+
+``invite`` (Story 118-2) creates a child publisher: GAM emails the invitation, so it is two-step
+like the agreement actions (server preview of the email, then prompt / ``--yes``). ``update``
+edits the editable fields (one call, or ``--dry-run`` / ``--confirmation-token``).
 
 ``mcm child-publishers list|get`` read the child publishers (GAM companies of type
 CHILD_PUBLISHER with their delegation / invitation / account status). ``withdraw``,
@@ -41,8 +45,8 @@ def mcm_earnings(
 
 
 child_app = typer.Typer(
-    help="MCM child publishers: list, read, withdraw, renegotiate, resend invitation "
-    "(Story 118-1)",
+    help="MCM child publishers: list, read, invite, update, withdraw, renegotiate, resend "
+    "invitation (Stories 118-1, 118-2)",
     no_args_is_help=True,
 )
 app.add_typer(child_app, name="child-publishers")
@@ -132,6 +136,90 @@ def _agreement(
             prompt=prompt,
             confirm_fn=confirm,
             two_step=True,
+        )
+        render_detail(data, ctx.obj)
+    except CliApiError as exc:
+        handle_error(exc)
+
+
+def _load_json_object(path: str) -> dict:
+    import json
+    import os
+
+    if not os.path.isfile(path):
+        typer.echo(f"Error: file not found: {path}", err=True)
+        raise typer.Exit(code=2)
+    try:
+        with open(path, encoding="utf-8") as handle:
+            data = json.load(handle)
+    except json.JSONDecodeError as exc:
+        typer.echo(f"Error: invalid JSON in {path}: {exc}", err=True)
+        raise typer.Exit(code=2) from exc
+    if not isinstance(data, dict):
+        typer.echo("Error: the JSON file must hold one object.", err=True)
+        raise typer.Exit(code=2)
+    return data
+
+
+@child_app.command("invite")
+def child_publishers_invite(
+    ctx: typer.Context,
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file: {name, email, delegationType (MANAGE_ACCOUNT | MANAGE_INVENTORY), "
+        "childNetworkCode?, proposedRevenueShareMillipercent? (Manage Account), sellerId? "
+        "(Manage Inventory), address?, phone?, faxNumber?, externalId?, comment?}",
+    ),
+    yes: bool = typer.Option(False, "--yes", "-y"),
+) -> None:
+    """Invite a child publisher (createCompanies): GAM EMAILS the invitation. 0.5 credit."""
+    payload = _load_json_object(file)
+    email = payload.get("email", "?")
+    _agreement(
+        ctx,
+        lambda c, body: c.post("/api/gam/mcm/child-publishers", json=body),
+        payload,
+        yes,
+        f"GAM will email an MCM invitation to {email} (a third party, cannot be recalled). "
+        "Send it?",
+    )
+
+
+@child_app.command("update")
+def child_publishers_update(
+    ctx: typer.Context,
+    company_id: str = typer.Argument(..., help="GAM company id of the child publisher"),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file: the fields to change (name, email, address, phone, faxNumber, "
+        'externalId, comment, sellerId) or {"updates": {...}}',
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Preview the change (current vs new values) without writing"
+    ),
+    confirmation_token: str | None = typer.Option(
+        None,
+        "--confirmation-token",
+        help="Execute exactly the previewed change (token of a --dry-run, same file)",
+    ),
+) -> None:
+    """Update a child publisher's editable fields (delegation / revenue share: renegotiate)."""
+    if dry_run and confirmation_token:
+        typer.echo("Error: use either --dry-run or --confirmation-token, not both.", err=True)
+        raise typer.Exit(code=2)
+    payload = _load_json_object(file)
+    body: dict = {"updates": payload.get("updates", payload)}
+    if dry_run:
+        body["dryRun"] = True
+    if confirmation_token:
+        body["confirmationToken"] = confirmation_token
+    try:
+        data = get_client().patch(
+            f"/api/gam/mcm/child-publishers/{quote(company_id, safe='')}", json=body
         )
         render_detail(data, ctx.obj)
     except CliApiError as exc:

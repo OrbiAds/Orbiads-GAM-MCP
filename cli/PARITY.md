@@ -74,7 +74,7 @@
 
 | Tool | Status | REST | CLI | Sub-actions |
 |------|--------|------|-----|-------------|
-| `companies` | EXEMPT | NO-REST | — | `all.list`: GET /api/gam/companies / `advertisers companies list`<br>`all.get`: GET /api/gam/companies/{company_id} / `advertisers companies get`<br>`partners.list`: GET /api/gam/partners / `advertisers partners list`<br>`partners.get`: GET /api/gam/partners/{partner_id} / `advertisers partners get`<br>`partners.update`: PATCH /api/gam/partners/{partner_id} / `advertisers partners update` |
+| `companies` | EXEMPT | NO-REST | — | `all.list`: GET /api/gam/companies / `advertisers companies list`<br>`all.get`: GET /api/gam/companies/{company_id} / `advertisers companies get`<br>`all.create`: POST /api/gam/companies / `advertisers companies create`<br>`partners.list`: GET /api/gam/partners / `advertisers partners list`<br>`partners.get`: GET /api/gam/partners/{partner_id} / `advertisers partners get`<br>`partners.update`: PATCH /api/gam/partners/{partner_id} / `advertisers partners update` |
 | `create_advertiser` | FULL | POST /api/gam/advertisers | `advertisers create` | — |
 | `create_agency` | FULL | POST /api/gam/agencies | `advertisers agencies create` | — |
 | `find_advertiser` | FULL | GET /api/gam/advertisers/search | `advertisers find` | — |
@@ -335,7 +335,7 @@
 
 | Tool | Status | REST | CLI | Sub-actions |
 |------|--------|------|-----|-------------|
-| `mcm` | FULL | GET /api/gam/mcm/earnings | `mcm earnings` | `earnings_fetch`: GET /api/gam/mcm/earnings / `mcm earnings`<br>`list_child_publishers`: GET /api/gam/mcm/child-publishers / `mcm child-publishers list`<br>`get_child_publisher`: GET /api/gam/mcm/child-publishers/{company_id} / `mcm child-publishers get`<br>`withdraw_child_publisher`: POST /api/gam/mcm/child-publishers/withdraw / `mcm child-publishers withdraw`<br>`renegotiate_child_publisher`: POST /api/gam/mcm/child-publishers/renegotiate / `mcm child-publishers renegotiate`<br>`resend_child_publisher_invitation`: POST /api/gam/mcm/child-publishers/resend-invitation / `mcm child-publishers resend-invitation` |
+| `mcm` | FULL | GET /api/gam/mcm/earnings | `mcm earnings` | `earnings_fetch`: GET /api/gam/mcm/earnings / `mcm earnings`<br>`list_child_publishers`: GET /api/gam/mcm/child-publishers / `mcm child-publishers list`<br>`get_child_publisher`: GET /api/gam/mcm/child-publishers/{company_id} / `mcm child-publishers get`<br>`invite_child_publisher`: POST /api/gam/mcm/child-publishers / `mcm child-publishers invite`<br>`update_child_publisher`: PATCH /api/gam/mcm/child-publishers/{company_id} / `mcm child-publishers update`<br>`withdraw_child_publisher`: POST /api/gam/mcm/child-publishers/withdraw / `mcm child-publishers withdraw`<br>`renegotiate_child_publisher`: POST /api/gam/mcm/child-publishers/renegotiate / `mcm child-publishers renegotiate`<br>`resend_child_publisher_invitation`: POST /api/gam/mcm/child-publishers/resend-invitation / `mcm child-publishers resend-invitation` |
 
 ### network
 

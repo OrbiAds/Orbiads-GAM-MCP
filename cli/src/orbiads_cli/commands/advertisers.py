@@ -254,11 +254,12 @@ def third_party_get(
         handle_error(e)
 
 
-# ── companies sub-noun (Story 117-4) ─────────────────────────────────────
-# Read-only view of EVERY Company.Type (HOUSE_*, AD_NETWORK, PARTNER, CHILD_PUBLISHER,
-# VIEWABILITY_PROVIDER included). Writes stay under `advertisers` / `agencies`.
+# ── companies sub-noun (Story 117-4, create: Story 118-2) ────────────────
+# View of EVERY Company.Type (HOUSE_*, AD_NETWORK, PARTNER, CHILD_PUBLISHER,
+# VIEWABILITY_PROVIDER included) + `create` of one company of a creatable type.
 companies_app = typer.Typer(
-    help="List and read companies of any type (read-only, Story 117-4)", no_args_is_help=True
+    help="List, read and create companies of any type (Stories 117-4, 118-2)",
+    no_args_is_help=True,
 )
 app.add_typer(companies_app, name="companies")
 
@@ -440,6 +441,51 @@ def partners_update(
         body["confirmationToken"] = confirmation_token
     try:
         data = get_client().patch(f"/api/gam/partners/{partner_id}", json=body)
+        render_detail(data, ctx.obj)
+    except CliApiError as e:
+        handle_error(e)
+
+
+@companies_app.command("create")
+def companies_create(
+    ctx: typer.Context,
+    type_: str = typer.Option(
+        ...,
+        "--type",
+        help="ADVERTISER, AGENCY, HOUSE_ADVERTISER, HOUSE_AGENCY, AD_NETWORK or PARTNER "
+        "(a CHILD_PUBLISHER is invited with `orbiads mcm child-publishers invite`)",
+    ),
+    file: str = typer.Option(
+        ...,
+        "--file",
+        "-f",
+        help="JSON file: {name, address?, email?, phone?, faxNumber?, externalId?, comment?, "
+        "creditStatus?, appliedTeamIds?, appliedLabels?}",
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Preview the company without creating it (free)"
+    ),
+    confirmation_token: Optional[str] = typer.Option(
+        None,
+        "--confirmation-token",
+        help="Create exactly the previewed company (token of a --dry-run, same file)",
+    ),
+):
+    """Create one company of the given type (0.5 credit; a dry run is free)."""
+    if dry_run and confirmation_token:
+        typer.echo("Error: use either --dry-run or --confirmation-token, not both.", err=True)
+        raise typer.Exit(code=2)
+    payload = _load_json_payload(file)
+    if not isinstance(payload, dict):
+        typer.echo("Error: the JSON file must hold one object.", err=True)
+        raise typer.Exit(code=2)
+    body: dict = {**payload, "type": type_.upper()}
+    if dry_run:
+        body["dryRun"] = True
+    if confirmation_token:
+        body["confirmationToken"] = confirmation_token
+    try:
+        data = get_client().post("/api/gam/companies", json=body)
         render_detail(data, ctx.obj)
     except CliApiError as e:
         handle_error(e)

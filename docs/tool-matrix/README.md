@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **508 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **511 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -28,7 +28,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `billing` | 68.5 | 2 | 📖 read | 2 / 0 / 0 | `billing.py:77` |
 | `blueprint` | 78.13 | 20 | ✍️ mixed/write | 10 / 10 / 0 | `blueprint.py:387` |
 | `campaign` | 110.1 | 16 | ✍️ mixed/write | 3 / 10 / 3 | `campaign_ops.py:694` |
-| `companies` | 118 | 22 | ✍️ mixed/write | 13 / 8 / 1 | `advertisers.py:680` |
+| `companies` | 118 | 23 | ✍️ mixed/write | 13 / 9 / 1 | `advertisers.py:724` |
 | `creative_assets` | 68.7d | 22 | ✍️ mixed/write | 1 / 21 / 0 | `creatives.py:1247` |
 | `creative_qa` | 68.6 | 7 | 📖 read | 7 / 0 / 0 | `creative_qa.py:213` |
 | `creative_wrapper_skill` | 76.1 | 13 | ✍️ mixed/write | 5 / 7 / 1 | `creative_wrappers.py:346` |
@@ -43,7 +43,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
-| `mcm` | 88.1 | 6 | ✍️ mixed/write | 3 / 2 / 1 | `mcm.py:220` |
+| `mcm` | 88.1 | 8 | ✍️ mixed/write | 3 / 4 / 1 | `mcm.py:308` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | 3 / 3 / 0 | `network.py:268` |
 | `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:276` |
@@ -197,7 +197,7 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 _Companies dispatcher — single entry point for advertisers, agencies, contacts, and rich media partners._
 
-**Server-side implementation:** `advertisers.py` · **Actions:** 22 · **Mode:** mixed (read + write)
+**Server-side implementation:** `advertisers.py` · **Actions:** 23 · **Mode:** mixed (read + write)
 
 **Legacy wrappers:** 12 deprecated child tool(s) still in catalogue and routing to this parent — see [`_docs/legacy-tool-mapping.md`](../../_docs/legacy-tool-mapping.md).
 
@@ -222,6 +222,7 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `third_party.get` | 0 | 📖 read | — |
 | `all.list` | 0 | 📖 read | — |
 | `all.get` | 0 | 📖 read | — |
+| `all.create` | 0 | ✍️ write | — |
 | `partners.list` | 0 | 📖 read | — |
 | `partners.get` | 0 | 📖 read | — |
 | `partners.update` | 0 | ✍️ write | — |
@@ -630,13 +631,15 @@ _Live stream ad breaks + event/slate management._
 
 _Multi-Customer Management: earnings, child publishers and their agreements._
 
-**Server-side implementation:** `mcm.py` · **Actions:** 6 · **Mode:** mixed (read + write)
+**Server-side implementation:** `mcm.py` · **Actions:** 8 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `earnings_fetch` | 0 | 📖 read | — |
 | `list_child_publishers` | 0 | 📖 read | — |
 | `get_child_publisher` | 0 | 📖 read | — |
+| `invite_child_publisher` | 0 | ✍️ write | — |
+| `update_child_publisher` | 0 | ✍️ write | — |
 | `withdraw_child_publisher` | 0 | ⚠️ destructive | — |
 | `renegotiate_child_publisher` | 0 | ✍️ write | — |
 | `resend_child_publisher_invitation` | 0 | ✍️ write | — |

@@ -147,6 +147,7 @@
     "advertisers agencies list",
     "advertisers agencies update",
     "advertisers archive",
+    "advertisers companies create",
     "advertisers companies get",
     "advertisers companies list",
     "advertisers create",
@@ -339,9 +340,11 @@
     "live-stream list",
     "live-stream patch",
     "mcm child-publishers get",
+    "mcm child-publishers invite",
     "mcm child-publishers list",
     "mcm child-publishers renegotiate",
     "mcm child-publishers resend-invitation",
+    "mcm child-publishers update",
     "mcm child-publishers withdraw",
     "mcm earnings",
     "native-styles archive",
@@ -545,6 +548,10 @@
         "all.get": {
           "rest": "GET /api/gam/companies/{company_id}",
           "cli": "advertisers companies get"
+        },
+        "all.create": {
+          "rest": "POST /api/gam/companies",
+          "cli": "advertisers companies create"
         },
         "partners.list": {
           "rest": "GET /api/gam/partners",
@@ -2685,6 +2692,14 @@
         "get_child_publisher": {
           "rest": "GET /api/gam/mcm/child-publishers/{company_id}",
           "cli": "mcm child-publishers get"
+        },
+        "invite_child_publisher": {
+          "rest": "POST /api/gam/mcm/child-publishers",
+          "cli": "mcm child-publishers invite"
+        },
+        "update_child_publisher": {
+          "rest": "PATCH /api/gam/mcm/child-publishers/{company_id}",
+          "cli": "mcm child-publishers update"
         },
         "withdraw_child_publisher": {
           "rest": "POST /api/gam/mcm/child-publishers/withdraw",

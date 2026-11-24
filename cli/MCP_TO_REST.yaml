@@ -28,6 +28,7 @@ tools:
       # Story 117-4 — read-only area `all` (every Company.Type), added directly on the parent.
       "all.list": {rest: "GET /api/gam/companies", cli: "advertisers companies list"}
       "all.get": {rest: "GET /api/gam/companies/{company_id}", cli: "advertisers companies get"}
+      "all.create": {rest: "POST /api/gam/companies", cli: "advertisers companies create"}
       # Story 118-4 — area `partners` (Company type PARTNER = REST v1 Partner), added directly on the parent.
       "partners.list": {rest: "GET /api/gam/partners", cli: "advertisers partners list"}
       "partners.get": {rest: "GET /api/gam/partners/{partner_id}", cli: "advertisers partners get"}
@@ -86,6 +87,8 @@ tools:
       # Story 118-1 — MCM child publishers: reads + agreement actions (performCompanyAction).
       list_child_publishers: {rest: "GET /api/gam/mcm/child-publishers", cli: "mcm child-publishers list"}
       get_child_publisher: {rest: "GET /api/gam/mcm/child-publishers/{company_id}", cli: "mcm child-publishers get"}
+      invite_child_publisher: {rest: "POST /api/gam/mcm/child-publishers", cli: "mcm child-publishers invite"}
+      update_child_publisher: {rest: "PATCH /api/gam/mcm/child-publishers/{company_id}", cli: "mcm child-publishers update"}
       withdraw_child_publisher: {rest: "POST /api/gam/mcm/child-publishers/withdraw", cli: "mcm child-publishers withdraw"}
       renegotiate_child_publisher: {rest: "POST /api/gam/mcm/child-publishers/renegotiate", cli: "mcm child-publishers renegotiate"}
       resend_child_publisher_invitation: {rest: "POST /api/gam/mcm/child-publishers/resend-invitation", cli: "mcm child-publishers resend-invitation"}
