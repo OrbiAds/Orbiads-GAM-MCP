@@ -28,13 +28,13 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `advertisers.archive_advertiser` | 0.5 | yes | required | MCP-only |
-| `advertisers.create` | 0 | yes | — | `orbiads advertisers create` |
-| `advertisers.find_or_create` | 0 | yes | — | `orbiads advertisers find-or-create` |
+| `advertisers.create` | 0.5 | yes | required | `orbiads advertisers create` |
+| `advertisers.find_or_create` | 0.5 | yes | required | `orbiads advertisers find-or-create` |
 | `advertisers.update` | 0 | yes | — | `orbiads advertisers update` |
-| `agencies.create` | 0 | yes | — | `orbiads advertisers agencies create` |
+| `agencies.create` | 0.5 | yes | required | `orbiads advertisers agencies create` |
 | `agencies.update` | 0 | yes | — | `orbiads advertisers agencies update` |
 | `all.create` | 0.5 | yes | required | `orbiads advertisers companies create` |
-| `contacts.create` | 0 | yes | — | `orbiads contacts create` |
+| `contacts.create` | 0.5 | yes | required | `orbiads contacts create` |
 | `contacts.update` | 0 | yes | — | `orbiads contacts update` |
 | `partners.update` | 0 | yes | — | `orbiads advertisers partners update` |
 | `advertisers.find` | 0 | — | — | `orbiads advertisers find` |
@@ -91,11 +91,11 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `adcp_create` | 0 | yes | — | MCP-only |
 | `archive_proposal` | 0 | yes | — | MCP-only |
 | `archive_proposal_line_items` | 0 | yes | — | MCP-only |
-| `create_auction` | 0 | yes | — | `orbiads programmatic auctions create` |
-| `create_deal` | 0 | yes | — | `orbiads programmatic deals create` |
-| `create_makegoods` | 3 | yes | required | MCP-only |
-| `create_proposal` | 5 | yes | required | MCP-only |
-| `create_proposal_line_items` | 3 | yes | required | MCP-only |
+| `create_auction` | 1 | yes | — | `orbiads programmatic auctions create` |
+| `create_deal` | 5 (PMP), else by deal size | yes | — | `orbiads programmatic deals create` |
+| `create_makegoods` | 3 per makegood | yes | — | MCP-only |
+| `create_proposal` | 5 | yes | — | MCP-only |
+| `create_proposal_line_items` | 3 per proposal line item | yes | — | MCP-only |
 | `discard_proposal_drafts` | 0 | yes | — | `orbiads programmatic proposals discard-drafts` |
 | `edit_proposal_for_negotiation` | 0 | yes | — | MCP-only |
 | `pause_proposal` | 0 | yes | — | `orbiads programmatic proposals pause` |
@@ -111,10 +111,10 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `terminate_proposal_negotiations` | 0 | yes | — | MCP-only |
 | `unarchive_proposal` | 0 | yes | — | `orbiads programmatic proposals unarchive` |
 | `unarchive_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items unarchive` |
-| `update_auction` | 0 | yes | — | `orbiads programmatic auctions update` |
-| `update_deal` | 0 | yes | — | `orbiads programmatic deals update` |
-| `update_proposal` | 2 | yes | required | MCP-only |
-| `update_proposal_line_items` | 1 | yes | required | MCP-only |
+| `update_auction` | 1 | yes | — | `orbiads programmatic auctions update` |
+| `update_deal` | 2 | yes | — | `orbiads programmatic deals update` |
+| `update_proposal` | 2 | yes | — | MCP-only |
+| `update_proposal_line_items` | 1 per proposal line item | yes | — | MCP-only |
 | `adcp_preview` | 0 | — | — | MCP-only |
 | `adcp_validate` | 0 | — | — | MCP-only |
 | `estimate_deal_cost` | 0 | — | — | MCP-only |
@@ -160,7 +160,7 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `archive` | 0 | yes | — | `orbiads products archive` |
-| `create` | 0 | yes | — | `orbiads products create` |
+| `create` | 1 (token only with status active) | yes | — | `orbiads products create` |
 | `update` | 0 | yes | — | `orbiads products update` |
 | `get` | 0 | — | — | `orbiads products get` |
 | `get_adcp` | 0 | — | — | MCP-only |

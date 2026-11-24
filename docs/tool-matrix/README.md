@@ -117,7 +117,7 @@ _OrbiAds audit suite — single entry point for audit sub-actions._
 |---|---|---|---|
 | `hygiene_check` | 0.5 | 📖 read | — |
 | `ops_diagnostic` | 1 | 📖 read | — |
-| `standards_baseline` | 0 | 📖 read | — |
+| `standards_baseline` | 4-5 by framework | 📖 read | — |
 | `wrapper_coverage` | 1 | 📖 read | — |
 | `estimate_cost` | 0 | 📖 read | — |
 | `export_authoring` | 0 | 📖 read | — |
@@ -178,16 +178,16 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 |---|---|---|---|
 | `read` | 0 | 📖 read | — |
 | `dry_run` | 0 | 📖 read | — |
-| `deploy` | 0 | ✍️ write | — |
+| `deploy` | 5 | ✍️ write | ✅ required |
 | `create_draft` | 0 | ✍️ write | — |
-| `update` | 0 | ✍️ write | — |
+| `update` | 2 | ✍️ write | ✅ required |
 | `ensure_template` | 0 | ✍️ write | — |
 | `create_native_style` | 0.5 | ✍️ write | ✅ required |
-| `create_line_items_batch` | 1 | ✍️ write | ✅ required |
+| `create_line_items_batch` | 1 per ad unit | ✍️ write | ✅ required |
 | `create_licas` | 0 | ✍️ write | — |
-| `create_display` | 0 | ✍️ write | — |
+| `create_display` | 1 per line item (creatives x ad units) | ✍️ write | ✅ required |
 | `plan_deployment` | 0 | 📖 read | — |
-| `deploy_media` | 1 | ✍️ write | ✅ required |
+| `deploy_media` | 1 per line item | ✍️ write | ✅ required |
 | `rollback` | 0 | ⚠️ destructive | — |
 | `pause` | 0 | ✍️ write | — |
 | `archive` | 0 | ⚠️ destructive | — |
@@ -206,15 +206,15 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `advertisers.list` | 0 | 📖 read | — |
 | `advertisers.get` | 0 | 📖 read | — |
 | `advertisers.find` | 0 | 📖 read | — |
-| `advertisers.create` | 0 | ✍️ write | — |
+| `advertisers.create` | 0.5 | ✍️ write | ✅ required |
 | `advertisers.update` | 0 | ✍️ write | — |
-| `advertisers.find_or_create` | 0 | ✍️ write | — |
+| `advertisers.find_or_create` | 0.5 | ✍️ write | ✅ required |
 | `advertisers.archive_advertiser` | 0.5 | ⚠️ destructive | ✅ required |
 | `agencies.list` | 0 | 📖 read | — |
-| `agencies.create` | 0 | ✍️ write | — |
+| `agencies.create` | 0.5 | ✍️ write | ✅ required |
 | `agencies.update` | 0 | ✍️ write | — |
 | `contacts.list` | 0 | 📖 read | — |
-| `contacts.create` | 0 | ✍️ write | — |
+| `contacts.create` | 0.5 | ✍️ write | ✅ required |
 | `contacts.update` | 0 | ✍️ write | — |
 | `rich_media.list` | 0 | 📖 read | — |
 | `rich_media.get` | 0 | 📖 read | — |
@@ -237,27 +237,27 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
-| `bulk_upload` | 0 | ✍️ write | — |
-| `upload_from_url` | 0 | ✍️ write | — |
-| `upload_and_associate` | 0 | ✍️ write | — |
-| `upload_html5_zip` | 0 | ✍️ write | — |
-| `create_image` | 0 | ✍️ write | — |
-| `create_html5` | 0 | ✍️ write | — |
-| `create_html5_from_files` | 0 | ✍️ write | — |
-| `create_video` | 0 | ✍️ write | — |
-| `create_audio` | 0 | ✍️ write | — |
+| `bulk_upload` | 0.5 per file | ✍️ write | ✅ required |
+| `upload_from_url` | 0.5 | ✍️ write | — |
+| `upload_and_associate` | 0.5 | ✍️ write | ✅ required |
+| `upload_html5_zip` | 0.5 | ✍️ write | ✅ required |
+| `create_image` | 0.5 | ✍️ write | ✅ required |
+| `create_html5` | 0.5 | ✍️ write | ✅ required |
+| `create_html5_from_files` | 0.5 | ✍️ write | ✅ required |
+| `create_video` | 0.5 | ✍️ write | ✅ required |
+| `create_audio` | 0.5 | ✍️ write | ✅ required |
 | `create_hosted_video` | 0 | ✍️ write | — |
 | `create_hosted_audio` | 0 | ✍️ write | — |
-| `create_vast_redirect` | 0 | ✍️ write | — |
+| `create_vast_redirect` | 0.5 | ✍️ write | ✅ required |
 | `create_internal_redirect` | 0 | ✍️ write | — |
-| `create_image_redirect` | 0 | ✍️ write | — |
+| `create_image_redirect` | 0.5 | ✍️ write | ✅ required |
 | `create_click_tracking` | 0 | ✍️ write | — |
 | `create_custom` | 0 | ✍️ write | — |
 | `create_aspect_ratio_image` | 0 | ✍️ write | — |
-| `create_companion` | 0 | ✍️ write | — |
-| `create_third_party` | 0 | ✍️ write | — |
-| `create_classic_native` | 0 | ✍️ write | — |
-| `compress_image` | 0 | ✍️ write | — |
+| `create_companion` | 0.5 | ✍️ write | ✅ required |
+| `create_third_party` | 0.5 | ✍️ write | ✅ required |
+| `create_classic_native` | 0.5 | ✍️ write | ✅ required |
+| `compress_image` | 1 | ✍️ write | ✅ required |
 | `get_video_transcode_status` | 0 | 📖 read | — |
 
 ### `creative_qa` — Epic 68.6
@@ -380,18 +380,18 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 |---|---|---|---|
 | `list_deals` | 0 | 📖 read | — |
 | `get_deal` | 0 | 📖 read | — |
-| `create_deal` | 0 | ✍️ write | — |
-| `update_deal` | 0 | ✍️ write | — |
+| `create_deal` | 5 (PMP), else by deal size | ✍️ write | — |
+| `update_deal` | 2 | ✍️ write | — |
 | `list_auctions` | 0 | 📖 read | — |
 | `get_auction` | 0 | 📖 read | — |
-| `create_auction` | 0 | ✍️ write | — |
-| `update_auction` | 0 | ✍️ write | — |
+| `create_auction` | 1 | ✍️ write | — |
+| `update_auction` | 1 | ✍️ write | — |
 | `list_buyers` | 0 | 📖 read | — |
 | `get_buyer` | 0 | 📖 read | — |
 | `get_proposal` | 0 | 📖 read | — |
 | `list_proposals` | 0 | 📖 read | — |
-| `create_proposal` | 5 | ✍️ write | ✅ required |
-| `update_proposal` | 2 | ✍️ write | ✅ required |
+| `create_proposal` | 5 | ✍️ write | — |
+| `update_proposal` | 2 | ✍️ write | — |
 | `archive_proposal` | 0 | ⚠️ destructive | — |
 | `request_buyer_acceptance` | 0 | ✍️ write | — |
 | `reserve_proposal` | 0 | ✍️ write | — |
@@ -405,8 +405,8 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `push_proposal_to_order` | 0 | ✍️ write | — |
 | `get_marketplace_comments` | 0 | 📖 read | — |
 | `list_proposal_line_items` | 0 | 📖 read | — |
-| `create_proposal_line_items` | 3 | ✍️ write | ✅ required |
-| `update_proposal_line_items` | 1 | ✍️ write | ✅ required |
+| `create_proposal_line_items` | 3 per proposal line item | ✍️ write | — |
+| `update_proposal_line_items` | 1 per proposal line item | ✍️ write | — |
 | `archive_proposal_line_items` | 0 | ⚠️ destructive | — |
 | `get_proposal_line_item` | 0 | 📖 read | — |
 | `pause_proposal_line_items` | 0 | ✍️ write | — |
@@ -414,7 +414,7 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `reserve_proposal_line_items` | 0 | ✍️ write | — |
 | `release_proposal_line_items` | 0 | ✍️ write | — |
 | `unarchive_proposal_line_items` | 0 | ✍️ write | — |
-| `create_makegoods` | 3 | ✍️ write | ✅ required |
+| `create_makegoods` | 3 per makegood | ✍️ write | — |
 | `estimate_deal_cost` | 0 | 📖 read | — |
 | `adcp_validate` | 0 | 📖 read | — |
 | `adcp_preview` | 0 | 📖 read | — |
@@ -547,7 +547,7 @@ _Parent inventory tool for Story 68.6._
 |---|---|---|---|
 | `get_ad_unit_tree` | 0 | 📖 read | — |
 | `audit_inventory` | 0 | 📖 read | — |
-| `create_ad_units_batch` | 0.5 | ✍️ write | ✅ required |
+| `create_ad_units_batch` | 0.5 per new ad unit | ✍️ write | ✅ required |
 | `generate_ads_json` | 0 | 📖 read | — |
 | `generate_inventory_blueprint` | 0 | 📖 read | — |
 | `push_inventory_blueprint` | 0.5 | ✍️ write | ✅ required |
@@ -592,17 +592,17 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `update` | 0 | ✍️ write | — |
 | `update_batch` | 0 | ✍️ write | — |
 | `update_targeting` | 0 | ✍️ write | — |
-| `duplicate` | 0 | ✍️ write | — |
+| `duplicate` | 1 | ✍️ write | ✅ required |
 | `verify` | 0 | 📖 read | — |
 | `approve` | 0 | ✍️ write | — |
 | `archive` | 0 | ⚠️ destructive | — |
-| `create_batch` | 0 | ✍️ write | — |
+| `create_batch` | 1 | ✍️ write | ✅ required |
 | `activate_batch` | 0 | ✍️ write | — |
 | `pause_batch` | 0 | ✍️ write | — |
-| `create` | 0 | ✍️ write | — |
-| `create_adexchange` | 0 | ✍️ write | — |
-| `create_open_bidding` | 0 | ✍️ write | — |
-| `create_preferred_deal` | 0 | ✍️ write | — |
+| `create` | 1 | ✍️ write | ✅ required |
+| `create_adexchange` | 1 | ✍️ write | ✅ required |
+| `create_open_bidding` | 1 | ✍️ write | ✅ required |
+| `create_preferred_deal` | 1 | ✍️ write | ✅ required |
 | `list_private_deals` | 0 | 📖 read | — |
 
 ### `live_stream` — Epic 98
@@ -674,12 +674,12 @@ _Parent orders tool for non-lifecycle Order operations._
 | `list_delivering` | 0 | 📖 read | — |
 | `get` | 0 | 📖 read | — |
 | `list` | 0 | 📖 read | — |
-| `create` | 0 | ✍️ write | — |
+| `create` | 0.5 | ✍️ write | ✅ required |
 | `archive` | 0 | ⚠️ destructive | — |
 | `approve` | 0 | ✍️ write | — |
 | `verify_setup` | 0 | 📖 read | — |
 | `update` | 0 | ✍️ write | — |
-| `find_or_create` | 0 | ✍️ write | — |
+| `find_or_create` | 0.5 | ✍️ write | ✅ required |
 | `list_users` | 0 | 📖 read | — |
 | `list_roles` | 0 | 📖 read | — |
 
@@ -739,8 +739,8 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
-| `get_preview_urls` | 0.25 | 📖 read | — |
-| `get_campaign_preview_urls` | 0.25 | 📖 read | — |
+| `get_preview_urls` | 0.25 per preview (manual free; +1 Google blank in soap) | 📖 read | — |
+| `get_campaign_preview_urls` | 0.25 per preview (manual free; +1 Google blank in soap) | 📖 read | — |
 | `check_creative_coverage` | 0 | 📖 read | — |
 
 ### `products` — Epic 68.8
@@ -753,7 +753,7 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
-| `create` | 0 | ✍️ write | — |
+| `create` | 1 (token only with status active) | ✍️ write | — |
 | `list` | 0 | 📖 read | — |
 | `get` | 0 | 📖 read | — |
 | `update` | 0 | ✍️ write | — |

@@ -49,7 +49,7 @@ _OrbiAds audit suite — single entry point for audit sub-actions._
 | `hygiene_check` | 0.5 | — | — | MCP-only |
 | `inventory_extended` | 2 | — | — | MCP-only |
 | `ops_diagnostic` | 1 | — | — | MCP-only |
-| `standards_baseline` | 0 | — | — | MCP-only |
+| `standards_baseline` | 4-5 by framework | — | — | MCP-only |
 | `wrapper_coverage` | 1 | — | — | MCP-only |
 
 ### `orbiads:billing` (Epic 68.5)

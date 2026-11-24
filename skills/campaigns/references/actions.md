@@ -43,17 +43,17 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 |---|---|---|---|---|
 | `archive` | 0 | yes | — | MCP-only |
 | `archive_eligible` | 0 | yes | — | MCP-only |
-| `create_display` | 0 | yes | — | MCP-only |
+| `create_display` | 1 per line item (creatives x ad units) | yes | required | MCP-only |
 | `create_draft` | 0 | yes | — | MCP-only |
 | `create_licas` | 0 | yes | — | MCP-only |
-| `create_line_items_batch` | 1 | yes | required | MCP-only |
+| `create_line_items_batch` | 1 per ad unit | yes | required | MCP-only |
 | `create_native_style` | 0.5 | yes | required | MCP-only |
-| `deploy` | 0 | yes | — | `orbiads campaigns deploy` |
-| `deploy_media` | 1 | yes | required | MCP-only |
+| `deploy` | 5 | yes | required | `orbiads campaigns deploy` |
+| `deploy_media` | 1 per line item | yes | required | MCP-only |
 | `ensure_template` | 0 | yes | — | MCP-only |
 | `pause` | 0 | yes | — | MCP-only |
 | `rollback` | 0 | yes | — | MCP-only |
-| `update` | 0 | yes | — | MCP-only |
+| `update` | 2 | yes | required | MCP-only |
 | `dry_run` | 0 | — | — | `orbiads campaigns dry-run` |
 | `plan_deployment` | 0 | — | — | MCP-only |
 | `read` | 0 | — | — | `orbiads campaigns read` |
@@ -70,27 +70,27 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `bulk_upload` | 0 | yes | — | `orbiads creatives upload-images` |
-| `compress_image` | 0 | yes | — | `orbiads creatives compress-image` |
+| `bulk_upload` | 0.5 per file | yes | required | `orbiads creatives upload-images` |
+| `compress_image` | 1 | yes | required | `orbiads creatives compress-image` |
 | `create_aspect_ratio_image` | 0 | yes | — | MCP-only |
-| `create_audio` | 0 | yes | — | `orbiads creatives upload-audio` |
-| `create_classic_native` | 0 | yes | — | `orbiads creatives upload-native-classic` |
+| `create_audio` | 0.5 | yes | required | `orbiads creatives upload-audio` |
+| `create_classic_native` | 0.5 | yes | required | `orbiads creatives upload-native-classic` |
 | `create_click_tracking` | 0 | yes | — | `orbiads creatives upload-click-tracking` |
-| `create_companion` | 0 | yes | — | `orbiads creatives upload-companion` |
+| `create_companion` | 0.5 | yes | required | `orbiads creatives upload-companion` |
 | `create_custom` | 0 | yes | — | `orbiads creatives upload-custom` |
 | `create_hosted_audio` | 0 | yes | — | MCP-only |
 | `create_hosted_video` | 0 | yes | — | MCP-only |
-| `create_html5` | 0 | yes | — | `orbiads creatives upload-html5` |
-| `create_html5_from_files` | 0 | yes | — | `orbiads creatives upload-html5` |
-| `create_image` | 0 | yes | — | `orbiads creatives upload-images` |
-| `create_image_redirect` | 0 | yes | — | `orbiads creatives upload-image-redirect` |
+| `create_html5` | 0.5 | yes | required | `orbiads creatives upload-html5` |
+| `create_html5_from_files` | 0.5 | yes | required | `orbiads creatives upload-html5` |
+| `create_image` | 0.5 | yes | required | `orbiads creatives upload-images` |
+| `create_image_redirect` | 0.5 | yes | required | `orbiads creatives upload-image-redirect` |
 | `create_internal_redirect` | 0 | yes | — | `orbiads creatives upload-internal-redirect` |
-| `create_third_party` | 0 | yes | — | `orbiads creatives upload-third-party` |
-| `create_vast_redirect` | 0 | yes | — | `orbiads creatives upload-vast-redirect` |
-| `create_video` | 0 | yes | — | `orbiads creatives upload-video` |
-| `upload_and_associate` | 0 | yes | — | `orbiads creatives upload` |
-| `upload_from_url` | 0 | yes | — | `orbiads creatives upload-url` |
-| `upload_html5_zip` | 0 | yes | — | `orbiads creatives upload-html5` |
+| `create_third_party` | 0.5 | yes | required | `orbiads creatives upload-third-party` |
+| `create_vast_redirect` | 0.5 | yes | required | `orbiads creatives upload-vast-redirect` |
+| `create_video` | 0.5 | yes | required | `orbiads creatives upload-video` |
+| `upload_and_associate` | 0.5 | yes | required | `orbiads creatives upload` |
+| `upload_from_url` | 0.5 | yes | — | `orbiads creatives upload-url` |
+| `upload_html5_zip` | 0.5 | yes | required | `orbiads creatives upload-html5` |
 | `get_video_transcode_status` | 0 | — | — | MCP-only |
 
 ### `orbiads:creative_qa` (Epic 68.6)
@@ -250,12 +250,12 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 | `activate_batch` | 0 | yes | — | `orbiads line-items activate` |
 | `approve` | 0 | yes | — | `orbiads line-items approve` |
 | `archive` | 0 | yes | — | `orbiads line-items archive` |
-| `create` | 0 | yes | — | MCP-only |
-| `create_adexchange` | 0 | yes | — | `orbiads line-items create-adexchange` |
-| `create_batch` | 0 | yes | — | MCP-only |
-| `create_open_bidding` | 0 | yes | — | `orbiads line-items create-open-bidding` |
-| `create_preferred_deal` | 0 | yes | — | `orbiads line-items create-preferred-deal` |
-| `duplicate` | 0 | yes | — | `orbiads line-items duplicate` |
+| `create` | 1 | yes | required | MCP-only |
+| `create_adexchange` | 1 | yes | required | `orbiads line-items create-adexchange` |
+| `create_batch` | 1 | yes | required | MCP-only |
+| `create_open_bidding` | 1 | yes | required | `orbiads line-items create-open-bidding` |
+| `create_preferred_deal` | 1 | yes | required | `orbiads line-items create-preferred-deal` |
+| `duplicate` | 1 | yes | required | `orbiads line-items duplicate` |
 | `pause_batch` | 0 | yes | — | `orbiads line-items pause` |
 | `update` | 0 | yes | — | `orbiads line-items update` |
 | `update_batch` | 0 | yes | — | MCP-only |
@@ -305,8 +305,8 @@ _Parent orders tool for non-lifecycle Order operations._
 |---|---|---|---|---|
 | `approve` | 0 | yes | — | `orbiads orders approve` |
 | `archive` | 0 | yes | — | `orbiads orders archive` |
-| `create` | 0 | yes | — | `orbiads orders create` |
-| `find_or_create` | 0 | yes | — | `orbiads orders create` |
+| `create` | 0.5 | yes | required | `orbiads orders create` |
+| `find_or_create` | 0.5 | yes | required | `orbiads orders create` |
 | `update` | 0 | yes | — | `orbiads orders update` |
 | `get` | 0 | — | — | `orbiads orders get` |
 | `list` | 0 | — | — | `orbiads orders list` |

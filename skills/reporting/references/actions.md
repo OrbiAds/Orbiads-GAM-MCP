@@ -63,8 +63,8 @@ _Parent preview tool for the Epic 68.2 catalogue refactor batch._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `check_creative_coverage` | 0 | — | — | `orbiads preview coverage` |
-| `get_campaign_preview_urls` | 0.25 | — | — | `orbiads preview campaign` |
-| `get_preview_urls` | 0.25 | — | — | `orbiads preview share` |
+| `get_campaign_preview_urls` | 0.25 per preview (manual free; +1 Google blank in soap) | — | — | `orbiads preview campaign` |
+| `get_preview_urls` | 0.25 per preview (manual free; +1 Google blank in soap) | — | — | `orbiads preview share` |
 
 ### `orbiads:reporting` (Epic 68.7b)
 
