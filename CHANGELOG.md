@@ -1,6 +1,46 @@
 # Changelog
 
 
+## v1.12.0 — 2026-11-24
+
+### Catalogue refactor — parent>child consolidation
+
+Replaces the flat catalogue (8 shared skills + ~270 child tools at v1.0.0) with **36 parent tools** that dispatch all operations via an `action` discriminator. The 241 pre-refactor child tools remain available as soft-deprecated wrappers that route to their parent (emit `deprecated_tool_called` analytics).
+
+### New parent tools by Epic batch
+
+- **Epic 110**: `campaign`
+- **Epic 111**: `companies`
+- **Epic 117**: `audit`
+- **Epic 64**: `deals`
+- **Epic 65**: `audit_skill`, `gam_admin`
+- **Epic 68**: `audiences`, `billing`, `creative_assets`, `creative_qa`, `creatives`, `gam_features`, `inventory`, `jobs`, `line_items`, `network`, `orders`, `placements`, `pql`, `preview`, `products`, `reporting`, `settings`, `targeting`
+- **Epic 70**: `prebid_skill`
+- **Epic 76**: `creative_wrapper_skill`
+- **Epic 78**: `blueprint`, `formats`, `tenant_catalog`
+- **Epic 82**: `gam_jobs`
+- **Epic 88**: `mcm`
+- **Epic 98**: `dai_skill`, `live_stream`, `video_ops`, `yield_skill`
+
+### Largest parent tools (by action count)
+
+| Parent | Actions | Mode |
+|---|---|---|
+| `gam_admin` | 61 | mixed (read + write) |
+| `deals` | 41 | mixed (read + write) |
+| `creatives` | 34 | mixed (read + write) |
+| `reporting` | 33 | mixed (read + write) |
+| `targeting` | 28 | mixed (read + write) |
+| `settings` | 26 | mixed (read + write) |
+| `creative_assets` | 22 | mixed (read + write) |
+| `blueprint` | 20 | mixed (read + write) |
+
+### Migration guide
+
+- New consumers: call parent tools with `action: <child_name>` (or `(area, action)` for `companies` / `gam_admin`). See [`docs/tool-matrix/README.md`](./docs/tool-matrix/README.md).
+- Existing integrations using legacy tool names: no action required — wrappers still work but emit deprecation telemetry. Plan migration per [`_docs/legacy-tool-mapping.md`](./_docs/legacy-tool-mapping.md).
+- GAM API target: `v202608`. MCP protocol: `2025-03-26`.
+
 ## v1.11.0 — 2026-11-23
 
 ### Catalogue refactor — parent>child consolidation

@@ -13,7 +13,7 @@ metadata:
     - pql
     - preview
     - reporting
-  action_count: 40
+  action_count: 45
   cli_coverage: partial
   read_only: false
 user-invocable: false
@@ -28,13 +28,13 @@ user-invocable: false
 
 _Run delivery and inventory reports, check prospective or standalone availability forecasts, and execute PQL queries._
 
-**Mode:** mixed (read + write) · **Tools included:** 4 · **Total actions:** 40 · **CLI coverage:** partial (36/40 actions)
+**Mode:** mixed (read + write) · **Tools included:** 4 · **Total actions:** 45 · **CLI coverage:** partial (42/45 actions)
 
 Parent MCP tools: `mcm`, `pql`, `preview`, `reporting`.
 
 ## Surfaces
 
-OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 36/40 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
+OrbiAds exposes the same backend through two surfaces; **MCP is the default**. A subset of actions also has a CLI command (`cli_coverage: partial` — 42/45 actions here). Per-action availability (MCP command vs `orbiads <command>` vs `MCP-only`) is listed in [`references/actions.md`](references/actions.md).
 
 **Rule:** if an action is marked `MCP-only` in that table, fall back to the MCP surface (or the web app) for it — never improvise a raw REST call or shell around the CLI.
 

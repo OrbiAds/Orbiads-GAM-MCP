@@ -1,8 +1,8 @@
 {
   "total_tools": 291,
   "counts": {
-    "FULL": 205,
-    "EXEMPT": 86
+    "FULL": 206,
+    "EXEMPT": 85
   },
   "per_area": {
     "ad_review": {
@@ -79,7 +79,7 @@
       "EXEMPT": 1
     },
     "mcm": {
-      "EXEMPT": 1
+      "FULL": 1
     },
     "network": {
       "FULL": 4,
@@ -335,6 +335,11 @@
     "live-stream get",
     "live-stream list",
     "live-stream patch",
+    "mcm child-publishers get",
+    "mcm child-publishers list",
+    "mcm child-publishers renegotiate",
+    "mcm child-publishers resend-invitation",
+    "mcm child-publishers withdraw",
     "mcm earnings",
     "native-styles archive",
     "native-styles duplicate",
@@ -2653,9 +2658,34 @@
       "area": "mcm",
       "rest": "GET /api/gam/mcm/earnings",
       "cli": "mcm earnings",
-      "sub_actions": null,
-      "exempt": "Story 88.1 MCM earnings parent tool — CLI registered separately in main.py as part of Epic 88 story completion.",
-      "status": "EXEMPT",
+      "sub_actions": {
+        "earnings_fetch": {
+          "rest": "GET /api/gam/mcm/earnings",
+          "cli": "mcm earnings"
+        },
+        "list_child_publishers": {
+          "rest": "GET /api/gam/mcm/child-publishers",
+          "cli": "mcm child-publishers list"
+        },
+        "get_child_publisher": {
+          "rest": "GET /api/gam/mcm/child-publishers/{company_id}",
+          "cli": "mcm child-publishers get"
+        },
+        "withdraw_child_publisher": {
+          "rest": "POST /api/gam/mcm/child-publishers/withdraw",
+          "cli": "mcm child-publishers withdraw"
+        },
+        "renegotiate_child_publisher": {
+          "rest": "POST /api/gam/mcm/child-publishers/renegotiate",
+          "cli": "mcm child-publishers renegotiate"
+        },
+        "resend_child_publisher_invitation": {
+          "rest": "POST /api/gam/mcm/child-publishers/resend-invitation",
+          "cli": "mcm child-publishers resend-invitation"
+        }
+      },
+      "exempt": null,
+      "status": "FULL",
       "cli_present": true
     },
     {

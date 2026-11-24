@@ -14,7 +14,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 
 - **36 parent tools** (catalogue refactor cible Epic 68 / 76)
 - **14 standalone tools** (non-parent / non-deprecated: auth, jobs, etc.)
-- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **500 GAM operations**
+- **50 tools total** exposed via MCP (36 parents + 14 standalone), covering **505 GAM operations**
 - _241 legacy child wrappers_ remain as **soft-deprecated** aliases (scheduled for sunset, Epic 68.4) — hidden at runtime, not counted in the totals above; see legacy mapping
 
 ## Parent tools — overview
@@ -43,7 +43,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
-| `mcm` | — | 1 | 📖 read | 1 / 0 / 0 | `mcm.py:42` |
+| `mcm` | 88.1 | 6 | ✍️ mixed/write | 3 / 2 / 1 | `mcm.py:220` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | 3 / 3 / 0 | `network.py:268` |
 | `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:276` |
@@ -623,15 +623,20 @@ _Live stream ad breaks + event/slate management._
 | `update_live_stream_slate` | 0 | ✍️ write | — |
 | `delete_live_stream_slate` | 0 | ⚠️ destructive | — |
 
-### `mcm`
+### `mcm` — Epic 88.1
 
-_MCM read-only operations._
+_Multi-Customer Management: earnings, child publishers and their agreements._
 
-**Server-side implementation:** `mcm.py` · **Actions:** 1 · **Mode:** read-only
+**Server-side implementation:** `mcm.py` · **Actions:** 6 · **Mode:** mixed (read + write)
 
 | Action | Cost (credits) | Access | Confirmation token? |
 |---|---|---|---|
 | `earnings_fetch` | 0 | 📖 read | — |
+| `list_child_publishers` | 0 | 📖 read | — |
+| `get_child_publisher` | 0 | 📖 read | — |
+| `withdraw_child_publisher` | 0 | ⚠️ destructive | — |
+| `renegotiate_child_publisher` | 0 | ✍️ write | — |
+| `resend_child_publisher_invitation` | 0 | ✍️ write | — |
 
 ### `network` — Epic 68.5
 

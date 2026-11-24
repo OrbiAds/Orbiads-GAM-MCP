@@ -11,21 +11,26 @@ user-invocable: false
 
 # OrbiAds GAM — Reporting, Forecasting & Delivery Analytics: Action Catalogue
 
-Full per-tool action reference for the [`orbiads-reporting`](../SKILL.md) skill. 40 actions across 4 parent tool(s); CLI coverage 36/40 actions.
+Full per-tool action reference for the [`orbiads-reporting`](../SKILL.md) skill. 45 actions across 4 parent tool(s); CLI coverage 42/45 actions.
 
 **CLI column:** `orbiads <command>` = available on the CLI surface (joined from `cli/parity-matrix.json`); `MCP-only` = no CLI command — call the MCP action (or web app) instead. The two surfaces share the same billing guard and preview → confirm → execute contract.
 
-### `orbiads:mcm`
+### `orbiads:mcm` (Epic 88.1)
 
-_MCM read-only operations._
+_Multi-Customer Management: earnings, child publishers and their agreements._
 
-- **Mode:** read-only · **Actions:** 1 (0 writes, 1 reads)
-- **Surfaces:** MCP ✅ · CLI 0/1 actions
+- **Mode:** mixed · **Actions:** 6 (3 writes, 3 reads)
+- **Surfaces:** MCP ✅ · CLI 6/6 actions
 - **Reference:** see the public [tool matrix](../../../docs/tool-matrix/README.md) for parameter schemas.
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `earnings_fetch` | 0 | — | — | MCP-only |
+| `renegotiate_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers renegotiate` |
+| `resend_child_publisher_invitation` | 0 | yes | — | `orbiads mcm child-publishers resend-invitation` |
+| `withdraw_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers withdraw` |
+| `earnings_fetch` | 0 | — | — | `orbiads mcm earnings` |
+| `get_child_publisher` | 0 | — | — | `orbiads mcm child-publishers get` |
+| `list_child_publishers` | 0 | — | — | `orbiads mcm child-publishers list` |
 
 ### `orbiads:pql` (Epic 68.2)
 
