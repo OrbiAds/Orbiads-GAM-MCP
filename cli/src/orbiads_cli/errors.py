@@ -26,7 +26,10 @@ Code   HTTP origin    stderr message
 1      400/500/other  ``Error: {message}``
 2      *(client)*     *(Typer auto-generates usage)*
 3      404            ``Not found: {message}`` (server code) or ``Not found: {resource}``
-4      401/403        ``Permission denied. Run `orbiads auth login`.``
+4      401/403        token problem (``AUTH_REQUIRED`` / ``TOKEN_EXPIRED`` / ``TOKEN_REVOKED``,
+                      or no server code): ``Permission denied. Run `orbiads auth login`.``;
+                      any other server code (``GAM_NOT_CONNECTED``, ``WRITE_FORBIDDEN``,
+                      ``MCM_NOT_ENABLED``…): ``Permission denied ({code}): {message}``
 5      409            ``Conflict: {message}``
 6      412 (credits)  ``Insufficient credits. Balance: X, required: Y``
 =====  =============  ==========================================
@@ -40,6 +43,11 @@ import typer
 
 if TYPE_CHECKING:
     from orbiads_cli.client import CliApiError
+
+# Server codes of a 401/403 that a new login fixes (backend ``core/auth.py``). Every other
+# server code is a business refusal whose message says what to do (repair
+# ``repair-cli-403-server-message``, live R118b: ``MCM_NOT_ENABLED`` was shown as "auth login").
+_LOGIN_FIXES = frozenset({"", "HTTP_ERROR", "AUTH_REQUIRED", "TOKEN_EXPIRED", "TOKEN_REVOKED"})
 
 
 def handle_error(err: CliApiError) -> None:  # noqa: C901
@@ -73,7 +81,10 @@ def _format_message(err: CliApiError) -> str:
         return f"Not found: {resource}"
 
     if code == 4:
-        return "Permission denied. Run `orbiads auth login`."
+        server_code = err.error_code or ""
+        if server_code in _LOGIN_FIXES or not err.message:
+            return "Permission denied. Run `orbiads auth login`."
+        return f"Permission denied ({server_code}): {err.message}"
 
     if code == 5:
         return f"Conflict: {err.message}"
