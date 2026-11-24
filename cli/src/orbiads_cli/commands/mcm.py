@@ -32,14 +32,40 @@ def mcm_earnings(
     ctx: typer.Context,
     month: int = typer.Option(..., "--month", help="Month (1-12)"),
     year: int = typer.Option(..., "--year", help="Year (4-digit)"),
+    child_network_code: list[str] | None = typer.Option(
+        None, "--child-network-code", help="Child network code (repeatable, OR-ed)"
+    ),
+    delegation_type: str | None = typer.Option(
+        None, "--delegation-type", help="MANAGE_ACCOUNT or MANAGE_INVENTORY"
+    ),
+    order_by: str | None = typer.Option(
+        None, "--order-by", help="'<field> [asc|desc]', e.g. 'totalEarnings desc'"
+    ),
+    limit: int = typer.Option(50, "--limit", "-l", min=1, max=1000, help="Page size (1-1000)"),
+    page_token: str | None = typer.Option(
+        None, "--page-token", help="nextPageToken of the previous page (same options)"
+    ),
+    skip: int | None = typer.Option(None, "--skip", min=0, help="Rows to skip"),
 ) -> None:
-    """Fetch MCM earnings for a given month."""
+    """Fetch MCM earnings for a given month (filters, sort and pagination: story 118-3)."""
+    params: dict = {"month": month, "year": year}
+    if child_network_code:
+        params["child_network_code"] = child_network_code
+    if delegation_type:
+        params["delegation_type"] = delegation_type.upper()
+    if order_by:
+        params["order_by"] = order_by
+    if limit != 50:
+        params["page_size"] = limit
+    if page_token:
+        params["page_token"] = page_token
+    if skip is not None:
+        params["skip"] = skip
     try:
-        data = get_client().get(
-            "/api/gam/mcm/earnings",
-            params={"month": month, "year": year},
-        )
+        data = get_client().get("/api/gam/mcm/earnings", params=params)
         render_detail(data, ctx.obj)
+        if isinstance(data, dict) and data.get("nextPageToken"):
+            typer.echo(f"More results: --page-token {data['nextPageToken']}", err=True)
     except CliApiError as exc:
         handle_error(exc)
 

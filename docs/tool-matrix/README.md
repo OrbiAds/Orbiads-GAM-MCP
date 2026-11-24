@@ -43,7 +43,7 @@ Single-source-of-truth catalogue of OrbiAds MCP parent tools, with their sub-act
 | `jobs` | 68.2 | 3 | ✍️ mixed/write | 2 / 1 / 0 | `jobs.py:151` |
 | `line_items` | 68 | 19 | ✍️ mixed/write | 6 / 12 / 1 | `line_items.py:419` |
 | `live_stream` | 98 | 13 | ✍️ mixed/write | 4 / 6 / 3 | `live_stream.py:98` |
-| `mcm` | 88.1 | 8 | ✍️ mixed/write | 3 / 4 / 1 | `mcm.py:308` |
+| `mcm` | 88.1 | 8 | ✍️ mixed/write | 3 / 4 / 1 | `mcm.py:306` |
 | `network` | 68.5 | 6 | ✍️ mixed/write | 3 / 3 / 0 | `network.py:268` |
 | `orders` | 68 | 11 | ✍️ mixed/write | 6 / 4 / 1 | `orders.py:231` |
 | `placements` | 68.6 | 6 | ✍️ mixed/write | 1 / 4 / 1 | `placements.py:276` |
