@@ -41,18 +41,18 @@ _Parent campaign tool for deployment, update, rollback, and lifecycle orchestrat
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `archive` | 0 | yes | — | MCP-only |
-| `archive_eligible` | 0 | yes | — | MCP-only |
+| `archive` | 0 | yes | required | MCP-only |
+| `archive_eligible` | 0 | yes | required | MCP-only |
 | `create_display` | 1 per line item (creatives x ad units) | yes | required | MCP-only |
-| `create_draft` | 0 | yes | — | MCP-only |
-| `create_licas` | 0 | yes | — | MCP-only |
+| `create_draft` | 0 | yes | required | MCP-only |
+| `create_licas` | 0 | yes | required | MCP-only |
 | `create_line_items_batch` | 1 per ad unit | yes | required | MCP-only |
 | `create_native_style` | 0.5 | yes | required | MCP-only |
 | `deploy` | 5 | yes | required | `orbiads campaigns deploy` |
 | `deploy_media` | 1 per line item | yes | required | MCP-only |
 | `ensure_template` | 0 | yes | — | MCP-only |
-| `pause` | 0 | yes | — | MCP-only |
-| `rollback` | 0 | yes | — | MCP-only |
+| `pause` | 0 | yes | required | MCP-only |
+| `rollback` | 0 | yes | required | MCP-only |
 | `update` | 2 | yes | required | MCP-only |
 | `dry_run` | 0 | — | — | `orbiads campaigns dry-run` |
 | `plan_deployment` | 0 | — | — | MCP-only |
@@ -72,19 +72,19 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 |---|---|---|---|---|
 | `bulk_upload` | 0.5 per file | yes | required | `orbiads creatives upload-images` |
 | `compress_image` | 1 | yes | required | `orbiads creatives compress-image` |
-| `create_aspect_ratio_image` | 0 | yes | — | MCP-only |
+| `create_aspect_ratio_image` | 0 | yes | required | MCP-only |
 | `create_audio` | 0.5 | yes | required | `orbiads creatives upload-audio` |
 | `create_classic_native` | 0.5 | yes | required | `orbiads creatives upload-native-classic` |
-| `create_click_tracking` | 0 | yes | — | `orbiads creatives upload-click-tracking` |
+| `create_click_tracking` | 0 | yes | required | `orbiads creatives upload-click-tracking` |
 | `create_companion` | 0.5 | yes | required | `orbiads creatives upload-companion` |
-| `create_custom` | 0 | yes | — | `orbiads creatives upload-custom` |
-| `create_hosted_audio` | 0 | yes | — | MCP-only |
-| `create_hosted_video` | 0 | yes | — | MCP-only |
+| `create_custom` | 0 | yes | required | `orbiads creatives upload-custom` |
+| `create_hosted_audio` | 0 | yes | required | MCP-only |
+| `create_hosted_video` | 0 | yes | required | MCP-only |
 | `create_html5` | 0.5 | yes | required | `orbiads creatives upload-html5` |
 | `create_html5_from_files` | 0.5 | yes | required | `orbiads creatives upload-html5` |
 | `create_image` | 0.5 | yes | required | `orbiads creatives upload-images` |
 | `create_image_redirect` | 0.5 | yes | required | `orbiads creatives upload-image-redirect` |
-| `create_internal_redirect` | 0 | yes | — | `orbiads creatives upload-internal-redirect` |
+| `create_internal_redirect` | 0 | yes | required | `orbiads creatives upload-internal-redirect` |
 | `create_third_party` | 0.5 | yes | required | `orbiads creatives upload-third-party` |
 | `create_vast_redirect` | 0.5 | yes | required | `orbiads creatives upload-vast-redirect` |
 | `create_video` | 0.5 | yes | required | `orbiads creatives upload-video` |
@@ -149,21 +149,21 @@ _Parent creatives tool for the Epic 68.7d catalogue refactor batch._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `archive_creative` | 0 | yes | — | `orbiads creatives archive` |
-| `archive_native_style` | 0 | yes | — | `orbiads native-styles archive` |
-| `associate_creative` | 0 | yes | — | MCP-only |
-| `bulk_associate_creatives` | 0 | yes | — | MCP-only |
+| `archive_creative` | 0 | yes | required | `orbiads creatives archive` |
+| `archive_native_style` | 0 | yes | required | `orbiads native-styles archive` |
+| `associate_creative` | 0 | yes | required | MCP-only |
+| `bulk_associate_creatives` | 0 | yes | required | MCP-only |
 | `create_creative_set` | 0.5 | yes | required | MCP-only |
-| `deactivate_lica` | 0 | yes | — | `orbiads licas deactivate` |
-| `delete_lica_permanently` | 0 | yes | — | `orbiads licas delete-permanent` |
-| `delete_licas` | 0 | yes | — | `orbiads licas delete` |
+| `deactivate_lica` | 0 | yes | required | `orbiads licas deactivate` |
+| `delete_lica_permanently` | 0 | yes | required | `orbiads licas delete-permanent` |
+| `delete_licas` | 0 | yes | required | `orbiads licas delete` |
 | `duplicate_creative` | 0.5 | yes | required | `orbiads creatives duplicate` |
 | `duplicate_native_style` | 0.5 | yes | required | `orbiads native-styles duplicate` |
 | `ensure_classic_native_template` | 0 | yes | — | `orbiads creative-templates ensure-classic-native` |
-| `update_creative` | 0 | yes | — | `orbiads creatives update` |
-| `update_creative_set` | 0 | yes | — | MCP-only |
-| `update_lica` | 0 | yes | — | `orbiads licas update` |
-| `update_native_style` | 0 | yes | — | `orbiads native-styles update` |
+| `update_creative` | 0 | yes | required | `orbiads creatives update` |
+| `update_creative_set` | 0 | yes | required | MCP-only |
+| `update_lica` | 0 | yes | required | `orbiads licas update` |
+| `update_native_style` | 0 | yes | required | `orbiads native-styles update` |
 | `discover_native_formats` | 0.5 | — | — | `orbiads creative-templates list` |
 | `get_campaign_preview_links` | 0 | — | — | `orbiads preview campaign` |
 | `get_creative` | 0 | — | — | `orbiads creatives get` |
@@ -194,11 +194,11 @@ _Parent formats MCP tool — Custom Format Registry avec scope multi-site (Story
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `accept_suggested_recipe` | 0.25 | yes | required | MCP-only |
-| `delete_recipe` | 0.25 | yes | required | MCP-only |
-| `register_recipe` | 0.25 | yes | required | MCP-only |
-| `reject_suggested_recipe` | 0.25 | yes | required | MCP-only |
-| `update_recipe` | 0.25 | yes | required | MCP-only |
+| `accept_suggested_recipe` | 0.25 | yes | — | MCP-only |
+| `delete_recipe` | 0.25 | yes | — | MCP-only |
+| `register_recipe` | 0.25 | yes | — | MCP-only |
+| `reject_suggested_recipe` | 0.25 | yes | — | MCP-only |
+| `update_recipe` | 0.25 | yes | — | MCP-only |
 | `detect_conflicts` | 0 | — | — | MCP-only |
 | `list_recipes` | 0 | — | — | MCP-only |
 | `list_suggested_recipes` | 0 | — | — | MCP-only |
@@ -231,7 +231,7 @@ _Parent jobs tool for the Epic 68.2 catalogue refactor batch._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `duplicate_job` | 0 | yes | — | `orbiads jobs duplicate` |
+| `duplicate_job` | 0 | yes | required | `orbiads jobs duplicate` |
 | `get_job` | 0 | — | — | `orbiads jobs get` |
 | `list_jobs` | 0 | — | — | `orbiads jobs list` |
 
@@ -247,19 +247,19 @@ _Parent line_items tool for non-lifecycle Line Item operations._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `activate_batch` | 0 | yes | — | `orbiads line-items activate` |
-| `approve` | 0 | yes | — | `orbiads line-items approve` |
-| `archive` | 0 | yes | — | `orbiads line-items archive` |
+| `activate_batch` | 0 | yes | required | `orbiads line-items activate` |
+| `approve` | 0 | yes | required | `orbiads line-items approve` |
+| `archive` | 0 | yes | required | `orbiads line-items archive` |
 | `create` | 1 | yes | required | MCP-only |
 | `create_adexchange` | 1 | yes | required | `orbiads line-items create-adexchange` |
 | `create_batch` | 1 | yes | required | MCP-only |
 | `create_open_bidding` | 1 | yes | required | `orbiads line-items create-open-bidding` |
 | `create_preferred_deal` | 1 | yes | required | `orbiads line-items create-preferred-deal` |
 | `duplicate` | 1 | yes | required | `orbiads line-items duplicate` |
-| `pause_batch` | 0 | yes | — | `orbiads line-items pause` |
-| `update` | 0 | yes | — | `orbiads line-items update` |
-| `update_batch` | 0 | yes | — | MCP-only |
-| `update_targeting` | 0 | yes | — | `orbiads line-items update-targeting` |
+| `pause_batch` | 0 | yes | required | `orbiads line-items pause` |
+| `update` | 0 | yes | required | `orbiads line-items update` |
+| `update_batch` | 0 | yes | required | MCP-only |
+| `update_targeting` | 0 | yes | required | `orbiads line-items update-targeting` |
 | `get` | 0 | — | — | `orbiads line-items get` |
 | `get_full` | 0 | — | — | MCP-only |
 | `list` | 0 | — | — | `orbiads line-items list` |
@@ -281,11 +281,11 @@ _Live stream ad breaks + event/slate management._
 | `create_live_stream_event` | 0.5 | yes | required | MCP-only |
 | `create_live_stream_slate` | 0.5 | yes | required | MCP-only |
 | `delete` | 0.5 | yes | required | MCP-only |
-| `delete_live_stream_event` | 0 | yes | — | MCP-only |
-| `delete_live_stream_slate` | 0 | yes | — | MCP-only |
+| `delete_live_stream_event` | 0 | yes | required | MCP-only |
+| `delete_live_stream_slate` | 0 | yes | required | MCP-only |
 | `patch` | 0.5 | yes | required | MCP-only |
-| `update_live_stream_event` | 0 | yes | — | MCP-only |
-| `update_live_stream_slate` | 0 | yes | — | MCP-only |
+| `update_live_stream_event` | 0 | yes | required | MCP-only |
+| `update_live_stream_slate` | 0 | yes | required | MCP-only |
 | `get` | 0 | — | — | MCP-only |
 | `list` | 0 | — | — | MCP-only |
 | `list_live_stream_events` | 0 | — | — | MCP-only |
@@ -303,11 +303,11 @@ _Parent orders tool for non-lifecycle Order operations._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `approve` | 0 | yes | — | `orbiads orders approve` |
-| `archive` | 0 | yes | — | `orbiads orders archive` |
+| `approve` | 0 | yes | required | `orbiads orders approve` |
+| `archive` | 0 | yes | required | `orbiads orders archive` |
 | `create` | 0.5 | yes | required | `orbiads orders create` |
 | `find_or_create` | 0.5 | yes | required | `orbiads orders create` |
-| `update` | 0 | yes | — | `orbiads orders update` |
+| `update` | 0 | yes | required | `orbiads orders update` |
 | `get` | 0 | — | — | `orbiads orders get` |
 | `list` | 0 | — | — | `orbiads orders list` |
 | `list_delivering` | 0 | — | — | `orbiads orders list-delivering` |

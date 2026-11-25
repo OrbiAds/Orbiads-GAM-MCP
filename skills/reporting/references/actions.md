@@ -26,10 +26,10 @@ _Multi-Customer Management: earnings, child publishers and their agreements._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `invite_child_publisher` | 0.5 | yes | required | `orbiads mcm child-publishers invite` |
-| `renegotiate_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers renegotiate` |
-| `resend_child_publisher_invitation` | 0 | yes | — | `orbiads mcm child-publishers resend-invitation` |
-| `update_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers update` |
-| `withdraw_child_publisher` | 0 | yes | — | `orbiads mcm child-publishers withdraw` |
+| `renegotiate_child_publisher` | 0 | yes | required | `orbiads mcm child-publishers renegotiate` |
+| `resend_child_publisher_invitation` | 0 | yes | required | `orbiads mcm child-publishers resend-invitation` |
+| `update_child_publisher` | 0 | yes | required | `orbiads mcm child-publishers update` |
+| `withdraw_child_publisher` | 0 | yes | required | `orbiads mcm child-publishers withdraw` |
 | `earnings_fetch` | 0 | — | — | `orbiads mcm earnings` |
 | `get_child_publisher` | 0 | — | — | `orbiads mcm child-publishers get` |
 | `list_child_publishers` | 0 | — | — | `orbiads mcm child-publishers list` |
@@ -78,12 +78,12 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `create_gam_report` | 0 | yes | — | `orbiads reporting gam-reports create-from-template` |
-| `delete_gam_report` | 0 | yes | — | `orbiads reporting gam-reports delete` |
+| `create_gam_report` | 0 | yes | required | `orbiads reporting gam-reports create-from-template` |
+| `delete_gam_report` | 0 | yes | required | `orbiads reporting gam-reports delete` |
 | `delete_report_template` | 0 | yes | — | `orbiads reporting templates delete` |
 | `duplicate_report_template` | 0 | yes | — | `orbiads reporting templates duplicate` |
 | `save_report_template` | 0 | yes | — | `orbiads reporting templates save` |
-| `update_gam_report` | 0 | yes | — | `orbiads reporting gam-reports update-from-template` |
+| `update_gam_report` | 0 | yes | required | `orbiads reporting gam-reports update-from-template` |
 | `update_report_template` | 0 | yes | — | `orbiads reporting templates update` |
 | `check_budget_alerts` | 0.25 | — | — | `orbiads reporting alerts-budget` |
 | `check_delivery_status` | 0 | — | — | `orbiads reporting delivery-status` |

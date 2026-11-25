@@ -28,9 +28,9 @@ _Parent audiences tool for the Epic 68.2 catalogue refactor batch._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `create_audience_segment` | 0.5 | yes | required | `orbiads audiences create` |
-| `perform_audience_segment_action` | 0 | yes | — | `orbiads audiences action` |
-| `perform_segment_population_action` | 0 | yes | — | MCP-only |
-| `update_audience_segment` | 0 | yes | — | `orbiads audiences update` |
+| `perform_audience_segment_action` | 0 | yes | required | `orbiads audiences action` |
+| `perform_segment_population_action` | 0 | yes | required | MCP-only |
+| `update_audience_segment` | 0 | yes | required | `orbiads audiences update` |
 | `update_segment_memberships` | 0.5 | yes | required | MCP-only |
 | `get_audience_segment` | 0 | — | — | `orbiads audiences get` |
 | `get_segment_population_results` | 0 | — | — | MCP-only |
@@ -46,16 +46,16 @@ _Parent blueprint MCP tool — CRUD on tenant inventory blueprint (Story 78.13).
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `add_format` | 0.25 | yes | required | MCP-only |
-| `add_key_value` | 0.25 | yes | required | MCP-only |
-| `add_position` | 0.25 | yes | required | MCP-only |
-| `remove_format` | 0.25 | yes | required | MCP-only |
-| `remove_key_value` | 0.25 | yes | required | MCP-only |
-| `remove_position` | 0.25 | yes | required | MCP-only |
-| `save_blueprint` | 0.25 | yes | required | MCP-only |
-| `save_preferences` | 0.25 | yes | required | MCP-only |
-| `update_brand` | 0.25 | yes | required | MCP-only |
-| `update_platforms` | 0.25 | yes | required | MCP-only |
+| `add_format` | 0.25 | yes | — | MCP-only |
+| `add_key_value` | 0.25 | yes | — | MCP-only |
+| `add_position` | 0.25 | yes | — | MCP-only |
+| `remove_format` | 0.25 | yes | — | MCP-only |
+| `remove_key_value` | 0.25 | yes | — | MCP-only |
+| `remove_position` | 0.25 | yes | — | MCP-only |
+| `save_blueprint` | 0.25 | yes | — | MCP-only |
+| `save_preferences` | 0.25 | yes | — | MCP-only |
+| `update_brand` | 0.25 | yes | — | MCP-only |
+| `update_platforms` | 0.25 | yes | — | MCP-only |
 | `get_active_blueprint` | 0 | — | — | MCP-only |
 | `get_active_preferences` | 0 | — | — | MCP-only |
 | `get_block_version` | 0 | — | — | MCP-only |
@@ -79,7 +79,7 @@ _Parent inventory tool for Story 68.6._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `archive_inactive_ad_units` | 0 | yes | — | `orbiads inventory archive-inactive` |
+| `archive_inactive_ad_units` | 0 | yes | required | `orbiads inventory archive-inactive` |
 | `blueprint_starter` | 0 | yes | — | MCP-only |
 | `create_ad_units_batch` | 0.5 per new ad unit | yes | required | `orbiads inventory create-ad-units` |
 | `push_inventory_blueprint` | 0.5 | yes | required | `orbiads inventory blueprint-push` |
@@ -107,11 +107,11 @@ _Parent placements tool for Story 68.6._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `activate_placement` | 0 | yes | — | MCP-only |
-| `archive_placement` | 0 | yes | — | `orbiads inventory placement-archive` |
+| `activate_placement` | 0 | yes | required | MCP-only |
+| `archive_placement` | 0 | yes | required | `orbiads inventory placement-archive` |
 | `create_placement` | 0.5 | yes | required | `orbiads inventory placement-create` |
-| `deactivate_placement` | 0 | yes | — | MCP-only |
-| `update_placement` | 0 | yes | — | `orbiads inventory placement-update` |
+| `deactivate_placement` | 0 | yes | required | MCP-only |
+| `update_placement` | 0 | yes | required | `orbiads inventory placement-update` |
 | `list_placements` | 0 | — | — | `orbiads inventory placements` |
 
 ### `orbiads:targeting` (Epic 68.6)
@@ -126,20 +126,20 @@ _Parent targeting tool for Story 68.6._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `activate_ad_unit` | 0 | yes | — | MCP-only |
-| `activate_custom_targeting_keys` | 0 | yes | — | MCP-only |
-| `archive_ad_unit` | 0 | yes | — | `orbiads inventory archive-ad-unit` |
+| `activate_ad_unit` | 0 | yes | required | MCP-only |
+| `activate_custom_targeting_keys` | 0 | yes | required | MCP-only |
+| `archive_ad_unit` | 0 | yes | required | `orbiads inventory archive-ad-unit` |
 | `create_custom_targeting_key` | 0.5 | yes | required | `orbiads inventory create-key` |
 | `create_custom_targeting_values` | 0.5 | yes | required | `orbiads custom-targeting-values create` |
 | `create_targeting_preset` | 0.5 | yes | required | MCP-only |
-| `deactivate_ad_unit` | 0 | yes | — | MCP-only |
-| `delete_custom_targeting_key` | 0 | yes | — | `orbiads inventory delete-key` |
-| `delete_targeting_preset` | 0 | yes | — | MCP-only |
-| `perform_custom_targeting_value_action` | 0 | yes | — | `orbiads custom-targeting-values action` |
-| `update_ad_unit` | 0 | yes | — | `orbiads inventory update-ad-unit` |
-| `update_custom_targeting_key` | 0 | yes | — | `orbiads inventory update-key` |
-| `update_custom_targeting_value` | 0 | yes | — | `orbiads custom-targeting-values update` |
-| `update_targeting_preset` | 0 | yes | — | MCP-only |
+| `deactivate_ad_unit` | 0 | yes | required | MCP-only |
+| `delete_custom_targeting_key` | 0 | yes | required | `orbiads inventory delete-key` |
+| `delete_targeting_preset` | 0 | yes | required | MCP-only |
+| `perform_custom_targeting_value_action` | 0 | yes | required | `orbiads custom-targeting-values action` |
+| `update_ad_unit` | 0 | yes | required | `orbiads inventory update-ad-unit` |
+| `update_custom_targeting_key` | 0 | yes | required | `orbiads inventory update-key` |
+| `update_custom_targeting_value` | 0 | yes | required | `orbiads custom-targeting-values update` |
+| `update_targeting_preset` | 0 | yes | required | MCP-only |
 | `get_available_countries` | 0 | — | — | `orbiads inventory countries` |
 | `get_available_languages` | 0 | — | — | `orbiads inventory languages` |
 | `get_browsers` | 0 | — | — | MCP-only |

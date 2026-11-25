@@ -30,13 +30,13 @@ _Companies dispatcher — single entry point for advertisers, agencies, contacts
 | `advertisers.archive_advertiser` | 0.5 | yes | required | MCP-only |
 | `advertisers.create` | 0.5 | yes | required | `orbiads advertisers create` |
 | `advertisers.find_or_create` | 0.5 | yes | required | `orbiads advertisers find-or-create` |
-| `advertisers.update` | 0 | yes | — | `orbiads advertisers update` |
+| `advertisers.update` | 0 | yes | required | `orbiads advertisers update` |
 | `agencies.create` | 0.5 | yes | required | `orbiads advertisers agencies create` |
-| `agencies.update` | 0 | yes | — | `orbiads advertisers agencies update` |
+| `agencies.update` | 0 | yes | required | `orbiads advertisers agencies update` |
 | `all.create` | 0.5 | yes | required | `orbiads advertisers companies create` |
 | `contacts.create` | 0.5 | yes | required | `orbiads contacts create` |
-| `contacts.update` | 0 | yes | — | `orbiads contacts update` |
-| `partners.update` | 0 | yes | — | `orbiads advertisers partners update` |
+| `contacts.update` | 0 | yes | required | `orbiads contacts update` |
+| `partners.update` | 0 | yes | required | `orbiads advertisers partners update` |
 | `advertisers.find` | 0 | — | — | `orbiads advertisers find` |
 | `advertisers.get` | 0 | — | — | `orbiads advertisers get` |
 | `advertisers.list` | 0 | — | — | `orbiads advertisers list` |
@@ -67,7 +67,7 @@ _DAI (Dynamic Ad Insertion) and broadcasting operations._
 | `delete_cdn_configuration` | 0.5 | yes | required | MCP-only |
 | `delete_dai_encoding_profile` | 0.5 | yes | required | MCP-only |
 | `perform_dai_auth_key_action` | 0.5 | yes | required | MCP-only |
-| `register_sessions` | 0 | yes | — | MCP-only |
+| `register_sessions` | 0 | yes | required | MCP-only |
 | `update_cdn_configuration` | 0.5 | yes | required | MCP-only |
 | `update_dai_auth_key` | 0.5 | yes | required | MCP-only |
 | `update_dai_encoding_profile` | 0.5 | yes | required | MCP-only |
@@ -88,7 +88,7 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `adcp_create` | 0 | yes | — | MCP-only |
+| `adcp_create` | 0 | yes | required | MCP-only |
 | `archive_proposal` | 0 | yes | — | MCP-only |
 | `archive_proposal_line_items` | 0 | yes | — | MCP-only |
 | `create_auction` | 1 | yes | — | `orbiads programmatic auctions create` |
@@ -96,21 +96,21 @@ _Parent MCP tool for PMP, PG/PD proposal authoring, and ADCP deal flows._
 | `create_makegoods` | 3 per makegood | yes | — | MCP-only |
 | `create_proposal` | 5 | yes | — | MCP-only |
 | `create_proposal_line_items` | 3 per proposal line item | yes | — | MCP-only |
-| `discard_proposal_drafts` | 0 | yes | — | `orbiads programmatic proposals discard-drafts` |
+| `discard_proposal_drafts` | 0 | yes | required | `orbiads programmatic proposals discard-drafts` |
 | `edit_proposal_for_negotiation` | 0 | yes | — | MCP-only |
-| `pause_proposal` | 0 | yes | — | `orbiads programmatic proposals pause` |
-| `pause_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items pause` |
-| `push_proposal_to_order` | 0 | yes | — | `orbiads programmatic proposals push-to-order` |
-| `release_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items release` |
+| `pause_proposal` | 0 | yes | required | `orbiads programmatic proposals pause` |
+| `pause_proposal_line_items` | 0 | yes | required | `orbiads programmatic proposal-line-items pause` |
+| `push_proposal_to_order` | 0 | yes | required | `orbiads programmatic proposals push-to-order` |
+| `release_proposal_line_items` | 0 | yes | required | `orbiads programmatic proposal-line-items release` |
 | `request_buyer_acceptance` | 0 | yes | — | MCP-only |
-| `request_buyer_review` | 0 | yes | — | `orbiads programmatic proposals request-buyer-review` |
+| `request_buyer_review` | 0 | yes | required | `orbiads programmatic proposals request-buyer-review` |
 | `reserve_proposal` | 0 | yes | — | MCP-only |
-| `reserve_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items reserve` |
-| `resume_proposal` | 0 | yes | — | `orbiads programmatic proposals resume` |
-| `resume_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items resume` |
+| `reserve_proposal_line_items` | 0 | yes | required | `orbiads programmatic proposal-line-items reserve` |
+| `resume_proposal` | 0 | yes | required | `orbiads programmatic proposals resume` |
+| `resume_proposal_line_items` | 0 | yes | required | `orbiads programmatic proposal-line-items resume` |
 | `terminate_proposal_negotiations` | 0 | yes | — | MCP-only |
-| `unarchive_proposal` | 0 | yes | — | `orbiads programmatic proposals unarchive` |
-| `unarchive_proposal_line_items` | 0 | yes | — | `orbiads programmatic proposal-line-items unarchive` |
+| `unarchive_proposal` | 0 | yes | required | `orbiads programmatic proposals unarchive` |
+| `unarchive_proposal_line_items` | 0 | yes | required | `orbiads programmatic proposal-line-items unarchive` |
 | `update_auction` | 1 | yes | — | `orbiads programmatic auctions update` |
 | `update_deal` | 2 | yes | — | `orbiads programmatic deals update` |
 | `update_proposal` | 2 | yes | — | MCP-only |
@@ -140,9 +140,9 @@ _Dispatch Prebid.js / Header Bidding sub-actions through one MCP tool._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `cleanup` | 0 | yes | — | `orbiads prebid cleanup` |
+| `cleanup` | 0 | yes | required | `orbiads prebid cleanup` |
 | `generate_line_items` | 10 | yes | required | `orbiads prebid generate-line-items` |
-| `generate_targeting_keys` | 1 | yes | required | `orbiads prebid generate-targeting-keys` |
+| `generate_targeting_keys` | 1 | yes | — | `orbiads prebid generate-targeting-keys` |
 | `update_line_items` | 5 | yes | required | MCP-only |
 | `inspect_existing_setup` | 0 | — | — | MCP-only |
 | `preview_batch` | 0 | — | — | `orbiads prebid preview` |
@@ -159,9 +159,9 @@ _Parent products tool for the Epic 68.8 catalogue refactor batch._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `archive` | 0 | yes | — | `orbiads products archive` |
-| `create` | 1 (token only with status active) | yes | — | `orbiads products create` |
-| `update` | 0 | yes | — | `orbiads products update` |
+| `archive` | 0 | yes | required only for an active product | `orbiads products archive` |
+| `create` | 1 | yes | required only with status="active" | `orbiads products create` |
+| `update` | 0 | yes | required only for an active product or one being activated | `orbiads products update` |
 | `get` | 0 | — | — | `orbiads products get` |
 | `get_adcp` | 0 | — | — | MCP-only |
 | `list` | 0 | — | — | `orbiads products list` |

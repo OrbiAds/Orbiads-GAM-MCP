@@ -26,48 +26,48 @@ _GAM admin orchestration — single entry point for 54 ops over 7 areas._
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
 | `applications.batch_archive` | 0 | yes | — | MCP-only |
-| `applications.batch_create` | 0.5 | yes | required | MCP-only |
+| `applications.batch_create` | 0.5 | yes | — | MCP-only |
 | `applications.batch_unarchive` | 0 | yes | — | MCP-only |
 | `applications.batch_update` | 0 | yes | — | MCP-only |
-| `applications.create` | 0.5 | yes | required | MCP-only |
+| `applications.create` | 0.5 | yes | — | MCP-only |
 | `applications.patch` | 0 | yes | — | MCP-only |
 | `custom_fields.batch_activate` | 0 | yes | — | MCP-only |
-| `custom_fields.batch_create` | 0.5 | yes | required | MCP-only |
+| `custom_fields.batch_create` | 0.5 | yes | — | MCP-only |
 | `custom_fields.batch_deactivate` | 0 | yes | — | MCP-only |
 | `custom_fields.batch_update` | 0 | yes | — | MCP-only |
-| `custom_fields.create` | 0.5 | yes | required | MCP-only |
-| `custom_fields.create_dropdown_options` | 0.5 | yes | required | MCP-only |
+| `custom_fields.create` | 0.5 | yes | — | MCP-only |
+| `custom_fields.create_dropdown_options` | 0.5 | yes | — | MCP-only |
 | `custom_fields.patch` | 0 | yes | — | MCP-only |
 | `custom_fields.update_dropdown_options` | 0 | yes | — | MCP-only |
-| `entity_signals.batch_create` | 0.5 | yes | required | MCP-only |
+| `entity_signals.batch_create` | 0.5 | yes | — | MCP-only |
 | `entity_signals.batch_update` | 0 | yes | — | MCP-only |
-| `entity_signals.create` | 0.5 | yes | required | MCP-only |
+| `entity_signals.create` | 0.5 | yes | — | MCP-only |
 | `entity_signals.patch` | 0 | yes | — | MCP-only |
 | `labels.batch_activate` | 0 | yes | — | MCP-only |
-| `labels.batch_create` | 0.5 | yes | required | MCP-only |
+| `labels.batch_create` | 0.5 | yes | — | MCP-only |
 | `labels.batch_deactivate` | 0 | yes | — | MCP-only |
 | `labels.batch_update` | 0 | yes | — | MCP-only |
-| `labels.create` | 0.5 | yes | required | MCP-only |
+| `labels.create` | 0.5 | yes | — | MCP-only |
 | `labels.patch` | 0 | yes | — | MCP-only |
-| `sites.batch_create` | 0.5 | yes | required | MCP-only |
+| `sites.batch_create` | 0.5 | yes | — | MCP-only |
 | `sites.batch_deactivate` | 0 | yes | — | MCP-only |
 | `sites.batch_submit_for_approval` | 0 | yes | — | MCP-only |
 | `sites.batch_update` | 0 | yes | — | MCP-only |
-| `sites.create` | 0.5 | yes | required | MCP-only |
+| `sites.create` | 0.5 | yes | — | MCP-only |
 | `sites.patch` | 0 | yes | — | MCP-only |
 | `teams.batch_activate` | 0 | yes | — | MCP-only |
-| `teams.batch_create` | 0.5 | yes | required | MCP-only |
+| `teams.batch_create` | 0.5 | yes | — | MCP-only |
 | `teams.batch_deactivate` | 0 | yes | — | MCP-only |
 | `teams.batch_update` | 0 | yes | — | MCP-only |
-| `teams.create` | 0.5 | yes | required | MCP-only |
+| `teams.create` | 0.5 | yes | — | MCP-only |
 | `teams.patch` | 0 | yes | — | MCP-only |
-| `user_team_associations.create` | 0.5 | yes | required | MCP-only |
+| `user_team_associations.create` | 0.5 | yes | — | MCP-only |
 | `user_team_associations.delete` | 0 | yes | — | MCP-only |
 | `user_team_associations.update` | 0 | yes | — | MCP-only |
 | `users.activate` | 0 | yes | — | MCP-only |
-| `users.create` | 0.5 | yes | required | MCP-only |
+| `users.create` | 0.5 | yes | — | MCP-only |
 | `users.deactivate` | 0 | yes | — | MCP-only |
-| `users.update` | 0.5 | yes | required | MCP-only |
+| `users.update` | 0.5 | yes | — | MCP-only |
 | `applications.get` | 0 | — | — | MCP-only |
 | `applications.list` | 0 | — | — | MCP-only |
 | `custom_fields.get` | 0 | — | — | MCP-only |
@@ -117,7 +117,7 @@ _Parent network tool for the Epic 68.5 catalogue refactor batch._
 |---|---|---|---|---|
 | `set_preview_url_library` | 0 | yes | — | MCP-only |
 | `switch_network` | 0 | yes | — | `orbiads network switch` |
-| `update_network` | 0 | yes | — | `orbiads network update` |
+| `update_network` | 0 | yes | required | `orbiads network update` |
 | `get_network_info` | 0 | — | — | `orbiads network gam-info` |
 | `get_preview_url_library` | 0 | — | — | MCP-only |
 | `list_accessible_networks` | 0 | — | — | `orbiads network list` |
@@ -134,20 +134,20 @@ _Parent settings tool for the Epic 68.1 catalogue refactor POC._
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `accept_preset_suggestion` | 0 | yes | — | MCP-only |
-| `apply_multilang_to_networks` | 0 | yes | — | MCP-only |
-| `create_preset` | 0 | yes | — | `orbiads settings presets create` |
-| `delete_preset` | 0 | yes | — | `orbiads settings presets delete` |
-| `dismiss_preset_suggestion` | 0 | yes | — | MCP-only |
-| `recompute_preset_suggestions` | 0 | yes | — | MCP-only |
+| `accept_preset_suggestion` | 0 | yes | required | MCP-only |
+| `apply_multilang_to_networks` | 0 | yes | required | MCP-only |
+| `create_preset` | 0 | yes | required | `orbiads settings presets create` |
+| `delete_preset` | 0 | yes | required | `orbiads settings presets delete` |
+| `dismiss_preset_suggestion` | 0 | yes | required | MCP-only |
+| `recompute_preset_suggestions` | 0 | yes | required | MCP-only |
 | `reset_network_delivery_defaults` | 0 | yes | — | MCP-only |
 | `reset_network_naming_conventions` | 0 | yes | — | MCP-only |
-| `save_global_multilang_matrix` | 0 | yes | — | MCP-only |
+| `save_global_multilang_matrix` | 0 | yes | required | MCP-only |
 | `update_delivery_defaults` | 0 | yes | — | `orbiads settings delivery-defaults set` |
-| `update_naming_conventions` | 0 | yes | — | `orbiads settings naming set` |
+| `update_naming_conventions` | 0 | yes | required | `orbiads settings naming set` |
 | `update_network_delivery_defaults` | 0 | yes | — | MCP-only |
 | `update_network_naming_conventions` | 0 | yes | — | MCP-only |
-| `update_preset` | 0 | yes | — | MCP-only |
+| `update_preset` | 0 | yes | required | MCP-only |
 | `update_tenant_settings` | 0 | yes | — | `orbiads settings general set` |
 | `get_delivery_defaults` | 0 | — | — | `orbiads settings delivery-defaults get` |
 | `get_global_multilang_matrix` | 0 | — | — | MCP-only |
@@ -171,7 +171,7 @@ _Parent tenant_catalog MCP tool — scan + read tenant inventory catalog (Story 
 
 | Action | Cost | Write? | Confirmation token | CLI |
 |---|---|---|---|---|
-| `refresh` | 1 | yes | required | MCP-only |
-| `scan_network` | 1 | yes | required | MCP-only |
+| `refresh` | 1 | yes | — | MCP-only |
+| `scan_network` | 1 | yes | — | MCP-only |
 | `get_active_catalog` | 0 | — | — | MCP-only |
 | `get_scan_status` | 0 | — | — | MCP-only |
