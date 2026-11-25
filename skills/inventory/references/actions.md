@@ -82,7 +82,7 @@ _Parent inventory tool for Story 68.6._
 | `archive_inactive_ad_units` | 0 | yes | required | `orbiads inventory archive-inactive` |
 | `blueprint_starter` | 0 | yes | — | MCP-only |
 | `create_ad_units_batch` | 0.5 per new ad unit | yes | required | `orbiads inventory create-ad-units` |
-| `push_inventory_blueprint` | 0.5 | yes | required | `orbiads inventory blueprint-push` |
+| `push_inventory_blueprint` | 0.5 per new ad unit | yes | required | `orbiads inventory blueprint-push` |
 | `audit_inventory` | 0 | — | — | `orbiads inventory audit` |
 | `find_inactive_ad_units` | 0.25 | — | — | `orbiads inventory list-inactive` |
 | `generate_ads_json` | 0 | — | — | `orbiads inventory ads-json` |

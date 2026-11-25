@@ -72,19 +72,19 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 |---|---|---|---|---|
 | `bulk_upload` | 0.5 per file | yes | required | `orbiads creatives upload-images` |
 | `compress_image` | 1 | yes | required | `orbiads creatives compress-image` |
-| `create_aspect_ratio_image` | 0 | yes | required | MCP-only |
+| `create_aspect_ratio_image` | 0.5 | yes | required | MCP-only |
 | `create_audio` | 0.5 | yes | required | `orbiads creatives upload-audio` |
 | `create_classic_native` | 0.5 | yes | required | `orbiads creatives upload-native-classic` |
-| `create_click_tracking` | 0 | yes | required | `orbiads creatives upload-click-tracking` |
+| `create_click_tracking` | 0.5 | yes | required | `orbiads creatives upload-click-tracking` |
 | `create_companion` | 0.5 | yes | required | `orbiads creatives upload-companion` |
-| `create_custom` | 0 | yes | required | `orbiads creatives upload-custom` |
-| `create_hosted_audio` | 0 | yes | required | MCP-only |
-| `create_hosted_video` | 0 | yes | required | MCP-only |
+| `create_custom` | 0.5 | yes | required | `orbiads creatives upload-custom` |
+| `create_hosted_audio` | 0.5 | yes | required | MCP-only |
+| `create_hosted_video` | 0.5 | yes | required | MCP-only |
 | `create_html5` | 0.5 | yes | required | `orbiads creatives upload-html5` |
 | `create_html5_from_files` | 0.5 | yes | required | `orbiads creatives upload-html5` |
 | `create_image` | 0.5 | yes | required | `orbiads creatives upload-images` |
 | `create_image_redirect` | 0.5 | yes | required | `orbiads creatives upload-image-redirect` |
-| `create_internal_redirect` | 0 | yes | required | `orbiads creatives upload-internal-redirect` |
+| `create_internal_redirect` | 0.5 | yes | required | `orbiads creatives upload-internal-redirect` |
 | `create_third_party` | 0.5 | yes | required | `orbiads creatives upload-third-party` |
 | `create_vast_redirect` | 0.5 | yes | required | `orbiads creatives upload-vast-redirect` |
 | `create_video` | 0.5 | yes | required | `orbiads creatives upload-video` |

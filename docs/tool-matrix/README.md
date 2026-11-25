@@ -246,14 +246,14 @@ _Parent creative asset tool for upload/create/compress/transcode actions._
 | `create_html5_from_files` | 0.5 | ✍️ write | ✅ required |
 | `create_video` | 0.5 | ✍️ write | ✅ required |
 | `create_audio` | 0.5 | ✍️ write | ✅ required |
-| `create_hosted_video` | 0 | ✍️ write | ✅ required |
-| `create_hosted_audio` | 0 | ✍️ write | ✅ required |
+| `create_hosted_video` | 0.5 | ✍️ write | ✅ required |
+| `create_hosted_audio` | 0.5 | ✍️ write | ✅ required |
 | `create_vast_redirect` | 0.5 | ✍️ write | ✅ required |
-| `create_internal_redirect` | 0 | ✍️ write | ✅ required |
+| `create_internal_redirect` | 0.5 | ✍️ write | ✅ required |
 | `create_image_redirect` | 0.5 | ✍️ write | ✅ required |
-| `create_click_tracking` | 0 | ✍️ write | ✅ required |
-| `create_custom` | 0 | ✍️ write | ✅ required |
-| `create_aspect_ratio_image` | 0 | ✍️ write | ✅ required |
+| `create_click_tracking` | 0.5 | ✍️ write | ✅ required |
+| `create_custom` | 0.5 | ✍️ write | ✅ required |
+| `create_aspect_ratio_image` | 0.5 | ✍️ write | ✅ required |
 | `create_companion` | 0.5 | ✍️ write | ✅ required |
 | `create_third_party` | 0.5 | ✍️ write | ✅ required |
 | `create_classic_native` | 0.5 | ✍️ write | ✅ required |
@@ -550,7 +550,7 @@ _Parent inventory tool for Story 68.6._
 | `create_ad_units_batch` | 0.5 per new ad unit | ✍️ write | ✅ required |
 | `generate_ads_json` | 0 | 📖 read | — |
 | `generate_inventory_blueprint` | 0 | 📖 read | — |
-| `push_inventory_blueprint` | 0.5 | ✍️ write | ✅ required |
+| `push_inventory_blueprint` | 0.5 per new ad unit | ✍️ write | ✅ required |
 | `get_ad_units_by_ids` | 0 | 📖 read | — |
 | `find_inactive_ad_units` | 0.25 | 📖 read | — |
 | `archive_inactive_ad_units` | 0 | ⚠️ destructive | ✅ required |
@@ -777,7 +777,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `fetch_inventory_report` | 0.5 | 📖 read | — |
 | `get_report_result` | 0 | 📖 read | — |
 | `export_report_csv` | 0.5 | 📖 read | — |
-| `get_report_download_link` | 0 | 📖 read | — |
+| `get_report_download_link` | 0.5 (free with resultId) | 📖 read | — |
 | `get_report_dimensions` | 0 | 📖 read | — |
 | `get_report_metrics` | 0 | 📖 read | — |
 | `get_report_date_ranges` | 0 | 📖 read | — |
@@ -797,7 +797,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `create_gam_report` | 0 | ✍️ write | ✅ required |
 | `update_gam_report` | 0 | ✍️ write | ✅ required |
 | `delete_gam_report` | 0 | ⚠️ destructive | ✅ required |
-| `run_gam_report` | 0 | 📖 read | — |
+| `run_gam_report` | 0.5 | 📖 read | — |
 | `run_ga_report` | 0.5 | 📖 read | — |
 | `get_ga_dimensions` | 0 | 📖 read | — |
 | `get_ga_metrics` | 0 | 📖 read | — |
@@ -935,7 +935,7 @@ Tools that are neither parents nor deprecated wrappers (auth flow, async jobs, i
 |---|---|---|---|
 | `check_credentials` | `auth.py:699` | 0 | 📖 read |
 | `disconnect_gam` | `auth.py:762` | 0 | ⚠️ destructive |
-| `gam_audit` | `gam_audit.py:119` | 0 | 📖 read |
+| `gam_audit` | `gam_audit.py:119` | 0-0.5 by check | 📖 read |
 | `get_my_tenant_id` | `auth.py:309` | 0 | 📖 read |
 | `get_premium_rate` | `pricing.py:71` | 0 | 📖 read |
 | `initiate_gam_auth` | `auth.py:408` | 0 | ✍️ write |

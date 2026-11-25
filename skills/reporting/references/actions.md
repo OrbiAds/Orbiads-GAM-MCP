@@ -100,7 +100,7 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `get_prospective_delivery_forecast` | 0 | — | — | `orbiads reporting forecast prospective` |
 | `get_report_date_ranges` | 0 | — | — | `orbiads reporting date-ranges` |
 | `get_report_dimensions` | 0 | — | — | `orbiads reporting dimensions` |
-| `get_report_download_link` | 0 | — | — | MCP-only |
+| `get_report_download_link` | 0.5 (free with resultId) | — | — | MCP-only |
 | `get_report_metrics` | 0 | — | — | `orbiads reporting metrics` |
 | `get_report_result` | 0 | — | — | `orbiads reporting executions` |
 | `get_standalone_forecast` | 0 | — | — | `orbiads reporting forecast standalone` |
@@ -109,5 +109,5 @@ _Parent reporting tool for the Epic 68.7b catalogue refactor batch._
 | `list_report_templates` | 0 | — | — | `orbiads reporting templates list` |
 | `run_custom_report` | 0.5 | — | — | `orbiads reporting run` |
 | `run_ga_report` | 0.5 | — | — | `orbiads reporting ga4 run` |
-| `run_gam_report` | 0 | — | — | `orbiads reporting export` |
+| `run_gam_report` | 0.5 | — | — | `orbiads reporting export` |
 | `run_report_from_template` | 0.5 | — | — | `orbiads reporting templates run` |
